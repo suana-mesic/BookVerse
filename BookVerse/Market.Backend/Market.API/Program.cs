@@ -49,6 +49,16 @@ public partial class Program
                 .AddInfrastructure(builder.Configuration, builder.Environment)
                 .AddApplication();
 
+            var allowedOrigins = builder.Configuration.GetSection("CorsSettings:AllowedOrigins").Get<string[]>();
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(name: "allowCors", builder =>
+                {
+                    builder.WithOrigins(allowedOrigins).AllowCredentials().AllowAnyHeader().AllowAnyMethod();
+                });
+            });
+
             var app = builder.Build();
 
             // ---------------------------------------------------------
@@ -63,6 +73,8 @@ public partial class Program
             // Global exception handler (IExceptionHandler)
             app.UseExceptionHandler();
             app.UseMiddleware<RequestResponseLoggingMiddleware>();
+
+            app.UseCors("allowCors");
 
             app.UseHttpsRedirection();
             app.UseAuthentication();
