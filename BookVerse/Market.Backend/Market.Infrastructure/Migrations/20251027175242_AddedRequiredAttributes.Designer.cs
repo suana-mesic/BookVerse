@@ -4,6 +4,7 @@ using Market.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Market.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20251027175242_AddedRequiredAttributes")]
+    partial class AddedRequiredAttributes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,7 +67,7 @@ namespace Market.Infrastructure.Migrations
                             Id = 1,
                             City = "Mostar",
                             Country = "BiH",
-                            CreatedAtUtc = new DateTime(2025, 10, 27, 19, 11, 50, 354, DateTimeKind.Local).AddTicks(1719),
+                            CreatedAtUtc = new DateTime(2025, 10, 27, 18, 52, 41, 178, DateTimeKind.Local).AddTicks(1793),
                             IsDeleted = false,
                             Line1 = "Maršala Tita"
                         },
@@ -73,18 +76,9 @@ namespace Market.Infrastructure.Migrations
                             Id = 2,
                             City = "Sarajevo",
                             Country = "BiH",
-                            CreatedAtUtc = new DateTime(2025, 10, 27, 19, 11, 50, 354, DateTimeKind.Local).AddTicks(1824),
+                            CreatedAtUtc = new DateTime(2025, 10, 27, 18, 52, 41, 178, DateTimeKind.Local).AddTicks(1888),
                             IsDeleted = false,
                             Line1 = "Vrbanja 1"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            City = "Jablanica",
-                            Country = "BiH",
-                            CreatedAtUtc = new DateTime(2025, 10, 27, 19, 11, 50, 354, DateTimeKind.Local).AddTicks(1830),
-                            IsDeleted = false,
-                            Line1 = "Gornja Kolonija SP 100"
                         });
                 });
 
@@ -223,7 +217,7 @@ namespace Market.Infrastructure.Migrations
                         {
                             Id = 1,
                             AddressId = 1,
-                            CreatedAtUtc = new DateTime(2025, 10, 27, 19, 11, 50, 450, DateTimeKind.Local).AddTicks(9193),
+                            CreatedAtUtc = new DateTime(2025, 10, 27, 18, 52, 41, 291, DateTimeKind.Local).AddTicks(7819),
                             Email = "admin@gmail.com",
                             FirstName = "Admin",
                             IsAdmin = true,
@@ -232,14 +226,14 @@ namespace Market.Infrastructure.Migrations
                             IsEnabled = true,
                             IsManager = false,
                             LastName = "User",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMYEyN+DhRoc4qjHJEjwyCt9JvSl9yEm2eQp59z1kcqQeVVKoZeCniWZNefuMtb+1w==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEMp+EUIp8wIvFz6c9qfC0ojT8Huj1Z7zdmrUZ+mKkILn+ehPLG4Nf7OSN/IpKhMCQ==",
                             TokenVersion = 0
                         },
                         new
                         {
                             Id = 2,
                             AddressId = 2,
-                            CreatedAtUtc = new DateTime(2025, 10, 27, 19, 11, 50, 549, DateTimeKind.Local).AddTicks(9603),
+                            CreatedAtUtc = new DateTime(2025, 10, 27, 18, 52, 41, 400, DateTimeKind.Local).AddTicks(1761),
                             Email = "string@gmail.com",
                             FirstName = "string",
                             IsAdmin = false,
@@ -248,23 +242,7 @@ namespace Market.Infrastructure.Migrations
                             IsEnabled = true,
                             IsManager = false,
                             LastName = "string",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPjfPp0QbKjo+i8vcOAlq9Cz8LjgpAvHU5pfwxyidh1N2bNP/AbTJ9zXiLsLJmVUQQ==",
-                            TokenVersion = 0
-                        },
-                        new
-                        {
-                            Id = 3,
-                            AddressId = 2,
-                            CreatedAtUtc = new DateTime(2025, 10, 27, 19, 11, 50, 647, DateTimeKind.Local).AddTicks(2750),
-                            Email = "string@gmail.com",
-                            FirstName = "manager@market.local",
-                            IsAdmin = false,
-                            IsDeleted = false,
-                            IsEmployee = true,
-                            IsEnabled = true,
-                            IsManager = true,
-                            LastName = "string",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOv4zTUubxggjpkWCnM6N5H/J+xURyOJhxs+iO006IluzFq1MLBAggXIcuSUFhK7Ag==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJXPoiAUCN+MDocXpBDSsoVXhF2FyZtYMvjmOSyqFIvcQ3LQjqO4DTu50O0D55BAsg==",
                             TokenVersion = 0
                         });
                 });

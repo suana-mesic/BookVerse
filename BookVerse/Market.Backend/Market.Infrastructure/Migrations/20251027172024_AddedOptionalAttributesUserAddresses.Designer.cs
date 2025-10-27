@@ -4,6 +4,7 @@ using Market.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Market.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20251027172024_AddedOptionalAttributesUserAddresses")]
+    partial class AddedOptionalAttributesUserAddresses
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,11 +34,9 @@ namespace Market.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("City")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Country")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAtUtc")
@@ -45,7 +46,6 @@ namespace Market.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Line1")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Line2")
@@ -57,35 +57,6 @@ namespace Market.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Addresses");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            City = "Mostar",
-                            Country = "BiH",
-                            CreatedAtUtc = new DateTime(2025, 10, 27, 19, 11, 50, 354, DateTimeKind.Local).AddTicks(1719),
-                            IsDeleted = false,
-                            Line1 = "Maršala Tita"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            City = "Sarajevo",
-                            Country = "BiH",
-                            CreatedAtUtc = new DateTime(2025, 10, 27, 19, 11, 50, 354, DateTimeKind.Local).AddTicks(1824),
-                            IsDeleted = false,
-                            Line1 = "Vrbanja 1"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            City = "Jablanica",
-                            Country = "BiH",
-                            CreatedAtUtc = new DateTime(2025, 10, 27, 19, 11, 50, 354, DateTimeKind.Local).AddTicks(1830),
-                            IsDeleted = false,
-                            Line1 = "Gornja Kolonija SP 100"
-                        });
                 });
 
             modelBuilder.Entity("Market.Domain.Entities.Catalog.ProductCategoryEntity", b =>
@@ -169,7 +140,7 @@ namespace Market.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AddressId")
+                    b.Property<int?>("AddressId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAtUtc")
@@ -180,7 +151,6 @@ namespace Market.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsAdmin")
@@ -199,7 +169,6 @@ namespace Market.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("ModifiedAtUtc")
@@ -217,56 +186,6 @@ namespace Market.Infrastructure.Migrations
                     b.HasIndex("AddressId");
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AddressId = 1,
-                            CreatedAtUtc = new DateTime(2025, 10, 27, 19, 11, 50, 450, DateTimeKind.Local).AddTicks(9193),
-                            Email = "admin@gmail.com",
-                            FirstName = "Admin",
-                            IsAdmin = true,
-                            IsDeleted = false,
-                            IsEmployee = true,
-                            IsEnabled = true,
-                            IsManager = false,
-                            LastName = "User",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMYEyN+DhRoc4qjHJEjwyCt9JvSl9yEm2eQp59z1kcqQeVVKoZeCniWZNefuMtb+1w==",
-                            TokenVersion = 0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AddressId = 2,
-                            CreatedAtUtc = new DateTime(2025, 10, 27, 19, 11, 50, 549, DateTimeKind.Local).AddTicks(9603),
-                            Email = "string@gmail.com",
-                            FirstName = "string",
-                            IsAdmin = false,
-                            IsDeleted = false,
-                            IsEmployee = true,
-                            IsEnabled = true,
-                            IsManager = false,
-                            LastName = "string",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPjfPp0QbKjo+i8vcOAlq9Cz8LjgpAvHU5pfwxyidh1N2bNP/AbTJ9zXiLsLJmVUQQ==",
-                            TokenVersion = 0
-                        },
-                        new
-                        {
-                            Id = 3,
-                            AddressId = 2,
-                            CreatedAtUtc = new DateTime(2025, 10, 27, 19, 11, 50, 647, DateTimeKind.Local).AddTicks(2750),
-                            Email = "string@gmail.com",
-                            FirstName = "manager@market.local",
-                            IsAdmin = false,
-                            IsDeleted = false,
-                            IsEmployee = true,
-                            IsEnabled = true,
-                            IsManager = true,
-                            LastName = "string",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOv4zTUubxggjpkWCnM6N5H/J+xURyOJhxs+iO006IluzFq1MLBAggXIcuSUFhK7Ag==",
-                            TokenVersion = 0
-                        });
                 });
 
             modelBuilder.Entity("Market.Domain.Entities.Identity.RefreshTokenEntity", b =>
@@ -327,9 +246,7 @@ namespace Market.Infrastructure.Migrations
                 {
                     b.HasOne("Market.Domain.Entities.Catalog.Addresses", "Address")
                         .WithMany()
-                        .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AddressId");
 
                     b.Navigation("Address");
                 });

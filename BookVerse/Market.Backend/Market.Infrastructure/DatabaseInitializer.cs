@@ -19,7 +19,7 @@ public static class DatabaseInitializer
         if (env.IsTest())
         {
             await ctx.Database.EnsureCreatedAsync();
-            await DynamicDataSeeder.SeedAsync(ctx);
+           // await DynamicDataSeeder.SeedAsync(ctx);
             return;
         }
 
@@ -28,7 +28,7 @@ public static class DatabaseInitializer
 
         if (env.IsDevelopment())
         {
-            await DynamicDataSeeder.SeedAsync(ctx);
+           // await DynamicDataSeeder.SeedAsync(ctx);
         }
     }
 }

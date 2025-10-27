@@ -10,10 +10,10 @@ public static class DynamicDataSeeder
     public static async Task SeedAsync(DatabaseContext context)
     {
         // Osiguraj da baza postoji (bez migracija)
-        await context.Database.EnsureCreatedAsync();
+        //await context.Database.EnsureCreatedAsync();
 
-        await SeedProductCategoriesAsync(context);
-        await SeedUsersAsync(context);
+        //await SeedProductCategoriesAsync(context);
+        //await SeedUsersAsync(context);
     }
 
     private static async Task SeedProductCategoriesAsync(DatabaseContext context)
