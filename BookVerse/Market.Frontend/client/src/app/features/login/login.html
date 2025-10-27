@@ -1,1 +1,29 @@
-<p>login works!</p>
+<div class="parent">
+    <div class="signup-container">
+        @if(showLoginError){
+        <div class="login-error-banner">
+            <mat-icon class="error-icon">error_outline</mat-icon>
+            <span class="error_message">Invalid email or password. Please try again.</span>
+        </div>
+        }
+        <form id="signup-form" class="signup-form" [formGroup]="registerForm">
+            <h2>Login</h2>
+            <mat-form-field class="form-control">
+                <label>Email</label>
+                <input type="text" formControlName="email" id="email" name="email" matInput required />
+                <mat-error>Please enter a valid email address.</mat-error>Ł
+            </mat-form-field>
+
+            <mat-form-field class="form-control">
+                <label>Password</label>
+                <input type="password" formControlName="password" id="password" name="password" matInput required />
+                <mat-error>Password must be at least 6 characters long.</mat-error>
+            </mat-form-field>
+            <button type="button" class="login-button" (click)="onLogin()" [disabled]="!validMailPass">Login</button>
+
+            <div class="login-link">
+                <p class="sign-up">If You Are New Here?<a routerLink="/register">Sign up</a></p>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,141 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap");
+
+.parent {
+    background-color: #f4f4f9;
+}
+
+:host {
+    font-family: "Outfit", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+    background-color: #f4f4f9;
+}
+
+
+.wizard-form {
+    width: min(500px, 90%);
+    background-color: #fff;
+}
+
+.form-control {
+    color: --mat-sys-surface;
+}
+
+.steps-container {
+    display: flex;
+    overflow: hidden;
+}
+
+.step {
+    flex: 1 0 100%;
+    padding: 24px 8px;
+    transition: opacity 0.3s;
+    height: fit-content;
+    display: grid;
+    gap: 8px;
+}
+
+.button-s {
+    width: 86%;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    border-radius: 16px;
+    padding: 8px 16px;
+    background-color: #3498db;
+    color: rgb(45, 42, 42);
+    font-size: 0.875rem;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+button:disabled {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+    border: 1px solid #aaa;
+    pointer-events: none;
+}
+
+.prev-next {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+}
+
+.prev-next button {
+    flex: 1;
+    width: 100%;
+}
+
+input {
+    width: 100% !important;
+    height: 50px !important;
+    border: 1px solid #ddd !important;
+    padding-left: 8px;
+    margin-top: 10px;
+    border-radius: 5px !important;
+    font-size: 14px !important;
+}
+
+::ng-deep .mat-mdc-text-field-wrapper {
+    height: 80px !important;
+}
+
+::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    background-color: white !important;
+}
+
+::ng-deep .mat-step-icon-selected {
+    background-color: #3498db !important;
+}
+
+::ng-deep .mat-step-icon-state-edit {
+    background-color: #3498db !important;
+}
+
+::ng-deep .mat-stepper-vertical,
+.mat-stepper-horizontal {
+    background-color: white;
+}
+
+input:focus {
+    outline: none !important;
+    border-color: #3498db !important;
+}
+
+::ng-deep .form-control {
+    border: none;
+}
+
+::ng-deep .mdc-line-ripple {
+    display: none !important;
+}
+
+::ng-deep .form-control .mdc-line-ripple {
+    display: none !important;
+}
+
+::ng-deep .form-control .mat-mdc-form-field-flex {
+    border-bottom: 1px solid #ccc !important;
+}
+
+::ng-deep .mat-mdc-form-field {
+    line-height: 0px;
+}
+
+::ng-deep .mdc-text-field--filled {
+    height: 100px !important;
+}
+
+::ng-deep .form-control .mat-mdc-form-field-flex {
+    border-bottom: 0px !important;
+}
