@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 namespace Market.Application.Modules.Auth.Commands.Register
 {
     public class RegisterCommandHandler(
-        IAppDbContext context, 
-        IJwtTokenService jwt, 
-        IPasswordHasher<MarketUserEntity> hasher) 
+        IAppDbContext context,
+        IJwtTokenService jwt,
+        IPasswordHasher<MarketUserEntity> hasher)
         : IRequestHandler<RegisterCommand, RegisterCommandDto>
     {
         public async Task<RegisterCommandDto> Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -22,12 +22,28 @@ namespace Market.Application.Modules.Auth.Commands.Register
             if (usr)
                 throw new MarketConflictException("Korisnik sa unsenim mailom već postoji");
 
+            var adresa = new Addresses
+            {
+                IsDeleted = false,
+                CreatedAtUtc = DateTime.Now,
+                Line1 = request.Line1,
+                Line2 = request.Line2,
+                City = request.City,
+                Country = request.Country
+            };
+
+            context.Addresses.Add(adresa);
+            await context.SaveChangesAsync(cancellationToken);
+
             var user = new MarketUserEntity
             {
-                IsDeleted =false,
-                CreatedAtUtc=DateTime.Now,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                AddressId = adresa.Id,
+                IsDeleted = false,
+                CreatedAtUtc = DateTime.Now,
                 Email = request.Email,
-                PasswordHash = hasher.HashPassword(null,request.Password),
+                PasswordHash = hasher.HashPassword(null, request.Password),
                 IsAdmin = false,
                 IsManager = false,
                 IsEmployee = false,
@@ -37,7 +53,7 @@ namespace Market.Application.Modules.Auth.Commands.Register
 
             context.Users.Add(user);
             await context.SaveChangesAsync(cancellationToken);
-            
+
             var tokens = jwt.IssueTokens(user);
 
             context.RefreshTokens.Add(new RefreshTokenEntity

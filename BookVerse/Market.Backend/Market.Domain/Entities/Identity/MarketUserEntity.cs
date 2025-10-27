@@ -1,10 +1,13 @@
 ﻿// MarketUserEntity.cs
 using Market.Domain.Common;
+using Market.Domain.Entities.Catalog;
 
 namespace Market.Domain.Entities.Identity;
 
 public sealed class MarketUserEntity : BaseEntity
 {
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
     public string Email { get; set; }
     public string PasswordHash { get; set; }
     public bool IsAdmin { get; set; }
@@ -12,5 +15,7 @@ public sealed class MarketUserEntity : BaseEntity
     public bool IsEmployee { get; set; }
     public int TokenVersion { get; set; } = 0;// For global revocation
     public bool IsEnabled { get; set; }
+    public int AddressId { get; set; }
+    public Addresses? Address { get; set; }
     public ICollection<RefreshTokenEntity> RefreshTokens { get; private set; } = new List<RefreshTokenEntity>();
 }
