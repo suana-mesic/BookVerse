@@ -14,7 +14,9 @@ public partial class StaticDataSeeder
         // example of static data: roles
         SeedAddresses(modelBuilder);
         SeedUsers(modelBuilder);
+        SeedBooks(modelBuilder);
     }
+
 
     private static void SeedUsers(ModelBuilder modelBuilder)
     {
@@ -102,5 +104,45 @@ public partial class StaticDataSeeder
                CreatedAtUtc = DateTime.Now
             }
         });
+    }
+
+
+    private static void SeedBooks(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Books>().HasData(new List<Books>
+        {
+            new Books{
+                Id= 1,
+                Title = "test",
+                Genre = "neki zanr",
+                Description = "Ovo je opis knjige",
+                Rating = 4.5f,
+                UserCount = 52,
+                Author = "Neki autor",
+                Price = 29.99f
+            },
+            new Books{
+                Id= 2,
+                Title = "test2",
+                Genre = "neki zanr",
+                Description = "Ovo je opis knjige",
+                Rating = 4.4f,
+                UserCount = 77,
+                Author = "Neki autor",
+                Price = 19.99f
+            },
+            new Books{
+                Id = 3,
+                Title = "test3",
+                Genre = "neki zanr",
+                Description = "Ovo je opis knjige",
+                Rating = 4.8f,
+                UserCount = 51,
+                Author = "Neki autor",
+                Price = 59.99f
+            }
+
+        }
+        );
     }
 }

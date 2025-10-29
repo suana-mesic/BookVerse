@@ -1,0 +1,62 @@
+/*
+  Odavde do donje granice sam ubacio css da zbog konflikta u velicini fontovi
+*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+h1 {
+  font-size: 32px;
+}
+h2 {
+  font-size: 24px;
+}
+h3 {
+  font-size: 19px;
+}
+h4 {
+  font-size: 16px;
+}
+
+/* --------------------------------------------- */
+
+.book {
+  white-space: nowrap;
+  width: 200px;
+}
+
+.book__cover {
+  background-color: #555;
+  height: 270px;
+}
+.book__rating-and-count {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 1rem;
+}
+
+.book__rating {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.book__user-count {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.book__rating-and-count img {
+  height: 1rem;
+  width: 1rem;
+}
+
+h3,
+h4 {
+  margin-top: 2px;
+}

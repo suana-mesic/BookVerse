@@ -1,0 +1,80 @@
+/*
+  Odavde do donje granice sam ubacio css da zbog konflikta u velicini fontovi
+*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+h1 {
+  font-size: 32px;
+}
+h2 {
+  font-size: 24px;
+}
+h3 {
+  font-size: 19px;
+}
+h4 {
+  font-size: 16px;
+}
+
+/* --------------------------------------------- */
+
+header {
+  background-color: #dad7cd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 64px;
+}
+
+button {
+  border: none;
+  background-color: transparent;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+.header__title {
+  flex: 1;
+  text-align: center;
+  font-weight: 500;
+}
+
+.header__about-us {
+  display: flex;
+  flex: 1;
+}
+
+.header__right-side {
+  display: flex;
+  flex: 1;
+  justify-content: end;
+  gap: 36px;
+}
+
+.header__profile,
+.header__cart {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.header__cart-icon,
+.header__profile-image {
+  height: 40px;
+  width: 40px;
+}
+
+.header__profile-image {
+  background-color: black;
+  border-radius: 50%;
+}

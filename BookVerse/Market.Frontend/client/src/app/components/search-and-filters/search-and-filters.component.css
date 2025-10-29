@@ -1,0 +1,75 @@
+/*
+  Odavde do donje granice sam ubacio css da zbog konflikta u velicini fontovi
+*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+h1 {
+  font-size: 32px;
+}
+h2 {
+  font-size: 24px;
+}
+h3 {
+  font-size: 19px;
+}
+h4 {
+  font-size: 16px;
+}
+
+/* --------------------------------------------- */
+
+.search-and-filters {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.search-and-filters__search {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #d9d9d9;
+  padding: 0.5rem 1.2rem;
+  width: 380px;
+  border-radius: 9px;
+}
+
+.search-and-filters__search input {
+  border: none;
+  outline: none;
+  background-color: #d9d9d9;
+  font-size: 1.2rem;
+}
+
+.search-and-filters__filter-button {
+  display: flex;
+  border: none;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #d9d9d9;
+  padding: 0.5rem 1.5rem;
+  border-radius: 9px;
+  gap: 0.5rem;
+}
+
+.search-and-filters img {
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+.search-and-filters img:hover {
+  cursor: pointer;
+}
+
+button:hover {
+  cursor: pointer;
+}

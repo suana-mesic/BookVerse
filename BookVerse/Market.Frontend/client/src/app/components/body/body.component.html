@@ -1,0 +1,8 @@
+<body>
+  <h1>Preporučeno za Vas</h1>
+  <div class="body__books">
+    @for(book of books(); track book.bookId) {
+    <app-book [book]="book" />
+    }
+  </div>
+</body>

@@ -8,6 +8,7 @@ public interface IAppDbContext
     DbSet<MarketUserEntity> Users { get; }
     DbSet<RefreshTokenEntity> RefreshTokens { get; }
     DbSet<Addresses> Addresses { get; }
+    DbSet<Books> Books { get;  }
 
     Task<int> SaveChangesAsync(CancellationToken ct);
 }

@@ -10,6 +10,8 @@ public partial class DatabaseContext : DbContext, IAppDbContext
     public DbSet<RefreshTokenEntity> RefreshTokens => Set<RefreshTokenEntity>();
     public DbSet<Addresses> Addresses => Set<Addresses>();
 
+    public DbSet<Books> Books => Set<Books>();
+
 
     private readonly TimeProvider _clock;
     public DatabaseContext(DbContextOptions<DatabaseContext> options, TimeProvider clock) : base(options)

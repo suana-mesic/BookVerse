@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Market.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20251027172024_AddedOptionalAttributesUserAddresses")]
-    partial class AddedOptionalAttributesUserAddresses
+    [Migration("20251028230526_migracija")]
+    partial class migracija
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,9 +34,11 @@ namespace Market.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("City")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Country")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAtUtc")
@@ -46,6 +48,7 @@ namespace Market.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Line1")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Line2")
@@ -57,6 +60,123 @@ namespace Market.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Addresses");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            City = "Mostar",
+                            Country = "BiH",
+                            CreatedAtUtc = new DateTime(2025, 10, 29, 0, 5, 25, 564, DateTimeKind.Local).AddTicks(7282),
+                            IsDeleted = false,
+                            Line1 = "Maršala Tita"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            City = "Sarajevo",
+                            Country = "BiH",
+                            CreatedAtUtc = new DateTime(2025, 10, 29, 0, 5, 25, 564, DateTimeKind.Local).AddTicks(7337),
+                            IsDeleted = false,
+                            Line1 = "Vrbanja 1"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            City = "Jablanica",
+                            Country = "BiH",
+                            CreatedAtUtc = new DateTime(2025, 10, 29, 0, 5, 25, 564, DateTimeKind.Local).AddTicks(7340),
+                            IsDeleted = false,
+                            Line1 = "Gornja Kolonija SP 100"
+                        });
+                });
+
+            modelBuilder.Entity("Market.Domain.Entities.Catalog.Books", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Author")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Genre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
+
+                    b.Property<float>("Rating")
+                        .HasColumnType("real");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Books");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Author = "Neki autor",
+                            CreatedAtUtc = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Ovo je opis knjige",
+                            Genre = "neki zanr",
+                            IsDeleted = false,
+                            Price = 29.99f,
+                            Rating = 4.5f,
+                            Title = "test",
+                            UserCount = 52
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Author = "Neki autor",
+                            CreatedAtUtc = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Ovo je opis knjige",
+                            Genre = "neki zanr",
+                            IsDeleted = false,
+                            Price = 19.99f,
+                            Rating = 4.4f,
+                            Title = "test2",
+                            UserCount = 77
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Author = "Neki autor",
+                            CreatedAtUtc = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Ovo je opis knjige",
+                            Genre = "neki zanr",
+                            IsDeleted = false,
+                            Price = 59.99f,
+                            Rating = 4.8f,
+                            Title = "test3",
+                            UserCount = 51
+                        });
                 });
 
             modelBuilder.Entity("Market.Domain.Entities.Catalog.ProductCategoryEntity", b =>
@@ -140,7 +260,7 @@ namespace Market.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("AddressId")
+                    b.Property<int>("AddressId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAtUtc")
@@ -151,6 +271,7 @@ namespace Market.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsAdmin")
@@ -169,6 +290,7 @@ namespace Market.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("ModifiedAtUtc")
@@ -186,6 +308,56 @@ namespace Market.Infrastructure.Migrations
                     b.HasIndex("AddressId");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AddressId = 1,
+                            CreatedAtUtc = new DateTime(2025, 10, 29, 0, 5, 25, 638, DateTimeKind.Local).AddTicks(137),
+                            Email = "admin@gmail.com",
+                            FirstName = "Admin",
+                            IsAdmin = true,
+                            IsDeleted = false,
+                            IsEmployee = true,
+                            IsEnabled = true,
+                            IsManager = false,
+                            LastName = "User",
+                            PasswordHash = "AQAAAAIAAYagAAAAECPv/PL9UXZGgmnssgz8OJcJJDZYZCHVjhNesduIbqlrp/TGdq/ft138GJJv2w+tPA==",
+                            TokenVersion = 0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AddressId = 2,
+                            CreatedAtUtc = new DateTime(2025, 10, 29, 0, 5, 25, 708, DateTimeKind.Local).AddTicks(7770),
+                            Email = "string@gmail.com",
+                            FirstName = "string",
+                            IsAdmin = false,
+                            IsDeleted = false,
+                            IsEmployee = true,
+                            IsEnabled = true,
+                            IsManager = false,
+                            LastName = "string",
+                            PasswordHash = "AQAAAAIAAYagAAAAECUABgOXInp/kMzYzufCmo8vQnN4Yin/OcQyb2TD+4LmDgouDuwlrsowtDq5hZWbZg==",
+                            TokenVersion = 0
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AddressId = 2,
+                            CreatedAtUtc = new DateTime(2025, 10, 29, 0, 5, 25, 784, DateTimeKind.Local).AddTicks(2301),
+                            Email = "string@gmail.com",
+                            FirstName = "manager@market.local",
+                            IsAdmin = false,
+                            IsDeleted = false,
+                            IsEmployee = true,
+                            IsEnabled = true,
+                            IsManager = true,
+                            LastName = "string",
+                            PasswordHash = "AQAAAAIAAYagAAAAELt6FeRzW+gFqcOIDX6EXOUapltNyxckeDd25PnBcqDp4KPie8yr3cyKZYD/UdsNNg==",
+                            TokenVersion = 0
+                        });
                 });
 
             modelBuilder.Entity("Market.Domain.Entities.Identity.RefreshTokenEntity", b =>
@@ -246,7 +418,9 @@ namespace Market.Infrastructure.Migrations
                 {
                     b.HasOne("Market.Domain.Entities.Catalog.Addresses", "Address")
                         .WithMany()
-                        .HasForeignKey("AddressId");
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Address");
                 });
