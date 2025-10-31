@@ -3,26 +3,27 @@
         @if(showLoginError){
         <div class="login-error-banner">
             <mat-icon class="error-icon">error_outline</mat-icon>
-            <span class="error_message">Invalid email or password. Please try again.</span>
+            <span class="error_message">Neispravna e-mail adresa ili lozinka. Molimo pokušajte ponovo.</span>
         </div>
         }
         <form id="signup-form" class="signup-form" [formGroup]="registerForm">
-            <h2>Login</h2>
+            <h2>Prijava</h2>
             <mat-form-field class="form-control">
                 <label>Email</label>
                 <input type="text" formControlName="email" id="email" name="email" matInput required />
-                <mat-error>Please enter a valid email address.</mat-error>Ł
+                <mat-error>Unesite važeću email adresu.</mat-error>
             </mat-form-field>
 
             <mat-form-field class="form-control">
-                <label>Password</label>
+                <label>Lozinka</label>
                 <input type="password" formControlName="password" id="password" name="password" matInput required />
-                <mat-error>Password must be at least 6 characters long.</mat-error>
+                <mat-error>Lozinka mora imati najmanje 6 karaktera.</mat-error>
             </mat-form-field>
-            <button type="button" class="login-button" (click)="onLogin()" [disabled]="!validMailPass">Login</button>
+            <button type="button" class="login-button" (click)="onLogin()" [disabled]="!validMailPass">Prijavi
+                se</button>
 
             <div class="login-link">
-                <p class="sign-up">If You Are New Here?<a routerLink="/register">Sign up</a></p>
+                <p class="sign-up">Novi ste ovdje?<a routerLink="/register">Registrujte se</a></p>
             </div>
         </form>
     </div>
