@@ -3,22 +3,23 @@
         <mat-step class="step">
             <div class="steps-container">
                 <div class="step">
-                    <h3>Personal Information</h3>
+                    <h3>Lični podaci</h3>
                     <mat-form-field class="form-control">
-                        <label for="firstName">First Name</label>
+                        <label for="firstName">Ime</label>
                         <input formControlName="firstName" type="text" id="firstName" name="firstName" matInput
                             required />
-                        <mat-error>First name must be at least 2 characters long.</mat-error>
+                        <mat-error>Ime mora imati najmanje 2 karaktera.</mat-error>
                     </mat-form-field>
                     <mat-form-field class="form-control">
-                        <label for="lastName">Last Name</label>
+                        <label for="lastName">Prezime</label>
                         <input formControlName="lastName" type="text" id="lastName" name="lastName" matInput required />
-                        <mat-error>Last name must be at least 2 characters long.</mat-error>
+                        <mat-error>Prezime mora imati najmanje 2 karaktera.</mat-error>
                     </mat-form-field>
                 </div>
             </div>
 
-            <button type="button" class="next-btn button-s" [disabled]="!isFirstStepValid" matStepperNext>Next</button>
+            <button type="button" class="next-btn button-s" [disabled]="!isFirstStepValid" matStepperNext>Sljedeći
+                korak</button>
         </mat-step>
 
         <mat-step>
@@ -28,19 +29,19 @@
                     <mat-form-field class="form-control">
                         <label for="email">Email</label>
                         <input formControlName="email" type="text" id="email" name="email" matInput required />
-                        <mat-error>Please enter a valid email address.</mat-error>
+                        <mat-error>Unesite važeću email adresu.</mat-error>
                     </mat-form-field>
                     <mat-form-field class="form-control">
-                        <label for="lastName">Password</label>
+                        <label for="lastName">Lozinka</label>
                         <input formControlName="password" type="password" id="password" name="password" matInput
                             required />
-                        <mat-error>Password must be at least 6 characters long.</mat-error>
+                        <mat-error>Lozinka mora imati najmanje 6 karaktera.</mat-error>
                     </mat-form-field>
                     <mat-form-field class="form-control">
-                        <label for="lastName">Confirm password</label>
+                        <label for="lastName">Ponovo unesite lozinku</label>
                         <input formControlName="confirmedPassword" type="password" id="confirmedPassword"
                             name="confirmedPassword" matInput required />
-                        <mat-error>Password and confirmed password don't match.</mat-error>
+                        <mat-error>Lozinke se ne podudaraju</mat-error>
                     </mat-form-field>
                 </div>
             </div>
@@ -56,23 +57,23 @@
                 <div class="step">
                     <h3>Address</h3>
                     <mat-form-field class="form-control">
-                        <label for="line1">Line 1</label>
+                        <label for="line1">Ulica i broj</label>
                         <input formControlName="line1" type="text" id="line1" name="line1" matInput required />
-                        <mat-error>Line 1 is required.</mat-error>
+                        <mat-error>Ulica i broj su obavezni.</mat-error>
                     </mat-form-field>
                     <mat-form-field class="form-control">
-                        <label for="line2">Line 2</label>
+                        <label for="line2">Dodatne informacije (npr. sprat, stan)</label>
                         <input formControlName="line2" type="text" id="line2" name="line2" matInput />
                     </mat-form-field>
                     <mat-form-field class="form-control">
-                        <label for="city">City</label>
+                        <label for="city">Grad</label>
                         <input formControlName="city" type="text" id="city" name="city" matInput required />
-                        <mat-error>City is required.</mat-error>
+                        <mat-error>Grad je obavezan.</mat-error>
                     </mat-form-field>
                     <mat-form-field class="form-control">
-                        <label for="country">Country</label>
+                        <label for="country">Država</label>
                         <input formControlName="country" type="text" id="country" name="country" matInput required />
-                        <mat-error>Country is required.</mat-error>
+                        <mat-error>Država je obavezna.</mat-error>
                     </mat-form-field>
                 </div>
             </div>
