@@ -135,3 +135,39 @@ input:focus {
 ::ng-deep .form-control .mat-mdc-form-field-flex {
     border-bottom: 0px !important;
 }
+
+.fc-password {
+    position: relative !important;
+}
+
+.fc-password input {
+    position: relative !important;
+    padding-right: 40px !important;
+}
+
+.visibility-button {
+    position: absolute !important;
+    right: 10px !important;
+    top: 30%;
+    background-color: transparent !important;
+    padding: 0;
+    line-height: 0 !important;
+    height: 24px !important;
+}
+
+#password-container {
+    position: relative !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: block !important;
+}
+
+#strength-bar {
+    background-color: #dcdcdc !important;
+    top: -11px;
+    height: 10px !important;
+    position: relative !important;
+    border-radius: 0 0 5px 5px !important;
+    margin-left: 1px;
+    margin-right: 1px;
+}

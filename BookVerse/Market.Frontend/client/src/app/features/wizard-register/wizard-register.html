@@ -1,3 +1,6 @@
+<head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
 <form class="wizard-form" [formGroup]="registerForm">
     <mat-horizontal-stepper style="text-align: center;" linear #formStepper>
         <mat-step class="step">
@@ -25,37 +28,49 @@
         <mat-step>
             <div class="steps-container">
                 <div class="step">
-                    <h3>Account Information</h3>
+                    <h3>Podaci za prijavu</h3>
                     <mat-form-field class="form-control">
                         <label for="email">Email</label>
                         <input formControlName="email" type="text" id="email" name="email" matInput required />
                         <mat-error>Unesite važeću email adresu.</mat-error>
                     </mat-form-field>
-                    <mat-form-field class="form-control">
-                        <label for="lastName">Lozinka</label>
-                        <input formControlName="password" type="password" id="password" name="password" matInput
-                            required />
-                        <mat-error>Lozinka mora imati najmanje 6 karaktera.</mat-error>
+                    <mat-form-field class="form-control fc-password" floatLabel="always">
+                        <label for="password">Lozinka</label>
+                        <div id="password-container">
+                            <input #password formControlName="password" type="password" id="password" name="password"
+                                matInput required />
+                            <button #visibilityIcon mat-icon-button (click)="togglePasswordVisibility()"
+                                class="visibility-button">
+                                <mat-icon>visibility</mat-icon>
+                            </button>
+                            <div id="strength-bar" #strengthBar>
+
+                            </div>
+                        </div>
+                        <mat-hint #strengthMessage></mat-hint>
+                        <!-- <mat-error>Lozinka mora imati najmanje 6 karaktera.</mat-error> -->
                     </mat-form-field>
+
                     <mat-form-field class="form-control">
-                        <label for="lastName">Ponovo unesite lozinku</label>
+                        <label for="confirmedPassword">Ponovo unesite lozinku</label>
                         <input formControlName="confirmedPassword" type="password" id="confirmedPassword"
                             name="confirmedPassword" matInput required />
-                        <mat-error>Lozinke se ne podudaraju</mat-error>
+                        <mat-error>Lozinke se ne podudaraju.</mat-error>
                     </mat-form-field>
                 </div>
             </div>
 
             <div class="prev-next">
-                <button type="button" class="next-btn" matStepperPrevious>Back</button>
-                <button type="button" class="next-btn" matStepperNext [disabled]="!isSecondStepValid">Next</button>
+                <button type="button" class="next-btn" matStepperPrevious>Prethodni korak</button>
+                <button type="button" class="next-btn" matStepperNext [disabled]="!isSecondStepValid">Sljedeći
+                    korak</button>
             </div>
         </mat-step>
 
         <mat-step>
             <div class="steps-container">
                 <div class="step">
-                    <h3>Address</h3>
+                    <h3>Adresa</h3>
                     <mat-form-field class="form-control">
                         <label for="line1">Ulica i broj</label>
                         <input formControlName="line1" type="text" id="line1" name="line1" matInput required />
@@ -78,9 +93,9 @@
                 </div>
             </div>
             <div class="prev-next">
-                <button type="button" class="next-btn" matStepperPrevious>Back</button>
+                <button type="button" class="next-btn" matStepperPrevious>Prethodni korak</button>
                 <button type="button" class="next-btn" (click)="onRegister()"
-                    [disabled]="!isThirdStepValid">Submit</button>
+                    [disabled]="!isThirdStepValid">Potvrdi</button>
             </div>
         </mat-step>
     </mat-horizontal-stepper>
