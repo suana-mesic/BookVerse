@@ -6,16 +6,12 @@
 @use '@angular/material' as mat;
 
 html {
-  @include mat.theme(
-    (
-      color: (
-        primary: mat.$azure-palette,
+  @include mat.theme((color: (primary: mat.$azure-palette,
         tertiary: mat.$blue-palette,
       ),
       typography: Roboto,
       density: 0,
-    )
-  );
+    ));
   font-size: 16px;
 }
 
@@ -35,6 +31,7 @@ body {
   // Reset the user agent margin.
   margin: 0;
 }
+
 /* You can add global styles to this file, and also import other style files */
 
 // html, body { height: 100%; }
@@ -46,5 +43,4 @@ body {
   box-sizing: border-box;
   font-family: sans-serif;
   font-weight: 300;
-  overflow-x: hidden;
 }

@@ -34,11 +34,13 @@
                         <input formControlName="email" type="text" id="email" name="email" matInput required />
                         <mat-error>Unesite važeću email adresu.</mat-error>
                     </mat-form-field>
-                    <mat-form-field class="form-control fc-password" floatLabel="always">
+
+                    <!-- Password -->
+                    <mat-form-field class="form-control fc-password" [floatLabel]="floatLabelAttribute">
                         <label for="password">Lozinka</label>
                         <div id="password-container">
                             <input #password formControlName="password" type="password" id="password" name="password"
-                                matInput required />
+                                matInput (input)="strengthChecker()" required />
                             <button #visibilityIcon mat-icon-button (click)="togglePasswordVisibility()"
                                 class="visibility-button">
                                 <mat-icon>visibility</mat-icon>
@@ -47,8 +49,8 @@
 
                             </div>
                         </div>
-                        <mat-hint #strengthMessage></mat-hint>
-                        <!-- <mat-error>Lozinka mora imati najmanje 6 karaktera.</mat-error> -->
+                        <mat-hint #strengthMessage>{{messageStrength}}</mat-hint>
+                        <mat-error>Lozinka mora imati najmanje 6 karaktera.</mat-error>
                     </mat-form-field>
 
                     <mat-form-field class="form-control">

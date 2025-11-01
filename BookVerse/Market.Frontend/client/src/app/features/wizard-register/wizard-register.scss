@@ -8,6 +8,7 @@
     height: 100vh;
     width: 100%;
     background-color: #dad6cc;
+    overflow-x: none;
 }
 
 
@@ -167,7 +168,7 @@ input:focus {
     top: -11px;
     height: 10px !important;
     position: relative !important;
-    border-radius: 0 0 5px 5px !important;
+    border-radius: 0 0 4px 4px !important;
     margin-left: 1px;
     margin-right: 1px;
 }
