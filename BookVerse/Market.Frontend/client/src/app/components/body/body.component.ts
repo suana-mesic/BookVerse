@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { BookComponent } from '../book/book.component';
 import { BooksService } from '../../services/books.service';
-import { Book } from '../../models/book.type';
+import { Book } from '../../shared/models/book.type';
 import { catchError } from 'rxjs';
 
 @Component({
