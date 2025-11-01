@@ -1,22 +1,27 @@
-import { Component, inject } from '@angular/core';
-import { MatFormField, MatError } from '@angular/material/form-field';
+import { Component, ElementRef, inject, ViewChild, viewChild } from '@angular/core';
+import { MatFormField, MatError, MatHint } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
-import { MatStepper, MatStep, MatStepperPrevious, MatStepperNext, MatStepLabel } from '@angular/material/stepper';
-import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { MatStepper, MatStep, MatStepperPrevious, MatStepperNext } from '@angular/material/stepper';
+import { AbstractControl, FormBuilder, FormGroup, FormRecord, ValidatorFn, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { RegisterResponse } from '../../shared/models/RegisterResponse';
+import { MatIcon } from "@angular/material/icon";
 
 @Component({
   standalone: true,
   selector: 'app-wizard-register',
-  imports: [ReactiveFormsModule, MatStepper, MatStep, MatFormField, MatInput, MatStepperPrevious, MatStepperNext, MatError],
+  imports: [ReactiveFormsModule, MatStepper, MatStep, MatFormField, MatInput, MatStepperPrevious, MatStepperNext, MatError, MatIcon, MatHint],
   templateUrl: './wizard-register.html',
   styleUrl: './wizard-register.scss',
 })
 export class WizardRegister {
-  registerForm: FormGroup;
   http = inject(HttpClient);
+  registerForm: FormGroup;
+  showPassword: boolean = false;
+  //add reference #password for input element 
+  @ViewChild('password') password!: ElementRef;
+  @ViewChild('visibilityIcon') visibilityIcon!: ElementRef;
 
   constructor(private fb: FormBuilder) {
     this.registerForm = this.fb.group({
@@ -75,5 +80,16 @@ export class WizardRegister {
     sessionStorage.setItem('refreshToken', result.refreshToken || '');
     sessionStorage.setItem('expiresAt', result.expiresAtUtc?.toString() || '');
     sessionStorage.setItem('userId', result.userId.toString());
+  }
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+
+    const passwordElement = this.password?.nativeElement;
+    const visibilityIcon = this.visibilityIcon?.nativeElement;
+
+    if (passwordElement) {
+      passwordElement.type = this.showPassword ? 'text' : 'password';
+      visibilityIcon.style.color = this.showPassword ? "#3498db" : "#808080";
+    }
   }
 }

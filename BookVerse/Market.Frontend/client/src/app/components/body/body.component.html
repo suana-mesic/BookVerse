@@ -1,8 +1,26 @@
 <body>
-  <h1>Preporučeno za Vas</h1>
+  <div class="body__header">
+    <h1>Preporučeno za Vas</h1>
+    <div class="body__page-size">
+      <h2>Veličina:</h2>
+      <select (change)="setPageSize($event)" id="page-size" name="page-size">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+      </select>
+    </div>
+  </div>
   <div class="body__books">
     @for(book of books(); track book.bookId) {
     <app-book [book]="book" />
     }
+  </div>
+  <div class="body__pages">
+    <div><</div>
+    @for(i of pageNumberArray(); track i) {
+    <div>{{ i }}</div>
+    }
+    <div>></div>
   </div>
 </body>
