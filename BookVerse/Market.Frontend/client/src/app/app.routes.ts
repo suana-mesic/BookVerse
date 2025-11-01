@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { Login } from './features/login/login';
-import { WizardRegister } from './features/wizard-register/wizard-register';
+import { Login } from './components/auth/login/login';
 import { LandingPage } from './components/landing-page/landing-page';
+import { WizardRegister } from './components/auth/wizard-register/wizard-register';
 
 export const routes: Routes = [
   { path: 'login', component: Login },

@@ -1,11 +1,11 @@
-import { Component, ElementRef, inject, ViewChild, viewChild } from '@angular/core';
+import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { MatFormField, MatError, MatHint, FloatLabelType } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatStepper, MatStep, MatStepperPrevious, MatStepperNext } from '@angular/material/stepper';
-import { AbstractControl, FormBuilder, FormGroup, FormRecord, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { RegisterResponse } from '../../shared/models/RegisterResponse';
+import { RegisterResponse } from '../../../shared/models/RegisterResponse';
 import { MatIcon } from "@angular/material/icon";
 
 

@@ -11,7 +11,7 @@ import {
 import { MatError, MatFormField, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
-import { LoginResponse } from '../../shared/models/LoginResponse';
+import { LoginResponse } from '../../../shared/models/LoginResponse';
 import { Router, RouterLink } from '@angular/router';
 @Component({
   standalone: true,
