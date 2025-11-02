@@ -64,7 +64,7 @@ namespace Market.Infrastructure.Migrations
                             Id = 1,
                             City = "Mostar",
                             Country = "BiH",
-                            CreatedAtUtc = new DateTime(2025, 10, 29, 0, 5, 25, 564, DateTimeKind.Local).AddTicks(7282),
+                            CreatedAtUtc = new DateTime(2025, 11, 2, 17, 2, 53, 717, DateTimeKind.Local).AddTicks(8084),
                             IsDeleted = false,
                             Line1 = "Maršala Tita"
                         },
@@ -73,7 +73,7 @@ namespace Market.Infrastructure.Migrations
                             Id = 2,
                             City = "Sarajevo",
                             Country = "BiH",
-                            CreatedAtUtc = new DateTime(2025, 10, 29, 0, 5, 25, 564, DateTimeKind.Local).AddTicks(7337),
+                            CreatedAtUtc = new DateTime(2025, 11, 2, 17, 2, 53, 717, DateTimeKind.Local).AddTicks(8290),
                             IsDeleted = false,
                             Line1 = "Vrbanja 1"
                         },
@@ -82,9 +82,58 @@ namespace Market.Infrastructure.Migrations
                             Id = 3,
                             City = "Jablanica",
                             Country = "BiH",
-                            CreatedAtUtc = new DateTime(2025, 10, 29, 0, 5, 25, 564, DateTimeKind.Local).AddTicks(7340),
+                            CreatedAtUtc = new DateTime(2025, 11, 2, 17, 2, 53, 717, DateTimeKind.Local).AddTicks(8303),
                             IsDeleted = false,
                             Line1 = "Gornja Kolonija SP 100"
+                        });
+                });
+
+            modelBuilder.Entity("Market.Domain.Entities.Catalog.BookFormats", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Format")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BookFormats");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAtUtc = new DateTime(2025, 11, 2, 17, 2, 54, 190, DateTimeKind.Local).AddTicks(9384),
+                            Format = "Tvrdi uvez",
+                            IsDeleted = false
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAtUtc = new DateTime(2025, 11, 2, 17, 2, 54, 190, DateTimeKind.Local).AddTicks(9416),
+                            Format = "Tvrdi papirni uvez",
+                            IsDeleted = false
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAtUtc = new DateTime(2025, 11, 2, 17, 2, 54, 190, DateTimeKind.Local).AddTicks(9424),
+                            Format = "Spiralni uvez",
+                            IsDeleted = false
                         });
                 });
 
@@ -96,41 +145,57 @@ namespace Market.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Author")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("BookFormatId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAtUtc")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ISBN")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Genre")
-                        .IsRequired()
+                    b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Language")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("ModifiedAtUtc")
                         .HasColumnType("datetime2");
 
-                    b.Property<float>("Price")
-                        .HasColumnType("real");
+                    b.Property<int>("PageCount")
+                        .HasColumnType("int");
 
-                    b.Property<float>("Rating")
-                        .HasColumnType("real");
+                    b.Property<decimal>("Price")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("PublishedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PublisherId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("QuantityInStockForOnlineOrders")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserCount")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("BookFormatId");
+
+                    b.HasIndex("PublisherId");
 
                     b.ToTable("Books");
 
@@ -138,41 +203,53 @@ namespace Market.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            Author = "Neki autor",
-                            CreatedAtUtc = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Ovo je opis knjige",
-                            Genre = "neki zanr",
+                            BookFormatId = 2,
+                            CreatedAtUtc = new DateTime(2025, 11, 2, 17, 2, 54, 191, DateTimeKind.Local).AddTicks(732),
+                            Description = "A story about a young man, Holden Caulfield, and his experiences in New York City after being expelled from prep school.",
+                            ISBN = "978-0-316-76948-0",
+                            ImageUrl = "https://example.com/images/catcher_in_the_rye.jpg",
                             IsDeleted = false,
-                            Price = 29.99f,
-                            Rating = 4.5f,
-                            Title = "test",
-                            UserCount = 52
+                            Language = "English",
+                            PageCount = 277,
+                            Price = 19.99m,
+                            PublishedDate = new DateTime(1951, 7, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PublisherId = 1,
+                            QuantityInStockForOnlineOrders = 150,
+                            Title = "The Catcher in the Rye"
                         },
                         new
                         {
                             Id = 2,
-                            Author = "Neki autor",
-                            CreatedAtUtc = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Ovo je opis knjige",
-                            Genre = "neki zanr",
+                            BookFormatId = 1,
+                            CreatedAtUtc = new DateTime(2025, 11, 2, 17, 2, 54, 191, DateTimeKind.Local).AddTicks(795),
+                            Description = "A fantasy novel by J.R.R. Tolkien, following the adventures of Bilbo Baggins in Middle-earth.",
+                            ISBN = "978-0-618-00221-3",
+                            ImageUrl = "https://example.com/images/the_hobbit.jpg",
                             IsDeleted = false,
-                            Price = 19.99f,
-                            Rating = 4.4f,
-                            Title = "test2",
-                            UserCount = 77
+                            Language = "English",
+                            PageCount = 310,
+                            Price = 25.99m,
+                            PublishedDate = new DateTime(1937, 9, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PublisherId = 2,
+                            QuantityInStockForOnlineOrders = 120,
+                            Title = "The Hobbit"
                         },
                         new
                         {
                             Id = 3,
-                            Author = "Neki autor",
-                            CreatedAtUtc = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Ovo je opis knjige",
-                            Genre = "neki zanr",
+                            BookFormatId = 2,
+                            CreatedAtUtc = new DateTime(2025, 11, 2, 17, 2, 54, 191, DateTimeKind.Local).AddTicks(813),
+                            Description = "A spiritual guidebook written by a spiritual teacher, exploring hidden knowledge and insights, offering guidance on life, peace, and inner wisdom.",
+                            ISBN = "978-1-84293-719-6",
+                            ImageUrl = "https://example.com/images/the_secret_of_secrets.jpg",
                             IsDeleted = false,
-                            Price = 59.99f,
-                            Rating = 4.8f,
-                            Title = "test3",
-                            UserCount = 51
+                            Language = "English",
+                            PageCount = 400,
+                            Price = 19.99m,
+                            PublishedDate = new DateTime(2005, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PublisherId = 2,
+                            QuantityInStockForOnlineOrders = 150,
+                            Title = "The Secret of Secrets"
                         });
                 });
 
@@ -249,6 +326,69 @@ namespace Market.Infrastructure.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("Market.Domain.Entities.Catalog.Publishers", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Publishers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            City = "Sarajevo",
+                            Country = "Bosna i Hercegovina",
+                            CreatedAtUtc = new DateTime(2025, 11, 2, 17, 2, 54, 191, DateTimeKind.Local).AddTicks(305),
+                            IsDeleted = false,
+                            Name = "Buybook"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            City = "Sarajevo",
+                            Country = "Bosna i Hercegovina",
+                            CreatedAtUtc = new DateTime(2025, 11, 2, 17, 2, 54, 191, DateTimeKind.Local).AddTicks(323),
+                            IsDeleted = false,
+                            Name = "Svjetlost"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            City = "Beograd",
+                            Country = "Srbija",
+                            CreatedAtUtc = new DateTime(2025, 11, 2, 17, 2, 54, 191, DateTimeKind.Local).AddTicks(346),
+                            IsDeleted = false,
+                            Name = "Laguna"
+                        });
+                });
+
             modelBuilder.Entity("Market.Domain.Entities.Identity.MarketUserEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -311,7 +451,7 @@ namespace Market.Infrastructure.Migrations
                         {
                             Id = 1,
                             AddressId = 1,
-                            CreatedAtUtc = new DateTime(2025, 10, 29, 0, 5, 25, 638, DateTimeKind.Local).AddTicks(137),
+                            CreatedAtUtc = new DateTime(2025, 11, 2, 17, 2, 53, 844, DateTimeKind.Local).AddTicks(9419),
                             Email = "admin@gmail.com",
                             FirstName = "Admin",
                             IsAdmin = true,
@@ -320,14 +460,14 @@ namespace Market.Infrastructure.Migrations
                             IsEnabled = true,
                             IsManager = false,
                             LastName = "User",
-                            PasswordHash = "AQAAAAIAAYagAAAAECPv/PL9UXZGgmnssgz8OJcJJDZYZCHVjhNesduIbqlrp/TGdq/ft138GJJv2w+tPA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPE2su9uoeaEyHtQezhMdcDemCZZX3YBFqUmsr1uBwvIJUzGx4EQAiBL3PTOJEkAqw==",
                             TokenVersion = 0
                         },
                         new
                         {
                             Id = 2,
                             AddressId = 2,
-                            CreatedAtUtc = new DateTime(2025, 10, 29, 0, 5, 25, 708, DateTimeKind.Local).AddTicks(7770),
+                            CreatedAtUtc = new DateTime(2025, 11, 2, 17, 2, 54, 16, DateTimeKind.Local).AddTicks(7009),
                             Email = "string@gmail.com",
                             FirstName = "string",
                             IsAdmin = false,
@@ -336,14 +476,14 @@ namespace Market.Infrastructure.Migrations
                             IsEnabled = true,
                             IsManager = false,
                             LastName = "string",
-                            PasswordHash = "AQAAAAIAAYagAAAAECUABgOXInp/kMzYzufCmo8vQnN4Yin/OcQyb2TD+4LmDgouDuwlrsowtDq5hZWbZg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAENFKjAMozE+EG9N4sAepTPtcRYnPaA3aJqlVAB7NOMqCOfG4mJO5VEXX2nYDutWqhA==",
                             TokenVersion = 0
                         },
                         new
                         {
                             Id = 3,
                             AddressId = 2,
-                            CreatedAtUtc = new DateTime(2025, 10, 29, 0, 5, 25, 784, DateTimeKind.Local).AddTicks(2301),
+                            CreatedAtUtc = new DateTime(2025, 11, 2, 17, 2, 54, 190, DateTimeKind.Local).AddTicks(7608),
                             Email = "string@gmail.com",
                             FirstName = "manager@market.local",
                             IsAdmin = false,
@@ -352,7 +492,7 @@ namespace Market.Infrastructure.Migrations
                             IsEnabled = true,
                             IsManager = true,
                             LastName = "string",
-                            PasswordHash = "AQAAAAIAAYagAAAAELt6FeRzW+gFqcOIDX6EXOUapltNyxckeDd25PnBcqDp4KPie8yr3cyKZYD/UdsNNg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEI/mZgFdszRoye3g7Rc36FA37a85Zeo2UKHkn9sYFZMcJtYgDujoCfShJF3STiX5pg==",
                             TokenVersion = 0
                         });
                 });
@@ -398,6 +538,25 @@ namespace Market.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("RefreshTokens");
+                });
+
+            modelBuilder.Entity("Market.Domain.Entities.Catalog.Books", b =>
+                {
+                    b.HasOne("Market.Domain.Entities.Catalog.BookFormats", "BookFormat")
+                        .WithMany()
+                        .HasForeignKey("BookFormatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Market.Domain.Entities.Catalog.Publishers", "Publisher")
+                        .WithMany()
+                        .HasForeignKey("PublisherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BookFormat");
+
+                    b.Navigation("Publisher");
                 });
 
             modelBuilder.Entity("Market.Domain.Entities.Catalog.ProductEntity", b =>

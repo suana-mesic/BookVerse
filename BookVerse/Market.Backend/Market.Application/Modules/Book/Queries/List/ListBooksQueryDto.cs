@@ -7,13 +7,17 @@ using System.Threading.Tasks;
 namespace Market.Application.Modules.Book.Queries.List;
     public sealed class ListBooksQueryDto
     {
-        public int Id { get; set; }
-        public string Title { get; set; }
-        public string Genre { get; set; }
-        public string Description { get; set; }
-        public float Rating { get; set; }
-        public int UserCount { get; set; }
-        public string Author { get; set; }
-        public float Price { get; set; }
-    }
+    public int Id { get; set; }
+    public string ISBN { get; set; }
+    public string BookTitle { get; set; }
+    public string PublisherName { get; set; } 
+    public string BookFormatName { get; set; }
+    public decimal Price { get; set; }
+    public string Language { get; set; }
+    public string? Description { get; set; }
+    public int PageCount { get; set; }
+    public int? QuantityInStockForOnlineOrders { get; set; }
+    public string? ImageUrl { get; set; }
+    public DateTime PublishedDate { get; set; }
+}
 

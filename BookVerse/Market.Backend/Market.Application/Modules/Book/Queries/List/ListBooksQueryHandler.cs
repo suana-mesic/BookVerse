@@ -12,7 +12,7 @@ public sealed class ListBooksQueryHandler(IAppDbContext ctx)
 {
     public async Task<PageResult<ListBooksQueryDto>> Handle(
         ListBooksQuery request, CancellationToken ct)
-    { 
+    {
 
         var q = ctx.Books.AsNoTracking();
 
@@ -25,11 +25,17 @@ public sealed class ListBooksQueryHandler(IAppDbContext ctx)
             .Select(x => new ListBooksQueryDto
             {
                 Id = x.Id,
-                Title = x.Title,
-                Rating = x.Rating,
-                UserCount = x.UserCount,
-                Author = x.Author,
-                Price = x.Price
+                ISBN = x.ISBN,
+                BookTitle = x.Title,
+                PublisherName = x.Publisher.Name,
+                BookFormatName = x.BookFormat.Format,
+                Price = x.Price,
+                Language = x.Language,
+                Description = x.Description,
+                PageCount = x.PageCount,
+                QuantityInStockForOnlineOrders = x.QuantityInStockForOnlineOrders,
+                ImageUrl = x.ImageUrl,
+                PublishedDate = x.PublishedDate,
             });
 
         return await PageResult<ListBooksQueryDto>.FromQueryableAsync(projectedQuery, request.Paging, ct);

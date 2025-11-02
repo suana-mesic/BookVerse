@@ -9,6 +9,10 @@ public interface IAppDbContext
     DbSet<RefreshTokenEntity> RefreshTokens { get; }
     DbSet<Addresses> Addresses { get; }
     DbSet<Books> Books { get;  }
+    DbSet<Publishers> Publishers { get; }
+    DbSet<BookFormats> BookFormats { get; }
+
+
 
     Task<int> SaveChangesAsync(CancellationToken ct);
 }

@@ -7,14 +7,27 @@ using System.Threading.Tasks;
 
 namespace Market.Domain.Entities.Catalog
 {
-    public class Books: BaseEntity
+    public class Books : BaseEntity
     {
+        public string ISBN { get; set; }
         public string Title { get; set; }
-        public string Genre { get; set; }
-        public string Description { get; set; }
-        public float Rating { get; set; }
-        public int UserCount { get; set; }
-        public string Author { get; set; }
-        public float Price { get; set; }
+        public int PublisherId { get; set; }
+        public Publishers Publisher { get; set; }
+        public int BookFormatId { get; set; }
+        public BookFormats BookFormat { get; set; }
+        public decimal Price { get; set; }
+        public string Language { get; set; }
+        public string? Description { get; set; }
+        public int PageCount { get; set; }
+        public int? QuantityInStockForOnlineOrders { get; set; }
+        public string? ImageUrl { get; set; }
+        public DateTime PublishedDate { get; set; }
+
+        
+        //  public string Genre { get; set; }
+        //  public float Rating { get; set; }
+        //  public int UserCount { get; set; }
+        //  public string Author { get; set; }
+        //  public float Price { get; set; }
     }
 }
