@@ -23,11 +23,5 @@ namespace Market.Domain.Entities.Catalog
         public string? ImageUrl { get; set; }
         public DateTime PublishedDate { get; set; }
 
-        
-        //  public string Genre { get; set; }
-        //  public float Rating { get; set; }
-        //  public int UserCount { get; set; }
-        //  public string Author { get; set; }
-        //  public float Price { get; set; }
     }
 }

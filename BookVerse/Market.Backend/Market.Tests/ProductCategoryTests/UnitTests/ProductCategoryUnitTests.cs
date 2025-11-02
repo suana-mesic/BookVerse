@@ -20,7 +20,7 @@ public class ProductCategoryUnitTests
     {
         // Arrange
         using var context = GetInMemoryDbContext(); // dispose
-        var handler = new CreateProductCategoryCommandHandler(context);
+        var handler = new CreateBookCommandHandler(context);
         var command = new CreateProductCategoryCommand { Name = "Test Category" };
 
         // Act
