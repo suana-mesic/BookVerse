@@ -10,7 +10,7 @@ public sealed class ListProductCategoriesQueryHandler(IAppDbContext ctx)
 
         if (!string.IsNullOrWhiteSpace(request.Search))
         {
-             q = q.Where(x => x.Name.Contains(request.Search));
+            q = q.Where(x => x.Name.Contains(request.Search));
         }
 
         if (request.OnlyEnabled is not null)

@@ -1,10 +1,11 @@
-﻿using Market.Application.Modules.Book.Commands.Create;
-using Market.Application.Modules.Book.Queries.List;
+﻿using Market.Application.Modules.Catalog.Book.Commands.Create;
 using Market.Application.Modules.Catalog.Book.Commands.Update;
 using Market.Application.Modules.Catalog.Book.Queries.GetById;
+using Market.Application.Modules.Catalog.Book.Queries.List;
 namespace Market.API.Controllers;
 
 [ApiController]
+[AllowAnonymous]
 [Route("[controller]")]
 public class BooksController(ISender sender) : ControllerBase
 {

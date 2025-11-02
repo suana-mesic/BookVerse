@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Market.Application.Modules.Book.Commands.Create;
+namespace Market.Application.Modules.Catalog.Book.Commands.Create;
 
 public class CreateBookCommandHandler(IAppDbContext context)
     : IRequestHandler<CreateBookCommand, int>

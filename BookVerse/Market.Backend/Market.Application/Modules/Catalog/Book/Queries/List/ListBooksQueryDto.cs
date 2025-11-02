@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Market.Application.Modules.Book.Queries.List;
+namespace Market.Application.Modules.Catalog.Book.Queries.List;
     public sealed class ListBooksQueryDto
     {
     public int Id { get; set; }

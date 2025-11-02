@@ -8,6 +8,6 @@ export type CreateBookCommand = {
     description?: string;
     pageCount: number;
     quantityInStockForOnlineOrders?: number;
-    imageUrl?: string;
+    //imageUrl?: string;
     publishedDate: Date;
 }

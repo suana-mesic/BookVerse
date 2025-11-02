@@ -1,4 +1,4 @@
-﻿using Market.Application.Modules.Book.Commands.Create;
+﻿using Market.Application.Modules.Catalog.Book.Commands.Create;
 
 public sealed class CreateBookCommandValidator
     : AbstractValidator<CreateBookCommand>

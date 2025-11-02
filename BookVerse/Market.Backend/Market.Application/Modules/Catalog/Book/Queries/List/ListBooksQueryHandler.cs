@@ -1,12 +1,11 @@
-﻿using Market.Application.Modules.Book.Queries.List;
-using Market.Application.Modules.Catalog.ProductCategories.Queries.List;
+﻿using Market.Application.Modules.Catalog.ProductCategories.Queries.List;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Market.Application.Modules.Book.Queries.List;
+namespace Market.Application.Modules.Catalog.Book.Queries.List;
 public sealed class ListBooksQueryHandler(IAppDbContext ctx)
         : IRequestHandler<ListBooksQuery, PageResult<ListBooksQueryDto>>
 {

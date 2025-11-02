@@ -1,4 +1,4 @@
-export type BookCrud = {
+export type Book = {
     id: number;
     isbn: string;
     title: string;
