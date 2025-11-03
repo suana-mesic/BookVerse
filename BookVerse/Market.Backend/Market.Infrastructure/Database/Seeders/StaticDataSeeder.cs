@@ -19,6 +19,7 @@ public partial class StaticDataSeeder
         seedBookFormats(modelBuilder);
         SeedPublishers(modelBuilder);
         SeedBooks(modelBuilder);
+        SeedAuthors(modelBuilder);
     }
 
     private static void SeedPublishers(ModelBuilder modelBuilder)
@@ -160,6 +161,40 @@ public partial class StaticDataSeeder
                Id = 3,
                Line1 = "Gornja Kolonija SP 100",
                City ="Jablanica",
+               Country = "BiH",
+               IsDeleted = false,
+               CreatedAtUtc = DateTime.Now
+            }
+        });
+    }
+
+    private static void SeedAuthors(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Authors>().HasData(new List<Authors>
+        {
+            new Authors{
+               Id = 1,
+               FirstName = "Meša",
+               LastName = "Selimović",
+               Biography = "biografija",
+               Country="BiH",
+               IsDeleted=false,
+               CreatedAtUtc = DateTime.Now
+            },
+            new Authors{
+               Id = 2,
+               FirstName = "Ivo",
+               LastName = "Andrić",
+               Biography = "biografija",
+               Country="BiH",
+               IsDeleted=false,
+               CreatedAtUtc = DateTime.Now
+            },
+             new Authors{
+               Id = 3,
+               FirstName = "Branko",
+               LastName = "Ćopić",
+               Biography = "biografija",
                Country = "BiH",
                IsDeleted = false,
                CreatedAtUtc = DateTime.Now

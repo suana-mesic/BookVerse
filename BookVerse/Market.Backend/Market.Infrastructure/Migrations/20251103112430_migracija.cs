@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Market.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class EditBooks : Migration
+    public partial class migracija : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -30,6 +30,25 @@ namespace Market.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Addresses", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Authors",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Biography = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Authors", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -211,9 +230,19 @@ namespace Market.Infrastructure.Migrations
                 columns: new[] { "Id", "City", "Country", "CreatedAtUtc", "IsDeleted", "Line1", "Line2", "ModifiedAtUtc" },
                 values: new object[,]
                 {
-                    { 1, "Mostar", "BiH", new DateTime(2025, 11, 2, 17, 2, 53, 717, DateTimeKind.Local).AddTicks(8084), false, "Maršala Tita", null, null },
-                    { 2, "Sarajevo", "BiH", new DateTime(2025, 11, 2, 17, 2, 53, 717, DateTimeKind.Local).AddTicks(8290), false, "Vrbanja 1", null, null },
-                    { 3, "Jablanica", "BiH", new DateTime(2025, 11, 2, 17, 2, 53, 717, DateTimeKind.Local).AddTicks(8303), false, "Gornja Kolonija SP 100", null, null }
+                    { 1, "Mostar", "BiH", new DateTime(2025, 11, 3, 12, 24, 29, 424, DateTimeKind.Local).AddTicks(2002), false, "Maršala Tita", null, null },
+                    { 2, "Sarajevo", "BiH", new DateTime(2025, 11, 3, 12, 24, 29, 424, DateTimeKind.Local).AddTicks(2057), false, "Vrbanja 1", null, null },
+                    { 3, "Jablanica", "BiH", new DateTime(2025, 11, 3, 12, 24, 29, 424, DateTimeKind.Local).AddTicks(2059), false, "Gornja Kolonija SP 100", null, null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Authors",
+                columns: new[] { "Id", "Biography", "Country", "CreatedAtUtc", "FirstName", "IsDeleted", "LastName", "ModifiedAtUtc" },
+                values: new object[,]
+                {
+                    { 1, "biografija", "BiH", new DateTime(2025, 11, 3, 12, 24, 29, 631, DateTimeKind.Local).AddTicks(7892), "Meša", false, "Selimović", null },
+                    { 2, "biografija", "BiH", new DateTime(2025, 11, 3, 12, 24, 29, 631, DateTimeKind.Local).AddTicks(7900), "Ivo", false, "Andrić", null },
+                    { 3, "biografija", "BiH", new DateTime(2025, 11, 3, 12, 24, 29, 631, DateTimeKind.Local).AddTicks(7903), "Branko", false, "Ćopić", null }
                 });
 
             migrationBuilder.InsertData(
@@ -221,9 +250,9 @@ namespace Market.Infrastructure.Migrations
                 columns: new[] { "Id", "CreatedAtUtc", "Format", "IsDeleted", "ModifiedAtUtc" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 11, 2, 17, 2, 54, 190, DateTimeKind.Local).AddTicks(9384), "Tvrdi uvez", false, null },
-                    { 2, new DateTime(2025, 11, 2, 17, 2, 54, 190, DateTimeKind.Local).AddTicks(9416), "Tvrdi papirni uvez", false, null },
-                    { 3, new DateTime(2025, 11, 2, 17, 2, 54, 190, DateTimeKind.Local).AddTicks(9424), "Spiralni uvez", false, null }
+                    { 1, new DateTime(2025, 11, 3, 12, 24, 29, 631, DateTimeKind.Local).AddTicks(7238), "Tvrdi uvez", false, null },
+                    { 2, new DateTime(2025, 11, 3, 12, 24, 29, 631, DateTimeKind.Local).AddTicks(7244), "Tvrdi papirni uvez", false, null },
+                    { 3, new DateTime(2025, 11, 3, 12, 24, 29, 631, DateTimeKind.Local).AddTicks(7247), "Spiralni uvez", false, null }
                 });
 
             migrationBuilder.InsertData(
@@ -231,9 +260,9 @@ namespace Market.Infrastructure.Migrations
                 columns: new[] { "Id", "City", "Country", "CreatedAtUtc", "IsDeleted", "ModifiedAtUtc", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Sarajevo", "Bosna i Hercegovina", new DateTime(2025, 11, 2, 17, 2, 54, 191, DateTimeKind.Local).AddTicks(305), false, null, "Buybook" },
-                    { 2, "Sarajevo", "Bosna i Hercegovina", new DateTime(2025, 11, 2, 17, 2, 54, 191, DateTimeKind.Local).AddTicks(323), false, null, "Svjetlost" },
-                    { 3, "Beograd", "Srbija", new DateTime(2025, 11, 2, 17, 2, 54, 191, DateTimeKind.Local).AddTicks(346), false, null, "Laguna" }
+                    { 1, "Sarajevo", "Bosna i Hercegovina", new DateTime(2025, 11, 3, 12, 24, 29, 631, DateTimeKind.Local).AddTicks(7577), false, null, "Buybook" },
+                    { 2, "Sarajevo", "Bosna i Hercegovina", new DateTime(2025, 11, 3, 12, 24, 29, 631, DateTimeKind.Local).AddTicks(7700), false, null, "Svjetlost" },
+                    { 3, "Beograd", "Srbija", new DateTime(2025, 11, 3, 12, 24, 29, 631, DateTimeKind.Local).AddTicks(7703), false, null, "Laguna" }
                 });
 
             migrationBuilder.InsertData(
@@ -241,9 +270,9 @@ namespace Market.Infrastructure.Migrations
                 columns: new[] { "Id", "BookFormatId", "CreatedAtUtc", "Description", "ISBN", "ImageUrl", "IsDeleted", "Language", "ModifiedAtUtc", "PageCount", "Price", "PublishedDate", "PublisherId", "QuantityInStockForOnlineOrders", "Title" },
                 values: new object[,]
                 {
-                    { 1, 2, new DateTime(2025, 11, 2, 17, 2, 54, 191, DateTimeKind.Local).AddTicks(732), "A story about a young man, Holden Caulfield, and his experiences in New York City after being expelled from prep school.", "978-0-316-76948-0", "https://example.com/images/catcher_in_the_rye.jpg", false, "English", null, 277, 19.99m, new DateTime(1951, 7, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, 150, "The Catcher in the Rye" },
-                    { 2, 1, new DateTime(2025, 11, 2, 17, 2, 54, 191, DateTimeKind.Local).AddTicks(795), "A fantasy novel by J.R.R. Tolkien, following the adventures of Bilbo Baggins in Middle-earth.", "978-0-618-00221-3", "https://example.com/images/the_hobbit.jpg", false, "English", null, 310, 25.99m, new DateTime(1937, 9, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, 120, "The Hobbit" },
-                    { 3, 2, new DateTime(2025, 11, 2, 17, 2, 54, 191, DateTimeKind.Local).AddTicks(813), "A spiritual guidebook written by a spiritual teacher, exploring hidden knowledge and insights, offering guidance on life, peace, and inner wisdom.", "978-1-84293-719-6", "https://example.com/images/the_secret_of_secrets.jpg", false, "English", null, 400, 19.99m, new DateTime(2005, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, 150, "The Secret of Secrets" }
+                    { 1, 2, new DateTime(2025, 11, 3, 12, 24, 29, 631, DateTimeKind.Local).AddTicks(7807), "A story about a young man, Holden Caulfield, and his experiences in New York City after being expelled from prep school.", "978-0-316-76948-0", "https://example.com/images/catcher_in_the_rye.jpg", false, "English", null, 277, 19.99m, new DateTime(1951, 7, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, 150, "The Catcher in the Rye" },
+                    { 2, 1, new DateTime(2025, 11, 3, 12, 24, 29, 631, DateTimeKind.Local).AddTicks(7816), "A fantasy novel by J.R.R. Tolkien, following the adventures of Bilbo Baggins in Middle-earth.", "978-0-618-00221-3", "https://example.com/images/the_hobbit.jpg", false, "English", null, 310, 25.99m, new DateTime(1937, 9, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, 120, "The Hobbit" },
+                    { 3, 2, new DateTime(2025, 11, 3, 12, 24, 29, 631, DateTimeKind.Local).AddTicks(7826), "A spiritual guidebook written by a spiritual teacher, exploring hidden knowledge and insights, offering guidance on life, peace, and inner wisdom.", "978-1-84293-719-6", "https://example.com/images/the_secret_of_secrets.jpg", false, "English", null, 400, 19.99m, new DateTime(2005, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, 150, "The Secret of Secrets" }
                 });
 
             migrationBuilder.InsertData(
@@ -251,9 +280,9 @@ namespace Market.Infrastructure.Migrations
                 columns: new[] { "Id", "AddressId", "CreatedAtUtc", "Email", "FirstName", "IsAdmin", "IsDeleted", "IsEmployee", "IsEnabled", "IsManager", "LastName", "ModifiedAtUtc", "PasswordHash", "TokenVersion" },
                 values: new object[,]
                 {
-                    { 1, 1, new DateTime(2025, 11, 2, 17, 2, 53, 844, DateTimeKind.Local).AddTicks(9419), "admin@gmail.com", "Admin", true, false, true, true, false, "User", null, "AQAAAAIAAYagAAAAEPE2su9uoeaEyHtQezhMdcDemCZZX3YBFqUmsr1uBwvIJUzGx4EQAiBL3PTOJEkAqw==", 0 },
-                    { 2, 2, new DateTime(2025, 11, 2, 17, 2, 54, 16, DateTimeKind.Local).AddTicks(7009), "string@gmail.com", "string", false, false, true, true, false, "string", null, "AQAAAAIAAYagAAAAENFKjAMozE+EG9N4sAepTPtcRYnPaA3aJqlVAB7NOMqCOfG4mJO5VEXX2nYDutWqhA==", 0 },
-                    { 3, 2, new DateTime(2025, 11, 2, 17, 2, 54, 190, DateTimeKind.Local).AddTicks(7608), "string@gmail.com", "manager@market.local", false, false, true, true, true, "string", null, "AQAAAAIAAYagAAAAEI/mZgFdszRoye3g7Rc36FA37a85Zeo2UKHkn9sYFZMcJtYgDujoCfShJF3STiX5pg==", 0 }
+                    { 1, 1, new DateTime(2025, 11, 3, 12, 24, 29, 492, DateTimeKind.Local).AddTicks(1154), "admin@gmail.com", "Admin", true, false, true, true, false, "User", null, "AQAAAAIAAYagAAAAEIQ+dv3fP5J4V8jIcWqMk2xFIp9ZGdH1uvZXqsm5UKn3Hm95tk2e4AFRVKVVFAvPRw==", 0 },
+                    { 2, 2, new DateTime(2025, 11, 3, 12, 24, 29, 561, DateTimeKind.Local).AddTicks(3728), "string@gmail.com", "string", false, false, true, true, false, "string", null, "AQAAAAIAAYagAAAAEO6W0/vIgt4xxp7hJ1UpxrWxCle2/YXqCzY4kROJNo4wwCo7Thl42/36ZfhhpYMrqA==", 0 },
+                    { 3, 2, new DateTime(2025, 11, 3, 12, 24, 29, 631, DateTimeKind.Local).AddTicks(6488), "string@gmail.com", "manager@market.local", false, false, true, true, true, "string", null, "AQAAAAIAAYagAAAAEPHi8Iu6FLvJz9hFQal8kwpuGeALFem4xF7igMkwvFzkL6SGNhAacKD6vQBy7p/Ahg==", 0 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -285,6 +314,9 @@ namespace Market.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Authors");
+
             migrationBuilder.DropTable(
                 name: "Books");
 

@@ -64,7 +64,7 @@ namespace Market.Infrastructure.Migrations
                             Id = 1,
                             City = "Mostar",
                             Country = "BiH",
-                            CreatedAtUtc = new DateTime(2025, 11, 2, 17, 2, 53, 717, DateTimeKind.Local).AddTicks(8084),
+                            CreatedAtUtc = new DateTime(2025, 11, 3, 12, 24, 29, 424, DateTimeKind.Local).AddTicks(2002),
                             IsDeleted = false,
                             Line1 = "Maršala Tita"
                         },
@@ -73,7 +73,7 @@ namespace Market.Infrastructure.Migrations
                             Id = 2,
                             City = "Sarajevo",
                             Country = "BiH",
-                            CreatedAtUtc = new DateTime(2025, 11, 2, 17, 2, 53, 717, DateTimeKind.Local).AddTicks(8290),
+                            CreatedAtUtc = new DateTime(2025, 11, 3, 12, 24, 29, 424, DateTimeKind.Local).AddTicks(2057),
                             IsDeleted = false,
                             Line1 = "Vrbanja 1"
                         },
@@ -82,9 +82,79 @@ namespace Market.Infrastructure.Migrations
                             Id = 3,
                             City = "Jablanica",
                             Country = "BiH",
-                            CreatedAtUtc = new DateTime(2025, 11, 2, 17, 2, 53, 717, DateTimeKind.Local).AddTicks(8303),
+                            CreatedAtUtc = new DateTime(2025, 11, 3, 12, 24, 29, 424, DateTimeKind.Local).AddTicks(2059),
                             IsDeleted = false,
                             Line1 = "Gornja Kolonija SP 100"
+                        });
+                });
+
+            modelBuilder.Entity("Market.Domain.Entities.Catalog.Authors", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Biography")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Authors");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Biography = "biografija",
+                            Country = "BiH",
+                            CreatedAtUtc = new DateTime(2025, 11, 3, 12, 24, 29, 631, DateTimeKind.Local).AddTicks(7892),
+                            FirstName = "Meša",
+                            IsDeleted = false,
+                            LastName = "Selimović"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Biography = "biografija",
+                            Country = "BiH",
+                            CreatedAtUtc = new DateTime(2025, 11, 3, 12, 24, 29, 631, DateTimeKind.Local).AddTicks(7900),
+                            FirstName = "Ivo",
+                            IsDeleted = false,
+                            LastName = "Andrić"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Biography = "biografija",
+                            Country = "BiH",
+                            CreatedAtUtc = new DateTime(2025, 11, 3, 12, 24, 29, 631, DateTimeKind.Local).AddTicks(7903),
+                            FirstName = "Branko",
+                            IsDeleted = false,
+                            LastName = "Ćopić"
                         });
                 });
 
@@ -117,21 +187,21 @@ namespace Market.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAtUtc = new DateTime(2025, 11, 2, 17, 2, 54, 190, DateTimeKind.Local).AddTicks(9384),
+                            CreatedAtUtc = new DateTime(2025, 11, 3, 12, 24, 29, 631, DateTimeKind.Local).AddTicks(7238),
                             Format = "Tvrdi uvez",
                             IsDeleted = false
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAtUtc = new DateTime(2025, 11, 2, 17, 2, 54, 190, DateTimeKind.Local).AddTicks(9416),
+                            CreatedAtUtc = new DateTime(2025, 11, 3, 12, 24, 29, 631, DateTimeKind.Local).AddTicks(7244),
                             Format = "Tvrdi papirni uvez",
                             IsDeleted = false
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAtUtc = new DateTime(2025, 11, 2, 17, 2, 54, 190, DateTimeKind.Local).AddTicks(9424),
+                            CreatedAtUtc = new DateTime(2025, 11, 3, 12, 24, 29, 631, DateTimeKind.Local).AddTicks(7247),
                             Format = "Spiralni uvez",
                             IsDeleted = false
                         });
@@ -204,7 +274,7 @@ namespace Market.Infrastructure.Migrations
                         {
                             Id = 1,
                             BookFormatId = 2,
-                            CreatedAtUtc = new DateTime(2025, 11, 2, 17, 2, 54, 191, DateTimeKind.Local).AddTicks(732),
+                            CreatedAtUtc = new DateTime(2025, 11, 3, 12, 24, 29, 631, DateTimeKind.Local).AddTicks(7807),
                             Description = "A story about a young man, Holden Caulfield, and his experiences in New York City after being expelled from prep school.",
                             ISBN = "978-0-316-76948-0",
                             ImageUrl = "https://example.com/images/catcher_in_the_rye.jpg",
@@ -221,7 +291,7 @@ namespace Market.Infrastructure.Migrations
                         {
                             Id = 2,
                             BookFormatId = 1,
-                            CreatedAtUtc = new DateTime(2025, 11, 2, 17, 2, 54, 191, DateTimeKind.Local).AddTicks(795),
+                            CreatedAtUtc = new DateTime(2025, 11, 3, 12, 24, 29, 631, DateTimeKind.Local).AddTicks(7816),
                             Description = "A fantasy novel by J.R.R. Tolkien, following the adventures of Bilbo Baggins in Middle-earth.",
                             ISBN = "978-0-618-00221-3",
                             ImageUrl = "https://example.com/images/the_hobbit.jpg",
@@ -238,7 +308,7 @@ namespace Market.Infrastructure.Migrations
                         {
                             Id = 3,
                             BookFormatId = 2,
-                            CreatedAtUtc = new DateTime(2025, 11, 2, 17, 2, 54, 191, DateTimeKind.Local).AddTicks(813),
+                            CreatedAtUtc = new DateTime(2025, 11, 3, 12, 24, 29, 631, DateTimeKind.Local).AddTicks(7826),
                             Description = "A spiritual guidebook written by a spiritual teacher, exploring hidden knowledge and insights, offering guidance on life, peace, and inner wisdom.",
                             ISBN = "978-1-84293-719-6",
                             ImageUrl = "https://example.com/images/the_secret_of_secrets.jpg",
@@ -365,7 +435,7 @@ namespace Market.Infrastructure.Migrations
                             Id = 1,
                             City = "Sarajevo",
                             Country = "Bosna i Hercegovina",
-                            CreatedAtUtc = new DateTime(2025, 11, 2, 17, 2, 54, 191, DateTimeKind.Local).AddTicks(305),
+                            CreatedAtUtc = new DateTime(2025, 11, 3, 12, 24, 29, 631, DateTimeKind.Local).AddTicks(7577),
                             IsDeleted = false,
                             Name = "Buybook"
                         },
@@ -374,7 +444,7 @@ namespace Market.Infrastructure.Migrations
                             Id = 2,
                             City = "Sarajevo",
                             Country = "Bosna i Hercegovina",
-                            CreatedAtUtc = new DateTime(2025, 11, 2, 17, 2, 54, 191, DateTimeKind.Local).AddTicks(323),
+                            CreatedAtUtc = new DateTime(2025, 11, 3, 12, 24, 29, 631, DateTimeKind.Local).AddTicks(7700),
                             IsDeleted = false,
                             Name = "Svjetlost"
                         },
@@ -383,7 +453,7 @@ namespace Market.Infrastructure.Migrations
                             Id = 3,
                             City = "Beograd",
                             Country = "Srbija",
-                            CreatedAtUtc = new DateTime(2025, 11, 2, 17, 2, 54, 191, DateTimeKind.Local).AddTicks(346),
+                            CreatedAtUtc = new DateTime(2025, 11, 3, 12, 24, 29, 631, DateTimeKind.Local).AddTicks(7703),
                             IsDeleted = false,
                             Name = "Laguna"
                         });
@@ -451,7 +521,7 @@ namespace Market.Infrastructure.Migrations
                         {
                             Id = 1,
                             AddressId = 1,
-                            CreatedAtUtc = new DateTime(2025, 11, 2, 17, 2, 53, 844, DateTimeKind.Local).AddTicks(9419),
+                            CreatedAtUtc = new DateTime(2025, 11, 3, 12, 24, 29, 492, DateTimeKind.Local).AddTicks(1154),
                             Email = "admin@gmail.com",
                             FirstName = "Admin",
                             IsAdmin = true,
@@ -460,14 +530,14 @@ namespace Market.Infrastructure.Migrations
                             IsEnabled = true,
                             IsManager = false,
                             LastName = "User",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPE2su9uoeaEyHtQezhMdcDemCZZX3YBFqUmsr1uBwvIJUzGx4EQAiBL3PTOJEkAqw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIQ+dv3fP5J4V8jIcWqMk2xFIp9ZGdH1uvZXqsm5UKn3Hm95tk2e4AFRVKVVFAvPRw==",
                             TokenVersion = 0
                         },
                         new
                         {
                             Id = 2,
                             AddressId = 2,
-                            CreatedAtUtc = new DateTime(2025, 11, 2, 17, 2, 54, 16, DateTimeKind.Local).AddTicks(7009),
+                            CreatedAtUtc = new DateTime(2025, 11, 3, 12, 24, 29, 561, DateTimeKind.Local).AddTicks(3728),
                             Email = "string@gmail.com",
                             FirstName = "string",
                             IsAdmin = false,
@@ -476,14 +546,14 @@ namespace Market.Infrastructure.Migrations
                             IsEnabled = true,
                             IsManager = false,
                             LastName = "string",
-                            PasswordHash = "AQAAAAIAAYagAAAAENFKjAMozE+EG9N4sAepTPtcRYnPaA3aJqlVAB7NOMqCOfG4mJO5VEXX2nYDutWqhA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEO6W0/vIgt4xxp7hJ1UpxrWxCle2/YXqCzY4kROJNo4wwCo7Thl42/36ZfhhpYMrqA==",
                             TokenVersion = 0
                         },
                         new
                         {
                             Id = 3,
                             AddressId = 2,
-                            CreatedAtUtc = new DateTime(2025, 11, 2, 17, 2, 54, 190, DateTimeKind.Local).AddTicks(7608),
+                            CreatedAtUtc = new DateTime(2025, 11, 3, 12, 24, 29, 631, DateTimeKind.Local).AddTicks(6488),
                             Email = "string@gmail.com",
                             FirstName = "manager@market.local",
                             IsAdmin = false,
@@ -492,7 +562,7 @@ namespace Market.Infrastructure.Migrations
                             IsEnabled = true,
                             IsManager = true,
                             LastName = "string",
-                            PasswordHash = "AQAAAAIAAYagAAAAEI/mZgFdszRoye3g7Rc36FA37a85Zeo2UKHkn9sYFZMcJtYgDujoCfShJF3STiX5pg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPHi8Iu6FLvJz9hFQal8kwpuGeALFem4xF7igMkwvFzkL6SGNhAacKD6vQBy7p/Ahg==",
                             TokenVersion = 0
                         });
                 });

@@ -1,6 +1,6 @@
 ﻿namespace Market.Application.Modules.Catalog.Publishers.Queries;
 
-public sealed class ListProductCategoriesQueryHandler(IAppDbContext ctx)
+public sealed class ListPublishersQueryHandler(IAppDbContext ctx)
         : IRequestHandler<ListPublishersQuery, PageResult<ListPublishersQueryDto>>
 {
     public async Task<PageResult<ListPublishersQueryDto>> Handle(

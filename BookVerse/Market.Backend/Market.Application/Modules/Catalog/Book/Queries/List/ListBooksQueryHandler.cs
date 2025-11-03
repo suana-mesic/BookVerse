@@ -23,9 +23,8 @@ public sealed class ListBooksQueryHandler(IAppDbContext ctx)
         var projectedQuery = q.OrderBy(x => x.Title)
             .Select(x => new ListBooksQueryDto
             {
-                Id = x.Id,
                 ISBN = x.ISBN,
-                BookTitle = x.Title,
+                Title = x.Title,
                 PublisherName = x.Publisher.Name,
                 BookFormatName = x.BookFormat.Format,
                 Price = x.Price,

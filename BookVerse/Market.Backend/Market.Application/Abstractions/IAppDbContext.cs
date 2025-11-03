@@ -8,6 +8,7 @@ public interface IAppDbContext
     DbSet<MarketUserEntity> Users { get; }
     DbSet<RefreshTokenEntity> RefreshTokens { get; }
     DbSet<Addresses> Addresses { get; }
+    DbSet<Authors> Authors { get; }
     DbSet<Books> Books { get;  }
     DbSet<Publishers> Publishers { get; }
     DbSet<BookFormats> BookFormats { get; }

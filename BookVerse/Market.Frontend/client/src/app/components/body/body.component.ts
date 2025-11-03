@@ -24,6 +24,7 @@ export class BodyComponent implements OnInit {
   ngOnInit(): void {
     this.bookService.getBooksFromApi().subscribe((book: any) => {
       this.books.set(book.items);
+      console.log(this.books());
       this.totalSize = this.books().length;
 
       this.pageNumber.set(Math.ceil(this.totalSize / this.pageSize));
