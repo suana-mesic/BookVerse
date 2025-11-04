@@ -12,15 +12,20 @@
     </div>
   </div>
   <div class="body__books">
-    @for(book of books(); track book.bookId) {
+    @for(book of books(); track book.id) {
     <app-book [book]="book" />
     }
   </div>
   <div class="body__pages">
-    <div><</div>
-    @for(i of pageNumberArray(); track i) {
-    <div>{{ i }}</div>
+    @if(pageNumber() > 1 && this.bookService.page() > 1) {
+    <div (click)="setCurrentPage(this.bookService.page() - 1)"><</div>
+    } @for(i of pageNumberArray();let index = $index; track i) { @if(index+1 == bookService.page())
+    {
+    <div id="body__current-page">{{ i }}</div>
+    } @else {
+    <div (click)="setCurrentPage(index + 1)">{{ `${i}` }}</div>
+    } } @if(pageNumber() > 1 && this.bookService.page() < pageNumberArray().length) {
+    <div (click)="setCurrentPage(this.bookService.page() + 1)">></div>
     }
-    <div>></div>
   </div>
 </body>

@@ -11,6 +11,9 @@ namespace Market.Domain.Entities.Catalog
     {
         public string ISBN { get; set; }
         public string Title { get; set; }
+
+        public ICollection<Authors> Authors { get; set; } = new List<Authors>();
+
         public int PublisherId { get; set; }
         public Publishers Publisher { get; set; }
         public int BookFormatId { get; set; }

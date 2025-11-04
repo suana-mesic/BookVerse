@@ -11,6 +11,7 @@ namespace Market.Domain.Entities.Catalog
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public ICollection<Books> Books { get; set; } = new List<Books>();
         public string Biography { get; set; }
         public string Country { get; set; }
     }

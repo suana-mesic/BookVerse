@@ -15,9 +15,6 @@ public partial class DatabaseContext : DbContext, IAppDbContext
     public DbSet<Publishers> Publishers => Set<Publishers>();
     public DbSet<BookFormats> BookFormats => Set<BookFormats>();
 
-
-
-
     private readonly TimeProvider _clock;
     public DatabaseContext(DbContextOptions<DatabaseContext> options, TimeProvider clock) : base(options)
     {

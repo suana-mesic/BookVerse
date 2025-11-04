@@ -27,6 +27,7 @@ h4 {
 
 .book {
   white-space: nowrap;
+  height: 400px;
   width: 200px;
 }
 
@@ -39,21 +40,30 @@ h4 {
   justify-content: start;
   align-items: center;
   gap: 1rem;
+  margin-bottom: 6px;
 }
 
-.book__rating {
-  display: flex;
-  gap: 0.5rem;
-}
-
+.book__rating,
 .book__user-count {
   display: flex;
+  justify-content: center;
+  align-items: center;
   gap: 0.5rem;
 }
 
 .book__rating-and-count img {
   height: 1rem;
   width: 1rem;
+}
+
+.book__authors {
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-y: hidden;
+}
+
+.book__authors label {
+  margin-top: -6px;
 }
 
 h3,

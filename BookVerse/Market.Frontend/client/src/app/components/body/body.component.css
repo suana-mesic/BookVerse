@@ -94,6 +94,18 @@ body h1 {
   border-radius: 9px;
 }
 
+.body__other-page {
+  background: #eee;
+  padding: 8px 20px;
+  border-radius: 9px;
+}
+
+#body__current-page {
+  background: #c7c7c7;
+  padding: 8px 20px;
+  border-radius: 9px;
+}
+
 .body__pages div:hover {
   cursor: pointer;
 }

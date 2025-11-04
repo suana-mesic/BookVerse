@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Market.Application.Modules.Catalog.Authors.Queries;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,7 @@ namespace Market.Application.Modules.Catalog.Book.Queries.List;
     {
     public string ISBN { get; set; }
     public string Title { get; set; }
+    public List<ListAuthorsQueryDto> Authors { get; set; }
     public string PublisherName{ get; set; }
     public string BookFormatName { get; set; }
     public decimal Price { get; set; }

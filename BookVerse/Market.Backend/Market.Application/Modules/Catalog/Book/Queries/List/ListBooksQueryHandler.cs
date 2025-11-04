@@ -1,4 +1,5 @@
-﻿using Market.Application.Modules.Catalog.ProductCategories.Queries.List;
+﻿using Market.Application.Modules.Catalog.Authors.Queries;
+using Market.Application.Modules.Catalog.ProductCategories.Queries.List;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,12 @@ public sealed class ListBooksQueryHandler(IAppDbContext ctx)
                 ISBN = x.ISBN,
                 Title = x.Title,
                 PublisherName = x.Publisher.Name,
+                Authors = x.Authors.Select(a => new ListAuthorsQueryDto
+                {
+                    Id = a.Id,
+                    FirstName = a.FirstName,
+                    LastName = a.LastName
+                }).ToList(),
                 BookFormatName = x.BookFormat.Format,
                 Price = x.Price,
                 Language = x.Language,

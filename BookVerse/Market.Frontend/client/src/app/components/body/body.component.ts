@@ -1,8 +1,8 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { BookComponent } from '../book/book.component';
 import { BooksService } from '../../services/books.service';
-import { Book } from '../../shared/models/book.type';
 import { catchError } from 'rxjs';
+import { Book } from '../../shared/models/book/Book';
 
 @Component({
   selector: 'app-body',
@@ -28,12 +28,21 @@ export class BodyComponent implements OnInit {
       this.totalSize = this.books().length;
 
       this.pageNumber.set(Math.ceil(this.totalSize / this.pageSize));
+
       this.setPageArray();
     });
   }
 
   setPageArray() {
     this.pageNumberArray.set(Array.from({ length: this.pageNumber() }, (_, i) => i + 1));
+  }
+
+  setCurrentPage(page: number) {
+    this.bookService.page.set(page);
+
+    this.bookService.getBooksFromApi().subscribe((book: any) => {
+      this.books.set(book.items);
+    });
   }
 
   setPageSize(event: Event) {

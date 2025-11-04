@@ -42,6 +42,16 @@ public partial class DatabaseContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Books>()
+            .HasMany(s => s.Authors)
+        .WithMany(k => k.Books)
+        .UsingEntity(j => j.ToTable("BookAuthors").HasData(
+            new { BooksId = 1, AuthorsId = 1 },
+            new { BooksId = 2, AuthorsId = 2 },
+            new { BooksId = 2, AuthorsId = 3 } ,
+            new { BooksId = 3, AuthorsId = 3 }
+        ));
+
         base.OnModelCreating(modelBuilder);
 
         ApplyGlobalFielters(modelBuilder);
