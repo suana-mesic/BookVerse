@@ -1,10 +1,40 @@
-<div class="search-and-filters">
-  <div class="search-and-filters__search">
-    <input type="text" placeholder="Započnite pretragu" />
-    <img src="icons/finder.png" alt="icon" />
+<div #searchAndFilters class="test">
+  <div class="search-and-filters">
+    <div class="search-and-filter-button">
+      <div class="search-and-filters__search">
+        <input type="text" placeholder="Započnite pretragu" />
+        <img src="icons/finder.png" alt="icon" />
+      </div>
+      <button (click)="showFilters()" class="search-and-filters__filter-button">
+        <h2 #filterButtonText>Filteri</h2>
+        <img src="icons/filter.png" alt="icon" />
+      </button>
+    </div>
+    <div class="category-and-price-range">
+      <div class="category-and-price-range__book-category">
+        <select name="book-category">
+          <option value="0">Kategorija</option>
+          @for(category of categories(); track category.id) {
+          <option value="{{ category.name }}">{{ category.name }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="category-and-price-range__price-range">
+        <input type="number" placeholder="0 KM" />
+      </div>
+      <h1>-</h1>
+      <div class="category-and-price-range__price-range">
+        <input type="number" placeholder="99 KM" />
+      </div>
+    </div>
+
+    <div class="author-and-submit-button">
+      <div class="author-and-submit-button__author">
+        <input type="text" placeholder="Autor" />
+      </div>
+
+      <button class="author-and-submit-button__submit-button">Primjeni</button>
+    </div>
   </div>
-  <button class="search-and-filters__filter-button">
-    <h2>Filteri</h2>
-    <img src="icons/filter.png" alt="icon" />
-  </button>
 </div>

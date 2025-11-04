@@ -1,6 +1,7 @@
 ﻿using Market.Domain.Entities.Catalog;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
+using System.Runtime.CompilerServices;
 
 namespace Market.Infrastructure.Database.Seeders;
 
@@ -19,6 +20,7 @@ public partial class StaticDataSeeder
         seedBookFormats(modelBuilder);
         SeedPublishers(modelBuilder);
         SeedBooks(modelBuilder);
+        SeedCategories(modelBuilder);
         SeedAuthors(modelBuilder);
     }
 
@@ -134,6 +136,31 @@ public partial class StaticDataSeeder
             }
         });
 
+    }
+
+    private static void SeedCategories(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Categories>().HasData(new List<Categories>
+        {
+            new Categories{
+               Id = 1,
+               Name="Roman",
+               IsDeleted=false,
+               CreatedAtUtc = DateTime.Now
+            },
+            new Categories{
+               Id = 2,
+               Name="Poezija",
+               IsDeleted=false,
+               CreatedAtUtc = DateTime.Now
+            },
+             new Categories{
+               Id = 3,
+               Name="Drama",
+               IsDeleted=false,
+               CreatedAtUtc = DateTime.Now
+            }
+        });
     }
 
     private static void SeedAddresses(ModelBuilder modelBuilder)

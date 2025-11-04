@@ -13,6 +13,7 @@ namespace Market.Domain.Entities.Catalog
         public string Title { get; set; }
 
         public ICollection<Authors> Authors { get; set; } = new List<Authors>();
+        public ICollection <Categories> Categories { get; set; } = new List<Categories>();
 
         public int PublisherId { get; set; }
         public Publishers Publisher { get; set; }

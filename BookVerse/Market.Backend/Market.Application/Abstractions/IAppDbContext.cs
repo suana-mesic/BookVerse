@@ -10,6 +10,7 @@ public interface IAppDbContext
     DbSet<Addresses> Addresses { get; }
     DbSet<Authors> Authors { get; }
     DbSet<Books> Books { get;  }
+    DbSet<Categories> Categories { get; }
     DbSet<Publishers> Publishers { get; }
     DbSet<BookFormats> BookFormats { get; }
 

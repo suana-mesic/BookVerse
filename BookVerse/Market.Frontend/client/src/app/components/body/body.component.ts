@@ -3,6 +3,8 @@ import { BookComponent } from '../book/book.component';
 import { BooksService } from '../../services/books.service';
 import { catchError } from 'rxjs';
 import { Book } from '../../shared/models/book/Book';
+import { CategoriesService } from '../../services/categories.service';
+import { Categories } from '../../shared/models/book/Categories';
 
 @Component({
   selector: 'app-body',
@@ -12,7 +14,9 @@ import { Book } from '../../shared/models/book/Book';
 })
 export class BodyComponent implements OnInit {
   bookService = inject(BooksService);
+  categoryService = inject(CategoriesService);
   books = signal<Array<Book>>([]);
+
   totalSize = 0;
 
   pageSize = 10;
@@ -24,7 +28,6 @@ export class BodyComponent implements OnInit {
   ngOnInit(): void {
     this.bookService.getBooksFromApi().subscribe((book: any) => {
       this.books.set(book.items);
-      console.log(this.books());
       this.totalSize = this.books().length;
 
       this.pageNumber.set(Math.ceil(this.totalSize / this.pageSize));

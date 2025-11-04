@@ -52,6 +52,14 @@ public partial class DatabaseContext
             new { BooksId = 3, AuthorsId = 3 }
         ));
 
+        modelBuilder.Entity<Books>().HasMany(c => c.Categories).WithMany(b => b.Books)
+            .UsingEntity(j => j.ToTable("BooksCategories").HasData(
+                new { BooksId = 1, CategoriesId = 1 },
+                new { BooksId = 1, CategoriesId = 2 },
+                new { BooksId = 2, CategoriesId = 1 },
+                new { BooksId = 3, CategoriesId = 3 }
+            ));
+
         base.OnModelCreating(modelBuilder);
 
         ApplyGlobalFielters(modelBuilder);

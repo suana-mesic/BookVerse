@@ -12,9 +12,10 @@
 
 h1 {
   font-size: 32px;
+  margin: 0 -8px;
 }
 h2 {
-  font-size: 24px;
+  font-size: 20px;
 }
 h3 {
   font-size: 19px;
@@ -24,13 +25,28 @@ h4 {
 }
 
 /* --------------------------------------------- */
-
+.test {
+  height: 70px;
+  overflow-y: hidden;
+  transition: height 0.5s ease;
+}
 .search-and-filters {
+  transition: all 0.5s ease-in-out;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  gap: 1rem;
-  margin: 2rem 0;
+  justify-content: center;
+  gap: 0.8rem;
+  margin: 0.8rem 0;
+}
+
+.search-and-filter-button,
+.category-and-price-range,
+.author-and-submit-button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 530px;
 }
 
 .search-and-filters__search {
@@ -38,12 +54,12 @@ h4 {
   justify-content: space-between;
   align-items: center;
   background-color: #d9d9d9;
-  padding: 0.5rem 1.2rem;
-  width: 380px;
+  padding: 0.7rem 1.2rem;
+  width: 70%;
   border-radius: 9px;
 }
 
-.search-and-filters__search input {
+input {
   border: none;
   outline: none;
   background-color: #d9d9d9;
@@ -55,21 +71,66 @@ h4 {
   border: none;
   justify-content: space-between;
   align-items: center;
+  width: 27%;
   background-color: #d9d9d9;
-  padding: 0.5rem 1.5rem;
+  padding: 0.7rem 1.5rem;
   border-radius: 9px;
   gap: 0.5rem;
 }
 
-.search-and-filters img {
+.category-and-price-range__book-category select {
+  font-size: 20px;
+  border: none;
+  outline: none;
+  background-color: #d9d9d9;
+  padding: 0.7rem 1.5rem;
+  width: 290px;
+  border-radius: 9px;
+}
+select:hover {
+  cursor: pointer;
+}
+
+.category-and-price-range__price-range {
+  font-size: 20px;
+  background-color: #d9d9d9;
+  padding: 0.7rem 1.2rem;
+  width: 100px;
+  border-radius: 9px;
+}
+
+.author-and-submit-button__author {
+  font-size: 1.4rem;
+  background-color: #d9d9d9;
+  padding: 0.7rem 1.2rem;
+  width: 70%;
+  border-radius: 9px;
+}
+
+.author-and-submit-button__submit-button {
+  font-size: 20px;
+  border: none;
+  background-color: #d9d9d9;
+  padding: 0.7rem 1.5rem;
+  width: 25%;
+  border-radius: 9px;
+  gap: 0.5rem;
+}
+
+img {
   height: 1.5rem;
   width: 1.5rem;
 }
 
-.search-and-filters img:hover {
+img:hover {
   cursor: pointer;
 }
 
 button:hover {
   cursor: pointer;
+}
+
+/* --------------------------------------------- */
+.show-filters {
+  height: 185px;
 }
