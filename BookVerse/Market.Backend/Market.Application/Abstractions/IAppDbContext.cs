@@ -1,4 +1,6 @@
-﻿namespace Market.Application.Abstractions;
+﻿using Market.Domain.Entities.Review;
+
+namespace Market.Application.Abstractions;
 
 // Application layer
 public interface IAppDbContext
@@ -13,7 +15,7 @@ public interface IAppDbContext
     DbSet<Categories> Categories { get; }
     DbSet<Publishers> Publishers { get; }
     DbSet<BookFormats> BookFormats { get; }
-
+    DbSet<Reviews> Reviews { get; }
 
 
     Task<int> SaveChangesAsync(CancellationToken ct);

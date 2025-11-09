@@ -3,12 +3,13 @@ using Market.Application.Modules.Catalog.ProductCategories.Commands.Status.Disab
 using Market.Application.Modules.Catalog.ProductCategories.Commands.Status.Enable;
 using Market.Application.Modules.Catalog.ProductCategories.Commands.Create;
 using Market.Application.Modules.Catalog.ProductCategories.Queries.List;
-using Market.Application.Modules.Catalog.Book.Commands.Update;
-using Market.Application.Modules.Catalog.Book.Queries.GetById;
+using Market.Application.Modules.Catalog.ProductCategories.Commands.Update;
+using Market.Application.Modules.Catalog.ProductCategories.Queries.GetById;
 
 namespace Market.API.Controllers;
 
 [ApiController]
+[AllowAnonymous]
 [Route("[controller]")]
 public class ProductCategoriesController(ISender sender) : ControllerBase
 {
@@ -21,7 +22,7 @@ public class ProductCategoriesController(ISender sender) : ControllerBase
     }
 
     [HttpPut("{id:int}")]
-    public async Task Update(int id, UpdateBookCommand command, CancellationToken ct)
+    public async Task Update(int id, UpdateProductCategoryCommand command, CancellationToken ct)
     {
         // ID from the route takes precedence
         command.Id = id;
@@ -37,9 +38,9 @@ public class ProductCategoriesController(ISender sender) : ControllerBase
     }
 
     [HttpGet("{id:int}")]
-    public async Task<GetBookByIdQueryDto> GetById(int id, CancellationToken ct)
+    public async Task<GetProductCategoryByIdQueryDto> GetById(int id, CancellationToken ct)
     {
-        var category = await sender.Send(new GetBookByIdQuery { Id = id }, ct);
+        var category = await sender.Send(new GetProductCategoryByIdQuery { Id = id }, ct);
         return category; // if NotFoundException -> 404 via middleware
     }
 

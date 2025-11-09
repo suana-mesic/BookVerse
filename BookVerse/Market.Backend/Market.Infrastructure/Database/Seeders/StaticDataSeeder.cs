@@ -1,6 +1,8 @@
 ﻿using Market.Domain.Entities.Catalog;
+using Market.Domain.Entities.Review;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
+using System.Net;
 using System.Runtime.CompilerServices;
 
 namespace Market.Infrastructure.Database.Seeders;
@@ -19,32 +21,66 @@ public partial class StaticDataSeeder
         SeedUsers(modelBuilder);
         seedBookFormats(modelBuilder);
         SeedPublishers(modelBuilder);
-        SeedBooks(modelBuilder);
         SeedCategories(modelBuilder);
         SeedAuthors(modelBuilder);
+        SeedBooks(modelBuilder);
+        SeedReviews(modelBuilder);
+    }
+
+    private static void SeedReviews(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Reviews>().HasData(
+             new Reviews
+             {
+                 BookId = 1,
+                 UserId = 1,
+                 Rating = 5,
+                 Comment = "Izuzetna knjiga koja me potpuno očarala. Meša Selimović majstorski oslikava duboke filozofske dileme i emocije likova, ostavljajući snažan utisak.",
+                 DatePosted = DateTime.UtcNow,
+                 IsDeleted = false
+
+             },
+             new Reviews
+             {
+                 BookId = 2,
+                 UserId = 2,
+                 Rating = 4,
+                 Comment = "Dobra knjiga, ali nije me potpuno oduševila. Andrić je stvorio bogate likove i prikazao historijske procese, ali nekim dijelovima nedostaje dinamike.",
+                 DatePosted = DateTime.UtcNow,
+                 IsDeleted = false
+             },
+               new Reviews
+               {
+                   BookId = 3,
+                   UserId = 3,
+                   Rating = 3,
+                   Comment = "Knjiga mi nije bila loša, ali nisam doživio neku posebnu emociju. Iako Ćopić piše o važnim temama, nisam se mogao potpuno povezati s likovima.",
+                   DatePosted = DateTime.UtcNow,
+                   IsDeleted = false
+               });
     }
 
     private static void SeedPublishers(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Publishers>().HasData(
-            new Publishers
+        new Publishers
+            {
+                Id = 1,
+                Name = "Buybook",
+                City = "Sarajevo",
+                Country = "Bosna i Hercegovina",
+                IsDeleted = false,
+                CreatedAtUtc = DateTime.Now
+            },
+        new Publishers
         {
-            Id = 1,
-            Name = "Buybook",
+            Id = 2,
+            Name = "Svjetlost",
             City = "Sarajevo",
-            Country ="Bosna i Hercegovina",
+            Country = "Bosna i Hercegovina",
             IsDeleted = false,
             CreatedAtUtc = DateTime.Now
         },
-        new Publishers
-        {
-             Id = 2,
-             Name = "Svjetlost",
-             City = "Sarajevo",
-             Country = "Bosna i Hercegovina",
-             IsDeleted = false,
-             CreatedAtUtc = DateTime.Now
-         },
          new Publishers
          {
              Id = 3,
@@ -60,12 +96,12 @@ public partial class StaticDataSeeder
     {
         modelBuilder.Entity<BookFormats>().HasData(
             new BookFormats
-        {
+            {
                 Id = 1,
                 Format = "Tvrdi uvez",
                 IsDeleted = false,
                 CreatedAtUtc = DateTime.Now
-        },
+            },
         new BookFormats
         {
             Id = 2,
@@ -91,8 +127,8 @@ public partial class StaticDataSeeder
                 new MarketUserEntity
             {
             Id = 1,
-            FirstName = "Admin",
-            LastName = "User",
+            FirstName = "admin",
+            LastName = "user",
             Email = "admin@gmail.com",
             PasswordHash = hasher.HashPassword(null!, "string"),
             IsAdmin = true,
@@ -108,7 +144,7 @@ public partial class StaticDataSeeder
             Id = 2,
             FirstName = "string",
             LastName = "string",
-            Email = "string@gmail.com",
+            Email = "string",
             PasswordHash = hasher.HashPassword(null!, "string"),
             IsAdmin = false,
             IsManager=false,
@@ -118,14 +154,14 @@ public partial class StaticDataSeeder
             AddressId =2,
             CreatedAtUtc = DateTime.Now
             },
-            
+
                 new MarketUserEntity
             {
             Id = 3,
-            FirstName = "manager@market.local",
-            LastName = "string",
-            Email = "string@gmail.com",
-            PasswordHash = hasher.HashPassword(null!, "User123!"),
+            FirstName = "manager",
+            LastName = "user",
+            Email = "manager@gmail.com",
+            PasswordHash = hasher.HashPassword(null!, "string"),
             IsAdmin = false,
             IsManager = true,
             IsEmployee = true,
@@ -234,51 +270,51 @@ public partial class StaticDataSeeder
     {
         modelBuilder.Entity<Books>().HasData(new List<Books>
         {
-            new Books {
+            new Books{
                 Id = 1,
-                ISBN = "978-0-316-76948-0",
-                Title = "The Catcher in the Rye",
+                ISBN = "978-86-03-02636-0",
+                Title = "Derviš i smrt",
                 PublisherId = 1,
                 BookFormatId = 2,
-                Price = 19.99m,
-                Language = "English",
-                Description = "A story about a young man, Holden Caulfield, and his experiences in New York City after being expelled from prep school.",
-                PageCount = 277,
-                QuantityInStockForOnlineOrders = 150,
-                ImageUrl = "https://example.com/images/catcher_in_the_rye.jpg",
-                PublishedDate = new DateTime(1951, 7, 16),
+                Price = 29.99m,
+                Language = "Bosanski",
+                Description = "Roman koji se bavi pitanjima vjere, duhovnosti i smrti, kroz priču o Dervišu koji pokušava da pronađe smisao u životu i smrti. Kroz likove i filozofske dijaloge, autor istražuje moralne dileme i ljudsku patnju.",
+                PageCount = 320,
+                QuantityInStockForOnlineOrders = 200,
+                ImageUrl = "https://example.com/images/dervis_i_smrt.jpg",
+                PublishedDate = new DateTime(1966, 1, 1),
                 IsDeleted = false,
                 CreatedAtUtc = DateTime.Now
             },
             new Books{
                 Id = 2,
-                ISBN = "978-0-618-00221-3",
-                Title = "The Hobbit",
+                ISBN = "978-86-07-00752-2",
+                Title = "Na Drini ćuprija",
                 PublisherId = 2,
-                BookFormatId = 1,
-                Price = 25.99m,
-                Language = "English",
-                Description = "A fantasy novel by J.R.R. Tolkien, following the adventures of Bilbo Baggins in Middle-earth.",
-                PageCount = 310,
-                QuantityInStockForOnlineOrders = 120,
-                ImageUrl = "https://example.com/images/the_hobbit.jpg",
-                PublishedDate = new DateTime(1937, 9, 21),
+                BookFormatId = 2,
+                Price = 34.99m,
+                Language = "Bosanski",
+                Description = "Roman koji opisuje istoriju jednog grada i njegove mostove, kroz sudbine ljudi koji su živeli u različitim vremenima. Andrić istražuje ljudsku sudbinu, istoriju i političke i kulturne promene kroz život mosta na Drini.",
+                PageCount = 412,
+                QuantityInStockForOnlineOrders = 150,
+                ImageUrl = "https://example.com/images/na_drini_cuprija.jpg",
+                PublishedDate = new DateTime(1945, 1, 1),
                 IsDeleted = false,
                 CreatedAtUtc = DateTime.Now
             },
             new Books{
                 Id = 3,
-                ISBN = "978-1-84293-719-6",
-                Title = "The Secret of Secrets",
-                PublisherId = 2,
+                ISBN = "978-86-03-00942-5",
+                Title = "Bašta, pepeo",
+                PublisherId = 3,
                 BookFormatId = 2,
-                Price = 19.99m,
-                Language = "English",
-                Description = "A spiritual guidebook written by a spiritual teacher, exploring hidden knowledge and insights, offering guidance on life, peace, and inner wisdom.",
-                PageCount = 400,
-                QuantityInStockForOnlineOrders = 150,
-                ImageUrl = "https://example.com/images/the_secret_of_secrets.jpg",
-                PublishedDate = new DateTime(2005, 1, 1),
+                Price = 24.99m,
+                Language = "Bosanski",
+                Description = "Roman koji kroz priču o životu jednog mladog čoveka istražuje teme ljubavi, smrti, i socijalnih promjena. Ćopić se bavi i univerzalnim pitanjima identiteta i postojanja u svetu koji se menja.",
+                PageCount = 280,
+                QuantityInStockForOnlineOrders = 120,
+                ImageUrl = "https://example.com/images/basta_pepeo.jpg",
+                PublishedDate = new DateTime(1954, 1, 1),
                 IsDeleted = false,
                 CreatedAtUtc = DateTime.Now
             }

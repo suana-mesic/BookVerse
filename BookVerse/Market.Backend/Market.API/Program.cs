@@ -1,6 +1,5 @@
 ﻿using Market.API;
 using Market.API.Middleware;
-using Market.API.Middlewares;
 using Market.Application;
 using Market.Infrastructure;
 using Serilog;
@@ -74,7 +73,6 @@ public partial class Program
             // Global exception handler (IExceptionHandler)
             app.UseExceptionHandler();
             app.UseMiddleware<RequestResponseLoggingMiddleware>();
-            app.UseMiddleware<GlobalExceptionMiddleware>();
             
             app.UseCors("allowCors");
 

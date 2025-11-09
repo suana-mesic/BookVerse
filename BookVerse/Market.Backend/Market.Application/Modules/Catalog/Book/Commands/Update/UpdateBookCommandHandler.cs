@@ -75,7 +75,7 @@ public sealed class UpdateBookCommandHandler(IAppDbContext context)
 
             if (!formatExists)
             {
-                throw new ValidationException($"Book format sa ID {request.BookFormatId} ne postoji");
+                throw new ValidationException($"DatePosted format sa ID {request.BookFormatId} ne postoji");
             }
         }
     }

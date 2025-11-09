@@ -1,6 +1,8 @@
 ﻿using Market.Domain.Common;
+using Market.Domain.Entities.Review;
 using Market.Infrastructure.Database.Seeders;
 using System.Linq.Expressions;
+using System.Runtime.Intrinsics.X86;
 
 namespace Market.Infrastructure.Database;
 
@@ -60,7 +62,11 @@ public partial class DatabaseContext
                 new { BooksId = 3, CategoriesId = 3 }
             ));
 
+        modelBuilder.Entity<Reviews>().HasKey(x => new { x.BookId, x.UserId });
+
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(DatabaseContext).Assembly);
 
         ApplyGlobalFielters(modelBuilder);
 
