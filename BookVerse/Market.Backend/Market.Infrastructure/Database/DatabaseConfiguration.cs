@@ -1,6 +1,9 @@
 ﻿using Market.Domain.Common;
 using Market.Domain.Entities.Review;
+using Market.Domain.Entities.Shopping;
+using Market.Domain.Entities.Whishlist;
 using Market.Infrastructure.Database.Seeders;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using System.Runtime.Intrinsics.X86;
 
@@ -44,13 +47,14 @@ public partial class DatabaseContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(DatabaseContext).Assembly);
         modelBuilder.Entity<Books>()
             .HasMany(s => s.Authors)
         .WithMany(k => k.Books)
         .UsingEntity(j => j.ToTable("BookAuthors").HasData(
             new { BooksId = 1, AuthorsId = 1 },
             new { BooksId = 2, AuthorsId = 2 },
-            new { BooksId = 2, AuthorsId = 3 } ,
+            new { BooksId = 2, AuthorsId = 3 },
             new { BooksId = 3, AuthorsId = 3 }
         ));
 
@@ -63,10 +67,67 @@ public partial class DatabaseContext
             ));
 
         modelBuilder.Entity<Reviews>().HasKey(x => new { x.BookId, x.UserId });
+        modelBuilder.Entity<Reviews>().HasQueryFilter(x => !x.IsDeleted && !x.Book.IsDeleted && !x.User.IsDeleted);
+
+
+        modelBuilder.Entity<WishlistItems>().HasKey(x => new { x.UserId, x.BookId });
+        modelBuilder.Entity<WishlistItems>().HasQueryFilter(x => !x.Book.IsDeleted && !x.User.IsDeleted);
+
+        modelBuilder.Entity<StoreInventory>().HasKey(x => new { x.StoreId, x.BookId });
+        modelBuilder.Entity<StoreInventory>().HasQueryFilter(x => !x.Book.IsDeleted && !x.Store.IsDeleted);
+
+        modelBuilder.Entity<CartItems>().HasKey(x => new { x.CartId, x.BookId });
+        modelBuilder.Entity<CartItems>().HasQueryFilter(x => !x.Book.IsDeleted && !x.Cart.IsDeleted);
+
+        modelBuilder.Entity<OrderItems>().HasKey(x => new { x.OrderId, x.BookId });
+        modelBuilder.Entity<OrderItems>().HasQueryFilter(x => !x.Order.IsDeleted);
+
+        modelBuilder.Entity<Refunds>()
+        .HasKey(r => new { r.OrderId, r.BookId }); // PK Refunds
+
+        // Prvi FK - OrderId
+        //modelBuilder.Entity<Refunds>().HasOne<OrderItems>()
+        //      .WithMany()
+        //      .HasForeignKey(r => r.OrderId)
+        //      .HasPrincipalKey(oi => oi.OrderId)
+        //      .HasConstraintName("FK_Refunds_OrderItems_OrderId")
+        //      .OnDelete(DeleteBehavior.NoAction);
+
+        //modelBuilder.Entity<Refunds>().HasOne<OrderItems>()
+        //      .WithMany()
+        //      .HasForeignKey(r => r.BookId)
+        //      .HasPrincipalKey(oi => oi.BookId)
+        //      .HasConstraintName("FK_Refunds_OrderItems_BookId")
+        //      .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Refunds>().HasOne<OrderItems>()
+            .WithMany()
+            .HasForeignKey(r => new { r.OrderId, r.BookId })
+            .OnDelete(DeleteBehavior.NoAction);
+
+
+        modelBuilder.Entity<Orders>()
+            .HasMany(s => s.Coupons)
+            .WithMany()
+            .UsingEntity(j => j.ToTable("OrderCoupons"));
+
+
+        //zbog višestrukog cascade delete-a
+
+        modelBuilder.Entity<ShippingUpdates>()
+        .HasOne(s => s.Order)
+        .WithMany()
+        .HasForeignKey(s => s.OrderId)
+        .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Orders>()
+       .HasOne(s => s.User)
+       .WithMany()
+       .HasForeignKey(s => s.UserId)
+       .OnDelete(DeleteBehavior.NoAction);
+
 
         base.OnModelCreating(modelBuilder);
-
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(DatabaseContext).Assembly);
 
         ApplyGlobalFielters(modelBuilder);
 

@@ -27,5 +27,11 @@ namespace Market.Domain.Entities.Catalog
         public string? ImageUrl { get; set; }
         public DateTime PublishedDate { get; set; }
 
+        public static class Constraints
+        {
+            public const int ISBNMaxLength = 20;
+            public const int TitleMaxLength = 150;
+            public const int LanguageMaxLength = 60;
+        }
     }
 }
