@@ -1,22 +1,22 @@
 ﻿namespace Market.Infrastructure.Database.Configurations.Catalog;
 
-public class AuthorConfiguration : IEntityTypeConfiguration<Authors>
+public class AuthorConfiguration : IEntityTypeConfiguration<Author>
 {
-    public void Configure(EntityTypeBuilder<Authors> builder)
+    public void Configure(EntityTypeBuilder<Author> builder)
     {
         builder
             .Property(x => x.FirstName)
             .IsRequired()
-            .HasMaxLength(Authors.Constraints.FirstNameMaxLength);
+            .HasMaxLength(Author.Constraints.FirstNameMaxLength);
 
         builder
              .Property(x => x.LastName)
              .IsRequired()
-             .HasMaxLength(Authors.Constraints.LastNameMaxLength);
+             .HasMaxLength(Author.Constraints.LastNameMaxLength);
 
         builder
          .Property(x => x.Country)
          .IsRequired()
-         .HasMaxLength(Authors.Constraints.CountryMaxLength);
+         .HasMaxLength(Author.Constraints.CountryMaxLength);
     }
 }

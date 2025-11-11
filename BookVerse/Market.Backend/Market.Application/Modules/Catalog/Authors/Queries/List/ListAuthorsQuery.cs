@@ -1,4 +1,4 @@
-﻿namespace Market.Application.Modules.Catalog.Authors.Queries;
+﻿namespace Market.Application.Modules.Catalog.Authors.Queries.List;
 
 public sealed class ListAuthorsQuery : BasePagedQuery<ListAuthorsQueryDto>
 {

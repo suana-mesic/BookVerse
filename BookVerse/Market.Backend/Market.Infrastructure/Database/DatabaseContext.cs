@@ -12,12 +12,12 @@ public partial class DatabaseContext : DbContext, IAppDbContext
     //public DbSet<ProductEntity> Products => Set<ProductEntity>();
     public DbSet<MarketUserEntity> Users => Set<MarketUserEntity>();
     public DbSet<RefreshTokenEntity> RefreshTokens => Set<RefreshTokenEntity>();
-    public DbSet<Addresses> Addresses => Set<Addresses>();
-    public DbSet<Authors> Authors => Set<Authors>();
+    public DbSet<Address> Addresses => Set<Address>();
+    public DbSet<Author> Authors => Set<Author>();
     public DbSet<Books> Books => Set<Books>();
-    public DbSet<Categories> Categories => Set<Categories>();
+    public DbSet<Category> Categories => Set<Category>();
     public DbSet<Publishers> Publishers => Set<Publishers>();
-    public DbSet<BookFormats> BookFormats => Set<BookFormats>();
+    public DbSet<BookFormat> BookFormats => Set<BookFormat>();
     public DbSet<Reviews> Reviews => Set<Reviews>();
     public DbSet<WishlistItems> WishlistItems => Set<WishlistItems>();
     public DbSet<Stores> Stores => Set<Stores>();

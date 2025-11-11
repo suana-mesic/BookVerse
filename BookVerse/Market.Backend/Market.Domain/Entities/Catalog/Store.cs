@@ -12,7 +12,7 @@ namespace Market.Domain.Entities.Catalog
     {
         public int StoreName { get; set; }
         public int AddressId { get; set; }
-        public Addresses Address { get; set; }
+        public Address Address { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
         public string OpeningHours { get; set; }

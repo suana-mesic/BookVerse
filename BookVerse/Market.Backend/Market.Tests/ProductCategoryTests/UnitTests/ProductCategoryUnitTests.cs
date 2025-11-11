@@ -1,5 +1,3 @@
-using Market.Application.Modules.Catalog.ProductCategories.Commands.Create;
-
 namespace Market.Tests.ProductCategoryTests.UnitTests;
 
 public class ProductCategoryUnitTests
@@ -21,7 +19,7 @@ public class ProductCategoryUnitTests
         // Arrange
         using var context = GetInMemoryDbContext(); // dispose
         //var handler = new CreateBookCommandHandler(context);
-        var command = new CreateProductCategoryCommand { Name = "Test Category" };
+       // var command = new CreateProductCategoryCommand { Name = "Test Category" };
 
         // Act
         //var resultId = await handler.Handle(command, CancellationToken.None);

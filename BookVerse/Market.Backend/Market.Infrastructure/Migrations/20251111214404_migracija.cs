@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Market.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class AddTables : Migration
+    public partial class migracija : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -691,9 +691,9 @@ namespace Market.Infrastructure.Migrations
                 columns: new[] { "Id", "City", "Country", "CreatedAtUtc", "IsDeleted", "Line1", "Line2", "ModifiedAtUtc" },
                 values: new object[,]
                 {
-                    { 1, "Mostar", "BiH", new DateTime(2025, 11, 11, 16, 1, 3, 861, DateTimeKind.Local).AddTicks(8704), false, "Maršala Tita", null, null },
-                    { 2, "Sarajevo", "BiH", new DateTime(2025, 11, 11, 16, 1, 3, 861, DateTimeKind.Local).AddTicks(8803), false, "Vrbanja 1", null, null },
-                    { 3, "Jablanica", "BiH", new DateTime(2025, 11, 11, 16, 1, 3, 861, DateTimeKind.Local).AddTicks(8809), false, "Gornja Kolonija SP 100", null, null }
+                    { 1, "Mostar", "BiH", new DateTime(2025, 11, 11, 22, 44, 3, 613, DateTimeKind.Local).AddTicks(9918), false, "Maršala Tita", null, null },
+                    { 2, "Sarajevo", "BiH", new DateTime(2025, 11, 11, 22, 44, 3, 613, DateTimeKind.Local).AddTicks(9983), false, "Vrbanja 1", null, null },
+                    { 3, "Jablanica", "BiH", new DateTime(2025, 11, 11, 22, 44, 3, 613, DateTimeKind.Local).AddTicks(9986), false, "Gornja Kolonija SP 100", null, null }
                 });
 
             migrationBuilder.InsertData(
@@ -701,9 +701,9 @@ namespace Market.Infrastructure.Migrations
                 columns: new[] { "Id", "Biography", "Country", "CreatedAtUtc", "FirstName", "IsDeleted", "LastName", "ModifiedAtUtc" },
                 values: new object[,]
                 {
-                    { 1, "biografija", "BiH", new DateTime(2025, 11, 11, 16, 1, 4, 156, DateTimeKind.Local).AddTicks(585), "Meša", false, "Selimović", null },
-                    { 2, "biografija", "BiH", new DateTime(2025, 11, 11, 16, 1, 4, 156, DateTimeKind.Local).AddTicks(603), "Ivo", false, "Andrić", null },
-                    { 3, "biografija", "BiH", new DateTime(2025, 11, 11, 16, 1, 4, 156, DateTimeKind.Local).AddTicks(609), "Branko", false, "Ćopić", null }
+                    { 1, "biografija", "BiH", new DateTime(2025, 11, 11, 22, 44, 3, 827, DateTimeKind.Local).AddTicks(2739), "Meša", false, "Selimović", null },
+                    { 2, "biografija", "BiH", new DateTime(2025, 11, 11, 22, 44, 3, 827, DateTimeKind.Local).AddTicks(2747), "Ivo", false, "Andrić", null },
+                    { 3, "biografija", "BiH", new DateTime(2025, 11, 11, 22, 44, 3, 827, DateTimeKind.Local).AddTicks(2751), "Branko", false, "Ćopić", null }
                 });
 
             migrationBuilder.InsertData(
@@ -711,9 +711,9 @@ namespace Market.Infrastructure.Migrations
                 columns: new[] { "Id", "CreatedAtUtc", "Format", "IsDeleted", "ModifiedAtUtc" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 11, 11, 16, 1, 4, 156, DateTimeKind.Local).AddTicks(24), "Tvrdi uvez", false, null },
-                    { 2, new DateTime(2025, 11, 11, 16, 1, 4, 156, DateTimeKind.Local).AddTicks(40), "Tvrdi papirni uvez", false, null },
-                    { 3, new DateTime(2025, 11, 11, 16, 1, 4, 156, DateTimeKind.Local).AddTicks(45), "Spiralni uvez", false, null }
+                    { 1, new DateTime(2025, 11, 11, 22, 44, 3, 827, DateTimeKind.Local).AddTicks(2097), "Tvrdi uvez", false, null },
+                    { 2, new DateTime(2025, 11, 11, 22, 44, 3, 827, DateTimeKind.Local).AddTicks(2102), "Tvrdi papirni uvez", false, null },
+                    { 3, new DateTime(2025, 11, 11, 22, 44, 3, 827, DateTimeKind.Local).AddTicks(2105), "Spiralni uvez", false, null }
                 });
 
             migrationBuilder.InsertData(
@@ -721,9 +721,9 @@ namespace Market.Infrastructure.Migrations
                 columns: new[] { "Id", "CreatedAtUtc", "IsDeleted", "ModifiedAtUtc", "Name" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 11, 11, 16, 1, 4, 156, DateTimeKind.Local).AddTicks(363), false, null, "Roman" },
-                    { 2, new DateTime(2025, 11, 11, 16, 1, 4, 156, DateTimeKind.Local).AddTicks(400), false, null, "Poezija" },
-                    { 3, new DateTime(2025, 11, 11, 16, 1, 4, 156, DateTimeKind.Local).AddTicks(464), false, null, "Drama" }
+                    { 1, new DateTime(2025, 11, 11, 22, 44, 3, 827, DateTimeKind.Local).AddTicks(2615), false, null, "Roman" },
+                    { 2, new DateTime(2025, 11, 11, 22, 44, 3, 827, DateTimeKind.Local).AddTicks(2635), false, null, "Poezija" },
+                    { 3, new DateTime(2025, 11, 11, 22, 44, 3, 827, DateTimeKind.Local).AddTicks(2639), false, null, "Drama" }
                 });
 
             migrationBuilder.InsertData(
@@ -731,9 +731,9 @@ namespace Market.Infrastructure.Migrations
                 columns: new[] { "Id", "City", "Country", "CreatedAtUtc", "IsDeleted", "ModifiedAtUtc", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Sarajevo", "Bosna i Hercegovina", new DateTime(2025, 11, 11, 16, 1, 4, 156, DateTimeKind.Local).AddTicks(198), false, null, "Buybook" },
-                    { 2, "Sarajevo", "Bosna i Hercegovina", new DateTime(2025, 11, 11, 16, 1, 4, 156, DateTimeKind.Local).AddTicks(206), false, null, "Svjetlost" },
-                    { 3, "Beograd", "Srbija", new DateTime(2025, 11, 11, 16, 1, 4, 156, DateTimeKind.Local).AddTicks(226), false, null, "Laguna" }
+                    { 1, "Sarajevo", "Bosna i Hercegovina", new DateTime(2025, 11, 11, 22, 44, 3, 827, DateTimeKind.Local).AddTicks(2274), false, null, "Buybook" },
+                    { 2, "Sarajevo", "Bosna i Hercegovina", new DateTime(2025, 11, 11, 22, 44, 3, 827, DateTimeKind.Local).AddTicks(2279), false, null, "Svjetlost" },
+                    { 3, "Beograd", "Srbija", new DateTime(2025, 11, 11, 22, 44, 3, 827, DateTimeKind.Local).AddTicks(2293), false, null, "Laguna" }
                 });
 
             migrationBuilder.InsertData(
@@ -741,25 +741,25 @@ namespace Market.Infrastructure.Migrations
                 columns: new[] { "Id", "BookFormatId", "CreatedAtUtc", "Description", "ISBN", "ImageUrl", "IsDeleted", "Language", "ModifiedAtUtc", "PageCount", "Price", "PublishedDate", "PublisherId", "QuantityInStockForOnlineOrders", "Title" },
                 values: new object[,]
                 {
-                    { 1, 2, new DateTime(2025, 11, 11, 16, 1, 4, 156, DateTimeKind.Local).AddTicks(741), "Roman koji se bavi pitanjima vjere, duhovnosti i smrti, kroz priču o Dervišu koji pokušava da pronađe smisao u životu i smrti. Kroz likove i filozofske dijaloge, autor istražuje moralne dileme i ljudsku patnju.", "978-86-03-02636-0", "https://example.com/images/dervis_i_smrt.jpg", false, "Bosanski", null, 320, 29.99m, new DateTime(1966, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, 200, "Derviš i smrt" },
-                    { 2, 2, new DateTime(2025, 11, 11, 16, 1, 4, 156, DateTimeKind.Local).AddTicks(759), "Roman koji opisuje istoriju jednog grada i njegove mostove, kroz sudbine ljudi koji su živeli u različitim vremenima. Andrić istražuje ljudsku sudbinu, istoriju i političke i kulturne promene kroz život mosta na Drini.", "978-86-07-00752-2", "https://example.com/images/na_drini_cuprija.jpg", false, "Bosanski", null, 412, 34.99m, new DateTime(1945, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, 150, "Na Drini ćuprija" },
-                    { 3, 2, new DateTime(2025, 11, 11, 16, 1, 4, 156, DateTimeKind.Local).AddTicks(769), "Roman koji kroz priču o životu jednog mladog čoveka istražuje teme ljubavi, smrti, i socijalnih promjena. Ćopić se bavi i univerzalnim pitanjima identiteta i postojanja u svetu koji se menja.", "978-86-03-00942-5", "https://example.com/images/basta_pepeo.jpg", false, "Bosanski", null, 280, 24.99m, new DateTime(1954, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 3, 120, "Bašta, pepeo" }
+                    { 1, 2, new DateTime(2025, 11, 11, 22, 44, 3, 827, DateTimeKind.Local).AddTicks(2851), "Roman koji se bavi pitanjima vjere, duhovnosti i smrti, kroz priču o Dervišu koji pokušava da pronađe smisao u životu i smrti. Kroz likove i filozofske dijaloge, autor istražuje moralne dileme i ljudsku patnju.", "978-86-03-02636-0", "https://example.com/images/dervis_i_smrt.jpg", false, "Bosanski", null, 320, 29.99m, new DateTime(1966, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, 200, "Derviš i smrt" },
+                    { 2, 2, new DateTime(2025, 11, 11, 22, 44, 3, 827, DateTimeKind.Local).AddTicks(2864), "Roman koji opisuje istoriju jednog grada i njegove mostove, kroz sudbine ljudi koji su živeli u različitim vremenima. Andrić istražuje ljudsku sudbinu, istoriju i političke i kulturne promene kroz život mosta na Drini.", "978-86-07-00752-2", "https://example.com/images/na_drini_cuprija.jpg", false, "Bosanski", null, 412, 34.99m, new DateTime(1945, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, 150, "Na Drini ćuprija" },
+                    { 3, 2, new DateTime(2025, 11, 11, 22, 44, 3, 827, DateTimeKind.Local).AddTicks(2871), "Roman koji kroz priču o životu jednog mladog čoveka istražuje teme ljubavi, smrti, i socijalnih promjena. Ćopić se bavi i univerzalnim pitanjima identiteta i postojanja u svetu koji se menja.", "978-86-03-00942-5", "https://example.com/images/basta_pepeo.jpg", false, "Bosanski", null, 280, 24.99m, new DateTime(1954, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 3, 120, "Bašta, pepeo" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AddressId", "CreatedAtUtc", "Email", "FirstName", "IsAdmin", "IsDeleted", "IsEmployee", "IsEnabled", "LastName", "ModifiedAtUtc", "PasswordHash" },
-                values: new object[] { 1, 1, new DateTime(2025, 11, 11, 16, 1, 3, 961, DateTimeKind.Local).AddTicks(8800), "admin@gmail.com", "admin", true, false, true, true, "user", null, "AQAAAAIAAYagAAAAEHdt4gzOtfEOLrGgJcICH91frbzjaEOBNLcnzerMk/pbtewJGrTi+qWqaU+lzs1WQg==" });
+                values: new object[] { 1, 1, new DateTime(2025, 11, 11, 22, 44, 3, 686, DateTimeKind.Local).AddTicks(4274), "admin@gmail.com", "admin", true, false, true, true, "user", null, "AQAAAAIAAYagAAAAEB6z3RX7vFAS9x0SqrgLSqwgQsE/ESqBHuOJaZoW49ODupA8gSTA7eHAf/a9hKBnDw==" });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AddressId", "CreatedAtUtc", "Email", "FirstName", "IsDeleted", "IsEmployee", "IsEnabled", "LastName", "ModifiedAtUtc", "PasswordHash" },
-                values: new object[] { 2, 2, new DateTime(2025, 11, 11, 16, 1, 4, 59, DateTimeKind.Local).AddTicks(5702), "string", "string", false, true, true, "string", null, "AQAAAAIAAYagAAAAED9/BwFgpWyCn/8T9Q6WWi1IRxbnMcKz9FkcdzXUxRzrBic39YzsvyhyYk5q+cH4zQ==" });
+                values: new object[] { 2, 2, new DateTime(2025, 11, 11, 22, 44, 3, 759, DateTimeKind.Local).AddTicks(3165), "string", "string", false, true, true, "string", null, "AQAAAAIAAYagAAAAEJj31IvrzgIufgV8VKdNEckI7Z3tzcEqzNbBFbnUER2+i9LinZda2YfF0J42UU6OOA==" });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AddressId", "CreatedAtUtc", "Email", "FirstName", "IsDeleted", "IsEmployee", "IsEnabled", "IsManager", "LastName", "ModifiedAtUtc", "PasswordHash" },
-                values: new object[] { 3, 2, new DateTime(2025, 11, 11, 16, 1, 4, 155, DateTimeKind.Local).AddTicks(9028), "manager@gmail.com", "manager", false, true, true, true, "user", null, "AQAAAAIAAYagAAAAEOrkYILIEMCvoxLQ2j4D3N/5yZTn917jo+lmm3XVVhlb2vUemhepgSvqyP1SXjDnOQ==" });
+                values: new object[] { 3, 2, new DateTime(2025, 11, 11, 22, 44, 3, 827, DateTimeKind.Local).AddTicks(1224), "manager@gmail.com", "manager", false, true, true, true, "user", null, "AQAAAAIAAYagAAAAEI5EXmbCF6z2Ht7b4imEfonbjsz+Xessu/BAjaPirVYCOCbFchveIgjBqQ8EeVoL6A==" });
 
             migrationBuilder.InsertData(
                 table: "BookAuthors",
@@ -788,9 +788,9 @@ namespace Market.Infrastructure.Migrations
                 columns: new[] { "BookId", "UserId", "Comment", "DatePosted", "IsDeleted", "Rating" },
                 values: new object[,]
                 {
-                    { 1, 1, "Izuzetna knjiga koja me potpuno očarala. Meša Selimović majstorski oslikava duboke filozofske dileme i emocije likova, ostavljajući snažan utisak.", new DateTime(2025, 11, 11, 15, 1, 4, 156, DateTimeKind.Utc).AddTicks(964), false, 5 },
-                    { 2, 2, "Dobra knjiga, ali nije me potpuno oduševila. Andrić je stvorio bogate likove i prikazao historijske procese, ali nekim dijelovima nedostaje dinamike.", new DateTime(2025, 11, 11, 15, 1, 4, 156, DateTimeKind.Utc).AddTicks(967), false, 4 },
-                    { 3, 3, "Knjiga mi nije bila loša, ali nisam doživio neku posebnu emociju. Iako Ćopić piše o važnim temama, nisam se mogao potpuno povezati s likovima.", new DateTime(2025, 11, 11, 15, 1, 4, 156, DateTimeKind.Utc).AddTicks(970), false, 3 }
+                    { 1, 1, "Izuzetna knjiga koja me potpuno očarala. Meša Selimović majstorski oslikava duboke filozofske dileme i emocije likova, ostavljajući snažan utisak.", new DateTime(2025, 11, 11, 21, 44, 3, 827, DateTimeKind.Utc).AddTicks(3004), false, 5 },
+                    { 2, 2, "Dobra knjiga, ali nije me potpuno oduševila. Andrić je stvorio bogate likove i prikazao historijske procese, ali nekim dijelovima nedostaje dinamike.", new DateTime(2025, 11, 11, 21, 44, 3, 827, DateTimeKind.Utc).AddTicks(3005), false, 4 },
+                    { 3, 3, "Knjiga mi nije bila loša, ali nisam doživio neku posebnu emociju. Iako Ćopić piše o važnim temama, nisam se mogao potpuno povezati s likovima.", new DateTime(2025, 11, 11, 21, 44, 3, 827, DateTimeKind.Utc).AddTicks(3007), false, 3 }
                 });
 
             migrationBuilder.CreateIndex(

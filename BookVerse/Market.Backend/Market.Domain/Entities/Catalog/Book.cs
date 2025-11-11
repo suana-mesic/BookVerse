@@ -12,13 +12,13 @@ namespace Market.Domain.Entities.Catalog
         public string ISBN { get; set; }
         public string Title { get; set; }
 
-        public ICollection<Authors> Authors { get; set; } = new List<Authors>();
-        public ICollection <Categories> Categories { get; set; } = new List<Categories>();
+        public ICollection<Author> Authors { get; set; } = new List<Author>();
+        public ICollection <Category> Categories { get; set; } = new List<Category>();
 
         public int PublisherId { get; set; }
         public Publishers Publisher { get; set; }
         public int BookFormatId { get; set; }
-        public BookFormats BookFormat { get; set; }
+        public BookFormat BookFormat { get; set; }
         public decimal Price { get; set; }
         public string Language { get; set; }
         public string? Description { get; set; }

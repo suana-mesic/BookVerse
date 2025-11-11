@@ -22,7 +22,7 @@ namespace Market.Application.Modules.Auth.Commands.Register
             if (usr)
                 throw new MarketConflictException("Korisnik sa unsenim mailom već postoji");
 
-            var adresa = new Addresses
+            var adresa = new Address
             {
                 IsDeleted = false,
                 CreatedAtUtc = DateTime.Now,

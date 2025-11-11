@@ -11,12 +11,12 @@ public interface IAppDbContext
     //DbSet<ProductCategoryEntity> ProductCategories { get; }
     DbSet<MarketUserEntity> Users { get; }
     DbSet<RefreshTokenEntity> RefreshTokens { get; }
-    DbSet<Addresses> Addresses { get; }
-    DbSet<Authors> Authors { get; }
+    DbSet<Address> Addresses { get; }
+    DbSet<Author> Authors { get; }
     DbSet<Books> Books { get;  }
-    DbSet<Categories> Categories { get; }
+    DbSet<Category> Categories { get; }
     DbSet<Publishers> Publishers { get; }
-    DbSet<BookFormats> BookFormats { get; }
+    DbSet<BookFormat> BookFormats { get; }
     DbSet<Reviews> Reviews { get; }
     DbSet<WishlistItems> WishlistItems { get; }
     DbSet<Stores> Stores { get; }

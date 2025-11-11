@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Market.Application.Modules.Catalog.Authors.Queries
+namespace Market.Application.Modules.Catalog.Authors.Queries.List
 {
     public sealed class ListAuthorsQueryHandler(IAppDbContext ctx)
          : IRequestHandler<ListAuthorsQuery, PageResult<ListAuthorsQueryDto>>

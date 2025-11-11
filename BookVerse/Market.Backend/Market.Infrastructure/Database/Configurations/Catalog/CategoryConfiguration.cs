@@ -1,12 +1,12 @@
 ﻿namespace Market.Infrastructure.Database.Configurations.Catalog;
 
-public class CategoryConfiguration : IEntityTypeConfiguration<Categories>
+public class CategoryConfiguration : IEntityTypeConfiguration<Category>
 {
-    public void Configure(EntityTypeBuilder<Categories> builder)
+    public void Configure(EntityTypeBuilder<Category> builder)
     {
         builder
             .Property(x => x.Name)
             .IsRequired()
-            .HasMaxLength(Categories.Constraints.NameMaxLength);
+            .HasMaxLength(Category.Constraints.NameMaxLength);
     }
 }

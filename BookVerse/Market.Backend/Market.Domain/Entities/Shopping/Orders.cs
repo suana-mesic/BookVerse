@@ -19,7 +19,7 @@ namespace Market.Domain.Entities.Shopping
         public int OrderStatusId { get; set; }
         public OrderStatus OrderStatus { get; set; }
         public int ShipToAddressId { get; set; }
-        public Addresses ShipToAddress { get; set; }
+        public Address ShipToAddress { get; set; }
         public int ShippingMethodId { get; set; }
         public ShippingMethods ShippingMethod { get; set; }
         public decimal ShippingPriceAtTheTime { get; set; }

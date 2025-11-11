@@ -1,4 +1,4 @@
-﻿using Market.Application.Modules.Catalog.Authors.Queries;
+﻿using Market.Application.Modules.Catalog.Authors.Queries.List;
 using Market.Application.Modules.Catalog.Categories.Queries.List;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Market.Application.Modules.Catalog.Book.Queries.List;
-    public sealed class ListBooksQueryDto
+public sealed class ListBooksQueryDto
     {
     public string ISBN { get; set; }
     public string Title { get; set; }

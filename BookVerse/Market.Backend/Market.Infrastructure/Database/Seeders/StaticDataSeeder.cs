@@ -94,22 +94,22 @@ public partial class StaticDataSeeder
 
     private static void seedBookFormats(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<BookFormats>().HasData(
-            new BookFormats
+        modelBuilder.Entity<BookFormat>().HasData(
+            new BookFormat
             {
                 Id = 1,
                 Format = "Tvrdi uvez",
                 IsDeleted = false,
                 CreatedAtUtc = DateTime.Now
             },
-        new BookFormats
+        new BookFormat
         {
             Id = 2,
             Format = "Tvrdi papirni uvez",
             IsDeleted = false,
             CreatedAtUtc = DateTime.Now
         },
-        new BookFormats
+        new BookFormat
         {
             Id = 3,
             Format = "Spiralni uvez",
@@ -176,21 +176,21 @@ public partial class StaticDataSeeder
 
     private static void SeedCategories(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Categories>().HasData(new List<Categories>
+        modelBuilder.Entity<Category>().HasData(new List<Category>
         {
-            new Categories{
+            new Category{
                Id = 1,
                Name="Roman",
                IsDeleted=false,
                CreatedAtUtc = DateTime.Now
             },
-            new Categories{
+            new Category{
                Id = 2,
                Name="Poezija",
                IsDeleted=false,
                CreatedAtUtc = DateTime.Now
             },
-             new Categories{
+             new Category{
                Id = 3,
                Name="Drama",
                IsDeleted=false,
@@ -202,9 +202,9 @@ public partial class StaticDataSeeder
     private static void SeedAddresses(ModelBuilder modelBuilder)
     {
 
-        modelBuilder.Entity<Addresses>().HasData(new List<Addresses>
+        modelBuilder.Entity<Address>().HasData(new List<Address>
         {
-            new Addresses{
+            new Address{
                Id = 1,
                Line1="Maršala Tita",
                City="Mostar",
@@ -212,7 +212,7 @@ public partial class StaticDataSeeder
                IsDeleted=false,
                CreatedAtUtc = DateTime.Now
             },
-            new Addresses{
+            new Address{
                Id = 2,
                Line1="Vrbanja 1",
                City="Sarajevo",
@@ -220,7 +220,7 @@ public partial class StaticDataSeeder
                IsDeleted=false,
                CreatedAtUtc = DateTime.Now
             },
-             new Addresses{
+             new Address{
                Id = 3,
                Line1 = "Gornja Kolonija SP 100",
                City ="Jablanica",
@@ -233,9 +233,9 @@ public partial class StaticDataSeeder
 
     private static void SeedAuthors(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Authors>().HasData(new List<Authors>
+        modelBuilder.Entity<Author>().HasData(new List<Author>
         {
-            new Authors{
+            new Author{
                Id = 1,
                FirstName = "Meša",
                LastName = "Selimović",
@@ -244,7 +244,7 @@ public partial class StaticDataSeeder
                IsDeleted=false,
                CreatedAtUtc = DateTime.Now
             },
-            new Authors{
+            new Author{
                Id = 2,
                FirstName = "Ivo",
                LastName = "Andrić",
@@ -253,7 +253,7 @@ public partial class StaticDataSeeder
                IsDeleted=false,
                CreatedAtUtc = DateTime.Now
             },
-             new Authors{
+             new Author{
                Id = 3,
                FirstName = "Branko",
                LastName = "Ćopić",

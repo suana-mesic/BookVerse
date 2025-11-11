@@ -2,20 +2,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Market.Domain.Entities.Catalog
 {
-    public class Categories: BaseEntity
+    public class BookFormat : BaseEntity
     {
-        public string Name { get; set; }
-        public ICollection<Books> Books { get; set; } = new List<Books>();
-
+        public string Format { get; set; }
         public static class Constraints
         {
-            public const int NameMaxLength = 100;
+            public const int FormatMaxLength = 50;
         }
     }
 }

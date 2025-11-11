@@ -16,6 +16,6 @@ public sealed class MarketUserEntity : BaseEntity
     public int TokenVersion { get; set; } = 0;// For global revocation
     public bool IsEnabled { get; set; }
     public int AddressId { get; set; }
-    public Addresses? Address { get; set; }
+    public Address? Address { get; set; }
     public ICollection<RefreshTokenEntity> RefreshTokens { get; private set; } = new List<RefreshTokenEntity>();
 }
