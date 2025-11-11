@@ -12,7 +12,7 @@ export const routes: Routes = [
 
   // Petar: Zakomentirao sam gornje dvije linije jer ce default komponenta biti landing page
   // Suana: Promijenila sam liniju ispod i umjesto LandingPage dodala BookComponent kako bih testirala crud
-  { path: '', component: BookCrud },
+  { path: '', component: Login },
   { path: 'knjige', component: LandingPage }, // Testiranje isto
   { path: '**', redirectTo: '/' }, //bilo koja putanja koja nije definisana preusmjerava se na login
 ];
