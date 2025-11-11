@@ -7,8 +7,12 @@ using System.Threading.Tasks;
 
 namespace Market.Domain.Entities.Catalog
 {
-    public class BookFormats: BaseEntity
+    public class BookFormats : BaseEntity
     {
         public string Format { get; set; }
+        public static class Constraints
+        {
+            public const int FormatMaxLength = 50;
+        }
     }
 }

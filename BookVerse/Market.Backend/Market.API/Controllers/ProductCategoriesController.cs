@@ -9,7 +9,6 @@ using Market.Application.Modules.Catalog.ProductCategories.Queries.GetById;
 namespace Market.API.Controllers;
 
 [ApiController]
-[AllowAnonymous]
 [Route("[controller]")]
 public class ProductCategoriesController(ISender sender) : ControllerBase
 {

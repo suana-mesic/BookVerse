@@ -83,22 +83,7 @@ public partial class DatabaseContext
         modelBuilder.Entity<OrderItems>().HasQueryFilter(x => !x.Order.IsDeleted);
 
         modelBuilder.Entity<Refunds>()
-        .HasKey(r => new { r.OrderId, r.BookId }); // PK Refunds
-
-        // Prvi FK - OrderId
-        //modelBuilder.Entity<Refunds>().HasOne<OrderItems>()
-        //      .WithMany()
-        //      .HasForeignKey(r => r.OrderId)
-        //      .HasPrincipalKey(oi => oi.OrderId)
-        //      .HasConstraintName("FK_Refunds_OrderItems_OrderId")
-        //      .OnDelete(DeleteBehavior.NoAction);
-
-        //modelBuilder.Entity<Refunds>().HasOne<OrderItems>()
-        //      .WithMany()
-        //      .HasForeignKey(r => r.BookId)
-        //      .HasPrincipalKey(oi => oi.BookId)
-        //      .HasConstraintName("FK_Refunds_OrderItems_BookId")
-        //      .OnDelete(DeleteBehavior.NoAction);
+        .HasKey(r => new { r.OrderId, r.BookId }); 
 
         modelBuilder.Entity<Refunds>().HasOne<OrderItems>()
             .WithMany()
@@ -110,7 +95,6 @@ public partial class DatabaseContext
             .HasMany(s => s.Coupons)
             .WithMany()
             .UsingEntity(j => j.ToTable("OrderCoupons"));
-
 
         //zbog višestrukog cascade delete-a
 

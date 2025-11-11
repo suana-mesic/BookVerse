@@ -4,7 +4,6 @@ using Market.Application.Modules.Catalog.Publishers.Queries;
 namespace Market.API.Controllers;
 
 [ApiController]
-[AllowAnonymous]
 [Route("[controller]")]
 public class AuthorsController(ISender sender) : ControllerBase
 {

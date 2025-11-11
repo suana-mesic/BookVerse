@@ -1,6 +1,6 @@
-﻿namespace Market.Infrastructure.Database.Configurations.Catelog;
+﻿namespace Market.Infrastructure.Database.Configurations.Catalog;
 
-public class StoresConfiguration : IEntityTypeConfiguration<Stores>
+public class StoreConfiguration : IEntityTypeConfiguration<Stores>
 {
     public void Configure(EntityTypeBuilder<Stores> builder)
     {
