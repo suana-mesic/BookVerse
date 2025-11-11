@@ -16,29 +16,29 @@ public static class DynamicDataSeeder
         //await SeedUsersAsync(context);
     }
 
-    private static async Task SeedProductCategoriesAsync(DatabaseContext context)
-    {
-        if (!await context.ProductCategories.AnyAsync())
-        {
-            context.ProductCategories.AddRange(
-                new ProductCategoryEntity
-                {
-                    Name = "Računari (demo)",
-                    IsEnabled = true,
-                    CreatedAtUtc = DateTime.UtcNow
-                },
-                new ProductCategoryEntity
-                {
-                    Name = "Mobilni uređaji (demo)",
-                    IsEnabled = true,
-                    CreatedAtUtc = DateTime.UtcNow
-                }
-            );
+    //private static async Task SeedProductCategoriesAsync(DatabaseContext context)
+    //{
+    //    if (!await context.ProductCategories.AnyAsync())
+    //    {
+    //        context.ProductCategories.AddRange(
+    //            new ProductCategoryEntity
+    //            {
+    //                Name = "Računari (demo)",
+    //                IsEnabled = true,
+    //                CreatedAtUtc = DateTime.UtcNow
+    //            },
+    //            new ProductCategoryEntity
+    //            {
+    //                Name = "Mobilni uređaji (demo)",
+    //                IsEnabled = true,
+    //                CreatedAtUtc = DateTime.UtcNow
+    //            }
+    //        );
 
-            await context.SaveChangesAsync();
-            Console.WriteLine("✅ Dynamic seed: product categories added.");
-        }
-    }
+    //        await context.SaveChangesAsync();
+    //        Console.WriteLine("✅ Dynamic seed: product categories added.");
+    //    }
+    //}
 
     /// <summary>
     /// Kreira demo korisnike ako ih još nema u bazi.
