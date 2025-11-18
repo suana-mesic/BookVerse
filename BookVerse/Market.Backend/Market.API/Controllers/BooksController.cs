@@ -1,4 +1,6 @@
-﻿using Market.Application.Modules.Catalog.Book.Commands.Create;
+﻿using Market.Application.Modules.Catalog.Authors.Commands.Delete;
+using Market.Application.Modules.Catalog.Book.Commands.Create;
+using Market.Application.Modules.Catalog.Book.Commands.Delete;
 using Market.Application.Modules.Catalog.Book.Commands.Update;
 using Market.Application.Modules.Catalog.Book.Queries.GetById;
 using Market.Application.Modules.Catalog.Book.Queries.List;
@@ -33,7 +35,7 @@ public class BooksController(ISender sender) : ControllerBase
     }
 
     [HttpPut("{id:int}")]
-    public async Task Update(int id, UpdateBookCommand command, CancellationToken ct)
+    public async Task UpdatBook(int id, UpdateBookCommand command, CancellationToken ct)
     {
         // ID from the route takes precedence
         command.Id = id;
@@ -41,12 +43,13 @@ public class BooksController(ISender sender) : ControllerBase
         // no return -> 204 No Content
     }
 
-    //[HttpDelete("{id:int}")]
-    //public async Task Delete(int id, CancellationToken ct)
-    //{
-    //    await sender.Send(new DeleteProductCategoryCommand { Id = id }, ct);
-    //    // no return -> 204 No Content
-    //}
+    [HttpDelete("{id:int}")]
+    [AllowAnonymous]
+    public async Task<IActionResult> DeleteBook(int id, CancellationToken ct)
+    {
+        await sender.Send(new DeleteBookCommand { Id = id }, ct);
+        return NoContent();
+    }
 
     //[HttpPut("{id:int}/disable")]
     //public async Task Disable(int id, CancellationToken ct)
