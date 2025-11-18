@@ -16,7 +16,7 @@ namespace Market.Domain.Entities.Catalog
         public ICollection <Category> Categories { get; set; } = new List<Category>();
 
         public int PublisherId { get; set; }
-        public Publishers Publisher { get; set; }
+        public Publisher Publisher { get; set; }
         public int BookFormatId { get; set; }
         public BookFormat BookFormat { get; set; }
         public decimal Price { get; set; }

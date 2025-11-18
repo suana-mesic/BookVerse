@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualBasic;
+﻿using Market.Domain.Entities.Catalog;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,10 +19,15 @@ public sealed class UpdateAuthorCommandHandler(IAppDbContext ctx)
         if(entity is null)
             throw new MarketNotFoundException($"Autor (ID={request.Id}) nije pronađen.");
 
-        entity.FirstName = request.FirstName is not null ? request.FirstName.Trim() : entity.FirstName;
-        entity.LastName = request.LastName is not null ? request.LastName.Trim() : entity.LastName;
-        entity.Biography = request.Biography is not null ? request.Biography.Trim() : entity.Biography;
-        entity.Country = request.Country is not null ? request.Country.Trim() : entity.Country;
+
+        if (!string.IsNullOrWhiteSpace(request.FirstName))
+            entity.FirstName = request.FirstName;
+        if (!string.IsNullOrWhiteSpace(request.LastName))
+            entity.LastName= request.LastName;
+        if (!string.IsNullOrWhiteSpace(request.Biography))
+            entity.Biography= request.Biography;
+        if (!string.IsNullOrWhiteSpace(request.Country))
+            entity.Country= request.Country;
 
         await ctx.SaveChangesAsync(ct);
 

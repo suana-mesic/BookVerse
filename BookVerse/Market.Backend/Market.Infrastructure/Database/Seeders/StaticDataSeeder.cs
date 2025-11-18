@@ -62,8 +62,8 @@ public partial class StaticDataSeeder
 
     private static void SeedPublishers(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Publishers>().HasData(
-        new Publishers
+        modelBuilder.Entity<Publisher>().HasData(
+        new Publisher
             {
                 Id = 1,
                 Name = "Buybook",
@@ -72,7 +72,7 @@ public partial class StaticDataSeeder
                 IsDeleted = false,
                 CreatedAtUtc = DateTime.Now
             },
-        new Publishers
+        new Publisher
         {
             Id = 2,
             Name = "Svjetlost",
@@ -81,7 +81,7 @@ public partial class StaticDataSeeder
             IsDeleted = false,
             CreatedAtUtc = DateTime.Now
         },
-         new Publishers
+         new Publisher
          {
              Id = 3,
              Name = "Laguna",

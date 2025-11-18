@@ -1,4 +1,6 @@
-﻿namespace Market.Application.Modules.Catalog.Publishers.Queries;
+﻿using Market.Application.Modules.Catalog.Publishers.Queries.List;
+
+namespace Market.Application.Modules.Catalog.Publishers.Queries;
 
 public sealed class ListPublishersQueryHandler(IAppDbContext ctx)
         : IRequestHandler<ListPublishersQuery, PageResult<ListPublishersQueryDto>>

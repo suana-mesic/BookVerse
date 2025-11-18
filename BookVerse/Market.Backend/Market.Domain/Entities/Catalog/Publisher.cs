@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Market.Domain.Entities.Catalog
 {
-    public class Publishers:BaseEntity
+    public class Publisher:BaseEntity
     {
         public string Name { get; set; }
         public string City { get; set; }

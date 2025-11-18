@@ -1,22 +1,22 @@
 ﻿namespace Market.Infrastructure.Database.Configurations.Catalog;
 
-public class PublisherConfiguration : IEntityTypeConfiguration<Publishers>
+public class PublisherConfiguration : IEntityTypeConfiguration<Publisher>
 {
-    public void Configure(EntityTypeBuilder<Publishers> builder)
+    public void Configure(EntityTypeBuilder<Publisher> builder)
     {
         builder
             .Property(x => x.Name)
             .IsRequired()
-            .HasMaxLength(Publishers.Constraints.NameMaxLength);
+            .HasMaxLength(Publisher.Constraints.NameMaxLength);
 
         builder
              .Property(x => x.City)
              .IsRequired()
-             .HasMaxLength(Publishers.Constraints.CityMaxLength);
+             .HasMaxLength(Publisher.Constraints.CityMaxLength);
 
         builder
          .Property(x => x.Country)
          .IsRequired()
-         .HasMaxLength(Publishers.Constraints.CountryMaxLength);
+         .HasMaxLength(Publisher.Constraints.CountryMaxLength);
     }
 }

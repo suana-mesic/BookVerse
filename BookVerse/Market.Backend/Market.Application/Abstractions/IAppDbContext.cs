@@ -15,7 +15,7 @@ public interface IAppDbContext
     DbSet<Author> Authors { get; }
     DbSet<Books> Books { get;  }
     DbSet<Category> Categories { get; }
-    DbSet<Publishers> Publishers { get; }
+    DbSet<Publisher> Publishers { get; }
     DbSet<BookFormat> BookFormats { get; }
     DbSet<Reviews> Reviews { get; }
     DbSet<WishlistItems> WishlistItems { get; }
