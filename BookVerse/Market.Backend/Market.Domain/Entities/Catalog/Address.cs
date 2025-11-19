@@ -12,6 +12,13 @@ namespace Market.Domain.Entities.Catalog
         public string Line1 { get; set; }
         public string? Line2 { get; set; }
         public string City { get; set; }
-        public string  Country { get; set; }
+        public string Country { get; set; }
+
+        public static class Constraints
+        {
+            public const int LineMaxLength = 100;
+            public const int CityMaxLength = 50;
+            public const int CountryMaxLength = 50;
+        }
     }
 }
