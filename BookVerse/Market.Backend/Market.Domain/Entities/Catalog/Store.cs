@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Market.Domain.Entities.Catalog
 {
-    public class Stores:BaseEntity
+    public class Store:BaseEntity
     {
-        public int StoreName { get; set; }
+        public string StoreName { get; set; }
         public int AddressId { get; set; }
         public Address Address { get; set; }
         public string Phone { get; set; }

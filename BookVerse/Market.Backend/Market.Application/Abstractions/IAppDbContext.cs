@@ -19,7 +19,7 @@ public interface IAppDbContext
     DbSet<BookFormat> BookFormats { get; }
     DbSet<Reviews> Reviews { get; }
     DbSet<WishlistItems> WishlistItems { get; }
-    DbSet<Stores> Stores { get; }
+    DbSet<Store> Stores { get; }
     DbSet<StoreInventory> StoreInventory { get; }
     DbSet<Carts> Carts { get; }
     DbSet<Coupons> Coupons { get; }

@@ -1,27 +1,27 @@
 ﻿namespace Market.Infrastructure.Database.Configurations.Catalog;
 
-public class StoreConfiguration : IEntityTypeConfiguration<Stores>
+public class StoreConfiguration : IEntityTypeConfiguration<Store>
 {
-    public void Configure(EntityTypeBuilder<Stores> builder)
+    public void Configure(EntityTypeBuilder<Store> builder)
     {
         builder
             .Property(x => x.StoreName)
             .IsRequired()
-            .HasMaxLength(Stores.Constraints.StoreNameMaxLength);
+            .HasMaxLength(Store.Constraints.StoreNameMaxLength);
         
         builder
            .Property(x => x.Phone)
            .IsRequired()
-           .HasMaxLength(Stores.Constraints.PhoneMaxLength);
+           .HasMaxLength(Store.Constraints.PhoneMaxLength);
 
         builder
           .Property(x => x.Email)
           .IsRequired()
-          .HasMaxLength(Stores.Constraints.EmailMaxLength);
+          .HasMaxLength(Store.Constraints.EmailMaxLength);
 
         builder
         .Property(x => x.OpeningHours)
         .IsRequired()
-        .HasMaxLength(Stores.Constraints.OpeningHoursMaxLength);
+        .HasMaxLength(Store.Constraints.OpeningHoursMaxLength);
     }
 }

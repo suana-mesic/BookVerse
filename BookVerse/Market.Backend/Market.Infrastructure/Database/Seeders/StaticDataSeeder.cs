@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using System.Net;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Market.Infrastructure.Database.Seeders;
 
@@ -25,6 +26,7 @@ public partial class StaticDataSeeder
         SeedAuthors(modelBuilder);
         SeedBooks(modelBuilder);
         SeedReviews(modelBuilder);
+        SeedStores(modelBuilder);
     }
 
     private static void SeedReviews(ModelBuilder modelBuilder)
@@ -231,7 +233,40 @@ public partial class StaticDataSeeder
         });
     }
 
-    private static void SeedAuthors(ModelBuilder modelBuilder)
+    private static void SeedStores(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Store>().HasData(new List<Store>
+        {
+            new Store
+            {
+                Id = 1,
+                StoreName="Central Bookstore",
+                AddressId=1,
+                Phone = "123-456-7890",
+                Email = "test@bookverse.ba",
+                OpeningHours = "Mon-Fri 9am-9pm; Sat-Sun 10am-6pm"
+            },
+            new Store
+            {
+                Id = 2,
+                StoreName="Fortica Books",
+                AddressId=2,
+                Phone = "123-456-7890",
+                Email = "test2@bookverse.ba",
+                OpeningHours = "Mon-Fri 9am-9pm; Sat-Sun 10am-6pm"
+            },
+            new Store
+            {
+                Id = 3,
+                StoreName="Space Bookstore",
+                AddressId=3,
+                Phone = "123-456-7890",
+                Email = "test3@bookverse.ba",
+                OpeningHours = "Mon-Fri 9am-9pm; Sat-Sun 10am-6pm"
+            }
+        });
+    }
+        private static void SeedAuthors(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Author>().HasData(new List<Author>
         {

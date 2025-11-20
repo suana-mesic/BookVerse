@@ -9,7 +9,7 @@ namespace Market.Domain.Entities.Catalog
     public class StoreInventory
     {
         public int StoreId { get; set; }
-        public Stores Store { get; set; }
+        public Store Store { get; set; }
         public int BookId { get; set; }
         public Books Book { get; set; }
         public int QuantityInStock { get; set; }

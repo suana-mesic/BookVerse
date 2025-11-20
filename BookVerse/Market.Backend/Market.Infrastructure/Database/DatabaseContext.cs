@@ -20,7 +20,7 @@ public partial class DatabaseContext : DbContext, IAppDbContext
     public DbSet<BookFormat> BookFormats => Set<BookFormat>();
     public DbSet<Reviews> Reviews => Set<Reviews>();
     public DbSet<WishlistItems> WishlistItems => Set<WishlistItems>();
-    public DbSet<Stores> Stores => Set<Stores>();
+    public DbSet<Store> Stores => Set<Store>();
     public DbSet<StoreInventory> StoreInventory => Set<StoreInventory>();
     public DbSet<Carts> Carts => Set<Carts>();
     public DbSet<Coupons> Coupons => Set<Coupons>();
