@@ -1,104 +1,176 @@
 <head>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 </head>
 <form class="wizard-form" [formGroup]="registerForm">
-    <mat-horizontal-stepper style="text-align: center;" linear #formStepper>
-        <mat-step class="step">
-            <div class="steps-container">
-                <div class="step">
-                    <h3>Lični podaci</h3>
-                    <mat-form-field class="form-control">
-                        <label for="firstName">Ime</label>
-                        <input formControlName="firstName" type="text" id="firstName" name="firstName" matInput
-                            required />
-                        <mat-error>Ime mora imati najmanje 2 karaktera.</mat-error>
-                    </mat-form-field>
-                    <mat-form-field class="form-control">
-                        <label for="lastName">Prezime</label>
-                        <input formControlName="lastName" type="text" id="lastName" name="lastName" matInput required />
-                        <mat-error>Prezime mora imati najmanje 2 karaktera.</mat-error>
-                    </mat-form-field>
-                </div>
+  <mat-horizontal-stepper style="text-align: center" linear #formStepper>
+    <mat-step class="step">
+      <div class="steps-container">
+        <div class="step">
+          <h3>Lični podaci</h3>
+          <mat-form-field class="form-control">
+            <input
+              formControlName="firstName"
+              type="text"
+              id="firstName"
+              name="firstName"
+              placeholder="Ime"
+              matInput
+              required
+            />
+            <mat-error>Ime mora imati najmanje 2 karaktera.</mat-error>
+          </mat-form-field>
+          <mat-form-field class="form-control">
+            <input
+              formControlName="lastName"
+              type="text"
+              id="lastName"
+              name="lastName"
+              placeholder="Prezime"
+              matInput
+              required
+            />
+            <mat-error>Prezime mora imati najmanje 2 karaktera.</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <button type="button" class="next-btn button-s" [disabled]="!isFirstStepValid" matStepperNext>
+        Sljedeći korak
+      </button>
+    </mat-step>
+
+    <mat-step>
+      <div class="steps-container">
+        <div class="step">
+          <h3>Podaci za prijavu</h3>
+          <mat-form-field class="form-control">
+            <input
+              formControlName="email"
+              type="text"
+              id="email"
+              name="email"
+              placeholder="Email"
+              matInput
+              required
+            />
+            <mat-error>Unesite važeću email adresu.</mat-error>
+          </mat-form-field>
+
+          <!-- Password -->
+          <mat-form-field class="form-control fc-password" [floatLabel]="floatLabelAttribute">
+            <div id="password-container">
+              <input
+                #password
+                formControlName="password"
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Lozinka"
+                matInput
+                (input)="strengthChecker()"
+                required
+              />
+              <button
+                #visibilityIcon
+                mat-icon-button
+                (click)="togglePasswordVisibility()"
+                class="visibility-button"
+              >
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <div id="strength-bar" #strengthBar></div>
             </div>
+            <mat-hint #strengthMessage>{{ messageStrength }}</mat-hint>
+            <mat-error>Lozinka mora imati najmanje 6 karaktera.</mat-error>
+          </mat-form-field>
 
-            <button type="button" class="next-btn button-s" [disabled]="!isFirstStepValid" matStepperNext>Sljedeći
-                korak</button>
-        </mat-step>
+          <mat-form-field class="form-control">
+            <input
+              formControlName="confirmedPassword"
+              type="password"
+              id="confirmedPassword"
+              name="confirmedPassword"
+              placeholder="Ponovo unesite lozinku"
+              matInput
+              required
+            />
+            <mat-error>Lozinke se ne podudaraju.</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
 
-        <mat-step>
-            <div class="steps-container">
-                <div class="step">
-                    <h3>Podaci za prijavu</h3>
-                    <mat-form-field class="form-control">
-                        <label for="email">Email</label>
-                        <input formControlName="email" type="text" id="email" name="email" matInput required />
-                        <mat-error>Unesite važeću email adresu.</mat-error>
-                    </mat-form-field>
+      <div class="prev-next">
+        <button type="button" class="next-btn prev-btn" matStepperPrevious>Prethodni korak</button>
+        <button type="button" class="next-btn" matStepperNext [disabled]="!isSecondStepValid">
+          Sljedeći korak
+        </button>
+      </div>
+    </mat-step>
 
-                    <!-- Password -->
-                    <mat-form-field class="form-control fc-password" [floatLabel]="floatLabelAttribute">
-                        <label for="password">Lozinka</label>
-                        <div id="password-container">
-                            <input #password formControlName="password" type="password" id="password" name="password"
-                                matInput (input)="strengthChecker()" required />
-                            <button #visibilityIcon mat-icon-button (click)="togglePasswordVisibility()"
-                                class="visibility-button">
-                                <mat-icon>visibility</mat-icon>
-                            </button>
-                            <div id="strength-bar" #strengthBar>
-
-                            </div>
-                        </div>
-                        <mat-hint #strengthMessage>{{messageStrength}}</mat-hint>
-                        <mat-error>Lozinka mora imati najmanje 6 karaktera.</mat-error>
-                    </mat-form-field>
-
-                    <mat-form-field class="form-control">
-                        <label for="confirmedPassword">Ponovo unesite lozinku</label>
-                        <input formControlName="confirmedPassword" type="password" id="confirmedPassword"
-                            name="confirmedPassword" matInput required />
-                        <mat-error>Lozinke se ne podudaraju.</mat-error>
-                    </mat-form-field>
-                </div>
-            </div>
-
-            <div class="prev-next">
-                <button type="button" class="next-btn" matStepperPrevious>Prethodni korak</button>
-                <button type="button" class="next-btn" matStepperNext [disabled]="!isSecondStepValid">Sljedeći
-                    korak</button>
-            </div>
-        </mat-step>
-
-        <mat-step>
-            <div class="steps-container">
-                <div class="step">
-                    <h3>Adresa</h3>
-                    <mat-form-field class="form-control">
-                        <label for="line1">Ulica i broj</label>
-                        <input formControlName="line1" type="text" id="line1" name="line1" matInput required />
-                        <mat-error>Ulica i broj su obavezni.</mat-error>
-                    </mat-form-field>
-                    <mat-form-field class="form-control">
-                        <label for="line2">Dodatne informacije (npr. sprat, stan)</label>
-                        <input formControlName="line2" type="text" id="line2" name="line2" matInput />
-                    </mat-form-field>
-                    <mat-form-field class="form-control">
-                        <label for="city">Grad</label>
-                        <input formControlName="city" type="text" id="city" name="city" matInput required />
-                        <mat-error>Grad je obavezan.</mat-error>
-                    </mat-form-field>
-                    <mat-form-field class="form-control">
-                        <label for="country">Država</label>
-                        <input formControlName="country" type="text" id="country" name="country" matInput required />
-                        <mat-error>Država je obavezna.</mat-error>
-                    </mat-form-field>
-                </div>
-            </div>
-            <div class="prev-next">
-                <button type="button" class="next-btn" matStepperPrevious>Prethodni korak</button>
-                <button type="button" class="next-btn" (click)="onRegister()"
-                    [disabled]="!isThirdStepValid">Potvrdi</button>
-            </div>
-        </mat-step>
-    </mat-horizontal-stepper>
+    <mat-step>
+      <div class="steps-container">
+        <div class="step">
+          <h3>Adresa</h3>
+          <mat-form-field class="form-control">
+            <input
+              formControlName="line1"
+              type="text"
+              id="line1"
+              name="line1"
+              placeholder="Ulica i broj"
+              matInput
+              required
+            />
+            <mat-error>Ulica i broj su obavezni.</mat-error>
+          </mat-form-field>
+          <mat-form-field class="form-control">
+            <input
+              formControlName="line2"
+              type="text"
+              id="line2"
+              name="line2"
+              placeholder="Dodatne informacije (npr. sprat, stan)"
+              matInput
+            />
+          </mat-form-field>
+          <mat-form-field class="form-control">
+            <input
+              formControlName="city"
+              type="text"
+              id="city"
+              name="city"
+              placeholder="Grad"
+              matInput
+              required
+            />
+            <mat-error>Grad je obavezan.</mat-error>
+          </mat-form-field>
+          <mat-form-field class="form-control">
+            <input
+              formControlName="country"
+              type="text"
+              id="country"
+              name="country"
+              placeholder="Država"
+              matInput
+              required
+            />
+            <mat-error>Država je obavezna.</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="prev-next">
+        <button type="button" class="next-btn prev-btn" matStepperPrevious>Prethodni korak</button>
+        <button
+          type="button"
+          class="next-btn"
+          (click)="onRegister()"
+          [disabled]="!isThirdStepValid"
+        >
+          Potvrdi
+        </button>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+  <p routerLink="/login">Odustani</p>
 </form>

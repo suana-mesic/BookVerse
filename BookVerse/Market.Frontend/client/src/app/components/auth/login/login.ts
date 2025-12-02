@@ -13,6 +13,7 @@ import { MatInput } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { LoginResponse } from '../../../shared/models/LoginResponse';
 import { Router, RouterLink } from '@angular/router';
+import { HeaderComponent } from '../../header/header.component';
 @Component({
   standalone: true,
   selector: 'app-login',
@@ -28,6 +29,7 @@ import { Router, RouterLink } from '@angular/router';
     FormsModule,
     MatFormField,
     MatError,
+    HeaderComponent,
   ],
   templateUrl: './login.html',
   styleUrl: './login.scss',
