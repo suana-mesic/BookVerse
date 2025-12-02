@@ -8,6 +8,7 @@
   font-family: sans-serif;
   font-weight: 300;
   overflow-x: hidden;
+  color: #fff;
 }
 
 h1 {
@@ -26,7 +27,7 @@ h4 {
 /* --------------------------------------------- */
 
 header {
-  background-color: #dad7cd;
+  background-color: #0077b6;
   display: flex;
   justify-content: space-between;
   align-items: center;

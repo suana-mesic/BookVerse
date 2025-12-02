@@ -13,9 +13,12 @@ export class SearchAndFiltersComponent implements OnInit {
   categories = signal<Array<Categories>>([]);
 
   @ViewChild('searchAndFilters') searchAndFilters!: ElementRef;
+  @ViewChild('authorDropMenu') authorDropMenu!: ElementRef;
+  @ViewChild('categoryDropMenu') categoryDropMenu!: ElementRef;
   @ViewChild('filterButtonText') filterButtonText!: ElementRef<HTMLHeadingElement>;
 
   filtersOpened = false;
+  authorsOpened = false;
 
   ngOnInit(): void {
     this.categoryService.getCategoriesFromApi().subscribe((category: any) => {
@@ -32,5 +35,29 @@ export class SearchAndFiltersComponent implements OnInit {
       this.filterButtonText.nativeElement.textContent = 'Filteri';
     }
     this.filtersOpened = !this.filtersOpened;
+  }
+
+  showAuthors() {
+    if (!this.authorsOpened) {
+      this.searchAndFilters.nativeElement.style.overflow = 'visible';
+      this.authorDropMenu.nativeElement.style.display = 'block';
+    }
+    if (this.authorsOpened) {
+      this.searchAndFilters.nativeElement.style.overflow = 'hidden';
+      this.authorDropMenu.nativeElement.style.display = 'none';
+    }
+    this.authorsOpened = !this.authorsOpened;
+  }
+
+  showCategories() {
+    if (!this.authorsOpened) {
+      this.searchAndFilters.nativeElement.style.overflow = 'visible';
+      this.categoryDropMenu.nativeElement.style.display = 'block';
+    }
+    if (this.authorsOpened) {
+      this.searchAndFilters.nativeElement.style.overflow = 'hidden';
+      this.categoryDropMenu.nativeElement.style.display = 'none';
+    }
+    this.authorsOpened = !this.authorsOpened;
   }
 }

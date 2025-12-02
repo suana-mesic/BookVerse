@@ -7,17 +7,44 @@
       </div>
       <button (click)="showFilters()" class="search-and-filters__filter-button">
         <h2 #filterButtonText>Filteri</h2>
-        <img src="icons/filter.png" alt="icon" />
+        <img src="icons/filter_white.png" alt="icon" />
       </button>
     </div>
     <div class="category-and-price-range">
-      <div class="category-and-price-range__book-category">
+      <!-- <div class="category-and-price-range__book-category">
         <select name="book-category">
           <option value="0">Kategorija</option>
           @for(category of categories(); track category.id) {
           <option value="{{ category.name }}">{{ category.name }}</option>
           }
         </select>
+      </div> -->
+
+      <div class="category-and-price-range__book">
+        <div (click)="showCategories()" class="category-and-price-range__book-category">
+          <h2 class="category-and-price-range__book__select">Kategorije</h2>
+          <img src="icons/drop_menu_arrow.png" alt="icon" />
+        </div>
+
+        <div #categoryDropMenu class="category-and-price-range__book-category-drop-menu">
+          <div class="category-and-price-range__book__search">
+            <input type="text" placeholder="Pretražite kategorije" />
+          </div>
+          <div class="search-and-filters__select">
+            <div class="search-and-filters__select__checkbox"></div>
+            <h2>Test</h2>
+          </div>
+
+          <div class="search-and-filters__select">
+            <div class="search-and-filters__select__checkbox"></div>
+            <h2>Test</h2>
+          </div>
+
+          <div class="search-and-filters__select">
+            <div class="search-and-filters__select__checkbox"></div>
+            <h2>Test</h2>
+          </div>
+        </div>
       </div>
 
       <div class="category-and-price-range__price-range">
@@ -30,8 +57,29 @@
     </div>
 
     <div class="author-and-submit-button">
-      <div class="author-and-submit-button__author">
-        <input type="text" placeholder="Autor" />
+      <div (click)="showAuthors()" class="author-and-submit-button__author">
+        <h2 class="author-and-submit-button__select">Izaberite autore</h2>
+        <img src="icons/drop_menu_arrow.png" alt="icon" />
+      </div>
+
+      <div #authorDropMenu class="author-and-submit-button__drop-menu">
+        <div class="author-and-submit-button__search">
+          <input type="text" placeholder="Pretražite autora" />
+        </div>
+        <div class="search-and-filters__select">
+          <div class="search-and-filters__select__checkbox"></div>
+          <h2>Meša Selimović</h2>
+        </div>
+
+        <div class="search-and-filters__select">
+          <div class="search-and-filters__select__checkbox"></div>
+          <h2>Meša Selimović</h2>
+        </div>
+
+        <div class="search-and-filters__select">
+          <div class="search-and-filters__select__checkbox"></div>
+          <h2>Meša Selimović</h2>
+        </div>
       </div>
 
       <button class="author-and-submit-button__submit-button">Primjeni</button>
