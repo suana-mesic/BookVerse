@@ -27,11 +27,13 @@ h4 {
 /* --------------------------------------------- */
 
 header {
+  position: relative;
   background-color: #0077b6;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 24px 64px;
+  overflow: visible;
 }
 
 button {
@@ -78,4 +80,44 @@ button:hover {
 .header__profile-image {
   background-color: black;
   border-radius: 50%;
+}
+
+.drop-menu {
+  position: absolute;
+  height: 0px;
+  top: 100%;
+  right: 0px;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.drop-menu li {
+  color: #fff;
+  font-size: 24px;
+  background-color: #1a2536;
+  padding: 1.5rem 4rem;
+}
+
+.drop-menu li:first-child {
+  padding-top: 2rem;
+}
+
+.drop-menu li:last-child {
+  padding-bottom: 2rem;
+}
+
+.drop-menu a {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.drop-menu a:hover {
+  cursor: pointer;
+}
+
+.drop-menu img {
+  padding-left: 0.8rem;
+  height: 1.6rem;
+  /* width: 1rem; */
 }
