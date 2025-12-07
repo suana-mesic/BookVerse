@@ -6,6 +6,8 @@ public class GetBookByIdQueryDto
     public string ISBN { get; set; }
     public string Title { get; set; }
     public int PublisherId { get; set; }
+    public int[] AuthorIds { get; set; }
+    public int[] CategoryIds { get; set; }
     public string PublisherName { get; set; }
     public int BookFormatId { get; set; }
     public string BookFormatName { get; set; }

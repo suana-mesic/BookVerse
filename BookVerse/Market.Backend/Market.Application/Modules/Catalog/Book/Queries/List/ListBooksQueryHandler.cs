@@ -19,12 +19,21 @@ public sealed class ListBooksQueryHandler(IAppDbContext ctx)
 
         if (!string.IsNullOrWhiteSpace(request.Search))
         {
-            q = q.Where(x => x.Title.Contains(request.Search));
+            q = q.Where(x => x.Title.Contains(request.Search) ||
+             x.Price.ToString().Contains(request.Search) ||
+             x.Publisher.Name.Contains(request.Search) ||
+             x.BookFormat.Format.Contains(request.Search) ||
+             x.QuantityInStockForOnlineOrders.ToString().Contains(request.Search) ||
+             x.Categories.Any(c => c.Name == request.Search) ||
+             x.Authors.Any(a => (a.FirstName + " " + a.LastName).Contains(request.Search))
+            );
+
         }
 
         var projectedQuery = q.OrderBy(x => x.Title)
             .Select(x => new ListBooksQueryDto
             {
+                Id = x.Id,
                 ISBN = x.ISBN,
                 Title = x.Title,
                 PublisherName = x.Publisher.Name,
@@ -47,6 +56,7 @@ public sealed class ListBooksQueryHandler(IAppDbContext ctx)
                 QuantityInStockForOnlineOrders = x.QuantityInStockForOnlineOrders,
                 ImageUrl = x.ImageUrl,
                 PublishedDate = x.PublishedDate,
+                IsDeleted = x.IsDeleted,
             });
 
         return await PageResult<ListBooksQueryDto>.FromQueryableAsync(projectedQuery, request.Paging, ct);

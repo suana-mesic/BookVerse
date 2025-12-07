@@ -1,0 +1,15 @@
+<div class="upload">
+    <input #fileInput type="file" accept="image/*" (change)="onFileSelect($event)" hidden>
+
+    <button type="button" class="upload-btn" (click)="fileInput.click()">
+        <mat-icon>photo_camera</mat-icon>
+        Odaberi sliku
+    </button>
+
+    @if(preview){
+    <div class="preview">
+        <img [src]="preview" alt="Preview">
+        <button class="remove" (click)="remove()">✕</button>
+    </div>
+    }
+</div>

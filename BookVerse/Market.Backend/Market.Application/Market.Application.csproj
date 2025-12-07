@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Modules\Catalog\BookFormats\Queries\" />
+    <Folder Include="Modules\Catalog\BookFormats\Commands\" />
   </ItemGroup>
 
 </Project>

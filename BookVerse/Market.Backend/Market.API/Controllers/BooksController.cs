@@ -20,6 +20,7 @@ public class BooksController(ISender sender) : ControllerBase
     }
 
     [HttpGet("{id:int}")]
+    [AllowAnonymous]
     public async Task<GetBookByIdQueryDto> GetById(int id, CancellationToken ct)
     {
         var category = await sender.Send(new GetBookByIdQuery { Id = id }, ct);
@@ -27,6 +28,8 @@ public class BooksController(ISender sender) : ControllerBase
     }
 
     [HttpPost]
+    [AllowAnonymous]
+
     public async Task<ActionResult<int>> CreateBook(CreateBookCommand command, CancellationToken ct)
     {
         int id = await sender.Send(command, ct);
@@ -35,6 +38,8 @@ public class BooksController(ISender sender) : ControllerBase
     }
 
     [HttpPut("{id:int}")]
+    [AllowAnonymous]
+
     public async Task UpdatBook(int id, UpdateBookCommand command, CancellationToken ct)
     {
         // ID from the route takes precedence

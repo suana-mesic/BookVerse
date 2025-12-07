@@ -12,6 +12,10 @@ public sealed class UpdateBookCommandHandler(IAppDbContext context)
     {
 
         var book = await context.Books
+            .Include(x=>x.Authors)
+            .Include(x=>x.Categories)
+            .Include(x=>x.BookFormat)
+            .Include(x=>x.Publisher)
             .Where(x => x.Id == request.Id)
             .FirstOrDefaultAsync(ct);
 
@@ -42,6 +46,24 @@ public sealed class UpdateBookCommandHandler(IAppDbContext context)
             book.ImageUrl = request.ImageUrl;
         if (request.PublishedDate.HasValue)
             book.PublishedDate = request.PublishedDate.Value;
+        if (request.AuthorIds!= null && request.AuthorIds.Length != 0)
+        {
+            book.Authors.Clear();
+            foreach (var auId in request.AuthorIds)
+            {
+                var authorObj = await context.Authors.FindAsync(auId);
+                book.Authors.Add(authorObj);
+            }
+        }
+        if (request.CategoryIds != null && request.CategoryIds.Length != 0)
+        {
+            book.Categories.Clear();
+            foreach (var catId in request.CategoryIds)
+            {
+                var categoryObj = await context.Categories.FindAsync(catId);
+                book.Categories.Add(categoryObj);
+            }
+        }
 
         book.ModifiedAtUtc = DateTime.UtcNow;
 

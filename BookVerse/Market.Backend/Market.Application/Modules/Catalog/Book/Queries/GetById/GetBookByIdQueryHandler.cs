@@ -7,7 +7,7 @@ public class GetBookByIdQueryHandler(IAppDbContext context) : IRequestHandler<Ge
 
         var book = await context.Books
             .Where(b => b.Id == request.Id)
-            .Select(x=> new GetBookByIdQueryDto
+            .Select(x => new GetBookByIdQueryDto
             {
                 Id = x.Id,
                 ISBN = x.ISBN,
@@ -22,7 +22,9 @@ public class GetBookByIdQueryHandler(IAppDbContext context) : IRequestHandler<Ge
                 PageCount = x.PageCount,
                 QuantityInStockForOnlineOrders = x.QuantityInStockForOnlineOrders,
                 ImageUrl = x.ImageUrl,
-                PublishedDate = x.PublishedDate
+                PublishedDate = x.PublishedDate,
+                CategoryIds = x.Categories.Select(x => x.Id).ToArray(),
+                AuthorIds  = x.Authors.Select(x => x.Id).ToArray()
             }).FirstOrDefaultAsync(cancellationToken);
 
         if (book == null)

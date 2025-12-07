@@ -11,6 +11,7 @@ public class CreateBookCommandHandler(IAppDbContext context)
         bool publisherExists = await context.Publishers.AnyAsync(x => x.Id == request.PublisherId);
         bool formatExists = await context.BookFormats.AnyAsync(x => x.Id == request.BookFormatId);
 
+
         if (exists)
             throw new MarketConflictException("Knjiga sa unesenim ISBN-om već posotji.");
 
@@ -19,7 +20,7 @@ public class CreateBookCommandHandler(IAppDbContext context)
 
         if (!publisherExists)
             throw new MarketConflictException("Format knjige sa unesenom ID vrijednošću ne postoji.");
-
+     
         var book = new Books
         {
             ISBN = request.ISBN,
@@ -38,6 +39,24 @@ public class CreateBookCommandHandler(IAppDbContext context)
         };
 
         context.Books.Add(book);
+
+        foreach (var auId in request.AuthorIds)
+        {
+            var authorObj = await context.Authors.FindAsync(auId);
+            if (authorObj != null)
+                book.Authors.Add(authorObj);
+            else
+                throw new MarketNotFoundException("Autor ne postoji");
+        }
+
+        foreach (var catId in request.CategoryIds)
+        {
+            var categoryObj = await context.Categories.FindAsync(catId);
+            if (categoryObj != null)
+                book.Categories.Add(categoryObj);
+            else
+                throw new MarketNotFoundException("Kategorija ne postoji");
+        }
         await context.SaveChangesAsync(cancellationToken);
 
         return book.Id;

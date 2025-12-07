@@ -10,5 +10,6 @@ namespace Market.Application.Modules.Catalog.Categories.Queries.List
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

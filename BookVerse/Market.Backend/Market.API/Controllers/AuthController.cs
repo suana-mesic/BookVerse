@@ -27,9 +27,10 @@ public sealed class AuthController(IMediator mediator) : ControllerBase
     {
         return Ok(await mediator.Send(command, ct));
     }
- 
-    [Authorize]
+
+    // Logout should work even with expired tokens since it only requires a valid refresh token.
     [HttpPost("logout")]
+    [AllowAnonymous]
     public async Task Logout([FromBody] LogoutCommand command, CancellationToken ct)
     {
         await mediator.Send(command, ct);

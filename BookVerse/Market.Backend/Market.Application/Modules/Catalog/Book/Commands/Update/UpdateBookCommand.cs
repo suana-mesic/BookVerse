@@ -8,6 +8,8 @@ public sealed class UpdateBookCommand : IRequest<Unit>
     public string? Title { get; set; } = string.Empty;
     public int? PublisherId { get; set; }
     public int? BookFormatId { get; set; }
+    public int[]? AuthorIds { get; set; }
+    public int[]? CategoryIds { get; set; }
     public decimal? Price { get; set; }
     public string? Language { get; set; } = string.Empty;
     public string? Description { get; set; }

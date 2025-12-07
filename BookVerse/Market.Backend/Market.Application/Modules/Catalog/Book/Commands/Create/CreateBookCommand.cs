@@ -5,6 +5,8 @@ public class CreateBookCommand : IRequest<int>
     public required string ISBN { get; set; }
     public required string Title { get; set; }
     public required int PublisherId { get; set; }
+    public required int[] CategoryIds { get; set; }
+   public required int[] AuthorIds { get; set; }
     public required int BookFormatId { get; set; }
     public  required decimal Price { get; set; }
     public required string Language { get; set; }

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 namespace Market.Application.Modules.Catalog.Book.Queries.List;
 public sealed class ListBooksQueryDto
     {
+    public int Id { get; set; }
     public string ISBN { get; set; }
     public string Title { get; set; }
     public List<ListAuthorsQueryDto> Authors { get; set; }
@@ -22,5 +23,7 @@ public sealed class ListBooksQueryDto
     public int? QuantityInStockForOnlineOrders { get; set; }
     public string? ImageUrl { get; set; }
     public DateTime PublishedDate { get; set; }
+    public bool IsDeleted { get; set; }
+
 }
 
