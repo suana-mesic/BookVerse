@@ -1,9 +1,8 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { BookComponent } from '../book/book.component';
-import { catchError } from 'rxjs';
-import { BooksService } from '../Petar/books.service';
 import { CategoriesService } from '../Petar/categories.service';
 import { Book } from '../Petar/book/Book';
+import { BooksService } from '../Petar/books.service';
 
 @Component({
   selector: 'app-body',

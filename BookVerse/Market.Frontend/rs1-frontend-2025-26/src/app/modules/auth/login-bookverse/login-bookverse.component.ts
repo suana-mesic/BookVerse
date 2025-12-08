@@ -45,6 +45,7 @@ export class LoginBookverseComponent extends BaseComponent {
       },
       error: (err) => {
         this.stopLoading('Invalid credentials. Please try again.');
+        this.showLoginError = true;
         console.error('Login error:', err);
       },
     });

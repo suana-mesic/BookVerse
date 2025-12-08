@@ -1,9 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProductFormService } from '../services/product-form.service';
-import { CreateBookCommand, GetBookByIdQueryDto } from '../../../../../api-services/products/products-api.models';
+import { CreateBookCommand, GetBookByIdQueryDto } from '../../../../../api-services/books/books-api.models';
 import { BaseFormComponent } from '../../../../../core/components/base-classes/base-form-component';
-import { ProductsApiService } from '../../../../../api-services/products/products-api.service';
 import {
   ProductCategoriesApiService
 } from '../../../../../api-services/product-categories/product-categories-api.service';
@@ -18,6 +17,7 @@ import { ListBookFormatsQueryDto } from '../../../../../api-services/book-format
 import { BookFormatApiService } from '../../../../../api-services/book-formats/book-format-api.service';
 import { ListAuthorsQueryDto } from '../../../../../api-services/authors/authors-api.model';
 import { AuthorsApiService } from '../../../../../api-services/authors/authors-api.service';
+import { BooksApiService } from '../../../../../api-services/books/books-api.service';
 
 @Component({
   selector: 'app-products-add',
@@ -30,7 +30,7 @@ export class ProductsAddComponent
   extends BaseFormComponent<GetBookByIdQueryDto>
   implements OnInit {
 
-  private api = inject(ProductsApiService);
+  private api = inject(BooksApiService);
   private categoriesApi = inject(ProductCategoriesApiService);
   private publishersApi = inject(PublishersService);
   private bookFormatsApi = inject(BookFormatApiService);

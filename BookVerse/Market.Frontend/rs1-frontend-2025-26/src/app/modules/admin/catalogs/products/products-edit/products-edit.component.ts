@@ -3,8 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { ProductFormService } from '../services/product-form.service';
 import { BaseFormComponent } from '../../../../../core/components/base-classes/base-form-component';
-import { GetBookByIdQueryDto, UpdateProductCommand } from '../../../../../api-services/products/products-api.models';
-import { ProductsApiService } from '../../../../../api-services/products/products-api.service';
+import { GetBookByIdQueryDto, UpdateBookCommand } from '../../../../../api-services/books/books-api.models';
 import {
   ProductCategoriesApiService
 } from '../../../../../api-services/product-categories/product-categories-api.service';
@@ -19,6 +18,7 @@ import { ListAuthorsQueryDto } from '../../../../../api-services/authors/authors
 import { ListPublishersQueryDto } from '../../../../../api-services/publishers/publishers-api.model';
 import { PublishersService } from '../../../../../api-services/publishers/publishers-api.service';
 import { AuthorsApiService } from '../../../../../api-services/authors/authors-api.service';
+import { BooksApiService } from '../../../../../api-services/books/books-api.service';
 
 
 @Component({
@@ -32,7 +32,7 @@ export class ProductsEditComponent
   extends BaseFormComponent<GetBookByIdQueryDto>
   implements OnInit {
 
-  private api = inject(ProductsApiService);
+  private api = inject(BooksApiService);
   private categoriesApi = inject(ProductCategoriesApiService);
   private bookFormatsApi = inject(BookFormatApiService);
   private publishersApi = inject(PublishersService);
@@ -89,7 +89,7 @@ export class ProductsEditComponent
 
     this.startLoading();
 
-    const command: UpdateProductCommand = {
+    const command: UpdateBookCommand = {
       isbn: this.form.value.isbn,
       title: this.form.value.title,
       publisherId: this.form.value.publisherId,

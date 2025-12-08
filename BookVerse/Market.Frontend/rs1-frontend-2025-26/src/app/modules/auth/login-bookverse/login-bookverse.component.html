@@ -9,12 +9,14 @@
             }
             <h1>Prijava</h1>
             <mat-form-field class="form-control">
+                <mat-label>Email</mat-label>
                 <input type="text" formControlName="email" id="email" name="email" placeholder="Email" matInput
                     required />
                 <mat-error>Unesite važeću email adresu.</mat-error>
             </mat-form-field>
 
             <mat-form-field class="form-control">
+                <mat-label>Password</mat-label>
                 <input type="password" formControlName="password" id="password" name="password" placeholder="Lozinka"
                     matInput required />
                 <mat-error>Lozinka mora imati najmanje 6 karaktera.</mat-error>
@@ -24,7 +26,7 @@
             </button>
 
             <div class="login-link">
-                <p class="sign-up">Novi ste ovdje? <a routerLink="/register">Registrujte se</a></p>
+                <p class="sign-up">Novi ste ovdje? <a routerLink="/auth/register">Registrujte se</a></p>
             </div>
         </form>
     </div>

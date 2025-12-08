@@ -3,14 +3,14 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {
-  ListProductsRequest,
+  ListBooksRequest,
   ListBooksQueryDto
-} from '../../../../api-services/products/products-api.models';
-import { ProductsApiService } from '../../../../api-services/products/products-api.service';
+} from '../../../../api-services/books/books-api.models';
 import { BaseListPagedComponent } from '../../../../core/components/base-classes/base-list-paged-component';
 import { ToasterService } from '../../../../core/services/toaster.service';
 import { DialogHelperService } from '../../../shared/services/dialog-helper.service';
 import { DialogButton } from '../../../shared/models/dialog-config.model';
+import { BooksApiService } from '../../../../api-services/books/books-api.service';
 
 @Component({
   selector: 'app-products',
@@ -19,10 +19,10 @@ import { DialogButton } from '../../../shared/models/dialog-config.model';
   styleUrl: './products.component.scss'
 })
 export class ProductsComponent
-  extends BaseListPagedComponent<ListBooksQueryDto, ListProductsRequest>
+  extends BaseListPagedComponent<ListBooksQueryDto, ListBooksRequest>
   implements OnInit {
 
-  private api = inject(ProductsApiService);
+  private api = inject(BooksApiService);
   private router = inject(Router);
   private toaster = inject(ToasterService);
   private dialogHelper = inject(DialogHelperService);
@@ -41,7 +41,7 @@ export class ProductsComponent
 
   constructor() {
     super();
-    this.request = new ListProductsRequest();
+    this.request = new ListBooksRequest();
   }
 
   ngOnInit(): void {

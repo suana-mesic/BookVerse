@@ -4,17 +4,17 @@ import { BasePagedQuery } from '../../core/models/paging/base-paged-query';
 // === QUERIES (READ) ===
 
 /**
- * Query parameters for GET /Products
- * Corresponds to: ListProductsQuery.cs
+ * Query parameters for GET /Books
+ * Corresponds to: ListBooksQuery.cs
  */
-export class ListProductsRequest extends BasePagedQuery {
+export class ListBooksRequest extends BasePagedQuery {
   search?: string | null;
   // Future filters: categoryId?, isEnabled?, priceMin?, priceMax?
 }
 
 /**
- * Response item for GET /Products
- * Corresponds to: ListProductsQueryDto.cs
+ * Response item for GET /Books
+ * Corresponds to: ListBooksQueryDto.cs
  */
 export interface ListBooksQueryDto {
   id: number;
@@ -52,8 +52,8 @@ export interface Category {
 
 
 /**
- * Response for GET /Products/{id}
- * Corresponds to: GetProductByIdQueryDto.cs
+ * Response for GET /Books/{id}
+ * Corresponds to: GetBookByIdQueryDto.cs
  */
 export interface GetBookByIdQueryDto {
   isbn: string,
@@ -72,15 +72,15 @@ export interface GetBookByIdQueryDto {
 }
 
 /**
- * Paged response for GET /Products
+ * Paged response for GET /Books
  */
-export type ListProductsResponse = PageResult<ListBooksQueryDto>;
+export type ListBooksResponse = PageResult<ListBooksQueryDto>;
 
 // === COMMANDS (WRITE) ===
 
 /**
- * Command for POST /Products
- * Corresponds to: CreateProductCommand.cs
+ * Command for POST /Books
+ * Corresponds to: CreateBookCommand.cs
  */
 export interface CreateBookCommand {
   isbn: string,
@@ -99,10 +99,10 @@ export interface CreateBookCommand {
 }
 
 /**
- * Command for PUT /Products/{id}
- * Corresponds to: UpdateProductCommand.cs
+ * Command for PUT /Books/{id}
+ * Corresponds to: UpdateBookCommand.cs
  */
-export interface UpdateProductCommand {
+export interface UpdateBookCommand {
   isbn: string,
   title: string,
   publisherId: number,

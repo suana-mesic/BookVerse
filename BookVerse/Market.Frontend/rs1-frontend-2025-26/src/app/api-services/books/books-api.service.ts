@@ -3,18 +3,18 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import {
-  ListProductsRequest,
-  ListProductsResponse,
   GetBookByIdQueryDto,
   CreateBookCommand,
-  UpdateProductCommand
-} from './products-api.models';
+  UpdateBookCommand,
+  ListBooksRequest,
+  ListBooksResponse
+} from './books-api.models';
 import { buildHttpParams } from '../../core/models/build-http-params';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProductsApiService {
+export class BooksApiService {
   private readonly baseUrl = `${environment.apiUrl}/Books`;
   private http = inject(HttpClient);
 
@@ -22,16 +22,16 @@ export class ProductsApiService {
    * GET /Book
    * List Book with optional query parameters.
    */
-  list(request?: ListProductsRequest): Observable<ListProductsResponse> {
+  list(request?: ListBooksRequest): Observable<ListBooksResponse> {
     const params = request ? buildHttpParams(request as any) : undefined;
 
-    return this.http.get<ListProductsResponse>(this.baseUrl, {
+    return this.http.get<ListBooksResponse>(this.baseUrl, {
       params,
     });
   }
 
   /**
-   * GET /Products/{id}
+   * GET /Books/{id}
    * Get a single product by ID.
    */
   getById(id: number): Observable<GetBookByIdQueryDto> {
@@ -39,7 +39,7 @@ export class ProductsApiService {
   }
 
   /**
-   * POST /Products
+   * POST /Books
    * Create a new product.
    * @returns ID of the newly created product
    */
@@ -48,15 +48,15 @@ export class ProductsApiService {
   }
 
   /**
-   * PUT /Products/{id}
+   * PUT /Books/{id}
    * Update an existing product.
    */
-  update(id: number, payload: UpdateProductCommand): Observable<void> {
+  update(id: number, payload: UpdateBookCommand): Observable<void> {
     return this.http.put<void>(`${this.baseUrl}/${id}`, payload);
   }
 
   /**
-   * DELETE /Products/{id}
+   * DELETE /Books/{id}
    * Delete a product.
    */
   delete(id: number): Observable<void> {

@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { GetBookByIdQueryDto } from '../../../../../api-services/products/products-api.models';
+import { GetBookByIdQueryDto } from '../../../../../api-services/books/books-api.models';
 
 /**
  * Service for creating and managing product forms.
