@@ -19,7 +19,7 @@ export class ListProductCategoriesRequest extends BasePagedQuery {
 export interface ListProductCategoriesQueryDto {
   id: number;
   name: string;
-  isDeleted: boolean;
+  isEnabled: boolean;
 }
 
 /**
@@ -29,7 +29,7 @@ export interface ListProductCategoriesQueryDto {
 export interface GetProductCategoryByIdQueryDto {
   id: number;
   name: string;
-  isDeleted: boolean;
+  isEnabled: boolean;
 }
 
 /**

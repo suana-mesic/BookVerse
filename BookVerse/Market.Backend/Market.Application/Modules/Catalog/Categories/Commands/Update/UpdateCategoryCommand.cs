@@ -11,5 +11,6 @@ namespace Market.Application.Modules.Catalog.Categories.Commands.Update
         [JsonIgnore]
         public int Id { get; set; }
         public required string Name { get; set; }
+        public bool isEnabled { get; set; }
     }
 }

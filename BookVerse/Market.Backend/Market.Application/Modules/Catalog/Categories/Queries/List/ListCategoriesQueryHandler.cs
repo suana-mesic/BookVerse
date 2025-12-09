@@ -25,7 +25,7 @@ namespace Market.Application.Modules.Catalog.Categories.Queries.List
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    IsDeleted=x.IsDeleted,
+                    isEnabled=x.IsEnabled,
                 });
 
             return await PageResult<ListCategoriesQueryDto>.FromQueryableAsync(projectedQuery, request.Paging, ct);

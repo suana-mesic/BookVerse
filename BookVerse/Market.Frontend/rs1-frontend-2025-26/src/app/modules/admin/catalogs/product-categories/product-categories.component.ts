@@ -146,14 +146,14 @@ export class ProductCategoriesComponent
   onToggleStatus(category: ListProductCategoriesQueryDto): void {
     this.startLoading();
 
-    const apiAction = category.isDeleted
+    const apiAction = category.isEnabled
       ? this.api.disable(category.id)
       : this.api.enable(category.id);
 
-    console.log(category.isDeleted);
+    console.log(category.isEnabled);
     apiAction.subscribe({
       next: () => {
-        const status = category.isDeleted ? 'disabled' : 'enabled';
+        const status = category.isEnabled ? 'disabled' : 'enabled';
         this.toaster.success(`Category ${status} successfully`);
         this.loadPagedData();
       },

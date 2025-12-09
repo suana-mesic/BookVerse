@@ -28,6 +28,7 @@ namespace Market.Application.Modules.Catalog.Categories.Commands.Update
             }
 
             entity.Name = command.Name.Trim();
+            entity.IsEnabled = command.isEnabled;
 
             await context.SaveChangesAsync(cancellationToken);
 

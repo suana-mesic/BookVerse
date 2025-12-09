@@ -1,9 +1,10 @@
 ﻿using Market.Application.Modules.Catalog.Categories.Commands.Create;
 using Market.Application.Modules.Catalog.Categories.Commands.Delete;
+using Market.Application.Modules.Catalog.Categories.Commands.Status.Disable;
+using Market.Application.Modules.Catalog.Categories.Commands.Status.Enable;
 using Market.Application.Modules.Catalog.Categories.Commands.Update;
 using Market.Application.Modules.Catalog.Categories.Queries.GetById;
 using Market.Application.Modules.Catalog.Categories.Queries.List;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Market.API.Controllers;
 
@@ -51,6 +52,22 @@ public class CategoriesController(ISender sender) : Controller
     public async Task<IActionResult> DeleteCategory(int id, CancellationToken ct)
     {
         await sender.Send(new DeleteCategoryCommand { Id = id }, ct);
+        return NoContent();
+    }
+
+    [HttpPut("{id:int}/disable")]
+    [AllowAnonymous]
+    public async Task<IActionResult> DisableCategory(int id, CancellationToken ct)
+    {
+        await sender.Send(new DisableCategoryComamnd { Id = id }, ct);
+        return NoContent();
+    }
+
+    [HttpPut("{id:int}/enable")]
+    [AllowAnonymous]
+    public async Task<IActionResult> EnableCategory(int id, CancellationToken ct)
+    {
+        await sender.Send(new EnableCategoryComamnd { Id = id }, ct);
         return NoContent();
     }
 }

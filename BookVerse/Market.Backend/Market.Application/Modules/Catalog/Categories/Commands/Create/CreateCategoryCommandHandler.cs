@@ -27,7 +27,8 @@ namespace Market.Application.Modules.Catalog.Categories.Commands.Create
 
             var category = new Category
             {
-                Name = request.Name!.Trim()
+                Name = request.Name!.Trim(),
+                IsEnabled = true
             };
 
             context.Categories.Add(category);

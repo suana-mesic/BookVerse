@@ -29,7 +29,7 @@
     },
     "MENU": {
       "CATALOG": "KATALOG",
-      "CATEGORIES": "Kategorije Proizvoda",
+      "CATEGORIES": "Žanrovi/Kategorije",
       "BOOKS": "Knjige",
       "ORDERS_SECTION": "NARUDŽBE",
       "ORDERS": "Pregled Narudžbi",
@@ -39,12 +39,12 @@
     }
   },
   "BOOKS_CATEGORIES": {
-    "TITLE": "Kategorije Proizvoda",
+    "TITLE": "Žanrovi",
     "SUBTITLE": "Upravljanje kategorijama proizvoda",
-    "SEARCH_PLACEHOLDER": "Pretraži kategorije",
+    "SEARCH_PLACEHOLDER": "Pretraži Žanrove",
     "SEARCH_INPUT_PLACEHOLDER": "Unesite naziv kategorije...",
     "ONLY_ENABLED": "Samo Aktivne",
-    "NEW_CATEGORY": "Nova Kategorija",
+    "NEW_CATEGORY": "Novi Žanr",
     "ADD_NEW": "Dodaj Kategoriju",
     "LOADING": "Učitavanje kategorija...",
     "NO_DATA": "Nema kategorija za prikaz",

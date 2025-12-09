@@ -11,6 +11,7 @@ namespace Market.Domain.Entities.Catalog
     public class Category: BaseEntity
     {
         public string Name { get; set; }
+        public bool IsEnabled { get; set; }
         public ICollection<Books> Books { get; set; } = new List<Books>();
 
         public static class Constraints

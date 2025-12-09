@@ -16,7 +16,8 @@ namespace Market.Application.Modules.Catalog.Categories.Queries.GetById
                 .Select(x => new GetCategoryByIdQueryDto
                 {
                     Id = x.Id,
-                    Name = x.Name
+                    Name = x.Name,
+                    isEnabled = x.IsEnabled
                 })
                 .FirstOrDefaultAsync(cancellationToken);
 

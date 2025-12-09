@@ -21,10 +21,12 @@
                     </mat-form-field>
                 </div>
             </div>
+            <div class="centriraj-dugme">
+                <button type="button" class="next-btn button-s" [disabled]="!isFirstStepValid" matStepperNext>
+                    Sljedeći korak
+                </button>
+            </div>
 
-            <button type="button" class="next-btn button-s" [disabled]="!isFirstStepValid" matStepperNext>
-                Sljedeći korak
-            </button>
         </mat-step>
 
         <mat-step>
@@ -113,5 +115,8 @@
             </div>
         </mat-step>
     </mat-horizontal-stepper>
-    <p routerLink="/login">Odustani</p>
+    <p routerLink="/">Odustani</p>
+    <div class="login-link">
+        <p class="sign-up">Već imate nalog? <a routerLink="/auth/login">Logirajte se</a></p>
+    </div>
 </form>
