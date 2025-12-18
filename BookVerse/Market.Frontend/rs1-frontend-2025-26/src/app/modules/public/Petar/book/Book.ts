@@ -4,6 +4,7 @@ export type Book = {
   id: number;
   isbn: string;
   title: string;
+  authorIds: Array<number>;
   authors: Author[];
   publisherId: number;
   publisherName: string;

@@ -1,0 +1,44 @@
+<app-header />
+<div class="book">
+  <div class="book__return" [routerLink]="['/']">
+    <img src="icons/arrow_black.png" alt="arr" />
+    <h2>Nazad</h2>
+  </div>
+  <div class="book__container">
+    <img src="https://delfi.rs/_img/artikli/2014/10/dervis_i_smrt_vv.jpg" alt="slika knjige" />
+    <aside>
+      <div class="book__title-and-authors">
+        <h1>{{ book()?.title }}</h1>
+        <div class="book__authors">
+          @for(author of authors(); let i = $index; track author.id){
+          <label>{{ `${author.firstName} ${author.lastName}` }}</label>
+          @if(i < authors().length - 1) {
+          <label>,&nbsp;</label>
+          } }
+        </div>
+      </div>
+      <div class="book__rating">
+        <img src="icons/star.png" alt="star" />
+        <img src="icons/star.png" alt="star" />
+        <img src="icons/star.png" alt="star" />
+        <img src="icons/star.png" alt="star" />
+        <img src="icons/star.png" alt="star" />
+        <h2>4.0</h2>
+      </div>
+      <div class="book__info">
+        <h2>Izdavač: {{ book()?.publisherName }}</h2>
+        <h2>Broj kupaca: 12</h2>
+        <h2>ISBN: {{ book()?.isbn }}</h2>
+        <h2>Broj strana: {{ book()?.pageCount }}</h2>
+        <h2>Jezik: {{ book()?.language }}</h2>
+      </div>
+      <p>{{ book()?.description }}</p>
+    </aside>
+  </div>
+  <div class="book__buy">
+    <h1>Cijena: {{ book()?.price }} KM</h1>
+    <div>
+      <button>Dodaj u korpu <img src="icons/cart.png" alt="cart" /></button>
+    </div>
+  </div>
+</div>

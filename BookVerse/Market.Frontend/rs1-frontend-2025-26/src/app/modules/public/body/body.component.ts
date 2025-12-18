@@ -3,10 +3,11 @@ import { BookComponent } from '../book/book.component';
 import { CategoriesService } from '../Petar/categories.service';
 import { Book } from '../Petar/book/Book';
 import { BooksService } from '../Petar/books.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-body',
-  imports: [BookComponent],
+  imports: [BookComponent, RouterModule],
   templateUrl: 'body.component.html',
   styleUrl: 'body.component.css',
 })

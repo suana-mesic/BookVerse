@@ -1,0 +1,101 @@
+h1,
+h2 {
+  font-weight: 400;
+}
+
+.book {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem 10rem;
+}
+.book img {
+  height: 2rem;
+  //   width: 60px;
+}
+.book__return {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 0.5rem;
+}
+
+.book__return:hover {
+  cursor: pointer;
+}
+
+.book__title-and-authors {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.book__title-and-authors label {
+  font-size: 20px;
+  color: #555;
+}
+
+.book__authors {
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.book__container {
+  display: flex;
+  gap: 2rem;
+}
+
+.book__container img {
+  height: 400px;
+  width: 300px;
+}
+
+.book__container p {
+  margin-top: 1rem;
+  font-size: 20px;
+  line-height: 28px;
+}
+
+.book__rating {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 1.2rem;
+}
+
+.book__rating img {
+  height: 1.2rem;
+  width: 1.2rem;
+}
+
+.book__info {
+  margin: 1rem 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #000;
+}
+
+.book__buy button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.5rem;
+  padding: 0.8rem 1.6rem;
+  background: #131c2b;
+  color: #fff;
+  border-radius: 9px;
+  border: none;
+}
+
+button:hover {
+  cursor: pointer;
+}
+.book__buy img {
+  filter: invert(1);
+}
