@@ -1,4 +1,4 @@
-import { Component, inject, input, signal } from '@angular/core';
+import { Component, ElementRef, inject, input, signal, ViewChild } from '@angular/core';
 import { HeaderComponent } from '../header/header.component';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { BooksService } from '../Petar/books.service';
@@ -25,14 +25,25 @@ export class BookDetailsComponent {
   reviewService = inject(ReviewsService);
   bookId!: string;
 
+  reviewRating = 0;
+  reviewNumber = 0;
+
+  reviewRatingsCount = [0, 0, 0, 0, 0];
+  reviewRatingsBarWidth = [0, 0, 0, 0, 0];
+
   constructor(private route: ActivatedRoute) {}
+
+  // updateRatingsBarWidth() {
+  //   for(let i=0; i<5;i++)
+  //   this.reviewRatingsBarWidth[i] =
+  //         (this.reviewRatingsCount[i] / this.reviewNumber) * 180;
+  // }
 
   ngOnInit() {
     this.bookId = this.route.snapshot.paramMap.get('id')!;
 
     this.bookService.getBookDetailsFromApi(this.bookId).subscribe((book: any) => {
       this.book.set(book);
-      console.log(this.book());
       for (let i = 0; i < this.book()!.authorIds.length; i++) {
         this.authorService.getAuthorFromApi(this.book()!.authorIds[i]).subscribe((author: any) => {
           this.authors.update((arr) => [...arr, author]);
@@ -40,9 +51,17 @@ export class BookDetailsComponent {
       }
       this.reviewService.getReviewsByBookIdFromApi(Number(this.bookId)).subscribe((review: any) => {
         this.reviews.update((arr) => [...arr, review]);
-        console.log('izvrsavanje...');
+
         console.log(this.reviews());
+        this.reviewNumber++;
+        this.reviewRating += (review.rating - this.reviewRating) / this.reviewNumber;
+        this.reviewRatingsCount[review.rating - 1]++;
+
+        this.reviewRatingsBarWidth[review.rating - 1] =
+          (this.reviewRatingsCount[review.rating - 1] / this.reviewNumber) * 180;
+        console.log(this.reviewRatingsBarWidth);
       });
+      console.log('drugi');
     });
   }
 }

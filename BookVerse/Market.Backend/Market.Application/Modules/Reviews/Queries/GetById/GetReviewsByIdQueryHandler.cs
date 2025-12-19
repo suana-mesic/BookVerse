@@ -40,7 +40,7 @@ public class GetReviewsByIdQueryHandler(IAppDbContext context) : IRequestHandler
             }
         }).FirstOrDefaultAsync(cancellationToken);
 
-        if (review == null)
+        if (review is null)
         {
             throw new MarketNotFoundException($"Recenzija sa unesenim UserId: {request.UserId} i BookId: {request.BookId} nije pronađena");
         }

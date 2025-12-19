@@ -46,44 +46,64 @@
       <div class="book__reviews-header">
         <h1>Recenzije</h1>
         <div class="book__rating">
-          <img src="icons/star.png" alt="star" />
-          <img src="icons/star.png" alt="star" />
-          <img src="icons/star.png" alt="star" />
-          <img src="icons/star.png" alt="star" />
-          <img src="icons/star.png" alt="star" />
-          <h1>4.0</h1>
+          <img src="icons/star.png" alt="star" [class.dark-star]="this.reviewRating >= 1" />
+          <img src="icons/star.png" alt="star" [class.dark-star]="this.reviewRating >= 2" />
+          <img src="icons/star.png" alt="star" [class.dark-star]="this.reviewRating >= 3" />
+          <img src="icons/star.png" alt="star" [class.dark-star]="this.reviewRating >= 4" />
+          <img src="icons/star.png" alt="star" [class.dark-star]="this.reviewRating >= 5" />
+          <h1>{{ this.reviewRating.toFixed(1) }}</h1>
         </div>
       </div>
       <div class="book__reviews-grades">
         <div class="book__reviews-grade">
-          <h1>5</h1>
-          <img src="icons/star.png" alt="star" />
-          <div></div>
-          <h1>(5)</h1>
+          <span>
+            <h1>5</h1>
+            <img src="icons/star.png" alt="star" />
+            <div class="book__review-bar">
+              <div class="book__review-fill" [style.width.px]="reviewRatingsBarWidth[4]"></div>
+            </div>
+          </span>
+          <h1>({{ this.reviewRatingsCount[4] }})</h1>
         </div>
         <div class="book__reviews-grade">
-          <h1>4</h1>
-          <img src="icons/star.png" alt="star" />
-          <div></div>
-          <h1>(5)</h1>
+          <span>
+            <h1>4</h1>
+            <img src="icons/star.png" alt="star" />
+            <div class="book__review-bar">
+              <div class="book__review-fill" [style.width.px]="reviewRatingsBarWidth[3]"></div>
+            </div>
+          </span>
+          <h1>({{ this.reviewRatingsCount[3] }})</h1>
         </div>
         <div class="book__reviews-grade">
-          <h1>3</h1>
-          <img src="icons/star.png" alt="star" />
-          <div></div>
-          <h1>(5)</h1>
+          <span>
+            <h1>3</h1>
+            <img src="icons/star.png" alt="star" />
+            <div class="book__review-bar">
+              <div class="book__review-fill" [style.width.px]="reviewRatingsBarWidth[2]"></div>
+            </div>
+          </span>
+          <h1>({{ this.reviewRatingsCount[2] }})</h1>
         </div>
         <div class="book__reviews-grade">
-          <h1>2</h1>
-          <img src="icons/star.png" alt="star" />
-          <div></div>
-          <h1>(5)</h1>
+          <span>
+            <h1>2</h1>
+            <img src="icons/star.png" alt="star" />
+            <div class="book__review-bar">
+              <div class="book__review-fill" [style.width.px]="reviewRatingsBarWidth[1]"></div>
+            </div>
+          </span>
+          <h1>({{ this.reviewRatingsCount[1] }})</h1>
         </div>
         <div class="book__reviews-grade">
-          <h1>1</h1>
-          <img src="icons/star.png" alt="star" />
-          <div></div>
-          <h1>(5)</h1>
+          <span>
+            <h1>1</h1>
+            <img src="icons/star.png" alt="star" />
+            <div class="book__review-bar">
+              <div class="book__review-fill" [style.width.px]="reviewRatingsBarWidth[0]"></div>
+            </div>
+          </span>
+          <h1>({{ this.reviewRatingsCount[0] }})</h1>
         </div>
       </div>
     </span>
@@ -92,13 +112,13 @@
       <article>
         <img class="book__review-profile-picture" />
         <section>
-          <h2>Naziv kupca</h2>
-          <div>
-            <img src="icons/star.png" alt="star" />
-            <img src="icons/star.png" alt="star" />
-            <img src="icons/star.png" alt="star" />
-            <img src="icons/star.png" alt="star" />
-            <img src="icons/star.png" alt="star" />
+          <h2>{{ review.user.firstName }} {{ review.user.lastName }}</h2>
+          <div class="book__review-user-rating">
+            <img src="icons/star.png" alt="star" [class.dark-star]="review.rating >= 1" />
+            <img src="icons/star.png" alt="star" [class.dark-star]="review.rating >= 2" />
+            <img src="icons/star.png" alt="star" [class.dark-star]="review.rating >= 3" />
+            <img src="icons/star.png" alt="star" [class.dark-star]="review.rating >= 4" />
+            <img src="icons/star.png" alt="star" [class.dark-star]="review.rating >= 5" />
             <h3>{{ review.datePosted.toString().split('T')[0] }}</h3>
           </div>
         </section>
