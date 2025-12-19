@@ -1,4 +1,6 @@
-﻿namespace Market.Application.Modules.Review.Commands.Create;
+﻿using Market.Domain.Entities.UserReviews;
+
+namespace Market.Application.Modules.Reviews.Commands.Create;
 
 public class CreateReviewCommandHandler(IAppDbContext context)
     : IRequestHandler<CreateReviewCommand, string>
@@ -19,7 +21,7 @@ public class CreateReviewCommandHandler(IAppDbContext context)
         if (alreadyReviewed)
             throw new MarketConflictException("Korisnik je već recenzirao ovu knjigu.");
 
-        var review = new Market.Domain.Entities.Review.Reviews
+        var review = new Review
         {
             UserId = request.UserId,
             BookId = request.BookId,

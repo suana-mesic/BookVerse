@@ -1,5 +1,5 @@
 ﻿using Market.Domain.Entities.Catalog;
-using Market.Domain.Entities.Review;
+using Market.Domain.Entities.UserReviews;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using System.Net;
@@ -31,8 +31,8 @@ public partial class StaticDataSeeder
 
     private static void SeedReviews(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Reviews>().HasData(
-             new Reviews
+        modelBuilder.Entity<Review>().HasData(
+             new Review
              {
                  BookId = 1,
                  UserId = 1,
@@ -42,7 +42,7 @@ public partial class StaticDataSeeder
                  IsDeleted = false
 
              },
-             new Reviews
+             new Review
              {
                  BookId = 2,
                  UserId = 2,
@@ -51,7 +51,7 @@ public partial class StaticDataSeeder
                  DatePosted = DateTime.UtcNow,
                  IsDeleted = false
              },
-               new Reviews
+               new Review
                {
                    BookId = 3,
                    UserId = 3,

@@ -1,5 +1,6 @@
 h1,
-h2 {
+h2,
+h3 {
   font-weight: 400;
 }
 
@@ -98,4 +99,92 @@ button:hover {
 }
 .book__buy img {
   filter: invert(1);
+}
+
+.book__reviews {
+  margin-top: 2rem;
+  display: flex;
+  align-items: start;
+  gap: 12rem;
+}
+.book__reviews-header {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 2rem;
+}
+
+.book__reviews-header .book__rating:first-child {
+  margin-right: 3rem;
+}
+
+.book__reviews-header img {
+  height: 1.6rem;
+  width: 1.6rem;
+}
+
+.book__reviews-header .book__rating h1 {
+  margin-left: 1rem;
+}
+
+.book__reviews-grades {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  flex-direction: column;
+}
+
+.book__reviews-grades img {
+  height: 1.6rem;
+  width: 1.6rem;
+}
+
+.book__reviews-grade {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 1rem;
+}
+
+.book__reviews-grade div {
+  height: 10px;
+  width: 170px;
+  background: #999;
+}
+
+.book__review-section article {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 1rem;
+}
+
+.book__review-section section {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  flex-direction: column;
+}
+
+.book__review-section h2 {
+  margin-bottom: -0.6rem;
+}
+
+.book__review-section article div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.book__review-section section img {
+  height: 1rem;
+  width: 1rem;
+}
+
+.book__review-profile-picture {
+  height: 3rem !important;
+  width: 3rem;
+  background: #000;
+  border-radius: 50%;
 }

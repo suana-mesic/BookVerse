@@ -1,5 +1,5 @@
 ﻿using Market.Domain.Common;
-using Market.Domain.Entities.Review;
+using Market.Domain.Entities.UserReviews;
 using Market.Domain.Entities.Shopping;
 using Market.Domain.Entities.Whishlist;
 using Market.Infrastructure.Database.Seeders;
@@ -66,8 +66,8 @@ public partial class DatabaseContext
                 new { BooksId = 3, CategoriesId = 3 }
             ));
 
-        modelBuilder.Entity<Reviews>().HasKey(x => new { x.BookId, x.UserId });
-        modelBuilder.Entity<Reviews>().HasQueryFilter(x => !x.IsDeleted && !x.Book.IsDeleted && !x.User.IsDeleted);
+        modelBuilder.Entity<Review>().HasKey(x => new { x.BookId, x.UserId });
+        modelBuilder.Entity<Review>().HasQueryFilter(x => !x.IsDeleted && !x.Book.IsDeleted && !x.User.IsDeleted);
 
 
         modelBuilder.Entity<WishlistItems>().HasKey(x => new { x.UserId, x.BookId });

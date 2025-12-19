@@ -1,6 +1,6 @@
-﻿using Market.Application.Modules.Review.Queries.GetById;
+﻿using Market.Application.Modules.Reviews.Queries.GetById;
 
-namespace Market.Application.Modules.Review.Queries.List;
+namespace Market.Application.Modules.Reviews.Queries.List;
 
 public sealed class ListReviewsQueryDto : BasePagedQuery<ListReviewsQueryDto>
 {

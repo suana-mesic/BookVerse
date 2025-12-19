@@ -41,4 +41,71 @@
       <button>Dodaj u korpu <img src="icons/cart.png" alt="cart" /></button>
     </div>
   </div>
+  <div class="book__reviews">
+    <span>
+      <div class="book__reviews-header">
+        <h1>Recenzije</h1>
+        <div class="book__rating">
+          <img src="icons/star.png" alt="star" />
+          <img src="icons/star.png" alt="star" />
+          <img src="icons/star.png" alt="star" />
+          <img src="icons/star.png" alt="star" />
+          <img src="icons/star.png" alt="star" />
+          <h1>4.0</h1>
+        </div>
+      </div>
+      <div class="book__reviews-grades">
+        <div class="book__reviews-grade">
+          <h1>5</h1>
+          <img src="icons/star.png" alt="star" />
+          <div></div>
+          <h1>(5)</h1>
+        </div>
+        <div class="book__reviews-grade">
+          <h1>4</h1>
+          <img src="icons/star.png" alt="star" />
+          <div></div>
+          <h1>(5)</h1>
+        </div>
+        <div class="book__reviews-grade">
+          <h1>3</h1>
+          <img src="icons/star.png" alt="star" />
+          <div></div>
+          <h1>(5)</h1>
+        </div>
+        <div class="book__reviews-grade">
+          <h1>2</h1>
+          <img src="icons/star.png" alt="star" />
+          <div></div>
+          <h1>(5)</h1>
+        </div>
+        <div class="book__reviews-grade">
+          <h1>1</h1>
+          <img src="icons/star.png" alt="star" />
+          <div></div>
+          <h1>(5)</h1>
+        </div>
+      </div>
+    </span>
+    <aside class="book__review-section">
+      @for(review of reviews(); let i = $index; track review.bookId){
+      <article>
+        <img class="book__review-profile-picture" />
+        <section>
+          <h2>Naziv kupca</h2>
+          <div>
+            <img src="icons/star.png" alt="star" />
+            <img src="icons/star.png" alt="star" />
+            <img src="icons/star.png" alt="star" />
+            <img src="icons/star.png" alt="star" />
+            <img src="icons/star.png" alt="star" />
+            <h3>{{ review.datePosted.toString().split('T')[0] }}</h3>
+          </div>
+        </section>
+      </article>
+      <h3>{{ review.comment }}</h3>
+
+      }
+    </aside>
+  </div>
 </div>

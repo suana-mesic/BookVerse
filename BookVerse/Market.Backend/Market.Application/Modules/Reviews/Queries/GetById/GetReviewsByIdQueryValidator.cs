@@ -1,4 +1,4 @@
-﻿using Market.Application.Modules.Review.Queries.GetById;
+﻿using Market.Application.Modules.Reviews.Queries.GetById;
 
 public sealed class GetReviewsByIdQueryValidator : AbstractValidator<GetReviewsByIdQuery>
 {

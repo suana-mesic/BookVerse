@@ -1,4 +1,4 @@
-﻿using Market.Domain.Entities.Review;
+﻿using Market.Domain.Entities.UserReviews;
 using Market.Domain.Entities.Shopping;
 using Market.Domain.Entities.Whishlist;
 
@@ -17,7 +17,7 @@ public interface IAppDbContext
     DbSet<Category> Categories { get; }
     DbSet<Publisher> Publishers { get; }
     DbSet<BookFormat> BookFormats { get; }
-    DbSet<Reviews> Reviews { get; }
+    DbSet<Review> Reviews { get; }
     DbSet<WishlistItems> WishlistItems { get; }
     DbSet<Store> Stores { get; }
     DbSet<StoreInventory> StoreInventory { get; }
