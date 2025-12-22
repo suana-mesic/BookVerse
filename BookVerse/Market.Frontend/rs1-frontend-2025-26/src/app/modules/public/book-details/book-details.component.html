@@ -41,10 +41,42 @@
       <button>Dodaj u korpu <img src="icons/cart.png" alt="cart" /></button>
     </div>
   </div>
+  <div class="book__stores">
+    @if (storeInfoOpened) {
+    <div class="book__stores-info">
+      <h1>{{ this.storeName() }}</h1>
+      <div class="book__stores-info--close" (click)="toggleStoreInfo()">X</div>
+      <h2>Radno vrijeme:</h2>
+      <h3>Pon - Pet: {{ this.storeWorkTimeMonFri() }}</h3>
+      <h3>Sub - Ned: {{ this.storeWorkTimeSatSun() }}</h3>
+      <h2>Email:</h2>
+      <h3>{{ this.storeEmail() }}</h3>
+      <h2>Adresa:</h2>
+      <h3>{{ this.storeAddress() }}</h3>
+      <h2>Kontakt telefon:</h2>
+      <h3>{{ this.storePhone() }}</h3>
+    </div>
+    }
+    <span>
+      <h2>Dostupno u prodavnicama:</h2>
+      <h3 title="Prikaži informacije" (click)="setCentralBookstore()">
+        Central bookstore (Mostar): 12 knjiga
+      </h3>
+      <h3 title="Prikaži informacije" (click)="setForticaBooks()">
+        Fortica books (Mostar): 14 knjiga
+      </h3>
+      <h3 title="Prikaži informacije" (click)="setSpaceBookstore()">
+        Space bookstore (Sarajevo): 19 knjiga
+      </h3>
+    </span>
+    <app-map class="book__stores-map"></app-map>
+  </div>
+
+  <h1 style="font-size: 3rem; margin: 1rem 0">Recenzije</h1>
   <div class="book__reviews">
     <span>
       <div class="book__reviews-header">
-        <h1>Recenzije</h1>
+        <h1>Ocjena</h1>
         <div class="book__rating">
           <img src="icons/star.png" alt="star" [class.dark-star]="this.reviewRating >= 1" />
           <img src="icons/star.png" alt="star" [class.dark-star]="this.reviewRating >= 2" />

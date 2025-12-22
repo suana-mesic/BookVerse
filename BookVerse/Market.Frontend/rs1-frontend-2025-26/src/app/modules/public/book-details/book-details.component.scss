@@ -102,8 +102,66 @@ button:hover {
   filter: invert(1);
 }
 
+.book__stores {
+  margin: 2rem 0;
+  padding-bottom: 2rem;
+  display: flex;
+  gap: 4rem;
+  border-bottom: 1px solid #000;
+}
+
+.book__stores h3 {
+  color: #0077b6;
+}
+
+.book__stores span h3:hover {
+  cursor: pointer;
+}
+
+.book__stores-map {
+  height: 400px;
+  width: 75%;
+  z-index: 0;
+}
+
+.book__stores-info {
+  position: fixed;
+  z-index: 100;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  height: 500px;
+  width: 300px;
+
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  flex-direction: column;
+  padding: 1rem 2rem;
+
+  border-radius: 9px;
+  border: 2px solid #131c2b;
+}
+
+.book__stores-info--close {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  font-size: 2rem;
+}
+
+.book__stores-info--close:hover {
+  cursor: pointer;
+}
+
+.book__stores-info h2,
+.book__stores-info h3 {
+  margin: 0.8rem 0;
+}
+
 .book__reviews {
-  margin-top: 2rem;
+  // margin-top: 2rem;
   display: flex;
   align-items: start;
   gap: 12rem;
@@ -163,7 +221,7 @@ button:hover {
 .book__review-fill {
   height: 10px;
   // width: 20px;
-  background: #000;
+  background: #131c2b;
 }
 
 .book__review-section article {
