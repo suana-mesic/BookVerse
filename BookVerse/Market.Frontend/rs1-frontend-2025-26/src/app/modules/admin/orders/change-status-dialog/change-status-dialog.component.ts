@@ -1,7 +1,7 @@
 import { Component, inject, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import {ListOrdersQueryDto, OrderStatusType} from '../../../../api-services/orders/orders-api.models';
-import {OrderStatusHelper} from '../../../../api-services/orders/order-status.helper';
+import { ListOrdersQueryDto, OrderStatusType } from '../../../../api-services/orders/orders-api.models';
+import { OrderStatusHelper } from '../../../../api-services/orders/order-status.helper';
 
 export interface ChangeStatusDialogData {
   order: ListOrdersQueryDto;
@@ -20,7 +20,7 @@ export class ChangeStatusDialogComponent {
   availableStatuses: OrderStatusType[] = [];
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: ChangeStatusDialogData) {
-    this.availableStatuses = OrderStatusHelper.getNextStatuses(data.order.status);
+    this.availableStatuses = OrderStatusHelper.getNextStatuses(data.order.statusNameEnum);
 
     // Pre-select first available status
     if (this.availableStatuses.length > 0) {
@@ -43,15 +43,15 @@ export class ChangeStatusDialogComponent {
   }
 
   getCurrentStatusLabel(): string {
-    return OrderStatusHelper.getLabel(this.data.order.status);
+    return OrderStatusHelper.getLabel(this.data.order.statusNameEnum);
   }
 
   getCurrentStatusIcon(): string {
-    return OrderStatusHelper.getIcon(this.data.order.status);
+    return OrderStatusHelper.getIcon(this.data.order.statusNameEnum);
   }
 
   getCurrentStatusClass(): string {
-    return OrderStatusHelper.getColorClass(this.data.order.status);
+    return OrderStatusHelper.getColorClass(this.data.order.statusNameEnum);
   }
 
   // === Actions ===
@@ -68,7 +68,7 @@ export class ChangeStatusDialogComponent {
 
   canConfirm(): boolean {
     return this.selectedStatus !== undefined &&
-      this.selectedStatus !== this.data.order.status;
+      this.selectedStatus !== this.data.order.statusNameEnum;
   }
 
   protected readonly OrderStatusType = OrderStatusType;

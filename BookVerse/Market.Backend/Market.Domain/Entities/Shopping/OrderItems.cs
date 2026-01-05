@@ -10,6 +10,5 @@ namespace Market.Domain.Entities.Shopping
         public Books Book { get; set; }
         public int Quantity { get; set; }
         public decimal PriceAtTime { get; set; }
-
     }
 }

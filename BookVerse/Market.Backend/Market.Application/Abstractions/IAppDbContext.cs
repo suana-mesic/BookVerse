@@ -27,6 +27,7 @@ public interface IAppDbContext
     DbSet<ShippingMethods> ShippingMethods { get; }
     DbSet<PaymentSummaries> PaymentSummaries { get; }
     DbSet<Orders> Orders { get; }
+    DbSet<OrderItems> OrderItems { get; }
     DbSet<CartItems> CartItems { get; }
     DbSet<ShippingUpdates> ShippingUpdates { get; }
     DbSet<Refunds> Refunds { get; }

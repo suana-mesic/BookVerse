@@ -46,8 +46,8 @@ export class ListOrdersWithItemsRequest extends BasePagedQuery {
  * User info in list response
  */
 export interface ListOrdersQueryDtoUser {
-  userFirstname: string | null;
-  userLastname: string | null;
+  firstName: string | null;
+  lastName: string | null;
   userAddress: string | null;
   userCity: string | null;
 }
@@ -58,12 +58,12 @@ export interface ListOrdersQueryDtoUser {
  */
 export interface ListOrdersQueryDto {
   id: number;
-  referenceNumber: string | null;
-  user: ListOrdersQueryDtoUser;
-  orderedAtUtc: string; // ISO date string
+  trackingNumber: string | null;
+  userInfo: ListOrdersQueryDtoUser;
+  orderDate: string; // ISO date string
   paidAtUtc: string | null; // ISO date string
-  status: OrderStatusType;
-  totalAmount: number;
+  statusNameEnum: OrderStatusType;
+  total: number;
   note: string | null;
 }
 
@@ -106,7 +106,7 @@ export interface ListOrdersWithItemsQueryDtoUser {
  */
 export interface ListOrdersWithItemsQueryDto {
   id: number;
-  referenceNumber: string | null;
+  trackingNumber: string | null;
   user: ListOrdersWithItemsQueryDtoUser;
   orderedAtUtc: string; // ISO date string
   paidAtUtc: string | null; // ISO date string
@@ -155,7 +155,7 @@ export interface GetByIdOrderQueryDtoItem {
  */
 export interface GetOrderByIdQueryDto {
   id: number;
-  referenceNumber: string | null;
+  trackingNumber: string | null;
   user: GetByIdOrderQueryDtoUser;
   orderedAtUtc: string; // ISO date string
   paidAtUtc: string | null; // ISO date string

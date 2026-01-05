@@ -1,15 +1,15 @@
-import {Component, inject, OnDestroy, OnInit} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {Subject} from 'rxjs';
-import {debounceTime, distinctUntilChanged, takeUntil} from 'rxjs/operators';
-import {FormControl} from '@angular/forms';
-import {BaseListPagedComponent} from '../../../core/components/base-classes/base-list-paged-component';
-import {ListOrdersQueryDto, ListOrdersRequest, OrderStatusType} from '../../../api-services/orders/orders-api.models';
-import {OrdersApiService} from '../../../api-services/orders/orders-api.service';
-import {ToasterService} from '../../../core/services/toaster.service';
-import {OrderStatusHelper} from '../../../api-services/orders/order-status.helper';
-import {ChangeStatusDialogComponent} from './change-status-dialog/change-status-dialog.component';
-import {OrderDetailsDialogComponent} from './admin-orders-details-dialog/order-details-dialog.component';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { FormControl } from '@angular/forms';
+import { BaseListPagedComponent } from '../../../core/components/base-classes/base-list-paged-component';
+import { ListOrdersQueryDto, ListOrdersRequest, OrderStatusType } from '../../../api-services/orders/orders-api.models';
+import { OrdersApiService } from '../../../api-services/orders/orders-api.service';
+import { ToasterService } from '../../../core/services/toaster.service';
+import { OrderStatusHelper } from '../../../api-services/orders/order-status.helper';
+import { ChangeStatusDialogComponent } from './change-status-dialog/change-status-dialog.component';
+import { OrderDetailsDialogComponent } from './admin-orders-details-dialog/order-details-dialog.component';
 
 
 @Component({
@@ -20,16 +20,16 @@ import {OrderDetailsDialogComponent} from './admin-orders-details-dialog/order-d
 })
 export class AdminOrdersComponent
   extends BaseListPagedComponent<ListOrdersQueryDto, ListOrdersRequest>
-  implements OnInit, OnDestroy
-{
+  implements OnInit, OnDestroy {
   private ordersApi = inject(OrdersApiService);
   private dialog = inject(MatDialog);
   private toaster = inject(ToasterService);
   private destroy$ = new Subject<void>();
+  private globalCounter: number = 0;
 
   // Table columns
   displayedColumns: string[] = [
-    'referenceNumber',
+    'trackingNumber',
     'customer',
     'orderedAt',
     'totalAmount',
@@ -49,11 +49,17 @@ export class AdminOrdersComponent
 
   constructor() {
     super();
+    console.log(this.globalCounter, ". Pozvan je constructor:");
+    this.globalCounter += this.globalCounter;
+
     this.request = new ListOrdersRequest();
     this.request.paging.pageSize = 20;
   }
 
   ngOnInit(): void {
+    console.log(this.globalCounter, ". Pozvan je ngOnInit:");
+    this.globalCounter += this.globalCounter;
+
     this.initList();
     this.setupSearchDebounce();
   }
@@ -67,6 +73,9 @@ export class AdminOrdersComponent
    * Setup search with debounce and minimum length
    */
   private setupSearchDebounce(): void {
+    console.log(this.globalCounter, ". Pozvan je setupSearchDebounce:");
+    this.globalCounter += this.globalCounter;
+
     this.searchControl.valueChanges
       .pipe(
         debounceTime(400), // Wait 400ms after user stops typing
@@ -82,6 +91,9 @@ export class AdminOrdersComponent
   }
 
   protected loadPagedData(): void {
+    console.log(this.globalCounter, ". Pozvan je loadPagedData:");
+    this.globalCounter += this.globalCounter;
+
     this.startLoading();
 
     this.ordersApi.list(this.request).subscribe({
@@ -99,12 +111,18 @@ export class AdminOrdersComponent
   // === Filters ===
 
   onSearchChange(searchTerm: string): void {
+    console.log(this.globalCounter, ". Pozvan je onSearchChange:");
+    this.globalCounter += this.globalCounter;
+
     this.request.search = searchTerm;
     this.request.paging.page = 1; // Reset to first page
     this.loadPagedData();
   }
 
   onStatusFilterChange(status: OrderStatusType | null): void {
+    console.log(this.globalCounter, ". Pozvan je onStatusFilterChange:");
+    this.globalCounter += this.globalCounter;
+
     this.statusFilter = status;
     // Note: Backend needs to support status filter
     // For now, we filter client-side or update backend
@@ -113,6 +131,10 @@ export class AdminOrdersComponent
   }
 
   clearFilters(): void {
+    console.log(this.globalCounter, ". Pozvan je clearFilters:");
+    this.globalCounter += this.globalCounter;
+
+
     this.searchControl.setValue('', { emitEvent: false });
     this.statusFilter = null;
     this.request.search = null;
@@ -123,6 +145,9 @@ export class AdminOrdersComponent
   // === Actions ===
 
   onViewDetails(order: ListOrdersQueryDto, event?: MouseEvent): void {
+    console.log(this.globalCounter, ". Pozvan je onViewDetails:");
+    this.globalCounter += this.globalCounter;
+
     // spriječi da klik sa dugmeta ode na <tr> i ponovo otvori dialog
     event?.stopPropagation();
 
@@ -144,6 +169,9 @@ export class AdminOrdersComponent
   }
 
   onChangeStatus(order: ListOrdersQueryDto, event?: Event): void {
+    console.log(this.globalCounter, ". Pozvan je onChangeStatus:");
+    this.globalCounter += this.globalCounter;
+
     // Prevent row click
     if (event) {
       event.stopPropagation();
@@ -192,6 +220,7 @@ export class AdminOrdersComponent
   }
 
   getStatusIcon(status: OrderStatusType): string {
+    console.log("Order status type is, ", status);
     return OrderStatusHelper.getIcon(status);
   }
 
@@ -201,18 +230,18 @@ export class AdminOrdersComponent
 
   canChangeStatus(order: ListOrdersQueryDto): boolean {
     // Can change if not in final state
-    return order.status !== OrderStatusType.Completed &&
-      order.status !== OrderStatusType.Cancelled;
+    return order.statusNameEnum !== OrderStatusType.Completed &&
+      order.statusNameEnum !== OrderStatusType.Cancelled;
   }
 
   // === Display Helpers ===
 
   getCustomerName(order: ListOrdersQueryDto): string {
-    return `${order.user.userFirstname} ${order.user.userLastname}`;
+    return `${order.userInfo.firstName} ${order.userInfo.lastName}`;
   }
 
   getCustomerAddress(order: ListOrdersQueryDto): string {
-    return `${order.user.userAddress}, ${order.user.userCity}`;
+    return `${order.userInfo.userAddress}, ${order.userInfo.userCity}`;
   }
 
   /**

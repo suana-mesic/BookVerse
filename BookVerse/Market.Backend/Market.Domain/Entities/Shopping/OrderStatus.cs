@@ -9,11 +9,20 @@ namespace Market.Domain.Entities.Shopping
 {
     public class OrderStatus:BaseEntity
     {
-        public string StatusName { get; set; }
+        public OrderStatusType StatusName { get; set; }
 
         public static class Constraints
         {
             public const int StatusNameMaxLength = 30;
         }
+
     }
+        public enum OrderStatusType
+        {
+            Draft = 1,
+            Confirmed = 2,
+            Paid = 3,
+            Completed = 4,
+            Cancelled = 5
+        }
 }

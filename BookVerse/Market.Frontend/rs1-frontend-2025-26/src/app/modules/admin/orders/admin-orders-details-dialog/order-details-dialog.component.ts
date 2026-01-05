@@ -1,8 +1,8 @@
-import {Component, inject, Inject} from '@angular/core';
-import {GetOrderByIdQueryDto, OrderStatusType} from '../../../../api-services/orders/orders-api.models';
+import { Component, inject, Inject } from '@angular/core';
+import { GetOrderByIdQueryDto, OrderStatusType } from '../../../../api-services/orders/orders-api.models';
 import { OrderStatusHelper } from '../../../../api-services/orders/order-status.helper';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {OrdersApiService} from '../../../../api-services/orders/orders-api.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { OrdersApiService } from '../../../../api-services/orders/orders-api.service';
 
 export interface OrderDetailsDialogData {
   orderId: number;
@@ -22,7 +22,7 @@ export class OrderDetailsDialogComponent {
   isLoading = false;
   errorMessage: string | null = null;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: OrderDetailsDialogData) {}
+  constructor(@Inject(MAT_DIALOG_DATA) public data: OrderDetailsDialogData) { }
 
   ngOnInit(): void {
     this.loadOrderDetails();
