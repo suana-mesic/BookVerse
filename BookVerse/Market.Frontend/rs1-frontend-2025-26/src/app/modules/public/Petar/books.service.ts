@@ -17,6 +17,12 @@ export class BooksService {
     return this.http.get<Array<Book>>(url);
   }
 
+  getBookDetailsFromApi(bookId: string) {
+    const url = `https://localhost:7260/Books/${bookId}`;
+    console.log(url);
+    return this.http.get<Array<Book>>(url);
+  }
+
   apiUrl: string = '';
   createBook(book: CreateBookCommand): Observable<any> {
     return this.http.post('https://localhost:7260/Books', book);

@@ -13,7 +13,7 @@
   </div>
   <div class="body__books">
     @for(book of books(); track book.id) {
-    <app-book [book]="book" />
+    <app-book [routerLink]="['/knjige', book.id]" [book]="book" />
     }
   </div>
   <div class="body__pages">

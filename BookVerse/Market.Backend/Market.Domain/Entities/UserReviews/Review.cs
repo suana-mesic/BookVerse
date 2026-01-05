@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Market.Domain.Entities.Review
+namespace Market.Domain.Entities.UserReviews
 {
-    public class Reviews
+    public class Review
     {
         public int BookId { get; set; }
         public Books Book { get; set; }

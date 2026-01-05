@@ -1,6 +1,5 @@
-﻿using Market.Application.Modules.Review.Queries.List;
-
-namespace Market.Application.Modules.Review.Queries.List;
+﻿
+namespace Market.Application.Modules.Reviews.Queries.List;
 
 public sealed class ListReviewsQuery : BasePagedQuery<ListReviewsQueryDto>
 {

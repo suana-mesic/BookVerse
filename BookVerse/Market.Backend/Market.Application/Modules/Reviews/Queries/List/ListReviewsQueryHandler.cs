@@ -1,7 +1,7 @@
-﻿using Market.Application.Modules.Review.Queries.GetById;
-using Market.Application.Modules.Review.Queries.List;
+﻿using Market.Application.Modules.Reviews.Queries.GetById;
+using Market.Application.Modules.Reviews.Queries.List;
 
-namespace Market.Application.Modules.Review.Queries.List;
+namespace Market.Application.Modules.Reviews.Queries.List;
 
 public sealed class ListReviewsQueryHandler(IAppDbContext ctx)
         : IRequestHandler<ListReviewsQuery, PageResult<ListReviewsQueryDto>>

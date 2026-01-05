@@ -1,5 +1,5 @@
 ﻿using Market.Application.Abstractions;
-using Market.Domain.Entities.Review;
+using Market.Domain.Entities.UserReviews;
 using Market.Domain.Entities.Shopping;
 using Market.Domain.Entities.Whishlist;
 using Market.Infrastructure.Database.Configurations.Shopping;
@@ -18,7 +18,7 @@ public partial class DatabaseContext : DbContext, IAppDbContext
     public DbSet<Category> Categories => Set<Category>();
     public DbSet<Publisher> Publishers => Set<Publisher>();
     public DbSet<BookFormat> BookFormats => Set<BookFormat>();
-    public DbSet<Reviews> Reviews => Set<Reviews>();
+    public DbSet<Review> Reviews => Set<Review>();
     public DbSet<WishlistItems> WishlistItems => Set<WishlistItems>();
     public DbSet<Store> Stores => Set<Store>();
     public DbSet<StoreInventory> StoreInventory => Set<StoreInventory>();

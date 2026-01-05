@@ -1,4 +1,4 @@
-﻿namespace Market.Application.Modules.Review.Commands.Create;
+﻿namespace Market.Application.Modules.Reviews.Commands.Create;
 
 public class CreateReviewCommand : IRequest<string>
 {

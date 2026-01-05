@@ -1,0 +1,163 @@
+<app-header />
+<div class="book">
+  <div class="book__return" [routerLink]="['/']">
+    <img src="icons/arrow_black.png" alt="arr" />
+    <h2>Nazad</h2>
+  </div>
+  <div class="book__container">
+    <img src="https://delfi.rs/_img/artikli/2014/10/dervis_i_smrt_vv.jpg" alt="slika knjige" />
+    <aside>
+      <div class="book__title-and-authors">
+        <h1>{{ book()?.title }}</h1>
+        <div class="book__authors">
+          @for(author of authors(); let i = $index; track author.id){
+          <label>{{ `${author.firstName} ${author.lastName}` }}</label>
+          @if(i < authors().length - 1) {
+          <label>,&nbsp;</label>
+          } }
+        </div>
+      </div>
+      <div class="book__rating">
+        <img src="icons/star.png" alt="star" />
+        <img src="icons/star.png" alt="star" />
+        <img src="icons/star.png" alt="star" />
+        <img src="icons/star.png" alt="star" />
+        <img src="icons/star.png" alt="star" />
+        <h2>4.0</h2>
+      </div>
+      <div class="book__info">
+        <h2>Izdavač: {{ book()?.publisherName }}</h2>
+        <h2>Broj kupaca: 12</h2>
+        <h2>ISBN: {{ book()?.isbn }}</h2>
+        <h2>Broj strana: {{ book()?.pageCount }}</h2>
+        <h2>Jezik: {{ book()?.language }}</h2>
+      </div>
+      <p>{{ book()?.description }}</p>
+    </aside>
+  </div>
+  <div class="book__buy">
+    <h1>Cijena: {{ book()?.price }} KM</h1>
+    <div>
+      <button>Dodaj u korpu <img src="icons/cart.png" alt="cart" /></button>
+    </div>
+  </div>
+  <div class="book__stores">
+    @if (storeInfoOpened) {
+    <div class="book__stores-info">
+      <h1>{{ this.storeName() }}</h1>
+      <div class="book__stores-info--close" (click)="toggleStoreInfo()">X</div>
+      <h2>Radno vrijeme:</h2>
+      <h3>Pon - Pet: {{ this.storeWorkTimeMonFri() }}</h3>
+      <h3>Sub - Ned: {{ this.storeWorkTimeSatSun() }}</h3>
+      <h2>Email:</h2>
+      <h3>{{ this.storeEmail() }}</h3>
+      <h2>Adresa:</h2>
+      <h3>{{ this.storeAddress() }}</h3>
+      <h2>Kontakt telefon:</h2>
+      <h3>{{ this.storePhone() }}</h3>
+    </div>
+    }
+    <span>
+      <h2>Dostupno u prodavnicama:</h2>
+      <h3 title="Prikaži informacije" (click)="setCentralBookstore()">
+        Central bookstore (Mostar): 12 knjiga
+      </h3>
+      <h3 title="Prikaži informacije" (click)="setForticaBooks()">
+        Fortica books (Mostar): 14 knjiga
+      </h3>
+      <h3 title="Prikaži informacije" (click)="setSpaceBookstore()">
+        Space bookstore (Sarajevo): 19 knjiga
+      </h3>
+    </span>
+    <app-map class="book__stores-map"></app-map>
+  </div>
+
+  <h1 style="font-size: 3rem; margin: 1rem 0">Recenzije</h1>
+  <div class="book__reviews">
+    <span>
+      <div class="book__reviews-header">
+        <h1>Ocjena</h1>
+        <div class="book__rating">
+          <img src="icons/star.png" alt="star" [class.dark-star]="this.reviewRating >= 1" />
+          <img src="icons/star.png" alt="star" [class.dark-star]="this.reviewRating >= 2" />
+          <img src="icons/star.png" alt="star" [class.dark-star]="this.reviewRating >= 3" />
+          <img src="icons/star.png" alt="star" [class.dark-star]="this.reviewRating >= 4" />
+          <img src="icons/star.png" alt="star" [class.dark-star]="this.reviewRating >= 5" />
+          <h1>{{ this.reviewRating.toFixed(1) }}</h1>
+        </div>
+      </div>
+      <div class="book__reviews-grades">
+        <div class="book__reviews-grade">
+          <span>
+            <h1>5</h1>
+            <img src="icons/star.png" alt="star" />
+            <div class="book__review-bar">
+              <div class="book__review-fill" [style.width.px]="reviewRatingsBarWidth[4]"></div>
+            </div>
+          </span>
+          <h1>({{ this.reviewRatingsCount[4] }})</h1>
+        </div>
+        <div class="book__reviews-grade">
+          <span>
+            <h1>4</h1>
+            <img src="icons/star.png" alt="star" />
+            <div class="book__review-bar">
+              <div class="book__review-fill" [style.width.px]="reviewRatingsBarWidth[3]"></div>
+            </div>
+          </span>
+          <h1>({{ this.reviewRatingsCount[3] }})</h1>
+        </div>
+        <div class="book__reviews-grade">
+          <span>
+            <h1>3</h1>
+            <img src="icons/star.png" alt="star" />
+            <div class="book__review-bar">
+              <div class="book__review-fill" [style.width.px]="reviewRatingsBarWidth[2]"></div>
+            </div>
+          </span>
+          <h1>({{ this.reviewRatingsCount[2] }})</h1>
+        </div>
+        <div class="book__reviews-grade">
+          <span>
+            <h1>2</h1>
+            <img src="icons/star.png" alt="star" />
+            <div class="book__review-bar">
+              <div class="book__review-fill" [style.width.px]="reviewRatingsBarWidth[1]"></div>
+            </div>
+          </span>
+          <h1>({{ this.reviewRatingsCount[1] }})</h1>
+        </div>
+        <div class="book__reviews-grade">
+          <span>
+            <h1>1</h1>
+            <img src="icons/star.png" alt="star" />
+            <div class="book__review-bar">
+              <div class="book__review-fill" [style.width.px]="reviewRatingsBarWidth[0]"></div>
+            </div>
+          </span>
+          <h1>({{ this.reviewRatingsCount[0] }})</h1>
+        </div>
+      </div>
+    </span>
+    <aside class="book__review-section">
+      @for(review of reviews(); let i = $index; track review.bookId){
+      <article>
+        <img class="book__review-profile-picture" />
+        <section>
+          <h2>{{ review.user.firstName }} {{ review.user.lastName }}</h2>
+          <div class="book__review-user-rating">
+            <img src="icons/star.png" alt="star" [class.dark-star]="review.rating >= 1" />
+            <img src="icons/star.png" alt="star" [class.dark-star]="review.rating >= 2" />
+            <img src="icons/star.png" alt="star" [class.dark-star]="review.rating >= 3" />
+            <img src="icons/star.png" alt="star" [class.dark-star]="review.rating >= 4" />
+            <img src="icons/star.png" alt="star" [class.dark-star]="review.rating >= 5" />
+            <h3>{{ review.datePosted.toString().split('T')[0] }}</h3>
+          </div>
+        </section>
+      </article>
+      <h3>{{ review.comment }}</h3>
+
+      }
+    </aside>
+  </div>
+</div>

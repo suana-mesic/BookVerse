@@ -1,5 +1,6 @@
 import { Component, input } from '@angular/core';
 import { Book } from '../Petar/book/Book';
+import { BookOverview } from '../Petar/book/BookOverview';
 
 @Component({
   selector: 'app-book',
@@ -8,5 +9,5 @@ import { Book } from '../Petar/book/Book';
   styleUrl: './book.component.css',
 })
 export class BookComponent {
-  book = input.required<Book>();
+  book = input.required<BookOverview>();
 }

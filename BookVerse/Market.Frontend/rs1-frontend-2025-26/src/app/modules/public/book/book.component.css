@@ -31,10 +31,20 @@ h4 {
   width: 200px;
 }
 
+.book:hover {
+  cursor: pointer;
+}
+
 .book__cover {
   background-color: #555;
   height: 270px;
+  overflow: hidden;
 }
+
+.book__cover img {
+  width: 100%;
+}
+
 .book__rating-and-count {
   display: flex;
   justify-content: start;

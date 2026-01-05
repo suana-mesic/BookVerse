@@ -1,7 +1,7 @@
-using Market.Application.Modules.Review.Commands.Create;
-using Market.Application.Modules.Review.Queries.GetById;
-using Market.Application.Modules.Review.Queries.List;
-using Market.Application.Modules.Review.Commands.Update;
+using Market.Application.Modules.Reviews.Commands.Create;
+using Market.Application.Modules.Reviews.Queries.GetById;
+using Market.Application.Modules.Reviews.Queries.List;
+using Market.Application.Modules.Reviews.Commands.Update;
 using Market.Application.Modules.Reviews.Commands.Delete;
 
 namespace Market.API.Controllers;
@@ -11,12 +11,13 @@ namespace Market.API.Controllers;
 [Route("[controller]")]
 public class ReviewsController(ISender sender) : ControllerBase
 {
-    [HttpGet("{bookId:int}/{userId:int}")]
-    public async Task<GetReviewsByIdQueryDto> GetById(int bookId, int userId, CancellationToken ct)
+    [HttpGet]
+    public async Task<GetReviewsByIdQueryDto> GetById([FromQuery] int? bookId, [FromQuery] int? userId, CancellationToken ct)
     {
         var review = await sender.Send(new GetReviewsByIdQuery { BookId = bookId, UserId = userId }, ct);
         return review; // if NotFoundException -> 404 via middleware
     }
+
 
     [HttpPost]
     public async Task<ActionResult<string>> CreateProductCategory(CreateReviewCommand command, CancellationToken ct)
@@ -25,12 +26,12 @@ public class ReviewsController(ISender sender) : ControllerBase
         return poruka;
     }
 
-    [HttpGet]
+    /*[HttpGet]
     public async Task<PageResult<ListReviewsQueryDto>> List([FromQuery] ListReviewsQuery query, CancellationToken ct)
     {
         var result = await sender.Send(query, ct);
         return result;
-    }
+    }*/
 
     [HttpPut("{bookId:int}/{userId:int}")]
     public async Task Update(int bookId, int userId, UpdateReviewCommand command, CancellationToken ct)
