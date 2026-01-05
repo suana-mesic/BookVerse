@@ -1,5 +1,4 @@
-﻿using Market.Application.Modules.Review.Queries.List;
-using Market.Domain.Entities.Shopping;
+﻿using Market.Domain.Entities.Shopping;
 using System;
 using System.Collections.Generic;
 using System.Linq;

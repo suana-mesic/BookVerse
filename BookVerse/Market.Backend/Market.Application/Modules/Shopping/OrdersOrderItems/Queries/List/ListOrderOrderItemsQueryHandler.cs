@@ -1,5 +1,4 @@
-﻿using Market.Application.Modules.Review.Queries.List;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

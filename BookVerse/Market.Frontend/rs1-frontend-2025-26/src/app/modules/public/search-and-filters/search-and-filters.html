@@ -30,7 +30,14 @@
           <div class="category-and-price-range__book__search">
             <input type="text" placeholder="Pretražite kategorije" />
           </div>
+          @for(category of categories(); let i = $index; track category.id){
           <div class="search-and-filters__select">
+            <div class="search-and-filters__select__checkbox"></div>
+            <h2>{{ category.name }}</h2>
+          </div>
+          }
+
+          <!-- <div class="search-and-filters__select">
             <div class="search-and-filters__select__checkbox"></div>
             <h2>Test</h2>
           </div>
@@ -38,12 +45,7 @@
           <div class="search-and-filters__select">
             <div class="search-and-filters__select__checkbox"></div>
             <h2>Test</h2>
-          </div>
-
-          <div class="search-and-filters__select">
-            <div class="search-and-filters__select__checkbox"></div>
-            <h2>Test</h2>
-          </div>
+          </div> -->
         </div>
       </div>
 

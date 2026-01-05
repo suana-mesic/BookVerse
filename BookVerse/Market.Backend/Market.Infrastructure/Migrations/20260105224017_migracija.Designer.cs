@@ -12,13 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Market.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-<<<<<<<< HEAD:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251209151441_Change_Status_To_Enum.Designer.cs
-    [Migration("20251209151441_Change_Status_To_Enum")]
-    partial class Change_Status_To_Enum
-========
-    [Migration("20251215200252_migracija")]
+    [Migration("20260105224017_migracija")]
     partial class migracija
->>>>>>>> 6c656dc95d58ca97400a00bf10585084a8752cf6:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251215200252_migracija.Designer.cs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -161,11 +156,7 @@ namespace Market.Infrastructure.Migrations
                             Id = 1,
                             City = "Mostar",
                             Country = "BiH",
-<<<<<<<< HEAD:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251209151441_Change_Status_To_Enum.Designer.cs
-                            CreatedAtUtc = new DateTime(2025, 12, 9, 16, 14, 39, 620, DateTimeKind.Local).AddTicks(8000),
-========
-                            CreatedAtUtc = new DateTime(2025, 12, 15, 21, 2, 51, 106, DateTimeKind.Local).AddTicks(1106),
->>>>>>>> 6c656dc95d58ca97400a00bf10585084a8752cf6:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251215200252_migracija.Designer.cs
+                            CreatedAtUtc = new DateTime(2026, 1, 5, 23, 40, 16, 900, DateTimeKind.Local).AddTicks(5044),
                             IsDeleted = false,
                             Line1 = "Maršala Tita"
                         },
@@ -174,11 +165,7 @@ namespace Market.Infrastructure.Migrations
                             Id = 2,
                             City = "Sarajevo",
                             Country = "BiH",
-<<<<<<<< HEAD:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251209151441_Change_Status_To_Enum.Designer.cs
-                            CreatedAtUtc = new DateTime(2025, 12, 9, 16, 14, 39, 620, DateTimeKind.Local).AddTicks(8105),
-========
-                            CreatedAtUtc = new DateTime(2025, 12, 15, 21, 2, 51, 106, DateTimeKind.Local).AddTicks(1173),
->>>>>>>> 6c656dc95d58ca97400a00bf10585084a8752cf6:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251215200252_migracija.Designer.cs
+                            CreatedAtUtc = new DateTime(2026, 1, 5, 23, 40, 16, 900, DateTimeKind.Local).AddTicks(5092),
                             IsDeleted = false,
                             Line1 = "Vrbanja 1"
                         },
@@ -187,11 +174,7 @@ namespace Market.Infrastructure.Migrations
                             Id = 3,
                             City = "Jablanica",
                             Country = "BiH",
-<<<<<<<< HEAD:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251209151441_Change_Status_To_Enum.Designer.cs
-                            CreatedAtUtc = new DateTime(2025, 12, 9, 16, 14, 39, 620, DateTimeKind.Local).AddTicks(8116),
-========
-                            CreatedAtUtc = new DateTime(2025, 12, 15, 21, 2, 51, 106, DateTimeKind.Local).AddTicks(1177),
->>>>>>>> 6c656dc95d58ca97400a00bf10585084a8752cf6:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251215200252_migracija.Designer.cs
+                            CreatedAtUtc = new DateTime(2026, 1, 5, 23, 40, 16, 900, DateTimeKind.Local).AddTicks(5096),
                             IsDeleted = false,
                             Line1 = "Gornja Kolonija SP 100"
                         });
@@ -243,11 +226,7 @@ namespace Market.Infrastructure.Migrations
                             Id = 1,
                             Biography = "biografija",
                             Country = "BiH",
-<<<<<<<< HEAD:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251209151441_Change_Status_To_Enum.Designer.cs
-                            CreatedAtUtc = new DateTime(2025, 12, 9, 16, 14, 39, 984, DateTimeKind.Local).AddTicks(4014),
-========
-                            CreatedAtUtc = new DateTime(2025, 12, 15, 21, 2, 51, 361, DateTimeKind.Local).AddTicks(9840),
->>>>>>>> 6c656dc95d58ca97400a00bf10585084a8752cf6:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251215200252_migracija.Designer.cs
+                            CreatedAtUtc = new DateTime(2026, 1, 5, 23, 40, 17, 106, DateTimeKind.Local).AddTicks(7874),
                             FirstName = "Meša",
                             IsDeleted = false,
                             LastName = "Selimović"
@@ -257,11 +236,7 @@ namespace Market.Infrastructure.Migrations
                             Id = 2,
                             Biography = "biografija",
                             Country = "BiH",
-<<<<<<<< HEAD:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251209151441_Change_Status_To_Enum.Designer.cs
-                            CreatedAtUtc = new DateTime(2025, 12, 9, 16, 14, 39, 984, DateTimeKind.Local).AddTicks(4031),
-========
-                            CreatedAtUtc = new DateTime(2025, 12, 15, 21, 2, 51, 361, DateTimeKind.Local).AddTicks(9863),
->>>>>>>> 6c656dc95d58ca97400a00bf10585084a8752cf6:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251215200252_migracija.Designer.cs
+                            CreatedAtUtc = new DateTime(2026, 1, 5, 23, 40, 17, 106, DateTimeKind.Local).AddTicks(7886),
                             FirstName = "Ivo",
                             IsDeleted = false,
                             LastName = "Andrić"
@@ -271,11 +246,7 @@ namespace Market.Infrastructure.Migrations
                             Id = 3,
                             Biography = "biografija",
                             Country = "BiH",
-<<<<<<<< HEAD:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251209151441_Change_Status_To_Enum.Designer.cs
-                            CreatedAtUtc = new DateTime(2025, 12, 9, 16, 14, 39, 984, DateTimeKind.Local).AddTicks(4038),
-========
-                            CreatedAtUtc = new DateTime(2025, 12, 15, 21, 2, 51, 361, DateTimeKind.Local).AddTicks(9870),
->>>>>>>> 6c656dc95d58ca97400a00bf10585084a8752cf6:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251215200252_migracija.Designer.cs
+                            CreatedAtUtc = new DateTime(2026, 1, 5, 23, 40, 17, 106, DateTimeKind.Local).AddTicks(7890),
                             FirstName = "Branko",
                             IsDeleted = false,
                             LastName = "Ćopić"
@@ -312,33 +283,21 @@ namespace Market.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-<<<<<<<< HEAD:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251209151441_Change_Status_To_Enum.Designer.cs
-                            CreatedAtUtc = new DateTime(2025, 12, 9, 16, 14, 39, 984, DateTimeKind.Local).AddTicks(3381),
-========
-                            CreatedAtUtc = new DateTime(2025, 12, 15, 21, 2, 51, 361, DateTimeKind.Local).AddTicks(9309),
->>>>>>>> 6c656dc95d58ca97400a00bf10585084a8752cf6:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251215200252_migracija.Designer.cs
+                            CreatedAtUtc = new DateTime(2026, 1, 5, 23, 40, 17, 106, DateTimeKind.Local).AddTicks(7200),
                             Format = "Tvrdi uvez",
                             IsDeleted = false
                         },
                         new
                         {
                             Id = 2,
-<<<<<<<< HEAD:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251209151441_Change_Status_To_Enum.Designer.cs
-                            CreatedAtUtc = new DateTime(2025, 12, 9, 16, 14, 39, 984, DateTimeKind.Local).AddTicks(3397),
-========
-                            CreatedAtUtc = new DateTime(2025, 12, 15, 21, 2, 51, 361, DateTimeKind.Local).AddTicks(9340),
->>>>>>>> 6c656dc95d58ca97400a00bf10585084a8752cf6:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251215200252_migracija.Designer.cs
+                            CreatedAtUtc = new DateTime(2026, 1, 5, 23, 40, 17, 106, DateTimeKind.Local).AddTicks(7206),
                             Format = "Tvrdi papirni uvez",
                             IsDeleted = false
                         },
                         new
                         {
                             Id = 3,
-<<<<<<<< HEAD:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251209151441_Change_Status_To_Enum.Designer.cs
-                            CreatedAtUtc = new DateTime(2025, 12, 9, 16, 14, 39, 984, DateTimeKind.Local).AddTicks(3414),
-========
-                            CreatedAtUtc = new DateTime(2025, 12, 15, 21, 2, 51, 361, DateTimeKind.Local).AddTicks(9351),
->>>>>>>> 6c656dc95d58ca97400a00bf10585084a8752cf6:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251215200252_migracija.Designer.cs
+                            CreatedAtUtc = new DateTime(2026, 1, 5, 23, 40, 17, 106, DateTimeKind.Local).AddTicks(7209),
                             Format = "Spiralni uvez",
                             IsDeleted = false
                         });
@@ -414,11 +373,7 @@ namespace Market.Infrastructure.Migrations
                         {
                             Id = 1,
                             BookFormatId = 2,
-<<<<<<<< HEAD:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251209151441_Change_Status_To_Enum.Designer.cs
-                            CreatedAtUtc = new DateTime(2025, 12, 9, 16, 14, 39, 984, DateTimeKind.Local).AddTicks(4178),
-========
-                            CreatedAtUtc = new DateTime(2025, 12, 15, 21, 2, 51, 362, DateTimeKind.Local).AddTicks(3),
->>>>>>>> 6c656dc95d58ca97400a00bf10585084a8752cf6:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251215200252_migracija.Designer.cs
+                            CreatedAtUtc = new DateTime(2026, 1, 5, 23, 40, 17, 106, DateTimeKind.Local).AddTicks(7988),
                             Description = "Roman koji se bavi pitanjima vjere, duhovnosti i smrti, kroz priču o Dervišu koji pokušava da pronađe smisao u životu i smrti. Kroz likove i filozofske dijaloge, autor istražuje moralne dileme i ljudsku patnju.",
                             ISBN = "978-86-03-02636-0",
                             ImageUrl = "https://example.com/images/dervis_i_smrt.jpg",
@@ -435,11 +390,7 @@ namespace Market.Infrastructure.Migrations
                         {
                             Id = 2,
                             BookFormatId = 2,
-<<<<<<<< HEAD:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251209151441_Change_Status_To_Enum.Designer.cs
-                            CreatedAtUtc = new DateTime(2025, 12, 9, 16, 14, 39, 984, DateTimeKind.Local).AddTicks(4199),
-========
-                            CreatedAtUtc = new DateTime(2025, 12, 15, 21, 2, 51, 362, DateTimeKind.Local).AddTicks(22),
->>>>>>>> 6c656dc95d58ca97400a00bf10585084a8752cf6:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251215200252_migracija.Designer.cs
+                            CreatedAtUtc = new DateTime(2026, 1, 5, 23, 40, 17, 106, DateTimeKind.Local).AddTicks(7998),
                             Description = "Roman koji opisuje istoriju jednog grada i njegove mostove, kroz sudbine ljudi koji su živeli u različitim vremenima. Andrić istražuje ljudsku sudbinu, istoriju i političke i kulturne promene kroz život mosta na Drini.",
                             ISBN = "978-86-07-00752-2",
                             ImageUrl = "https://example.com/images/na_drini_cuprija.jpg",
@@ -456,11 +407,7 @@ namespace Market.Infrastructure.Migrations
                         {
                             Id = 3,
                             BookFormatId = 2,
-<<<<<<<< HEAD:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251209151441_Change_Status_To_Enum.Designer.cs
-                            CreatedAtUtc = new DateTime(2025, 12, 9, 16, 14, 39, 984, DateTimeKind.Local).AddTicks(4209),
-========
-                            CreatedAtUtc = new DateTime(2025, 12, 15, 21, 2, 51, 362, DateTimeKind.Local).AddTicks(29),
->>>>>>>> 6c656dc95d58ca97400a00bf10585084a8752cf6:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251215200252_migracija.Designer.cs
+                            CreatedAtUtc = new DateTime(2026, 1, 5, 23, 40, 17, 106, DateTimeKind.Local).AddTicks(8004),
                             Description = "Roman koji kroz priču o životu jednog mladog čoveka istražuje teme ljubavi, smrti, i socijalnih promjena. Ćopić se bavi i univerzalnim pitanjima identiteta i postojanja u svetu koji se menja.",
                             ISBN = "978-86-03-00942-5",
                             ImageUrl = "https://example.com/images/basta_pepeo.jpg",
@@ -508,11 +455,7 @@ namespace Market.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-<<<<<<<< HEAD:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251209151441_Change_Status_To_Enum.Designer.cs
-                            CreatedAtUtc = new DateTime(2025, 12, 9, 16, 14, 39, 984, DateTimeKind.Local).AddTicks(3783),
-========
-                            CreatedAtUtc = new DateTime(2025, 12, 15, 21, 2, 51, 361, DateTimeKind.Local).AddTicks(9606),
->>>>>>>> 6c656dc95d58ca97400a00bf10585084a8752cf6:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251215200252_migracija.Designer.cs
+                            CreatedAtUtc = new DateTime(2026, 1, 5, 23, 40, 17, 106, DateTimeKind.Local).AddTicks(7458),
                             IsDeleted = false,
                             IsEnabled = false,
                             Name = "Roman"
@@ -520,11 +463,7 @@ namespace Market.Infrastructure.Migrations
                         new
                         {
                             Id = 2,
-<<<<<<<< HEAD:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251209151441_Change_Status_To_Enum.Designer.cs
-                            CreatedAtUtc = new DateTime(2025, 12, 9, 16, 14, 39, 984, DateTimeKind.Local).AddTicks(3832),
-========
-                            CreatedAtUtc = new DateTime(2025, 12, 15, 21, 2, 51, 361, DateTimeKind.Local).AddTicks(9636),
->>>>>>>> 6c656dc95d58ca97400a00bf10585084a8752cf6:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251215200252_migracija.Designer.cs
+                            CreatedAtUtc = new DateTime(2026, 1, 5, 23, 40, 17, 106, DateTimeKind.Local).AddTicks(7471),
                             IsDeleted = false,
                             IsEnabled = false,
                             Name = "Poezija"
@@ -532,11 +471,7 @@ namespace Market.Infrastructure.Migrations
                         new
                         {
                             Id = 3,
-<<<<<<<< HEAD:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251209151441_Change_Status_To_Enum.Designer.cs
-                            CreatedAtUtc = new DateTime(2025, 12, 9, 16, 14, 39, 984, DateTimeKind.Local).AddTicks(3881),
-========
-                            CreatedAtUtc = new DateTime(2025, 12, 15, 21, 2, 51, 361, DateTimeKind.Local).AddTicks(9701),
->>>>>>>> 6c656dc95d58ca97400a00bf10585084a8752cf6:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251215200252_migracija.Designer.cs
+                            CreatedAtUtc = new DateTime(2026, 1, 5, 23, 40, 17, 106, DateTimeKind.Local).AddTicks(7475),
                             IsDeleted = false,
                             IsEnabled = false,
                             Name = "Drama"
@@ -649,11 +584,7 @@ namespace Market.Infrastructure.Migrations
                             Id = 1,
                             City = "Sarajevo",
                             Country = "Bosna i Hercegovina",
-<<<<<<<< HEAD:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251209151441_Change_Status_To_Enum.Designer.cs
-                            CreatedAtUtc = new DateTime(2025, 12, 9, 16, 14, 39, 984, DateTimeKind.Local).AddTicks(3560),
-========
-                            CreatedAtUtc = new DateTime(2025, 12, 15, 21, 2, 51, 361, DateTimeKind.Local).AddTicks(9489),
->>>>>>>> 6c656dc95d58ca97400a00bf10585084a8752cf6:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251215200252_migracija.Designer.cs
+                            CreatedAtUtc = new DateTime(2026, 1, 5, 23, 40, 17, 106, DateTimeKind.Local).AddTicks(7353),
                             IsDeleted = false,
                             Name = "Buybook"
                         },
@@ -662,11 +593,7 @@ namespace Market.Infrastructure.Migrations
                             Id = 2,
                             City = "Sarajevo",
                             Country = "Bosna i Hercegovina",
-<<<<<<<< HEAD:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251209151441_Change_Status_To_Enum.Designer.cs
-                            CreatedAtUtc = new DateTime(2025, 12, 9, 16, 14, 39, 984, DateTimeKind.Local).AddTicks(3580),
-========
-                            CreatedAtUtc = new DateTime(2025, 12, 15, 21, 2, 51, 361, DateTimeKind.Local).AddTicks(9502),
->>>>>>>> 6c656dc95d58ca97400a00bf10585084a8752cf6:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251215200252_migracija.Designer.cs
+                            CreatedAtUtc = new DateTime(2026, 1, 5, 23, 40, 17, 106, DateTimeKind.Local).AddTicks(7358),
                             IsDeleted = false,
                             Name = "Svjetlost"
                         },
@@ -675,11 +602,7 @@ namespace Market.Infrastructure.Migrations
                             Id = 3,
                             City = "Beograd",
                             Country = "Srbija",
-<<<<<<<< HEAD:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251209151441_Change_Status_To_Enum.Designer.cs
-                            CreatedAtUtc = new DateTime(2025, 12, 9, 16, 14, 39, 984, DateTimeKind.Local).AddTicks(3586),
-========
-                            CreatedAtUtc = new DateTime(2025, 12, 15, 21, 2, 51, 361, DateTimeKind.Local).AddTicks(9507),
->>>>>>>> 6c656dc95d58ca97400a00bf10585084a8752cf6:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251215200252_migracija.Designer.cs
+                            CreatedAtUtc = new DateTime(2026, 1, 5, 23, 40, 17, 106, DateTimeKind.Local).AddTicks(7374),
                             IsDeleted = false,
                             Name = "Laguna"
                         });
@@ -867,11 +790,7 @@ namespace Market.Infrastructure.Migrations
                         {
                             Id = 1,
                             AddressId = 1,
-<<<<<<<< HEAD:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251209151441_Change_Status_To_Enum.Designer.cs
-                            CreatedAtUtc = new DateTime(2025, 12, 9, 16, 14, 39, 742, DateTimeKind.Local).AddTicks(9473),
-========
-                            CreatedAtUtc = new DateTime(2025, 12, 15, 21, 2, 51, 185, DateTimeKind.Local).AddTicks(169),
->>>>>>>> 6c656dc95d58ca97400a00bf10585084a8752cf6:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251215200252_migracija.Designer.cs
+                            CreatedAtUtc = new DateTime(2026, 1, 5, 23, 40, 16, 971, DateTimeKind.Local).AddTicks(421),
                             Email = "admin@gmail.com",
                             FirstName = "admin",
                             IsAdmin = true,
@@ -880,22 +799,14 @@ namespace Market.Infrastructure.Migrations
                             IsEnabled = true,
                             IsManager = false,
                             LastName = "user",
-<<<<<<<< HEAD:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251209151441_Change_Status_To_Enum.Designer.cs
-                            PasswordHash = "AQAAAAIAAYagAAAAECArwg07CYSDxAq4/YLSWBehVQPNFLlmAMkJlQaA59/bQwcAqkJuLtKV3JTqTeu1TA==",
-========
-                            PasswordHash = "AQAAAAIAAYagAAAAEM04JL8LcKhf0d54uha74BOBP5KPrym9yyA2nYu7R5mTiPAPbpj+q3nRI8EplJ8VWQ==",
->>>>>>>> 6c656dc95d58ca97400a00bf10585084a8752cf6:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251215200252_migracija.Designer.cs
+                            PasswordHash = "AQAAAAIAAYagAAAAEK+G5wo8EUni9SJY4QxRATT6gTODxikW/bnLXV16t9aa1blHdwOEcr0Qwfl5lMUetg==",
                             TokenVersion = 0
                         },
                         new
                         {
                             Id = 2,
                             AddressId = 2,
-<<<<<<<< HEAD:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251209151441_Change_Status_To_Enum.Designer.cs
-                            CreatedAtUtc = new DateTime(2025, 12, 9, 16, 14, 39, 871, DateTimeKind.Local).AddTicks(1887),
-========
-                            CreatedAtUtc = new DateTime(2025, 12, 15, 21, 2, 51, 280, DateTimeKind.Local).AddTicks(8053),
->>>>>>>> 6c656dc95d58ca97400a00bf10585084a8752cf6:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251215200252_migracija.Designer.cs
+                            CreatedAtUtc = new DateTime(2026, 1, 5, 23, 40, 17, 38, DateTimeKind.Local).AddTicks(7720),
                             Email = "string",
                             FirstName = "string",
                             IsAdmin = false,
@@ -904,22 +815,14 @@ namespace Market.Infrastructure.Migrations
                             IsEnabled = true,
                             IsManager = false,
                             LastName = "string",
-<<<<<<<< HEAD:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251209151441_Change_Status_To_Enum.Designer.cs
-                            PasswordHash = "AQAAAAIAAYagAAAAEChfO4AIOjGMwPPiTAXkKWrMFpzWHXagWlscnQ3wkc5ASHKOshI5SerMBwA6tZnhQA==",
-========
-                            PasswordHash = "AQAAAAIAAYagAAAAELicRsQ0eAnmV8+ExB7FuQm4Lytl3tt0XIiopfhQI591nWvnrFJiU3OITOxeEE55/Q==",
->>>>>>>> 6c656dc95d58ca97400a00bf10585084a8752cf6:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251215200252_migracija.Designer.cs
+                            PasswordHash = "AQAAAAIAAYagAAAAEDGa3HpXe5HWDuJPfNMWNXq0oWbHKn10MUAomqfTS/On/PlQyO5SAHbhroQUR7yF4w==",
                             TokenVersion = 0
                         },
                         new
                         {
                             Id = 3,
                             AddressId = 2,
-<<<<<<<< HEAD:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251209151441_Change_Status_To_Enum.Designer.cs
-                            CreatedAtUtc = new DateTime(2025, 12, 9, 16, 14, 39, 984, DateTimeKind.Local).AddTicks(2531),
-========
-                            CreatedAtUtc = new DateTime(2025, 12, 15, 21, 2, 51, 361, DateTimeKind.Local).AddTicks(8008),
->>>>>>>> 6c656dc95d58ca97400a00bf10585084a8752cf6:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251215200252_migracija.Designer.cs
+                            CreatedAtUtc = new DateTime(2026, 1, 5, 23, 40, 17, 106, DateTimeKind.Local).AddTicks(6530),
                             Email = "manager@gmail.com",
                             FirstName = "manager",
                             IsAdmin = false,
@@ -928,11 +831,7 @@ namespace Market.Infrastructure.Migrations
                             IsEnabled = true,
                             IsManager = true,
                             LastName = "user",
-<<<<<<<< HEAD:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251209151441_Change_Status_To_Enum.Designer.cs
-                            PasswordHash = "AQAAAAIAAYagAAAAEMJuCk1hHcQir7Qg9284WMc9rbrn/KhcWo/omt8swyd3NvrgEcJhOWBKbe94raw+7w==",
-========
-                            PasswordHash = "AQAAAAIAAYagAAAAEFgfHWtmup7EDwltc7ICpc2J2NieTLmK/qdW3K+yUQcWofyJW8quDjXgYS8vo7Ds4A==",
->>>>>>>> 6c656dc95d58ca97400a00bf10585084a8752cf6:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251215200252_migracija.Designer.cs
+                            PasswordHash = "AQAAAAIAAYagAAAAEHQn9UY87DxC5qTIBIaD5c5+EBcMen6XqC+DPLZL0On0KYydHiW4XXuRZa06yTMjkQ==",
                             TokenVersion = 0
                         });
                 });
@@ -982,75 +881,6 @@ namespace Market.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("RefreshTokens", (string)null);
-                });
-
-            modelBuilder.Entity("Market.Domain.Entities.Review.Reviews", b =>
-                {
-                    b.Property<int>("BookId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Comment")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DatePosted")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
-
-                    b.HasKey("BookId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Reviews");
-
-                    b.HasData(
-                        new
-                        {
-                            BookId = 1,
-                            UserId = 1,
-                            Comment = "Izuzetna knjiga koja me potpuno očarala. Meša Selimović majstorski oslikava duboke filozofske dileme i emocije likova, ostavljajući snažan utisak.",
-<<<<<<<< HEAD:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251209151441_Change_Status_To_Enum.Designer.cs
-                            DatePosted = new DateTime(2025, 12, 9, 15, 14, 39, 984, DateTimeKind.Utc).AddTicks(4322),
-========
-                            DatePosted = new DateTime(2025, 12, 15, 20, 2, 51, 362, DateTimeKind.Utc).AddTicks(386),
->>>>>>>> 6c656dc95d58ca97400a00bf10585084a8752cf6:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251215200252_migracija.Designer.cs
-                            IsDeleted = false,
-                            Rating = 5
-                        },
-                        new
-                        {
-                            BookId = 2,
-                            UserId = 2,
-                            Comment = "Dobra knjiga, ali nije me potpuno oduševila. Andrić je stvorio bogate likove i prikazao historijske procese, ali nekim dijelovima nedostaje dinamike.",
-<<<<<<<< HEAD:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251209151441_Change_Status_To_Enum.Designer.cs
-                            DatePosted = new DateTime(2025, 12, 9, 15, 14, 39, 984, DateTimeKind.Utc).AddTicks(4325),
-========
-                            DatePosted = new DateTime(2025, 12, 15, 20, 2, 51, 362, DateTimeKind.Utc).AddTicks(388),
->>>>>>>> 6c656dc95d58ca97400a00bf10585084a8752cf6:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251215200252_migracija.Designer.cs
-                            IsDeleted = false,
-                            Rating = 4
-                        },
-                        new
-                        {
-                            BookId = 3,
-                            UserId = 3,
-                            Comment = "Knjiga mi nije bila loša, ali nisam doživio neku posebnu emociju. Iako Ćopić piše o važnim temama, nisam se mogao potpuno povezati s likovima.",
-<<<<<<<< HEAD:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251209151441_Change_Status_To_Enum.Designer.cs
-                            DatePosted = new DateTime(2025, 12, 9, 15, 14, 39, 984, DateTimeKind.Utc).AddTicks(4328),
-========
-                            DatePosted = new DateTime(2025, 12, 15, 20, 2, 51, 362, DateTimeKind.Utc).AddTicks(389),
->>>>>>>> 6c656dc95d58ca97400a00bf10585084a8752cf6:BookVerse/Market.Backend/Market.Infrastructure/Migrations/20251215200252_migracija.Designer.cs
-                            IsDeleted = false,
-                            Rating = 3
-                        });
                 });
 
             modelBuilder.Entity("Market.Domain.Entities.Shopping.CartItems", b =>
@@ -1424,6 +1254,63 @@ namespace Market.Infrastructure.Migrations
                     b.ToTable("ShippingUpdates", (string)null);
                 });
 
+            modelBuilder.Entity("Market.Domain.Entities.UserReviews.Review", b =>
+                {
+                    b.Property<int>("BookId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DatePosted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.HasKey("BookId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Reviews");
+
+                    b.HasData(
+                        new
+                        {
+                            BookId = 1,
+                            UserId = 1,
+                            Comment = "Izuzetna knjiga koja me potpuno očarala. Meša Selimović majstorski oslikava duboke filozofske dileme i emocije likova, ostavljajući snažan utisak.",
+                            DatePosted = new DateTime(2026, 1, 5, 22, 40, 17, 106, DateTimeKind.Utc).AddTicks(8120),
+                            IsDeleted = false,
+                            Rating = 5
+                        },
+                        new
+                        {
+                            BookId = 2,
+                            UserId = 2,
+                            Comment = "Dobra knjiga, ali nije me potpuno oduševila. Andrić je stvorio bogate likove i prikazao historijske procese, ali nekim dijelovima nedostaje dinamike.",
+                            DatePosted = new DateTime(2026, 1, 5, 22, 40, 17, 106, DateTimeKind.Utc).AddTicks(8122),
+                            IsDeleted = false,
+                            Rating = 4
+                        },
+                        new
+                        {
+                            BookId = 3,
+                            UserId = 3,
+                            Comment = "Knjiga mi nije bila loša, ali nisam doživio neku posebnu emociju. Iako Ćopić piše o važnim temama, nisam se mogao potpuno povezati s likovima.",
+                            DatePosted = new DateTime(2026, 1, 5, 22, 40, 17, 106, DateTimeKind.Utc).AddTicks(8123),
+                            IsDeleted = false,
+                            Rating = 3
+                        });
+                });
+
             modelBuilder.Entity("Market.Domain.Entities.Whishlist.WishlistItems", b =>
                 {
                     b.Property<int>("UserId")
@@ -1577,25 +1464,6 @@ namespace Market.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Market.Domain.Entities.Review.Reviews", b =>
-                {
-                    b.HasOne("Market.Domain.Entities.Catalog.Books", "Book")
-                        .WithMany()
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Market.Domain.Entities.Identity.MarketUserEntity", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Book");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Market.Domain.Entities.Shopping.CartItems", b =>
                 {
                     b.HasOne("Market.Domain.Entities.Catalog.Books", "Book")
@@ -1722,6 +1590,25 @@ namespace Market.Infrastructure.Migrations
                     b.Navigation("OrderStatus");
 
                     b.Navigation("UpdatedByUser");
+                });
+
+            modelBuilder.Entity("Market.Domain.Entities.UserReviews.Review", b =>
+                {
+                    b.HasOne("Market.Domain.Entities.Catalog.Books", "Book")
+                        .WithMany()
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Market.Domain.Entities.Identity.MarketUserEntity", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Market.Domain.Entities.Whishlist.WishlistItems", b =>
