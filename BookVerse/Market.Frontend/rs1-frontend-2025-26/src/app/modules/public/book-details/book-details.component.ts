@@ -113,7 +113,6 @@ export class BookDetailsComponent {
           (this.reviewRatingsCount[review.rating - 1] / this.reviewNumber) * 180;
         console.log(this.reviewRatingsBarWidth);
       });
-      console.log('drugi');
     });
   }
 }

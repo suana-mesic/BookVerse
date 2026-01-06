@@ -5,7 +5,7 @@
     <h2>Nazad</h2>
   </div>
   <div class="book__container">
-    <img src="https://delfi.rs/_img/artikli/2014/10/dervis_i_smrt_vv.jpg" alt="slika knjige" />
+    <img src="{{ book()?.imageUrl }}" alt="slika knjige" />
     <aside>
       <div class="book__title-and-authors">
         <h1>{{ book()?.title }}</h1>
@@ -18,12 +18,12 @@
         </div>
       </div>
       <div class="book__rating">
-        <img src="icons/star.png" alt="star" />
-        <img src="icons/star.png" alt="star" />
-        <img src="icons/star.png" alt="star" />
-        <img src="icons/star.png" alt="star" />
-        <img src="icons/star.png" alt="star" />
-        <h2>4.0</h2>
+        <img src="icons/star.png" alt="star" [class.dark-star]="reviewRating >= 1" />
+        <img src="icons/star.png" alt="star" [class.dark-star]="reviewRating >= 2" />
+        <img src="icons/star.png" alt="star" [class.dark-star]="reviewRating >= 3" />
+        <img src="icons/star.png" alt="star" [class.dark-star]="reviewRating >= 4" />
+        <img src="icons/star.png" alt="star" [class.dark-star]="reviewRating >= 5" />
+        <h2>{{ reviewRating.toFixed(1) }}</h2>
       </div>
       <div class="book__info">
         <h2>Izdavač: {{ book()?.publisherName }}</h2>

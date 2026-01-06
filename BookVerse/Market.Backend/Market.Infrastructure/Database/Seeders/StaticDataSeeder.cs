@@ -316,7 +316,7 @@ public partial class StaticDataSeeder
                 Description = "Roman koji se bavi pitanjima vjere, duhovnosti i smrti, kroz priču o Dervišu koji pokušava da pronađe smisao u životu i smrti. Kroz likove i filozofske dijaloge, autor istražuje moralne dileme i ljudsku patnju.",
                 PageCount = 320,
                 QuantityInStockForOnlineOrders = 200,
-                ImageUrl = "https://example.com/images/dervis_i_smrt.jpg",
+                ImageUrl = "https://www.knjiga.ba/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/slike/dervis_i_smrt_logos_art.jpg",
                 PublishedDate = new DateTime(1966, 1, 1),
                 IsDeleted = false,
                 CreatedAtUtc = DateTime.Now
@@ -332,7 +332,7 @@ public partial class StaticDataSeeder
                 Description = "Roman koji opisuje istoriju jednog grada i njegove mostove, kroz sudbine ljudi koji su živeli u različitim vremenima. Andrić istražuje ljudsku sudbinu, istoriju i političke i kulturne promene kroz život mosta na Drini.",
                 PageCount = 412,
                 QuantityInStockForOnlineOrders = 150,
-                ImageUrl = "https://example.com/images/na_drini_cuprija.jpg",
+                ImageUrl = "https://www.knjiga.ba/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/slike/d0977_na_drini_cuprija.jpg",
                 PublishedDate = new DateTime(1945, 1, 1),
                 IsDeleted = false,
                 CreatedAtUtc = DateTime.Now
@@ -348,7 +348,7 @@ public partial class StaticDataSeeder
                 Description = "Roman koji kroz priču o životu jednog mladog čoveka istražuje teme ljubavi, smrti, i socijalnih promjena. Ćopić se bavi i univerzalnim pitanjima identiteta i postojanja u svetu koji se menja.",
                 PageCount = 280,
                 QuantityInStockForOnlineOrders = 120,
-                ImageUrl = "https://example.com/images/basta_pepeo.jpg",
+                ImageUrl = "https://www.knjiga.ba/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/slike/basta_pepeo.jpg",
                 PublishedDate = new DateTime(1954, 1, 1),
                 IsDeleted = false,
                 CreatedAtUtc = DateTime.Now
