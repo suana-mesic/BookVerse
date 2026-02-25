@@ -79,7 +79,10 @@ export class AuthFacadeService {
     const refreshToken = this.storage.getRefreshToken();
 
     // 1) lokalno očisti (optimistic logout)
-    this.clearUserState();
+  console.log('BEFORE clear - isAuthenticated:', this._currentUser());
+  this.clearUserState();
+  console.log('AFTER clear - isAuthenticated:', this._currentUser());
+  console.log('localStorage accessToken:', localStorage.getItem('accessToken'));
 
     // 2) nema refresh tokena → nema ni API poziva
     if (!refreshToken) {
@@ -149,16 +152,21 @@ export class AuthFacadeService {
    * Dekodiraj JWT i postavi current user state.
    */
   private decodeAndSetUser(token: string): void {
+    
     try {
       const payload = jwtDecode<JwtPayloadDto>(token);
+      console.log("JWT PAYLOAD:", payload);
 
       const user: CurrentUserDto = {
         userId: Number(payload.sub),
-        email: payload.email,
+        email: payload["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"],
         isAdmin: payload.is_admin === 'true',
         isManager: payload.is_manager === 'true',
         isEmployee: payload.is_employee === 'true',
         tokenVersion: Number(payload.ver),
+        firstName:payload.firstName,
+        lastName:payload.lastName,
+        fullName:payload.fullName
       };
 
       this._currentUser.set(user);

@@ -1,6 +1,7 @@
-﻿using System.Security.Claims;
+﻿using Market.Application.Abstractions;
 using Microsoft.AspNetCore.Http;
-using Market.Application.Abstractions;
+using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace Market.Infrastructure.Common;
 
@@ -17,8 +18,14 @@ public sealed class AppCurrentUser(IHttpContextAccessor httpContextAccessor)
             ? id
             : null;
 
+    public string? FirstName =>
+      _user?.FindFirstValue("firstName");
+    public string? LastName =>
+  _user?.FindFirstValue("lastName");
     public string? Email =>
-        _user?.FindFirstValue(ClaimTypes.Email);
+        string.Join(' ', new[] {FirstName, LastName}.Where(x=>!string.IsNullOrWhiteSpace(x)));
+    public string? FullName =>
+    _user?.FindFirstValue(ClaimTypes.Email);
 
     public bool IsAuthenticated =>
         _user?.Identity?.IsAuthenticated ?? false;

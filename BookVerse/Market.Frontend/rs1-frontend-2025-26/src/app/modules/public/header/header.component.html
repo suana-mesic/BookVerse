@@ -26,8 +26,15 @@
       <h2>Korpa</h2>
       <img src="icons/cart_white.png" class="header__cart-icon" alt="ikona" />
     </button>
-    <button (click)="showDropMenu()" class="header__profile">
-      <h2 class="header__profile-name">Korisnik</h2>
+    <!-- Ovo se treba prikazati tek kad je prijavljen korisnik -->
+    <!--  (click)="showDropMenu()" -->
+    <button class="header__profile" (click)="prijavaIliDropDown()">
+      @if(this.authFacadeService.isAuthenticated()){
+        <h2 #userName class="header__profile-name">{{authFacadeService.currentUser()?.fullName}}</h2>
+      }
+      @else{
+        <h2 #userName class="header__profile-name">Prijavi se</h2>
+      }
       <img src="icons/default_profile_white.png" class="header__cart-icon" alt="ikona" />
     </button>
   </div>

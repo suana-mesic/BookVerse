@@ -40,7 +40,10 @@ public sealed class JwtTokenService : IJwtTokenService
             new("ver",         user.TokenVersion.ToString()),
             new(JwtRegisteredClaimNames.Iat, ToUnixTimeSeconds(nowInstant).ToString(), ClaimValueTypes.Integer64),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
-            new(JwtRegisteredClaimNames.Aud, _jwt.Audience)
+            new(JwtRegisteredClaimNames.Aud, _jwt.Audience),
+            new("firstName", user.FirstName),
+            new("lastName", user.LastName),
+            new("fullName", $"{user.FirstName} {user.LastName}"),
         };
 
         // --- Signature ---

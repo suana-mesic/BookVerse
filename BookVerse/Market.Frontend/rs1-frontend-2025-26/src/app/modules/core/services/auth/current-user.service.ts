@@ -24,6 +24,10 @@ export class CurrentUserService {
     if (!user) return '/login';
 
     if (user.isAdmin) return '/admin';
+
+    //email trenutnog korisnika
+    console.log(this.currentUser()?.email);
+    
     // Ovde je stajalo client, ali ce nam trebati samo da vrati landing page
     return '/';
   }
