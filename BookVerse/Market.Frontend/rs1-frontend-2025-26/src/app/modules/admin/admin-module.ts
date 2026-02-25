@@ -14,7 +14,7 @@ import {AdminSettingsComponent} from './admin-settings/admin-settings.component'
 import {SharedModule} from '../shared/shared-module';
 import { OrderDetailsDialogComponent } from './orders/admin-orders-details-dialog/order-details-dialog.component';
 import { ChangeStatusDialogComponent } from './orders/change-status-dialog/change-status-dialog.component';
-
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -27,11 +27,12 @@ import { ChangeStatusDialogComponent } from './orders/change-status-dialog/chang
     AdminOrdersComponent,
     AdminSettingsComponent,
     OrderDetailsDialogComponent,
-    ChangeStatusDialogComponent,
+    ChangeStatusDialogComponent
   ],
   imports: [
     AdminRoutingModule,
     SharedModule,
+    DragDropModule
   ]
 })
 export class AdminModule { }
