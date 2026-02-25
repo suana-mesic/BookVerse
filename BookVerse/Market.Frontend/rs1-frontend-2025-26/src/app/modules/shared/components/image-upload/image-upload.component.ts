@@ -17,6 +17,8 @@ import { multicast } from 'rxjs';
 })
 export class ImageUploadComponent {
   preview: string | null = null;
+  isDragging:boolean = false;
+
   private onChange = (value: any) => { };
   private onTouched = () => { };
 
@@ -50,4 +52,37 @@ export class ImageUploadComponent {
     this.onChange(null);
     this.onTouched();
   }
+
+  onDragOver(event:DragEvent){
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragging=true;
+  }
+
+  onDragLeave(event:Event){
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragging=false;
+  }
+
+  onDrop(event:DragEvent){
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragging=false;
+
+    const file=event.dataTransfer?.files[0];
+    if(file && file.type.startsWith('image/'))
+      this.readFile(file);
+  }
+
+  private readFile (file:File):void{
+    const reader = new FileReader();
+    reader.onload = (e:any) => {
+      this.preview = e.target.result;
+      this.onChange(e.target.result);
+      this.onTouched();
+    };
+    reader.readAsDataURL(file);
+  }
+
 }

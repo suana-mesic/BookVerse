@@ -15,10 +15,10 @@ import { BooksApiService } from '../../../../api-services/books/books-api.servic
 @Component({
   selector: 'app-products',
   standalone: false,
-  templateUrl: './products.component.html',
-  styleUrl: './products.component.scss'
+  templateUrl: './books.component.html',
+  styleUrl: './books.component.scss'
 })
-export class ProductsComponent
+export class BooksComponent
   extends BaseListPagedComponent<ListBooksQueryDto, ListBooksRequest>
   implements OnInit {
 

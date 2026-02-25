@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AdminLayoutComponent } from './admin-layout/admin-layout.component';
-import { ProductsComponent } from './catalogs/products/products.component';
-import { ProductsAddComponent } from './catalogs/products/products-add/products-add.component';
-import { ProductsEditComponent } from './catalogs/products/products-edit/products-edit.component';
+import { BooksComponent } from './catalogs/book/books.component';
+import { BooksAddComponent } from './catalogs/book/books-add/books-add.component';
+import { BooksEditComponent } from './catalogs/book/books-edit/books-edit.component';
 import { ProductCategoriesComponent } from './catalogs/product-categories/product-categories.component';
 import { AdminOrdersComponent } from './orders/admin-orders.component';
 import { AdminSettingsComponent } from './admin-settings/admin-settings.component';
@@ -17,15 +17,15 @@ const routes: Routes = [
       // BOOKS
       {
         path: 'products',
-        component: ProductsComponent,
+        component: BooksComponent,
       },
       {
         path: 'products/add',
-        component: ProductsAddComponent,
+        component: BooksAddComponent,
       },
       {
         path: 'products/:id/edit',
-        component: ProductsEditComponent,
+        component: BooksEditComponent,
       },
 
       // BOOKS CATEGORIES

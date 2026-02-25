@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ProductFormService } from '../services/product-form.service';
+import { BooksFormService } from '../services/book-form.service';
 import { CreateBookCommand, GetBookByIdQueryDto } from '../../../../../api-services/books/books-api.models';
 import { BaseFormComponent } from '../../../../../core/components/base-classes/base-form-component';
 import {
@@ -22,11 +22,11 @@ import { BooksApiService } from '../../../../../api-services/books/books-api.ser
 @Component({
   selector: 'app-products-add',
   standalone: false,
-  templateUrl: './products-add.component.html',
-  styleUrl: './products-add.component.scss',
-  providers: [ProductFormService]
+  templateUrl: './books-add.component.html',
+  styleUrl: './books-add.component.scss',
+  providers: [BooksFormService]
 })
-export class ProductsAddComponent
+export class BooksAddComponent
   extends BaseFormComponent<GetBookByIdQueryDto>
   implements OnInit {
 
@@ -35,7 +35,7 @@ export class ProductsAddComponent
   private publishersApi = inject(PublishersService);
   private bookFormatsApi = inject(BookFormatApiService);
   private authorsApi = inject(AuthorsApiService);
-  private formService = inject(ProductFormService);
+  private formService = inject(BooksFormService);
   private router = inject(Router);
   private toaster = inject(ToasterService);
 

@@ -7,7 +7,7 @@ import { GetBookByIdQueryDto } from '../../../../../api-services/books/books-api
  * Provides reusable form creation with validation for Add and Edit components.
  */
 @Injectable()
-export class ProductFormService {
+export class BooksFormService {
   private fb = inject(FormBuilder);
 
   /**

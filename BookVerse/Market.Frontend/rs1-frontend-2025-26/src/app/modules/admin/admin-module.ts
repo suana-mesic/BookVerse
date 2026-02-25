@@ -1,9 +1,9 @@
 import {NgModule} from '@angular/core';
 
 import {AdminRoutingModule} from './admin-routing-module';
-import {ProductsComponent} from './catalogs/products/products.component';
-import {ProductsAddComponent} from './catalogs/products/products-add/products-add.component';
-import {ProductsEditComponent} from './catalogs/products/products-edit/products-edit.component';
+import {BooksComponent} from './catalogs/book/books.component';
+import {BooksAddComponent} from './catalogs/book/books-add/books-add.component';
+import {BooksEditComponent} from './catalogs/book/books-edit/books-edit.component';
 import {AdminLayoutComponent} from './admin-layout/admin-layout.component';
 import {ProductCategoriesComponent} from './catalogs/product-categories/product-categories.component';
 import {
@@ -18,9 +18,9 @@ import { ChangeStatusDialogComponent } from './orders/change-status-dialog/chang
 
 @NgModule({
   declarations: [
-    ProductsComponent,
-    ProductsAddComponent,
-    ProductsEditComponent,
+    BooksComponent,
+    BooksAddComponent,
+    BooksEditComponent,
     AdminLayoutComponent,
     ProductCategoriesComponent,
     ProductCategoryUpsertComponent,

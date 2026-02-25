@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
-import { ProductFormService } from '../services/product-form.service';
+import { BooksFormService } from '../services/book-form.service';
 import { BaseFormComponent } from '../../../../../core/components/base-classes/base-form-component';
 import { GetBookByIdQueryDto, UpdateBookCommand } from '../../../../../api-services/books/books-api.models';
 import {
@@ -24,11 +24,11 @@ import { BooksApiService } from '../../../../../api-services/books/books-api.ser
 @Component({
   selector: 'app-products-edit',
   standalone: false,
-  templateUrl: './products-edit.component.html',
-  styleUrl: './products-edit.component.scss',
-  providers: [ProductFormService]
+  templateUrl: './books-edit.component.html',
+  styleUrl: './books-edit.component.scss',
+  providers: [BooksFormService]
 })
-export class ProductsEditComponent
+export class BooksEditComponent
   extends BaseFormComponent<GetBookByIdQueryDto>
   implements OnInit {
 
@@ -37,7 +37,7 @@ export class ProductsEditComponent
   private bookFormatsApi = inject(BookFormatApiService);
   private publishersApi = inject(PublishersService);
   private authorsApi = inject(AuthorsApiService);
-  private formService = inject(ProductFormService);
+  private formService = inject(BooksFormService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private toaster = inject(ToasterService);
