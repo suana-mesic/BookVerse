@@ -58,8 +58,23 @@
             {{ 'BOOKS_CATEGORIES.TABLE.NAME' | translate }}
           </div>
         </th>
+        <!-- blur se poziva kada input polje izgubi fokus -->
         <td mat-cell *matCellDef="let category">
-          <span class="category-name">{{ category.name }}</span>
+          @if(editingCategoryId == category.id){
+            <input
+            class="inline-edit-input"
+            [(ngModel)]="editingName"
+            (keyup.enter)="saveEdit(category)"
+            (keyup.escape)="cancelEdit()"
+            (blur)="saveEdit(category)" 
+            autofocus />
+          }
+          @else {
+            <span class="category-name" (click)="startEdit(category)" style="cursor:pointer">{{ category.name }}
+              <mat-icon class="edit-hint-icon">edit</mat-icon>
+            </span>
+          }
+
         </td>
       </ng-container>
 

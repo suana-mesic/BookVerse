@@ -28,19 +28,23 @@ export class ProductCategoriesComponent
   displayedColumns: string[] = ['name', 'isEnabled', 'actions'];
   showOnlyEnabled = true;
 
+  editingCategoryId:number|null=null;
+  editingName:string='';
+
+  
   constructor() {
     super();
     this.request = new ListProductCategoriesRequest();
     this.request.onlyEnabled = true;
   }
-
+  
   ngOnInit(): void {
     this.initList();
   }
-
+  
   protected loadPagedData(): void {
     this.startLoading();
-
+    
     this.api.list(this.request).subscribe({
       next: (response) => {
         this.handlePageResult(response);
@@ -52,7 +56,7 @@ export class ProductCategoriesComponent
       },
     });
   }
-
+  
   // === Filters ===
 
   onSearchChange(searchTerm: string): void {
@@ -214,5 +218,31 @@ export class ProductCategoriesComponent
     }
 
     return null;
+  }
+
+  startEdit(category:ListProductCategoriesQueryDto){
+    this.editingCategoryId=category.id;
+    this.editingName=category.name;
+  }
+  cancelEdit(): void {
+    this.editingCategoryId = null;
+    this.editingName = '';
+  }
+  saveEdit(category: ListProductCategoriesQueryDto) {
+    if(!this.editingName.trim() || this.editingName == category.name){
+      this.cancelEdit();
+      return;
+    }
+    this.api.update(category.id, {name:this.editingName}).subscribe({
+      next:()=>{
+        this.toaster.success('Category updated successfully');
+        this.cancelEdit();
+        this.loadPagedData();
+      },
+      error: (err) => {
+        this.toaster.error('Failed to update category');
+        console.error(err);
+      }
+    })
   }
 }
