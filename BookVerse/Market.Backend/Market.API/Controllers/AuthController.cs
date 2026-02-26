@@ -2,6 +2,8 @@
 using Market.Application.Modules.Auth.Commands.Logout;
 using Market.Application.Modules.Auth.Commands.Refresh;
 using Market.Application.Modules.Auth.Commands.Register;
+using Market.Application.Modules.Auth.Commands.VerifyTwoFactor;
+using MediatR;
 
 [ApiController]
 [Route("api/auth")]
@@ -34,5 +36,15 @@ public sealed class AuthController(IMediator mediator) : ControllerBase
     public async Task Logout([FromBody] LogoutCommand command, CancellationToken ct)
     {
         await mediator.Send(command, ct);
+    }
+
+    //Prima(od frontenda) → { email, code
+    //Vraća(frontendu) → LoginCommandDto sa JWT tokenima ako je kod ispravan
+
+    [HttpPost("verify-2fa")]
+    [AllowAnonymous]
+    public async Task<ActionResult<LoginCommandDto>> VerifyTwoFactor([FromBody] VerifyTwoFactorCommand command, CancellationToken ct)
+    {
+        return Ok(await mediator.Send(command, ct));
     }
 }

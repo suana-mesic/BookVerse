@@ -139,6 +139,7 @@ public partial class StaticDataSeeder
             IsEnabled = true,
             IsDeleted=false,
             AddressId =1,
+            TwoFactorEnabled=false,
             CreatedAtUtc = DateTime.Now
             },
                 new MarketUserEntity
@@ -153,6 +154,7 @@ public partial class StaticDataSeeder
             IsEmployee=true,
             IsEnabled = true,
             IsDeleted=false,
+            TwoFactorEnabled=false,
             AddressId =2,
             CreatedAtUtc = DateTime.Now
             },
@@ -169,6 +171,7 @@ public partial class StaticDataSeeder
             IsEmployee = true,
             IsEnabled = true,
             IsDeleted = false,
+            TwoFactorEnabled=false,
             AddressId = 2,
             CreatedAtUtc = DateTime.Now
             }

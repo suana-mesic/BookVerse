@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap');
+//@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap');
 
 :host {
     all: unset;
@@ -273,3 +273,63 @@ p {
     font-size: larger !important;
     font-weight: 600 !important;
 }
+
+.two-factor-info {
+  color: #555;
+  margin-bottom: 20px;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  text-align: center;
+
+  strong {
+    color: #3498db;
+    font-weight: 600 !important;
+  }
+}
+
+.back-button {
+  background: transparent;
+  border: none;
+  color: #3498db;
+  cursor: pointer;
+  margin-top: 12px;
+  font-size: 14px !important;
+  width: 100%;
+  text-align: center;
+  padding: 8px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.two-factor-field {
+  margin-top: 16px !important;
+}
+
+::ng-deep .two-factor-field .mat-mdc-text-field-wrapper {
+  margin-top: 12px !important;
+}
+
+::ng-deep input {
+    margin-bottom:12px !important;
+}
+
+/* Margin za labelu samo kada polje NIJE touched */
+.signup-form mat-form-field:has(input[placeholder="123456"]):not(.mat-form-field-should-float) mat-label {
+    margin-bottom: 15px !important;
+    display: block !important;
+    transition: margin 0.2s ease;
+}
+
+/* Opciono: Smanji margin kada polje dobije fokus ili ima unos */
+.signup-form mat-form-field:has(input[placeholder="123456"]).mat-focused mat-label,
+.signup-form mat-form-field:has(input[placeholder="123456"]).mat-form-field-should-float mat-label {
+    margin-bottom: 4px !important;
+}
+::ng-deep .two-factor-field input::placeholder {
+  color: #666 !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+}
+

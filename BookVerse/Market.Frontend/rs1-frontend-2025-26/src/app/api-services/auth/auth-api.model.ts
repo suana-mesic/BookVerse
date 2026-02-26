@@ -33,13 +33,22 @@ export interface RegisterCommandDto {
  * Corresponds to: LoginCommandDto.cs
  */
 export interface LoginCommandDto {
-  accessToken: string;
-  refreshToken: string;
+  accessToken?: string;
+  refreshToken?: string;
   /**
    * ISO string (UTC) returned by backend
    * Example: "2025-12-02T23:59:59Z"
    */
-  expiresAtUtc: string;
+  expiresAtUtc?: string;
+
+  // 2FA polja
+  requiresTwoFactor: boolean;
+  email?: string;
+}
+
+export interface VerifyTwoFactorCommand {
+  email: string;
+  code: string;
 }
 
 /**

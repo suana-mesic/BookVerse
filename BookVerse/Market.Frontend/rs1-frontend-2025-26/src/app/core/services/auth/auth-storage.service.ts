@@ -21,8 +21,11 @@ export class AuthStorageService {
    * Save login response to localStorage.
    */
   saveLogin(response: LoginCommandDto): void {
+    if(response.accessToken)
     localStorage.setItem(this.ACCESS_TOKEN_KEY, response.accessToken);
+    if(response.refreshToken)
     localStorage.setItem(this.REFRESH_TOKEN_KEY, response.refreshToken);
+    if(response.expiresAtUtc)
     localStorage.setItem(this.ACCESS_EXPIRES_KEY, response.expiresAtUtc);
   }
 

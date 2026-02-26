@@ -17,5 +17,8 @@ public sealed class MarketUserEntity : BaseEntity
     public bool IsEnabled { get; set; }
     public int AddressId { get; set; }
     public Address? Address { get; set; }
+    public bool TwoFactorEnabled { get; set; } = false;
+    public string? TwoFactorCode { get; set; }
+    public DateTime? TwoFactorCodeExpiresAtUtc { get; set; }
     public ICollection<RefreshTokenEntity> RefreshTokens { get; private set; } = new List<RefreshTokenEntity>();
 }

@@ -1,0 +1,97 @@
+<app-header />
+
+<div class="profile-container">
+  <!-- ostatak koda ostaje isti -->
+<div class="profile-container">
+
+  <!-- Header -->
+  <div class="profile-header">
+    <button class="back-btn" (click)="goBack()">← Nazad</button>
+    <h1>Informacije o korisniku</h1>
+    <button class="save-btn" (click)="onSave()" [disabled]="profileForm.invalid || isLoading">
+      Sačuvaj
+    </button>
+  </div>
+
+  <div class="profile-content">
+
+    <!-- Avatar -->
+    <div class="avatar-section">
+      <div class="avatar">
+        <mat-icon>account_circle</mat-icon>
+      </div>
+      <button class="avatar-action">Promijeni sliku →</button>
+      <button class="avatar-action">Ukloni sliku →</button>
+    </div>
+
+    <!-- Form -->
+    <div class="form-section">
+      <form [formGroup]="profileForm">
+
+        <div class="form-grid">
+          <!-- Ime -->
+          <div class="form-field">
+            <label>Ime</label>
+            <input formControlName="firstName" />
+          </div>
+
+          <!-- Prezime -->
+          <div class="form-field">
+            <label>Prezime</label>
+            <input formControlName="lastName" />
+          </div>
+
+          <!-- Email -->
+          <div class="form-field">
+            <label>Email</label>
+            <input formControlName="email" class="disabled-field" />
+          </div>
+
+          <!-- Adresa 1 -->
+          <div class="form-field">
+            <label>Adresa 1</label>
+            <input formControlName="line1" />
+          </div>
+
+          <!-- Adresa 2 -->
+          <div class="form-field">
+            <label>Adresa 2</label>
+            <input formControlName="line2" />
+          </div>
+
+          <!-- Grad -->
+          <div class="form-field">
+            <label>Grad</label>
+            <input formControlName="city" />
+          </div>
+
+          <!-- ZIP/Zemlja -->
+          <div class="form-field">
+            <label>Zemlja</label>
+            <input formControlName="country" />
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- Sigurnost -->
+  <div class="security-section">
+    <h2>Sigurnost</h2>
+    <mat-divider></mat-divider>
+
+    <div class="security-links">
+      <a routerLink="/auth/change-email">Promjena mejla →</a>
+      <a routerLink="/auth/change-password">Promjena lozinke →</a>
+    </div>
+
+    <!-- 2FA Toggle -->
+    <div class="two-factor-toggle">
+      <mat-slide-toggle [formControl]="$any(profileForm.get('twoFactorEnabled'))">
+        Dvofaktorska autentifikacija
+      </mat-slide-toggle>
+    </div>
+  </div>
+
+</div>

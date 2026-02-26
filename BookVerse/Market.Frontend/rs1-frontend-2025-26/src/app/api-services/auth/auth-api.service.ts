@@ -9,7 +9,8 @@ import {
   RefreshTokenCommandDto,
   LogoutCommand,
   RegisterCommand,
-  RegisterCommandDto
+  RegisterCommandDto,
+  VerifyTwoFactorCommand
 } from './auth-api.model';
 
 @Injectable({
@@ -18,6 +19,14 @@ import {
 export class AuthApiService {
   private readonly baseUrl = `${environment.apiUrl}/api/Auth`;
   private http = inject(HttpClient);
+
+   /**
+   * POST /Auth/verify-2fa
+   * Verify 2FA code and get tokens.
+   */
+  verifyTwoFactor(payload: VerifyTwoFactorCommand): Observable<LoginCommandDto> {
+    return this.http.post<LoginCommandDto>(`${this.baseUrl}/verify-2fa`, payload);
+  }
 
   /**
    * POST /Auth/login

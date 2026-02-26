@@ -60,15 +60,17 @@ export class AuthFacadeService {
    * Login korisnika (email + password).
    * Snima tokene u storage, dekodira JWT i popunjava current user state.
    */
-  login(payload: LoginCommand): Observable<void> {
-    return this.api.login(payload).pipe(
-      tap((response: LoginCommandDto) => {
-        this.storage.saveLogin(response);           // access + refresh + expiries
-        this.decodeAndSetUser(response.accessToken); // popuni _currentUser
-      }),
-      map(() => void 0)
-    );
-  }
+login(payload: LoginCommand): Observable<LoginCommandDto> {
+  return this.api.login(payload).pipe(
+    tap((response: LoginCommandDto) => {
+      if (!response.requiresTwoFactor && response.accessToken) {
+        this.storage.saveLogin(response);
+        this.decodeAndSetUser(response.accessToken);
+      }
+    }),
+    map((response) => response) // vraćamo cijeli response frontendu
+  );
+}
 
   /**
    * Logout korisnika:

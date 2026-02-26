@@ -5,18 +5,24 @@
 /// </summary>
 public sealed class LoginCommandDto
 {
+    //pošto imamo 2way auth morala sam dodati da su AccessToken, RefreshToken i ExpiresAtUtc nullable, jer prvo moramo uraditi 2way auth i poslati mail
+
     /// <summary>
     /// JWT access token – used for authorized API calls.
     /// </summary>
-    public string AccessToken { get; set; }
+    public string? AccessToken { get; set; }
 
     /// <summary>
     /// Refresh token that the client stores locally and uses to obtain a new access token.
     /// </summary>
-    public string RefreshToken { get; set; }
+    public string? RefreshToken { get; set; }
 
     /// <summary>
     /// Expiration time of the access token in UTC format.
     /// </summary>
-    public DateTime ExpiresAtUtc { get; set; }
+    public DateTime? ExpiresAtUtc { get; set; }
+
+    //pošto želimo 2fa
+    public bool RequiresTwoFactor { get; set; } = false;
+    public string? Email { get; set; }
 }

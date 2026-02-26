@@ -4,7 +4,7 @@ import { BaseComponent } from '../../core/components/base-classes/base-component
 import { AuthFacadeService } from '../../core/services/auth/auth-facade.service';
 import { Router } from '@angular/router';
 import { CurrentUserService } from '../../core/services/auth/current-user.service';
-import { LoginCommand } from '../../../api-services/auth/auth-api.model';
+import { LoginCommand, LoginCommandDto, VerifyTwoFactorCommand } from '../../../api-services/auth/auth-api.model';
 
 @Component({
   selector: 'app-login-bookverse',
@@ -20,6 +20,12 @@ export class LoginBookverseComponent extends BaseComponent {
 
   hidePassword = true;
   showLoginError: boolean = false;
+  
+  // 2FA state
+  requiresTwoFactor: boolean = false;
+  twoFactorEmail: string = '';
+  twoFactorCode: string = '';
+  showTwoFactorError: boolean = false;
 
   loginForm = this.fb.group({
     email: ['admin@gmail.com', [Validators.required, Validators.email]],
@@ -38,8 +44,15 @@ export class LoginBookverseComponent extends BaseComponent {
     };
 
     this.auth.login(payload).subscribe({
-      next: () => {
+      next: (response:LoginCommandDto) => {
+        console.log('login response:', response);
         this.stopLoading();
+        // ako backend traži 2FA
+        if (response.requiresTwoFactor) {
+          this.requiresTwoFactor = true;
+          this.twoFactorEmail = response.email ?? '';
+          return;
+        }
         const target = this.currentUser.getDefaultRoute();
         this.router.navigate([target]);
       },
@@ -54,4 +67,30 @@ export class LoginBookverseComponent extends BaseComponent {
   get validMailPass() {
     return this.loginForm.get('email')?.valid && this.loginForm.get('password')?.valid;
   }
+
+  //kada korisnik klikne da se verifikuje
+  onVerifyTwoFactor(): void {
+    if (!this.twoFactorCode || this.isLoading) return;
+
+    this.startLoading();
+
+    const payload: VerifyTwoFactorCommand = {
+      email: this.twoFactorEmail,
+      code: this.twoFactorCode
+    };
+
+    this.auth.verifyTwoFactor(payload).subscribe({
+    next: () => {
+
+      this.stopLoading();
+      const target = this.currentUser.getDefaultRoute();
+      this.router.navigate([target]);
+    },
+    error: (err) => {
+      this.stopLoading();
+      this.showTwoFactorError = true;
+      console.error('2FA error:', err);
+    }
+  });
+  } 
 }

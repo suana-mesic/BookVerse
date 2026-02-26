@@ -1,0 +1,293 @@
+// profile.component.scss
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap');
+
+:host {
+  display: block;
+  font-family: 'Outfit', sans-serif;
+  background-color: #f5f5f5;
+  min-height: calc(100vh - 70px); // Oduzimamo visinu headera
+}
+
+.profile-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+// Header sekcija
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  
+  h1 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+  }
+  
+  .back-btn {
+    background: transparent;
+    border: none;
+    color: #3498db;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 8px 0;
+    transition: color 0.2s;
+    
+    &:hover {
+      color: #2980b9;
+      text-decoration: underline;
+    }
+  }
+  
+  .save-btn {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: 'Outfit', sans-serif;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    
+    &:hover:not(:disabled) {
+      background-color: #2980b9;
+    }
+    
+    &:disabled {
+      background-color: #ccc;
+      color: #666;
+      cursor: not-allowed;
+    }
+  }
+}
+
+// Glavni sadržaj
+.profile-content {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 40px;
+  margin-bottom: 48px;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Avatar sekcija
+.avatar-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  .avatar {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background-color: #e9f0f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    border: 3px solid #3498db;
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+    
+    mat-icon {
+      font-size: 100px;
+      width: 100px;
+      height: 100px;
+      color: #3498db;
+    }
+  }
+  
+  .avatar-action {
+    background: transparent;
+    border: none;
+    color: #3498db;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 6px 0;
+    transition: color 0.2s;
+    
+    &:hover {
+      color: #2980b9;
+      text-decoration: underline;
+    }
+  }
+}
+
+// Forma sekcija
+.form-section {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  
+  label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1e293b;
+    margin-bottom: 6px;
+  }
+  
+  input {
+    height: 44px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0 16px;
+    font-size: 15px;
+    font-family: 'Outfit', sans-serif;
+    transition: all 0.2s;
+    
+    &:focus {
+      outline: none;
+      border-color: #3498db;
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    }
+    
+    &:hover:not(.disabled-field) {
+      border-color: #3498db;
+    }
+    
+    &.disabled-field {
+      background-color: #f8fafc;
+      color: #64748b;
+      cursor: not-allowed;
+      
+      &:hover {
+        border-color: #e2e8f0;
+      }
+    }
+  }
+}
+
+// Sigurnosna sekcija
+.security-section {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  
+  h2 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 12px 0;
+  }
+  
+  mat-divider {
+    border-top-color: #e2e8f0;
+    margin-bottom: 20px;
+  }
+}
+
+.security-links {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 24px;
+  
+  @media (max-width: 640px) {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  a {
+    color: #3498db;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    transition: color 0.2s;
+    
+    &:hover {
+      color: #2980b9;
+      text-decoration: underline;
+    }
+  }
+}
+
+// 2FA Toggle
+.two-factor-toggle {
+  padding: 8px 0;
+  
+  ::ng-deep {
+    .mat-slide-toggle {
+      .mat-slide-toggle-label {
+        font-family: 'Outfit', sans-serif;
+      }
+      
+      .mat-slide-toggle-thumb {
+        background-color: white;
+      }
+      
+      .mat-slide-toggle-bar {
+        background-color: #e2e8f0;
+      }
+      
+      &.mat-checked {
+        .mat-slide-toggle-bar {
+          background-color: #3498db;
+        }
+        
+        .mat-slide-toggle-thumb {
+          background-color: white;
+        }
+      }
+    }
+    
+    .mat-slide-toggle-content {
+      font-size: 15px;
+      font-weight: 500;
+      color: #1e293b;
+    }
+  }
+}
+
+// Responsive dodatno
+@media (max-width: 768px) {
+  .profile-container {
+    padding: 24px 16px;
+  }
+  
+  .profile-header {
+    flex-wrap: wrap;
+    gap: 16px;
+    
+    h1 {
+      font-size: 24px;
+      order: 1;
+      width: 100%;
+      text-align: center;
+    }
+    
+    .back-btn {
+      order: 2;
+    }
+    
+    .save-btn {
+      order: 3;
+    }
+  }
+}

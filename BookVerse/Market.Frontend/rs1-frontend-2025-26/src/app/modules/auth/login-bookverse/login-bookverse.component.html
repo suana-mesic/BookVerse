@@ -1,5 +1,7 @@
 <div class="parent">
     <div class="signup-container">
+            <!--@if uslov - prikazuje login formu samo kada 2FA nije aktivan -->
+            @if(!requiresTwoFactor) {
         <form id="signup-form" class="signup-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
             @if(showLoginError){
             <div class="login-error-banner">
@@ -29,5 +31,37 @@
                 <p class="sign-up">Novi ste ovdje? <a routerLink="/auth/register">Registrujte se</a></p>
             </div>
         </form>
+    }
+    @if(requiresTwoFactor) {
+      <div class="signup-form">
+        <h1>Dvofaktorska autentifikacija</h1>
+
+        <!-- prikazuje email na koji je kod poslan -->
+        <p class="two-factor-info">Poslali smo kod na <strong>{{ twoFactorEmail }}</strong>. Unesite ga ispod.</p>
+
+        <!-- greška ako je kod neispravan -->
+        @if(showTwoFactorError) {
+          <div class="login-error-banner">
+            <mat-icon class="error-icon">error_outline</mat-icon>
+            <span class="error_message">Neispravan ili istekao kod. Pokušajte ponovo.</span>
+          </div>
+        }
+
+        <!-- input za unos koda -->
+            <mat-form-field class="form-control two-factor-field">
+            <input matInput [(ngModel)]="twoFactorCode" placeholder="Verifikacijski kod" maxlength="6" />
+            </mat-form-field>
+
+          <!-- dugme za potvrdu koda -->
+        <button class="login-button" (click)="onVerifyTwoFactor()" [disabled]="!twoFactorCode || isLoading">
+          Potvrdi
+        </button>
+
+        <!-- dugme za povratak na login formu -->
+        <button class="back-button" (click)="requiresTwoFactor = false">
+          ← Nazad
+        </button>
+      </div>
+    }
     </div>
 </div>
