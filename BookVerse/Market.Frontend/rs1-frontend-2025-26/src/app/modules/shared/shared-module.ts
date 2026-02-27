@@ -10,6 +10,7 @@ import { FitLoadingBarComponent } from './components/fit-loading-bar/fit-loading
 import { FitTableSkeletonComponent } from './components/fit-table-skeleton/fit-table-skeleton.component';
 import { MatIconModule } from '@angular/material/icon';
 import { ImageUploadComponent } from './components/image-upload/image-upload.component';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import { ImageUploadComponent } from './components/image-upload/image-upload.com
     ReactiveFormsModule,
     FormsModule,
     TranslatePipe,
+    RouterModule,
     ...materialModules
   ],
   providers: [
@@ -40,7 +42,8 @@ import { ImageUploadComponent } from './components/image-upload/image-upload.com
     FitLoadingBarComponent,
     FitTableSkeletonComponent,
     ImageUploadComponent,
-    materialModules
+    RouterModule,
+    materialModules,
   ]
 })
 export class SharedModule { }

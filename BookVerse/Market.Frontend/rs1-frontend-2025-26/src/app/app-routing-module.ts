@@ -14,6 +14,7 @@ const routes: Routes = [
     path: 'auth',
     loadChildren: () => import('./modules/auth/auth-module').then((m) => m.AuthModule),
   },
+
   // {
   //   path: 'login',
   //   loadComponent: () =>
@@ -26,10 +27,8 @@ const routes: Routes = [
     loadChildren: () => import('./modules/client/client-module').then((m) => m.ClientModule),
   },
   {
-    path: '',
-    loadComponent: () =>
-      // Promijenite loadChildren u loadComponent
-      import('./modules/public/landing-page/landing-page').then((m) => m.LandingPage),
+  path: 'public',
+  loadChildren: () => import('./modules/public/public-module').then((m) => m.PublicModule),
   },
   {
     path: 'knjige/:id',
@@ -38,6 +37,13 @@ const routes: Routes = [
         (m) => m.BookDetailsComponent
       ),
   },
+  {
+    path: '',
+    loadComponent: () =>
+      // Promijenite loadChildren u loadComponent
+      import('./modules/public/landing-page/landing-page').then((m) => m.LandingPage),
+  },
+    
   // fallback 404
   { path: '**', redirectTo: '' },
 ];

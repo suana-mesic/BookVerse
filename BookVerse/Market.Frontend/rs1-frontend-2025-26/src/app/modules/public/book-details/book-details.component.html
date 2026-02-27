@@ -38,7 +38,7 @@
   <div class="book__buy">
     <h1>Cijena: {{ book()?.price }} KM</h1>
     <div>
-      <button>Dodaj u korpu <img src="icons/cart.png" alt="cart" /></button>
+      <button (click)="dodajUkorpu(book()?.id)">Dodaj u korpu <img src="icons/cart.png" alt="cart" /></button>
     </div>
   </div>
   <div class="book__stores">

@@ -1,6 +1,6 @@
 import { Component, ElementRef, inject, input, signal, ViewChild } from '@angular/core';
 import { HeaderComponent } from '../header/header.component';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { BooksService } from '../Petar/books.service';
 import { AuthorsService } from '../Petar/authors.service';
 import { Book } from '../Petar/book/Book';
@@ -9,6 +9,9 @@ import { Review } from '../Petar/book/Review';
 import { ReviewsService } from '../Petar/reviews.service';
 import * as L from 'leaflet';
 import { MapComponent } from '../map/map.component';
+import { CartApiService } from '../../../api-services/cart/cart-api.service';
+import { ToasterService } from '../../core/services/toaster.service';
+import { AuthFacadeService } from '../../core/services/auth/auth-facade.service';
 
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 
@@ -26,6 +29,7 @@ L.Icon.Default.mergeOptions({
   imports: [HeaderComponent, RouterLink, MapComponent],
 })
 export class BookDetailsComponent {
+
   book = signal<Book | null>(null);
   authors = signal<Array<Author>>([]);
   reviews = signal<Array<Review>>([]);
@@ -40,6 +44,11 @@ export class BookDetailsComponent {
 
   reviewRatingsCount = [0, 0, 0, 0, 0];
   reviewRatingsBarWidth = [0, 0, 0, 0, 0];
+
+  cartService = inject(CartApiService);
+  toaster = inject(ToasterService);
+  authFacadeService=inject(AuthFacadeService);
+  router = inject(Router);
 
   constructor(private route: ActivatedRoute) {}
 
@@ -114,5 +123,24 @@ export class BookDetailsComponent {
         console.log(this.reviewRatingsBarWidth);
       });
     });
+  }
+
+  dodajUkorpu(bookId: number|undefined) {
+    if(!bookId)
+      return;
+
+    if (!this.authFacadeService.isAuthenticated()) {
+      this.router.navigate(['/auth/login']);
+      return;
+  }
+
+    this.cartService.addToCart({bookId:bookId, quantity:1}).subscribe({
+      next:(response)=>{
+        this.toaster.success("Uspješno ste dodali knjigu u korpu");
+      },
+      error:(err)=>{
+        this.toaster.error("Greška prilikom dodavanje knjige u korpu");
+      }
+    })
   }
 }

@@ -1,4 +1,5 @@
-﻿using Market.Domain.Entities.Catalog;
+﻿using Market.Domain.Common;
+using Market.Domain.Entities.Catalog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Market.Domain.Entities.Shopping
 {
-    public class CartItems
+    public class CartItems:BaseEntity
     {
         public int BookId { get; set; }
         public Books Book { get; set; }
@@ -15,7 +16,7 @@ namespace Market.Domain.Entities.Shopping
         public Carts Cart { get; set; }
         public int Quantity { get; set; }
         public DateTime DateAdded { get; set; }
-
+        public bool SavedForLater { get; set; } = false;
 
     }
 }

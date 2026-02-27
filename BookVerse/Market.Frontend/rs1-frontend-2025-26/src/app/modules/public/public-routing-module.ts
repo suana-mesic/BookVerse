@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { PublicLayoutComponent } from './public-layout/public-layout.component';
 import { SearchProductsComponent } from './search-products/search-products.component';
+import { CartComponent } from '../client/cart/cart.component';
 
 const routes: Routes = [
   {
