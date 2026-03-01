@@ -35,7 +35,8 @@
       "ORDERS": "Pregled Narudžbi",
       "SYSTEM": "SISTEM",
       "SETTINGS": "Postavke",
-      "LOGOUT": "Odjava"
+      "LOGOUT": "Odjava",
+      "COUPONS":"Kuponi"
     }
   },
   "BOOKS_CATEGORIES": {

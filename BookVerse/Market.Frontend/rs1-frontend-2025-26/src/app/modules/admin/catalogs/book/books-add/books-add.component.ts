@@ -44,8 +44,6 @@ export class BooksAddComponent
   bookFormats: ListBookFormatsQueryDto[] = [];
   authors: ListAuthorsQueryDto[] = [];
 
-
-
   ngOnInit(): void {
     this.initForm(false); // Add mode
     this.loadCategories();

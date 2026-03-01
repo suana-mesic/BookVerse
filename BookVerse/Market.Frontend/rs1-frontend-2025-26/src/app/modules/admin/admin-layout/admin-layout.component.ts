@@ -17,6 +17,7 @@ export class AdminLayoutComponent implements OnInit{
     items:[
       {route: '/admin/product-categories',icon:'category', label:'ADMIN_PANEL.MENU.CATEGORIES'},
       {route: '/admin/products',icon:'inventory_2', label:'ADMIN_PANEL.MENU.BOOKS'},
+      {route: '/admin/coupons',icon:'local_activity', label:'ADMIN_PANEL.MENU.COUPONS'},
     ]
   },
   {

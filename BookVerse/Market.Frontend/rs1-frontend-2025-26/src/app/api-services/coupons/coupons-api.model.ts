@@ -11,3 +11,18 @@ export interface ListCouponsQueryDto{
   name:string;
 }
 
+export interface FormFieldConfig {
+  name:string;
+  label:string;
+  type:string;
+  required:boolean
+}
+export interface CreateCouponCommand {
+  name: string;
+  promotionCode: string;
+  amountOff: number | null;
+  percentOff: number | null;
+  description: string | null;
+  startDate: string;
+  endDate: string;
+}

@@ -8,6 +8,7 @@ import { BooksEditComponent } from './catalogs/book/books-edit/books-edit.compon
 import { ProductCategoriesComponent } from './catalogs/product-categories/product-categories.component';
 import { AdminOrdersComponent } from './orders/admin-orders.component';
 import { AdminSettingsComponent } from './admin-settings/admin-settings.component';
+import { CouponsDynamicFormAddComponent } from './coupons-dynamic-form/coupons-dynamic-form-add.component';
 
 const routes: Routes = [
   {
@@ -38,6 +39,12 @@ const routes: Routes = [
         path: 'orders',
         component: AdminOrdersComponent,
       },
+
+      {
+        path: 'coupons',
+        component: CouponsDynamicFormAddComponent,
+      },
+
 
       {
         path: 'settings',

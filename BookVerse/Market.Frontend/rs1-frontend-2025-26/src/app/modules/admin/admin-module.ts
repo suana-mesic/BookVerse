@@ -15,6 +15,7 @@ import {SharedModule} from '../shared/shared-module';
 import { OrderDetailsDialogComponent } from './orders/admin-orders-details-dialog/order-details-dialog.component';
 import { ChangeStatusDialogComponent } from './orders/change-status-dialog/change-status-dialog.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { CouponsDynamicFormAddComponent } from './coupons-dynamic-form/coupons-dynamic-form-add.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     AdminOrdersComponent,
     AdminSettingsComponent,
     OrderDetailsDialogComponent,
-    ChangeStatusDialogComponent
+    ChangeStatusDialogComponent,
+    CouponsDynamicFormAddComponent
   ],
   imports: [
     AdminRoutingModule,

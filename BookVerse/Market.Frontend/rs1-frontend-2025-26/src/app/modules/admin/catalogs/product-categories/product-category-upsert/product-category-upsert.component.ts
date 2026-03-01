@@ -9,6 +9,7 @@ import {
   UpdateProductCategoryCommand
 } from '../../../../../api-services/product-categories/product-categories-api.model';
 import {ProductCategoryFormService} from "../services/product-category-form.service";
+import { DialogHelperService } from '../../../../shared/services/dialog-helper.service';
 
 export interface ProductCategoryDialogData {
   mode: 'create' | 'edit';
@@ -28,7 +29,7 @@ export class ProductCategoryUpsertComponent implements OnInit {
   private api = inject(ProductCategoriesApiService);
   private formService = inject(ProductCategoryFormService);
   private toaster = inject(ToasterService);
-
+  
   form!: FormGroup;
   isLoading = false;
   isEditMode = false;
@@ -84,7 +85,6 @@ export class ProductCategoryUpsertComponent implements OnInit {
     this.api.create(command).subscribe({
       next: () => {
         this.toaster.success('Category created successfully');
-        this.dialogRef.close(true); // Signal success
       },
       error: (err) => {
         this.isLoading = false;
