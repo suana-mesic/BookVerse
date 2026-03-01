@@ -1,9 +1,12 @@
 ﻿using Market.API;
 using Market.API.Middleware;
 using Market.Application;
+using Market.Application.Common.Interfaces;
 using Market.Infrastructure;
+using Market.Infrastructure.Common;
+using Microsoft.Extensions.Options;
 using Serilog;
-
+using Stripe;
 public partial class Program
 {
     private static async Task Main(string[] args)
@@ -58,6 +61,10 @@ public partial class Program
                     builder.WithOrigins(allowedOrigins).AllowCredentials().AllowAnyHeader().AllowAnyMethod();
                 });
             });
+
+            builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+            StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
+            builder.Services.AddSingleton<IStripeSettings>(sp => sp.GetRequiredService<IOptions<StripeSettings>>().Value);
 
             var app = builder.Build();
 

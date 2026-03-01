@@ -10,7 +10,9 @@ import {
   GetOrderByIdQueryDto,
   CreateOrderCommand,
   UpdateOrderCommand,
-  OrderStatusType
+  OrderStatusType,
+  CreateOrderWithItemsQuery,
+  CreateOrderWithItemsQueryDto
 } from './orders-api.models';
 import { buildHttpParams } from '../../core/models/build-http-params';
 
@@ -82,5 +84,9 @@ export class OrdersApiService {
     return this.http.put<void>(`${this.baseUrl}/${id}/change-status`, {
       newStatus: newStatus
     });
+  }
+
+  createOrder(request:CreateOrderWithItemsQuery):Observable<CreateOrderWithItemsQueryDto>{
+    return this.http.post<CreateOrderWithItemsQueryDto>(this.baseUrl,request);
   }
 }

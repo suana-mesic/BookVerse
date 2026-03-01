@@ -13,5 +13,7 @@ namespace Market.Domain.Entities.Shopping
         public int UserId { get; set; }
         public MarketUserEntity User { get; set; }
         public bool IsDeleted { get; set; }
+
+        public ICollection<CartItems> CartItems { get; set; } = new List<CartItems>();
     }
 }

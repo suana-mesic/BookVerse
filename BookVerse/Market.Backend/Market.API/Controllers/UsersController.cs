@@ -1,14 +1,6 @@
-﻿using Market.Application.Modules.Catalog.Adresses.Commands.Create;
-using Market.Application.Modules.Catalog.Adresses.Commands.Delete;
-using Market.Application.Modules.Catalog.Adresses.Commands.Update;
-using Market.Application.Modules.Catalog.Adresses.Queries.GetById;
-using Market.Application.Modules.Catalog.Adresses.Queries.List;
-using Market.Application.Modules.Users.Commands.UpdateMyProfile;
+﻿using Market.Application.Modules.Users.Commands.UpdateMyProfile;
 using Market.Application.Modules.Users.Queries.GetById;
-using MediatR;
-using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Mvc;
-
+using Market.Application.Modules.Users.Queries.GetUserAddress;
 namespace Market.API.Controllers;
 
 [ApiController]
@@ -27,5 +19,13 @@ public class UsersController(ISender sender) : ControllerBase
     {
         await sender.Send(command, ct);
         return NoContent();
+    }
+
+    [HttpGet("user-address")]
+    [Authorize]
+    public async Task<IActionResult> GetUserAddress(CancellationToken ct)
+    {
+        var result = await sender.Send(new GetUserAddressQuery(), ct);
+        return Ok(result);
     }
 }

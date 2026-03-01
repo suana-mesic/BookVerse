@@ -1,0 +1,13 @@
+<app-header></app-header>
+
+<div class="success-container">
+  <div class="success-card">
+    <div class="success-icon">✓</div>
+    <h1>Plaćanje uspješno!</h1>
+    <p>Vaša narudžba je primljena i u obradi je.</p>
+    <p class="payment-id">Referenca plaćanja: <strong>{{ paymentIntentId }}</strong></p>
+    <button mat-raised-button color="primary" (click)="goToHome()">
+      Nazad na početnu
+    </button>
+  </div>
+</div>

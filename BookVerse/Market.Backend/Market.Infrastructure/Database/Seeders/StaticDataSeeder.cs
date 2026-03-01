@@ -1,5 +1,7 @@
 ﻿using Market.Domain.Entities.Catalog;
+using Market.Domain.Entities.Shopping;
 using Market.Domain.Entities.UserReviews;
+using Market.Infrastructure.Database.Configurations.Shopping;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using System.Net;
@@ -27,6 +29,8 @@ public partial class StaticDataSeeder
         SeedBooks(modelBuilder);
         SeedReviews(modelBuilder);
         SeedStores(modelBuilder);
+        SeedShippingMethods(modelBuilder);
+        SeedOrderStatuses(modelBuilder);
     }
 
     private static void SeedReviews(ModelBuilder modelBuilder)
@@ -358,5 +362,57 @@ public partial class StaticDataSeeder
             }
           }
         );
+    }
+    private static void SeedShippingMethods(ModelBuilder modelBuilder)
+    {
+
+        modelBuilder.Entity<ShippingMethods>().HasData(new List<ShippingMethods>
+        {
+        new ShippingMethods{
+            Id=1,
+            Name = "Express One",
+            Description = "Domaća kurirska služba sa brzom dostavom na području cijele BiH (1–2 radna dana). Pogodno za pakete i dokumente.",
+            Price = 9.50m
+        },
+        new ShippingMethods{
+            Id=2,
+            Name = "X Express",
+            Description = "Brza pošta sa dostavom širom Bosne i Hercegovine u roku 24–48h. Često korištena za online trgovine.",
+            Price = 8.00m
+        },
+        new ShippingMethods{
+            Id=3,
+            Name = "EuroExpress",
+            Description = "Kurirska služba sa dostavom na području cijele BiH u roku 24–48h, uz mogućnost plaćanja pouzećem.",
+            Price = 9.00m
+        }
+      });
+    }
+    private static void SeedOrderStatuses(ModelBuilder modelBuilder)
+    {
+
+        modelBuilder.Entity<OrderStatus>().HasData(new List<OrderStatus>
+        {
+        new OrderStatus{
+            Id = (int) OrderStatusType.Draft,
+            StatusName = OrderStatusType.Draft
+        },
+        new OrderStatus{
+            Id = (int) OrderStatusType.Confirmed,
+            StatusName = OrderStatusType.Confirmed
+        },
+        new OrderStatus{
+            Id = (int) OrderStatusType.Paid,
+            StatusName = OrderStatusType.Paid
+        },
+        new OrderStatus{
+            Id = (int) OrderStatusType.Completed,
+            StatusName = OrderStatusType.Completed
+        },
+        new OrderStatus{
+            Id = (int) OrderStatusType.Cancelled,
+            StatusName = OrderStatusType.Cancelled
+        }
+      });
     }
 }

@@ -13,6 +13,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.21" />
     <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="8.0.21" />
     <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="8.0.21" />
+    <PackageReference Include="Stripe.net" Version="50.4.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,7 +24,6 @@
   <ItemGroup>
     <Folder Include="Modules\Catalog\BookFormats\Commands\" />
     <Folder Include="Modules\Shopping\OrdersOrderItems\Commands\Delete\" />
-    <Folder Include="Modules\Shopping\OrdersOrderItems\Commands\Create\" />
     <Folder Include="Modules\Shopping\OrdersOrderItems\Commands\Update\" />
     <Folder Include="Modules\Shopping\OrdersOrderItems\Commands\Status\" />
     <Folder Include="Modules\Shopping\OrdersOrderItems\Queries\GetById\" />

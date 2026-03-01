@@ -18,3 +18,11 @@ export interface UpdateMyProfileCommand {
   country: string;
   twoFactorEnabled: boolean;
 }
+
+export interface UserAddressDto {
+  addressId: number | null;
+  line1: string | null;
+  line2: string | null;
+  city: string | null;
+  country: string | null;
+}

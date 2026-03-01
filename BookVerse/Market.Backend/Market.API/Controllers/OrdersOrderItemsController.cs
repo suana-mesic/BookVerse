@@ -1,68 +1,46 @@
 ﻿using Market.Application.Modules.Catalog.Book.Queries.List;
+using Market.Application.Modules.Shopping.OrdersOrderItems.Commands.Create;
+using Market.Application.Modules.Shopping.OrdersOrderItems.Commands.StripeWebhook;
 using Market.Application.Modules.Shopping.OrdersOrderItems.Queries.List;
 namespace Market.API.Controllers;
 
 [ApiController]
-[AllowAnonymous]
+[Authorize]
 [Route("[controller]")]
 public class OrdersOrderItemsController(ISender sender) : ControllerBase
 {
+    //Za pregled liste narudžbi
     [HttpGet]
-    [AllowAnonymous]
     public async Task<PageResult<ListOrderOrderItemsQueryDto>> List([FromQuery] ListOrderOrderItemsQuery query, CancellationToken ct)
     {
         var result = await sender.Send(query, ct);
         return result;
     }
 
-    //[HttpGet("{id:int}")]
-    //[AllowAnonymous]
-    //public async Task<GetBookByIdQueryDto> GetById(int id, CancellationToken ct)
-    //{
-    //    var category = await sender.Send(new GetBookByIdQuery { Id = id }, ct);
-    //    return category; // if NotFoundException -> 404 via middleware
-    //}
+    // Poziva se kada korisnik klikne na "Potvrdi narudžbu" u checkout komponenti.
+    [HttpPost]
+    public async Task<ActionResult<CreateOrderOrderItemsCommandDto>> Create(
+    [FromBody] CreateOrderOrderItemsCommand command, CancellationToken ct)
+    {
+        var result = await sender.Send(command, ct);
+        return Ok(result);
+    }
 
-    //[HttpPost]
-    //[AllowAnonymous]
+    // Poziva se automatski od strane Stripea nakon što korisnik plati.
+    [HttpPost("stripe-webhook")]
+    [AllowAnonymous]
+    public async Task<IActionResult> StripeWebhook(CancellationToken ct)
+    {
+        using var reader = new StreamReader(Request.Body);
+        var payload = await reader.ReadToEndAsync(ct);
+        var signature = Request.Headers["Stripe-Signature"].ToString();
 
-    //public async Task<ActionResult<int>> CreateBook(CreateBookCommand command, CancellationToken ct)
-    //{
-    //    int id = await sender.Send(command, ct);
+        await sender.Send(new StripeWebhookCommand
+        {
+            Payload = payload,
+            StripeSignature = signature
+        }, ct);
 
-    //    return CreatedAtAction(nameof(GetById), new { id }, new { id });
-    //}
-
-    //[HttpPut("{id:int}")]
-    //[AllowAnonymous]
-
-    //public async Task UpdatBook(int id, UpdateBookCommand command, CancellationToken ct)
-    //{
-    //    // ID from the route takes precedence
-    //    command.Id = id;
-    //    await sender.Send(command, ct);
-    //    // no return -> 204 No Content
-    //}
-
-    //[HttpDelete("{id:int}")]
-    //[AllowAnonymous]
-    //public async Task<IActionResult> DeleteBook(int id, CancellationToken ct)
-    //{
-    //    await sender.Send(new DeleteBookCommand { Id = id }, ct);
-    //    return NoContent();
-    //}
-
-    //[HttpPut("{id:int}/disable")]
-    //public async Task Disable(int id, CancellationToken ct)
-    //{
-    //    await sender.Send(new DisableProductCategoryCommand { Id = id }, ct);
-    //    // no return -> 204 No Content
-    //}
-
-    //[HttpPut("{id:int}/enable")]
-    //public async Task Enable(int id, CancellationToken ct)
-    //{
-    //    await sender.Send(new EnableProductCategoryCommand { Id = id }, ct);
-    //    // no return -> 204 No Content
-    //}
+        return Ok();
+    }
 }

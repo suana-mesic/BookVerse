@@ -5,12 +5,18 @@ import {SharedModule} from '../shared/shared-module';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { HeaderComponent } from '../public/header/header.component';
 import { CartComponent } from './cart/cart.component';
+import { CheckoutComponent } from './checkout/checkout.component';
+import { PaymentComponent } from './payment/payment.component';
+import { OrderSuccessComponent } from './order-success/order-success.component';
 
 
 @NgModule({
   declarations: [
     UserProfileComponent,
-    CartComponent
+    CartComponent,
+    CheckoutComponent,
+    PaymentComponent,
+    OrderSuccessComponent
   ],
   imports: [
     SharedModule,

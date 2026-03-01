@@ -211,3 +211,21 @@ export interface UpdateOrderCommand {
   note?: string | null;
   items?: UpdateOrderCommandItem[];
 }
+
+export interface CreateOrderWithItemsQuery {
+  shippingMethodId: number;
+  storeId: number | null;
+  useExistingAddress: boolean;
+  line1: string | null;
+  line2: string | null;
+  city: string | null;
+  country: string | null;
+  couponIds: number[];
+}
+
+export interface CreateOrderWithItemsQueryDto {
+  orderId: number;
+  clientSecret: string;
+  publishableKey: string;
+  totalPrice: number;
+}
