@@ -36,7 +36,8 @@
       "SYSTEM": "SISTEM",
       "SETTINGS": "Postavke",
       "LOGOUT": "Odjava",
-      "COUPONS":"Kuponi"
+      "COUPONS":"Kuponi",
+      "INVENTORY":"Popis inventara"
     }
   },
   "BOOKS_CATEGORIES": {
@@ -158,6 +159,70 @@
       "ERROR_DELETE": "Greška pri brisanju proizvoda.",
       "UNSAVED_CHANGES": "Imate nesačuvane izmjene u formi.",
       "CONFIRM_CANCEL": "Da li želite otkazati izmjene i vratiti se nazad?"
+    }
+  },
+  "INVENTORY": {
+    "TITLE": "Inventar",
+    "FILTER_STATUS": "Filtriraj po Statusu",
+    "ALL_STATUSES": "Svi Statusi",
+    "SEARCH_PLACEHOLDER": "Pretraži inventar...",
+    "SEARCH_INPUT_PLACEHOLDER": "Naziv knjige, ISBN, prodavnica ili lokacija na polici",
+    "SEARCH_MIN_LENGTH": "Unesite najmanje 3 znaka za pretragu",
+    "CLEAR_FILTERS": "Očisti Filtere",
+    "LOADING": "Učitavanje inventara...",
+    "RETRY": "Pokušaj Ponovo",
+    "ERROR_TITLE": "Greška pri Učitavanju Inventara",
+    "NO_DATA": "Nema inventara",
+    "NO_DATA_FILTER": "Nema inventara koji odgovara filterima",
+    "STATUS": {
+      "DRAFT": "Nacrt",
+      "CONFIRMED": "Potvrđena",
+      "PAID": "Plaćena",
+      "COMPLETED": "Završena",
+      "CANCELLED": "Otkazana",
+      "UNKNOWN": "Nepoznato"
+    },
+    "STATUS_DESCRIPTION": {
+      "DRAFT": "Inventar kreiran ali nije potvrđen",
+      "CONFIRMED": "Inventar potvrđen i čeka plaćanje",
+      "PAID": "Plaćanje primljeno i inventar se procesira",
+      "COMPLETED": "Inventar isporučen",
+      "CANCELLED": "Inventar otkazan"
+    },
+    "TABLE": {
+      "STORE_ID": "ID Prodavnice",
+      "STORE_NAME": "Naziv Prodavnice",
+      "BOOK_ID":"ID knjige",
+      "ISBN":"ISBN",
+      "TITLE":"Naslov knjige",
+      "QUANTITYINSTOCK":"Količina u prodavnici",
+      "LASTRESTOCKED":"Zadnja dopuna",
+      "REORDERTRESHOLD":"Prag za naručivanje",
+      "LOCATION":"Lokacija",
+      "QUANTITYINSTOCKFORONLINEORDERS":"Količina za online narudžbe",
+      "ACTIONS": "Akcije"
+    },
+    "ACTIONS": {
+      "VIEW_DETAILS": "Pogledaj Detalje",
+      "EDIT_INVENTORY": "Uredi inventar",
+      "ADD_INVENTORY":"Dodaj novi inventar"
+    },
+    "DETAILS": {
+      "TITLE": "Detalji Inventara",
+      "LOADING": "Učitavanje detalja inventara..."
+    },
+    "DIALOGS": {
+      "DELETE_TITLE": "Brisanje inventara",
+      "DELETE_MESSAGE": "Da li ste sigurni da želite obrisati inventar za prodavnicu \"{{name}}\"?",
+      "CONFIRM_ENABLE": "Da li ste sigurni da želite aktivirati inventar za prodavnicu \"{{name}}\"?",
+      "CONFIRM_DISABLE": "Da li ste sigurni da želite deaktivirati inventar za prodavnicu \"{{name}}\"?",
+      "SUCCESS_CREATE": "Popis inventara uspješno kreiran.",
+      "SUCCESS_UPDATE": "Inventar uspješno ažurirana.",
+      "SUCCESS_DELETE": "Inventar uspješno obrisan.",
+      "ERROR_CREATE": "Greška pri kreiranju inventara.",
+      "ERROR_UPDATE": "Greška pri ažuriranju inventara.",
+      "ERROR_DELETE": "Greška pri brisanju inventara.",
+      "ERROR_TOGGLE": "Greška pri promjeni statusa inventara"
     }
   },
   "ORDERS": {

@@ -31,6 +31,7 @@ public partial class StaticDataSeeder
         SeedStores(modelBuilder);
         SeedShippingMethods(modelBuilder);
         SeedOrderStatuses(modelBuilder);
+        SeedInventory(modelBuilder);
     }
 
     private static void SeedReviews(ModelBuilder modelBuilder)
@@ -413,6 +414,40 @@ public partial class StaticDataSeeder
             Id = (int) OrderStatusType.Cancelled,
             StatusName = OrderStatusType.Cancelled
         }
+      });
+    }
+    private static void SeedInventory(ModelBuilder modelBuilder)
+    {
+
+        modelBuilder.Entity<StoreInventory>().HasData(new List<StoreInventory>
+        {
+        new StoreInventory{
+            StoreId=1,
+            BookId=1,
+            QuantityInStock=50,
+            LastRestocked=DateTime.Now,
+            ReorderTreshold=5,
+            Location="Polica A-5",
+            IsDeleted=false,
+        },
+        new StoreInventory{
+            StoreId=2,
+            BookId=1,
+            QuantityInStock=90,
+            LastRestocked=DateTime.Now,
+            ReorderTreshold=5,
+            Location="Polica A-12",
+            IsDeleted=false,
+        },
+        new StoreInventory{
+            StoreId=3,
+            BookId=1,
+            QuantityInStock=40,
+            LastRestocked=DateTime.Now,
+            ReorderTreshold=5,
+            Location="Polica A-15",
+            IsDeleted=false,
+        },
       });
     }
 }

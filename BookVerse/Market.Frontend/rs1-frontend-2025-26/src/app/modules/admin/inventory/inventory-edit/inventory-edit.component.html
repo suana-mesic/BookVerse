@@ -1,0 +1,101 @@
+<div class="container">
+  <!-- Header -->
+  <div class="header-card mat-elevation-z2">
+    <h1>{{ 'BOOKS.EDIT.TITLE' | translate }}</h1>
+  </div>
+
+  <!-- Form Card -->
+  <div class="form-card mat-elevation-z2">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="!isLoading || form">
+      <!-- Error Message -->
+      <div *ngIf="errorMessage" class="error-banner">
+        <mat-icon>error</mat-icon>
+        <span>{{ errorMessage }}</span>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="half-width">
+          <mat-label>{{ 'INVENTORY.TABLE.TITLE' | translate }}</mat-label>
+          <mat-select formControlName="bookId">
+            @for(x of books;track x.id){
+            <mat-option [value]="x.id">
+              {{x.title}}
+            </mat-option>
+            }
+          </mat-select>
+          <mat-icon matSuffix>book</mat-icon>
+        @if(this.form.get('bookId')?.hasError){
+            <mat-error>Obavezno polje</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="half-width">
+          <mat-label>{{ 'INVENTORY.TABLE.STORE_NAME' | translate }}</mat-label>
+          <mat-select formControlName="storeId">
+            @for(x of stores;track x.id){
+            <mat-option [value]="x.id">
+              {{x.storeName}}
+            </mat-option>
+            }
+          </mat-select>
+          <mat-icon matSuffix>store</mat-icon>
+          @if(this.form.get('storeId')?.hasError){
+            <mat-error>Obavezno polje</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+        <!-- quantityInStock -->
+        <mat-form-field appearance="outline" class="half-width">
+          <mat-label>{{ 'INVENTORY.TABLE.QUANTITYINSTOCK' | translate }}</mat-label>
+          <input matInput formControlName="quantityInStock" [placeholder]="'BOOKS.FORM.LANGUAGE_PLACEHOLDER' | translate" />
+          <mat-icon matSuffix>production_quantity_limits</mat-icon>
+          @if(this.form.get('quantityInStock')?.hasError){
+            <mat-error>Obavezno polje</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- location -->
+        <mat-form-field appearance="outline" class="half-width">
+          <mat-label>{{ 'INVENTORY.TABLE.LOCATION' | translate }}</mat-label>
+          <input matInput formControlName="location" [placeholder]="'BOOKS.FORM.LANGUAGE_PLACEHOLDER' | translate" />
+          <mat-icon matSuffix>location_on</mat-icon>
+          @if(this.form.get('location')?.hasError('required')){
+            <mat-error>Obavezno polje</mat-error>
+          }
+           @if(this.form.get('location')?.hasError('nevalidnaLokacija')){
+            <mat-error>Lokacija mora biti u formatu "Polica Slovo-broj"</mat-error>
+          }
+        </mat-form-field>
+
+          <!-- reorderTreshold -->
+        <mat-form-field appearance="outline" class="half-width">
+          <mat-label>{{ 'INVENTORY.TABLE.REORDERTRESHOLD' | translate }}</mat-label>
+          <input matInput formControlName="reorderTreshold" [placeholder]="'BOOKS.FORM.LANGUAGE_PLACEHOLDER' | translate" />
+          <mat-icon matSuffix>low_priority</mat-icon>
+          @if(this.form.get('reorderTreshold')?.hasError){
+            <mat-error>Obavezno polje</mat-error>
+          }
+        </mat-form-field>
+
+      <!-- Actions -->
+      <div class="form-actions">
+        <button type="button" mat-stroked-button  [disabled]="isLoading">
+          <mat-icon>close</mat-icon>
+          {{ 'BOOKS.FORM.CANCEL' | translate }}
+        </button>
+
+        <button type="submit" mat-raised-button color="primary" [disabled]="form.invalid || isLoading">
+          <mat-icon>save</mat-icon>
+          {{ 'BOOKS.FORM.UPDATE' | translate }}
+        </button>
+      </div>
+    </form>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading && !form" class="loading-overlay">
+      <mat-spinner diameter="50"></mat-spinner>
+      <p>{{ 'BOOKS.EDIT.LOADING' | translate }}</p>
+    </div>
+  </div>
+</div>

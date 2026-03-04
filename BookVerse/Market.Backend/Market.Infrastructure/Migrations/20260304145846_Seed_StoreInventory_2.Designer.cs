@@ -4,6 +4,7 @@ using Market.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Market.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20260304145846_Seed_StoreInventory_2")]
+    partial class Seed_StoreInventory_2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -153,7 +156,7 @@ namespace Market.Infrastructure.Migrations
                             Id = 1,
                             City = "Mostar",
                             Country = "BiH",
-                            CreatedAtUtc = new DateTime(2026, 3, 4, 19, 24, 45, 114, DateTimeKind.Local).AddTicks(9153),
+                            CreatedAtUtc = new DateTime(2026, 3, 4, 15, 58, 44, 482, DateTimeKind.Local).AddTicks(2996),
                             IsDeleted = false,
                             Line1 = "Maršala Tita"
                         },
@@ -162,7 +165,7 @@ namespace Market.Infrastructure.Migrations
                             Id = 2,
                             City = "Sarajevo",
                             Country = "BiH",
-                            CreatedAtUtc = new DateTime(2026, 3, 4, 19, 24, 45, 114, DateTimeKind.Local).AddTicks(9239),
+                            CreatedAtUtc = new DateTime(2026, 3, 4, 15, 58, 44, 482, DateTimeKind.Local).AddTicks(3084),
                             IsDeleted = false,
                             Line1 = "Vrbanja 1"
                         },
@@ -171,7 +174,7 @@ namespace Market.Infrastructure.Migrations
                             Id = 3,
                             City = "Jablanica",
                             Country = "BiH",
-                            CreatedAtUtc = new DateTime(2026, 3, 4, 19, 24, 45, 114, DateTimeKind.Local).AddTicks(9245),
+                            CreatedAtUtc = new DateTime(2026, 3, 4, 15, 58, 44, 482, DateTimeKind.Local).AddTicks(3091),
                             IsDeleted = false,
                             Line1 = "Gornja Kolonija SP 100"
                         });
@@ -223,7 +226,7 @@ namespace Market.Infrastructure.Migrations
                             Id = 1,
                             Biography = "biografija",
                             Country = "BiH",
-                            CreatedAtUtc = new DateTime(2026, 3, 4, 19, 24, 45, 413, DateTimeKind.Local).AddTicks(9323),
+                            CreatedAtUtc = new DateTime(2026, 3, 4, 15, 58, 44, 830, DateTimeKind.Local).AddTicks(5779),
                             FirstName = "Meša",
                             IsDeleted = false,
                             LastName = "Selimović"
@@ -233,7 +236,7 @@ namespace Market.Infrastructure.Migrations
                             Id = 2,
                             Biography = "biografija",
                             Country = "BiH",
-                            CreatedAtUtc = new DateTime(2026, 3, 4, 19, 24, 45, 413, DateTimeKind.Local).AddTicks(9339),
+                            CreatedAtUtc = new DateTime(2026, 3, 4, 15, 58, 44, 830, DateTimeKind.Local).AddTicks(5801),
                             FirstName = "Ivo",
                             IsDeleted = false,
                             LastName = "Andrić"
@@ -243,7 +246,7 @@ namespace Market.Infrastructure.Migrations
                             Id = 3,
                             Biography = "biografija",
                             Country = "BiH",
-                            CreatedAtUtc = new DateTime(2026, 3, 4, 19, 24, 45, 413, DateTimeKind.Local).AddTicks(9346),
+                            CreatedAtUtc = new DateTime(2026, 3, 4, 15, 58, 44, 830, DateTimeKind.Local).AddTicks(5808),
                             FirstName = "Branko",
                             IsDeleted = false,
                             LastName = "Ćopić"
@@ -280,21 +283,21 @@ namespace Market.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAtUtc = new DateTime(2026, 3, 4, 19, 24, 45, 413, DateTimeKind.Local).AddTicks(8766),
+                            CreatedAtUtc = new DateTime(2026, 3, 4, 15, 58, 44, 830, DateTimeKind.Local).AddTicks(5219),
                             Format = "Tvrdi uvez",
                             IsDeleted = false
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAtUtc = new DateTime(2026, 3, 4, 19, 24, 45, 413, DateTimeKind.Local).AddTicks(8776),
+                            CreatedAtUtc = new DateTime(2026, 3, 4, 15, 58, 44, 830, DateTimeKind.Local).AddTicks(5229),
                             Format = "Tvrdi papirni uvez",
                             IsDeleted = false
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAtUtc = new DateTime(2026, 3, 4, 19, 24, 45, 413, DateTimeKind.Local).AddTicks(8794),
+                            CreatedAtUtc = new DateTime(2026, 3, 4, 15, 58, 44, 830, DateTimeKind.Local).AddTicks(5250),
                             Format = "Spiralni uvez",
                             IsDeleted = false
                         });
@@ -370,7 +373,7 @@ namespace Market.Infrastructure.Migrations
                         {
                             Id = 1,
                             BookFormatId = 2,
-                            CreatedAtUtc = new DateTime(2026, 3, 4, 19, 24, 45, 413, DateTimeKind.Local).AddTicks(9464),
+                            CreatedAtUtc = new DateTime(2026, 3, 4, 15, 58, 44, 830, DateTimeKind.Local).AddTicks(5920),
                             Description = "Roman koji se bavi pitanjima vjere, duhovnosti i smrti, kroz priču o Dervišu koji pokušava da pronađe smisao u životu i smrti. Kroz likove i filozofske dijaloge, autor istražuje moralne dileme i ljudsku patnju.",
                             ISBN = "978-86-03-02636-0",
                             ImageUrl = "https://www.knjiga.ba/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/slike/dervis_i_smrt_logos_art.jpg",
@@ -387,7 +390,7 @@ namespace Market.Infrastructure.Migrations
                         {
                             Id = 2,
                             BookFormatId = 2,
-                            CreatedAtUtc = new DateTime(2026, 3, 4, 19, 24, 45, 413, DateTimeKind.Local).AddTicks(9483),
+                            CreatedAtUtc = new DateTime(2026, 3, 4, 15, 58, 44, 830, DateTimeKind.Local).AddTicks(5938),
                             Description = "Roman koji opisuje istoriju jednog grada i njegove mostove, kroz sudbine ljudi koji su živeli u različitim vremenima. Andrić istražuje ljudsku sudbinu, istoriju i političke i kulturne promene kroz život mosta na Drini.",
                             ISBN = "978-86-07-00752-2",
                             ImageUrl = "https://www.knjiga.ba/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/slike/d0977_na_drini_cuprija.jpg",
@@ -404,7 +407,7 @@ namespace Market.Infrastructure.Migrations
                         {
                             Id = 3,
                             BookFormatId = 2,
-                            CreatedAtUtc = new DateTime(2026, 3, 4, 19, 24, 45, 413, DateTimeKind.Local).AddTicks(9493),
+                            CreatedAtUtc = new DateTime(2026, 3, 4, 15, 58, 44, 830, DateTimeKind.Local).AddTicks(5949),
                             Description = "Roman koji kroz priču o životu jednog mladog čoveka istražuje teme ljubavi, smrti, i socijalnih promjena. Ćopić se bavi i univerzalnim pitanjima identiteta i postojanja u svetu koji se menja.",
                             ISBN = "978-86-03-00942-5",
                             ImageUrl = "https://www.knjiga.ba/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/slike/basta_pepeo.jpg",
@@ -452,7 +455,7 @@ namespace Market.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAtUtc = new DateTime(2026, 3, 4, 19, 24, 45, 413, DateTimeKind.Local).AddTicks(9150),
+                            CreatedAtUtc = new DateTime(2026, 3, 4, 15, 58, 44, 830, DateTimeKind.Local).AddTicks(5600),
                             IsDeleted = false,
                             IsEnabled = false,
                             Name = "Roman"
@@ -460,7 +463,7 @@ namespace Market.Infrastructure.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAtUtc = new DateTime(2026, 3, 4, 19, 24, 45, 413, DateTimeKind.Local).AddTicks(9171),
+                            CreatedAtUtc = new DateTime(2026, 3, 4, 15, 58, 44, 830, DateTimeKind.Local).AddTicks(5625),
                             IsDeleted = false,
                             IsEnabled = false,
                             Name = "Poezija"
@@ -468,7 +471,7 @@ namespace Market.Infrastructure.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAtUtc = new DateTime(2026, 3, 4, 19, 24, 45, 413, DateTimeKind.Local).AddTicks(9177),
+                            CreatedAtUtc = new DateTime(2026, 3, 4, 15, 58, 44, 830, DateTimeKind.Local).AddTicks(5631),
                             IsDeleted = false,
                             IsEnabled = false,
                             Name = "Drama"
@@ -581,7 +584,7 @@ namespace Market.Infrastructure.Migrations
                             Id = 1,
                             City = "Sarajevo",
                             Country = "Bosna i Hercegovina",
-                            CreatedAtUtc = new DateTime(2026, 3, 4, 19, 24, 45, 413, DateTimeKind.Local).AddTicks(8946),
+                            CreatedAtUtc = new DateTime(2026, 3, 4, 15, 58, 44, 830, DateTimeKind.Local).AddTicks(5400),
                             IsDeleted = false,
                             Name = "Buybook"
                         },
@@ -590,7 +593,7 @@ namespace Market.Infrastructure.Migrations
                             Id = 2,
                             City = "Sarajevo",
                             Country = "Bosna i Hercegovina",
-                            CreatedAtUtc = new DateTime(2026, 3, 4, 19, 24, 45, 413, DateTimeKind.Local).AddTicks(8962),
+                            CreatedAtUtc = new DateTime(2026, 3, 4, 15, 58, 44, 830, DateTimeKind.Local).AddTicks(5413),
                             IsDeleted = false,
                             Name = "Svjetlost"
                         },
@@ -599,7 +602,7 @@ namespace Market.Infrastructure.Migrations
                             Id = 3,
                             City = "Beograd",
                             Country = "Srbija",
-                            CreatedAtUtc = new DateTime(2026, 3, 4, 19, 24, 45, 413, DateTimeKind.Local).AddTicks(9025),
+                            CreatedAtUtc = new DateTime(2026, 3, 4, 15, 58, 44, 830, DateTimeKind.Local).AddTicks(5423),
                             IsDeleted = false,
                             Name = "Laguna"
                         });
@@ -695,9 +698,6 @@ namespace Market.Infrastructure.Migrations
                     b.Property<int>("BookId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime>("LastRestocked")
                         .HasColumnType("datetime2");
 
@@ -721,8 +721,7 @@ namespace Market.Infrastructure.Migrations
                         {
                             StoreId = 1,
                             BookId = 1,
-                            IsDeleted = false,
-                            LastRestocked = new DateTime(2026, 3, 4, 19, 24, 45, 414, DateTimeKind.Local).AddTicks(339),
+                            LastRestocked = new DateTime(2026, 3, 4, 15, 58, 44, 830, DateTimeKind.Local).AddTicks(6740),
                             Location = "Polica A-5",
                             QuantityInStock = 50,
                             ReorderTreshold = 5
@@ -731,8 +730,7 @@ namespace Market.Infrastructure.Migrations
                         {
                             StoreId = 2,
                             BookId = 1,
-                            IsDeleted = false,
-                            LastRestocked = new DateTime(2026, 3, 4, 19, 24, 45, 414, DateTimeKind.Local).AddTicks(358),
+                            LastRestocked = new DateTime(2026, 3, 4, 15, 58, 44, 830, DateTimeKind.Local).AddTicks(6763),
                             Location = "Polica A-12",
                             QuantityInStock = 90,
                             ReorderTreshold = 5
@@ -741,8 +739,7 @@ namespace Market.Infrastructure.Migrations
                         {
                             StoreId = 3,
                             BookId = 1,
-                            IsDeleted = false,
-                            LastRestocked = new DateTime(2026, 3, 4, 19, 24, 45, 414, DateTimeKind.Local).AddTicks(364),
+                            LastRestocked = new DateTime(2026, 3, 4, 15, 58, 44, 830, DateTimeKind.Local).AddTicks(6769),
                             Location = "Polica A-15",
                             QuantityInStock = 40,
                             ReorderTreshold = 5
@@ -834,7 +831,7 @@ namespace Market.Infrastructure.Migrations
                         {
                             Id = 1,
                             AddressId = 1,
-                            CreatedAtUtc = new DateTime(2026, 3, 4, 19, 24, 45, 212, DateTimeKind.Local).AddTicks(3158),
+                            CreatedAtUtc = new DateTime(2026, 3, 4, 15, 58, 44, 606, DateTimeKind.Local).AddTicks(5126),
                             Email = "admin@gmail.com",
                             FirstName = "admin",
                             IsAdmin = true,
@@ -843,7 +840,7 @@ namespace Market.Infrastructure.Migrations
                             IsEnabled = true,
                             IsManager = false,
                             LastName = "user",
-                            PasswordHash = "AQAAAAIAAYagAAAAEC4pUyEVw4Jlp4I7s1dm91IGWwz5rblGjrcyxGGU53xeMybqorCGzWYqDNhl7bPdZQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFfBBwWzjUORYBoEjxE2pKTpYfRQp28gM/hDoB3sdzRi7lOW3V1u9AAmp77FuyXh/A==",
                             TokenVersion = 0,
                             TwoFactorEnabled = false
                         },
@@ -851,7 +848,7 @@ namespace Market.Infrastructure.Migrations
                         {
                             Id = 2,
                             AddressId = 2,
-                            CreatedAtUtc = new DateTime(2026, 3, 4, 19, 24, 45, 313, DateTimeKind.Local).AddTicks(6865),
+                            CreatedAtUtc = new DateTime(2026, 3, 4, 15, 58, 44, 718, DateTimeKind.Local).AddTicks(9527),
                             Email = "string",
                             FirstName = "string",
                             IsAdmin = false,
@@ -860,7 +857,7 @@ namespace Market.Infrastructure.Migrations
                             IsEnabled = true,
                             IsManager = false,
                             LastName = "string",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJRULaYrUj+R2a+7KV85cAIq4Ex1CgyRbVqPU6LgyixreaMYMv4V66ptoDoJkHzxnA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEG75YWckdCYd6wjTI/1tVKMGRNjF6p99y2JUk/RStkxWQco5apn5pykB0mzbZ4A7XQ==",
                             TokenVersion = 0,
                             TwoFactorEnabled = false
                         },
@@ -868,7 +865,7 @@ namespace Market.Infrastructure.Migrations
                         {
                             Id = 3,
                             AddressId = 2,
-                            CreatedAtUtc = new DateTime(2026, 3, 4, 19, 24, 45, 413, DateTimeKind.Local).AddTicks(7774),
+                            CreatedAtUtc = new DateTime(2026, 3, 4, 15, 58, 44, 830, DateTimeKind.Local).AddTicks(4294),
                             Email = "manager@gmail.com",
                             FirstName = "manager",
                             IsAdmin = false,
@@ -877,7 +874,7 @@ namespace Market.Infrastructure.Migrations
                             IsEnabled = true,
                             IsManager = true,
                             LastName = "user",
-                            PasswordHash = "AQAAAAIAAYagAAAAEIbyQ8Ec1jS4ZKeGUbWEqzx3SCmlZjGjlg6BtotcfSKW+3uKcG8WnZuz+MAHo7V2+g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAvACbaBuEKJ1A7cvs6S1NJ0ur7dzM52yoxO1t0ZwW5Aw+09GamAH306tMIibsqIyg==",
                             TokenVersion = 0,
                             TwoFactorEnabled = false
                         });
@@ -1415,7 +1412,7 @@ namespace Market.Infrastructure.Migrations
                             BookId = 1,
                             UserId = 1,
                             Comment = "Izuzetna knjiga koja me potpuno očarala. Meša Selimović majstorski oslikava duboke filozofske dileme i emocije likova, ostavljajući snažan utisak.",
-                            DatePosted = new DateTime(2026, 3, 4, 18, 24, 45, 413, DateTimeKind.Utc).AddTicks(9601),
+                            DatePosted = new DateTime(2026, 3, 4, 14, 58, 44, 830, DateTimeKind.Utc).AddTicks(6067),
                             IsDeleted = false,
                             Rating = 5
                         },
@@ -1424,7 +1421,7 @@ namespace Market.Infrastructure.Migrations
                             BookId = 2,
                             UserId = 2,
                             Comment = "Dobra knjiga, ali nije me potpuno oduševila. Andrić je stvorio bogate likove i prikazao historijske procese, ali nekim dijelovima nedostaje dinamike.",
-                            DatePosted = new DateTime(2026, 3, 4, 18, 24, 45, 413, DateTimeKind.Utc).AddTicks(9604),
+                            DatePosted = new DateTime(2026, 3, 4, 14, 58, 44, 830, DateTimeKind.Utc).AddTicks(6070),
                             IsDeleted = false,
                             Rating = 4
                         },
@@ -1433,7 +1430,7 @@ namespace Market.Infrastructure.Migrations
                             BookId = 3,
                             UserId = 3,
                             Comment = "Knjiga mi nije bila loša, ali nisam doživio neku posebnu emociju. Iako Ćopić piše o važnim temama, nisam se mogao potpuno povezati s likovima.",
-                            DatePosted = new DateTime(2026, 3, 4, 18, 24, 45, 413, DateTimeKind.Utc).AddTicks(9606),
+                            DatePosted = new DateTime(2026, 3, 4, 14, 58, 44, 830, DateTimeKind.Utc).AddTicks(6073),
                             IsDeleted = false,
                             Rating = 3
                         });

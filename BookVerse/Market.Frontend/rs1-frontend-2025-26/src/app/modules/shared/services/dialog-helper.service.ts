@@ -290,4 +290,19 @@ export class DialogHelperService {
       );
     }
   };
+
+  inventory = {
+    confirmDelete: (storeName: string) => {
+      return this.confirmDelete(
+        storeName,
+        'INVENTORY.DIALOGS.DELETE_MESSAGE'
+      );
+    },
+    showDeleteSuccess: () => {
+      return this.showSuccess(
+        'DIALOGS.TITLES.SUCCESS',
+        'INVENTORY.DIALOGS.SUCCESS_DELETE'
+      );
+    }
+}
 }

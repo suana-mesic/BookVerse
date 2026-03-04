@@ -9,6 +9,9 @@ import { ProductCategoriesComponent } from './catalogs/product-categories/produc
 import { AdminOrdersComponent } from './orders/admin-orders.component';
 import { AdminSettingsComponent } from './admin-settings/admin-settings.component';
 import { CouponsDynamicFormAddComponent } from './coupons-dynamic-form/coupons-dynamic-form-add.component';
+import { InventoryComponent } from './inventory/inventory.component';
+import { InventoryAddComponent } from './inventory/inventory-add/inventory-add.component';
+import { InventoryEditComponent } from './inventory/inventory-edit/inventory-edit.component';
 
 const routes: Routes = [
   {
@@ -44,7 +47,20 @@ const routes: Routes = [
         path: 'coupons',
         component: CouponsDynamicFormAddComponent,
       },
+      //inventory
+      {
+        path: 'inventory',
+        component: InventoryComponent,
+      },
 
+      {
+        path: 'inventory/add',
+        component: InventoryAddComponent,
+      },
+      {
+        path: 'inventory/edit/store/:storeId/book/:bookId',
+        component: InventoryEditComponent,
+      },
 
       {
         path: 'settings',

@@ -4,18 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Market.Domain.Entities.Catalog
+namespace Market.Application.Modules.Catalog.Inventory.Commands.Create
 {
-    public class StoreInventory
+    public class CreateInventoryCommand : IRequest<Unit>
+    {
+        public List<InventoryInfo> InventoryInfo { get; set; } = [];
+
+    }
+    public class InventoryInfo
     {
         public int StoreId { get; set; }
-        public Store Store { get; set; }
         public int BookId { get; set; }
-        public Books Book { get; set; }
         public int QuantityInStock { get; set; }
-        public DateTime LastRestocked { get; set; }
         public int ReorderTreshold { get; set; }
         public string? Location { get; set; } //npr. Polica 3
-        public bool IsDeleted { get; set; }
     }
 }

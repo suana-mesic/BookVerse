@@ -74,7 +74,7 @@ public partial class DatabaseContext
         modelBuilder.Entity<WishlistItems>().HasQueryFilter(x => !x.Book.IsDeleted && !x.User.IsDeleted);
 
         modelBuilder.Entity<StoreInventory>().HasKey(x => new { x.StoreId, x.BookId });
-        modelBuilder.Entity<StoreInventory>().HasQueryFilter(x => !x.Book.IsDeleted && !x.Store.IsDeleted);
+        modelBuilder.Entity<StoreInventory>().HasQueryFilter(x => !x.IsDeleted && !x.Book.IsDeleted && !x.Store.IsDeleted);
 
         modelBuilder.Entity<CartItems>().HasKey(x => new { x.CartId, x.BookId });
         modelBuilder.Entity<CartItems>().HasQueryFilter(x => !x.Book.IsDeleted && !x.Cart.IsDeleted);

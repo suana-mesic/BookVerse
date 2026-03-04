@@ -35,7 +35,9 @@
       "ORDERS": "Orders Overview",
       "SYSTEM": "SYSTEM",
       "SETTINGS": "Settings",
-      "LOGOUT": "Logout"
+      "LOGOUT": "Logout",
+      "COUPONS":"Coupons",
+      "INVENTORY":"Inventory"
     }
   },
   "BOOKS_CATEGORIES": {
@@ -140,6 +142,56 @@
       "UNSAVED_CHANGES": "You have unsaved changes in the form.",
       "CONFIRM_CANCEL": "Do you want to cancel changes and go back?"
     }
+  },
+  "INVENTORY": {
+    "TITLE": "Inventory",
+    "FILTER_STATUS": "Filter by Status",
+    "ALL_STATUSES": "All Statuses",
+    "SEARCH_PLACEHOLDER": "Search inventory...",
+    "SEARCH_INPUT_PLACEHOLDER": "Book title, store name...",
+    "SEARCH_MIN_LENGTH": "Enter at least 3 characters to search",
+    "CLEAR_FILTERS": "Clear Filters",
+    "LOADING": "Loading inventory...",
+    "RETRY": "Try Again",
+    "ERROR_TITLE": "Error Loading Inventory",
+    "NO_DATA": "No inventory data",
+    "NO_DATA_FILTER": "No inventory matching the filters",
+    "TABLE": {
+      "STORE_ID": "Store ID",
+      "STORE_NAME": "Store Name",
+      "BOOK_ID": "Book ID",
+      "ISBN": "ISBN",
+      "TITLE": "Book Title",
+      "QUANTITYINSTOCK": "Quantity in Store",
+      "LASTRESTOCKED": "Last Restocked",
+      "REORDERTRESHOLD": "Reorder Threshold",
+      "LOCATION": "Location",
+      "QUANTITYINSTOCKFORONLINEORDERS": "Quantity for Online Orders",
+      "ACTIONS": "Actions"
+    },
+    "ACTIONS": {
+      "VIEW_DETAILS": "View Details",
+      "EDIT_INVENTORY": "Edit Inventory",
+      "ADD_INVENTORY":"Add new inventory"
+
+    },
+    "DETAILS": {
+      "TITLE": "Inventory Details",
+      "LOADING": "Loading inventory details..."
+    },
+    "DIALOGS": {
+    "DELETE_TITLE": "Delete Inventory",
+    "DELETE_MESSAGE": "Are you sure you want to delete the inventory for store \"{{storeName}}\" and book \"{{title}}\"?",
+    "CONFIRM_ENABLE": "Are you sure you want to activate the inventory for store \"{{storeName}}\" and book \"{{title}}\"?",
+    "CONFIRM_DISABLE": "Are you sure you want to deactivate the inventory for store \"{{storeName}}\" and book \"{{title}}\"?",
+    "SUCCESS_CREATE": "Inventory successfully created.",
+    "SUCCESS_UPDATE": "Inventory successfully updated.",
+    "SUCCESS_DELETE": "Inventory successfully deleted.",
+    "ERROR_CREATE": "Error creating inventory.",
+    "ERROR_UPDATE": "Error updating inventory.",
+    "ERROR_DELETE": "Error deleting inventory.",
+    "ERROR_TOGGLE": "Error changing inventory status."
+  }
   },
   "ORDERS": {
     "TITLE": "Orders",

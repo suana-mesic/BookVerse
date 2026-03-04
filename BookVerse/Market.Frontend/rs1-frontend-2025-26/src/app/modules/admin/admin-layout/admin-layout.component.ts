@@ -16,7 +16,7 @@ export class AdminLayoutComponent implements OnInit{
     label:'ADMIN_PANEL.MENU.CATALOG',
     items:[
       {route: '/admin/product-categories',icon:'category', label:'ADMIN_PANEL.MENU.CATEGORIES'},
-      {route: '/admin/products',icon:'inventory_2', label:'ADMIN_PANEL.MENU.BOOKS'},
+      {route: '/admin/products',icon:'book', label:'ADMIN_PANEL.MENU.BOOKS'},
       {route: '/admin/coupons',icon:'local_activity', label:'ADMIN_PANEL.MENU.COUPONS'},
     ]
   },
@@ -25,6 +25,7 @@ export class AdminLayoutComponent implements OnInit{
     label:'ADMIN_PANEL.MENU.SECTION',
     items:[
       {route: '/admin/orders',icon:'shopping_cart', label:'ADMIN_PANEL.MENU.ORDERS'},
+      {route: '/admin/inventory',icon:'inventory', label:'ADMIN_PANEL.MENU.INVENTORY'},
     ]
   },
     {

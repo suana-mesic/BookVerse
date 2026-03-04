@@ -5,36 +5,52 @@ import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { BaseListPagedComponent } from '../../../core/components/base-classes/base-list-paged-component';
 import { ListOrdersQueryDto, ListOrdersRequest, OrderStatusType } from '../../../api-services/orders/orders-api.models';
-import { OrdersApiService } from '../../../api-services/orders/orders-api.service';
 import { ToasterService } from '../../../core/services/toaster.service';
 import { OrderStatusHelper } from '../../../api-services/orders/order-status.helper';
-import { ChangeStatusDialogComponent } from './change-status-dialog/change-status-dialog.component';
-import { OrderDetailsDialogComponent } from './admin-orders-details-dialog/order-details-dialog.component';
+import { ChangeStatusDialogComponent } from '../orders/change-status-dialog/change-status-dialog.component';
+import { ListInventoryQueryDto, ListInventoryRequest } from '../../../api-services/inventory/inventory-api.model';
+import { InventoryApiService } from '../../../api-services/inventory/inventory-api.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DialogHelperService } from '../../shared/services/dialog-helper.service';
+import { DialogButton } from '../../shared/models/dialog-config.model';
 
 
 @Component({
   selector: 'app-admin-orders',
   standalone: false,
-  templateUrl: './admin-orders.component.html',
-  styleUrl: './admin-orders.component.scss',
+  templateUrl: './inventory.component.html',
+  styleUrl: './inventory.component.scss',
 })
-export class AdminOrdersComponent
-  extends BaseListPagedComponent<ListOrdersQueryDto, ListOrdersRequest>
+export class InventoryComponent
+  extends BaseListPagedComponent<ListInventoryQueryDto, ListInventoryRequest>
   implements OnInit, OnDestroy {
-  private ordersApi = inject(OrdersApiService);
+
+  private inventoryApi = inject(InventoryApiService);
   private dialog = inject(MatDialog);
   private toaster = inject(ToasterService);
   private destroy$ = new Subject<void>();
   private globalCounter: number = 0;
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+  private dialogHelper = inject(DialogHelperService);
+  
 
   // Table columns
   displayedColumns: string[] = [
-    'trackingNumber',
-    'customer',
-    'orderedAt',
-    'totalAmount',
-    'status',
+    'storeName',
+    'isbn',
+    'title',
+    'quantityInStock',
+    'lastRestocked',
+    'reorderTreshold',
+    'location',
+    'quantityInStockForOnlineOrders',
     'actions'
+    // 'trackingNumber',
+    // 'customer',
+    // 'orderedAt',
+    // 'totalAmount',
+    // 'status',
   ];
 
   // Search control with debounce
@@ -52,8 +68,7 @@ export class AdminOrdersComponent
     console.log(this.globalCounter, ". Pozvan je constructor:");
     this.globalCounter += this.globalCounter;
 
-    this.request = new ListOrdersRequest();
-    this.request.paging.page = 1; 
+    this.request = new ListInventoryRequest();
     this.request.paging.pageSize = 20;
   }
 
@@ -97,7 +112,7 @@ export class AdminOrdersComponent
 
     this.startLoading();
 
-    this.ordersApi.list(this.request).subscribe({
+    this.inventoryApi.list(this.request).subscribe({
       next: (response) => {
         this.handlePageResult(response);
         this.stopLoading();
@@ -143,31 +158,30 @@ export class AdminOrdersComponent
     this.loadPagedData();
   }
 
-  // === Actions ===
 
-  onViewDetails(order: ListOrdersQueryDto, event?: MouseEvent): void {
-    console.log(this.globalCounter, ". Pozvan je onViewDetails:");
-    this.globalCounter += this.globalCounter;
+  // onViewDetails(order: ListOrdersQueryDto, event?: MouseEvent): void {
+  //   console.log(this.globalCounter, ". Pozvan je onViewDetails:");
+  //   this.globalCounter += this.globalCounter;
 
-    // spriječi da klik sa dugmeta ode na <tr> i ponovo otvori dialog
-    event?.stopPropagation();
+  //   // spriječi da klik sa dugmeta ode na <tr> i ponovo otvori dialog
+  //   event?.stopPropagation();
 
-    const dialogRef = this.dialog.open(OrderDetailsDialogComponent, {
-      width: '900px',
-      maxWidth: '95vw',
-      maxHeight: '90vh',
-      data: {
-        orderId: order.id
-      },
-      panelClass: 'order-details-dialog'
-    });
+  //   const dialogRef = this.dialog.open(OrderDetailsDialogComponent, {
+  //     width: '900px',
+  //     maxWidth: '95vw',
+  //     maxHeight: '90vh',
+  //     data: {
+  //       orderId: order.id
+  //     },
+  //     panelClass: 'order-details-dialog'
+  //   });
 
-    dialogRef.afterClosed().subscribe((changed: boolean) => {
-      if (changed) {
-        this.loadPagedData(); // Reload if status changed
-      }
-    });
-  }
+  //   dialogRef.afterClosed().subscribe((changed: boolean) => {
+  //     if (changed) {
+  //       this.loadPagedData(); // Reload if status changed
+  //     }
+  //   });
+  // }
 
   onChangeStatus(order: ListOrdersQueryDto, event?: Event): void {
     console.log(this.globalCounter, ". Pozvan je onChangeStatus:");
@@ -187,32 +201,32 @@ export class AdminOrdersComponent
       panelClass: 'change-status-dialog'
     });
 
-    dialogRef.afterClosed().subscribe((newStatus: OrderStatusType | undefined) => {
-      if (newStatus !== undefined) {
-        this.changeOrderStatus(order.id, newStatus);
-      }
-    });
+    // dialogRef.afterClosed().subscribe((newStatus: OrderStatusType | undefined) => {
+    //   if (newStatus !== undefined) {
+    //     this.changeOrderStatus(order.id, newStatus);
+    //   }
+    // });
   }
 
-  private changeOrderStatus(orderId: number, newStatus: OrderStatusType): void {
-    this.startLoading();
+  // private changeOrderStatus(orderId: number, newStatus: OrderStatusType): void {
+  //   this.startLoading();
 
-    this.ordersApi.changeStatus(orderId, newStatus).subscribe({
-      next: () => {
-        this.toaster.success('Order status updated successfully');
-        this.loadPagedData(); // Reload list
-      },
-      error: (err) => {
-        this.stopLoading();
+  //   this.inventoryApi.changeStatus(orderId, newStatus).subscribe({
+  //     next: () => {
+  //       this.toaster.success('Order status updated successfully');
+  //       this.loadPagedData(); // Reload list
+  //     },
+  //     error: (err) => {
+  //       this.stopLoading();
 
-        // Extract error message
-        const errorMessage = this.extractErrorMessage(err);
-        this.toaster.error(errorMessage || 'Failed to update order status');
+  //       // Extract error message
+  //       const errorMessage = this.extractErrorMessage(err);
+  //       this.toaster.error(errorMessage || 'Failed to update order status');
 
-        console.error('Change status error:', err);
-      }
-    });
-  }
+  //       console.error('Change status error:', err);
+  //     }
+  //   });
+  // }
 
   // === Status Helpers (for template) ===
 
@@ -268,5 +282,30 @@ export class AdminOrdersComponent
     }
 
     return null;
+  }
+
+  editInventory(storeId: number, bookId: number) {
+    //inventory/edit/store/:id/book/:id
+    this.router.navigate(["/admin/inventory/edit/store", storeId,"book", bookId]);
+  }
+
+  deleteInventory(storeId: number, storeName:string, bookId: number) {
+    this.dialogHelper.inventory.confirmDelete(storeName).subscribe(result => {
+        if (result && result.button === DialogButton.DELETE) {
+            this.performDelete(storeId, bookId);
+          }
+        });
+  }
+
+  performDelete(storeId: number, bookId: number){
+    this.inventoryApi.delete(storeId, bookId).subscribe({
+      next:(response)=> {
+        this.dialogHelper.inventory.showDeleteSuccess().subscribe();
+        this.loadPagedData();
+      },
+      error:(err)=>{
+        this.toaster.error("Greška prilikom brisanja inventara");
+      }
+    })
   }
 }

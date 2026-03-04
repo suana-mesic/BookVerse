@@ -16,6 +16,9 @@ import { OrderDetailsDialogComponent } from './orders/admin-orders-details-dialo
 import { ChangeStatusDialogComponent } from './orders/change-status-dialog/change-status-dialog.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CouponsDynamicFormAddComponent } from './coupons-dynamic-form/coupons-dynamic-form-add.component';
+import { InventoryComponent } from './inventory/inventory.component';
+import { InventoryEditComponent } from './inventory/inventory-edit/inventory-edit.component';
+import { InventoryAddComponent } from './inventory/inventory-add/inventory-add.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +32,10 @@ import { CouponsDynamicFormAddComponent } from './coupons-dynamic-form/coupons-d
     AdminSettingsComponent,
     OrderDetailsDialogComponent,
     ChangeStatusDialogComponent,
-    CouponsDynamicFormAddComponent
+    CouponsDynamicFormAddComponent,
+    InventoryComponent,
+    InventoryEditComponent,
+    InventoryAddComponent
   ],
   imports: [
     AdminRoutingModule,
