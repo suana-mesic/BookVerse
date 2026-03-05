@@ -9,6 +9,9 @@ import { InventoryApiService } from '../../../../api-services/inventory/inventor
 import { GetInventoryByIdQueryDto, StoreBookPairs } from '../../../../api-services/inventory/inventory-api.model';
 import { ListStoresQueryDto, ListStoresRequest } from '../../../../api-services/stores/stores-api.model';
 import { StoresApiService } from '../../../../api-services/stores/stores-api.service';
+import { map, Observable, startWith } from 'rxjs';
+import { C } from '@angular/cdk/keycodes';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 @Component({
   selector: 'app-products-edit',
   standalone: false,
@@ -25,11 +28,12 @@ export class InventoryAddComponent
   private storesApi = inject(StoresApiService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-  private rotue = inject(ActivatedRoute);
   private toaster = inject(ToasterService);
   private bookId: number = 0;
   private storeId: number = 0;
   private formBuilder = inject(FormBuilder);
+  private numberOfStoreInputs = 0;
+  private numberOfBookInputs = 0;
   form!:FormGroup;
   
   productId!: number;
@@ -37,7 +41,7 @@ export class InventoryAddComponent
   stores:ListStoresQueryDto[]=[];
   inventory!: GetInventoryByIdQueryDto;
   storeBookPairs!:StoreBookPairs;
-  
+
   ngOnInit(): void {
     this.startLoading();
     this.bookId = +this.route.snapshot.params['bookId'];
@@ -50,6 +54,12 @@ export class InventoryAddComponent
     this.loadStores();
     this.loadStoreBookPairs();
     this.createForm();
+  }
+
+  onStoreSelected(event:MatAutocompleteSelectedEvent){
+    const storeId = this.stores.filter(x=>x.storeName == event.option.value).at(0)?.id;
+    if(storeId)
+      this.form.get('storeId')?.setValue(storeId);
   }
 
   loadStoreBookPairs() {
@@ -104,7 +114,7 @@ export class InventoryAddComponent
     });
   }
 
-    dodajNoviInventar() {
+  dodajNoviInventar() {
     const inventoryGroup = new FormGroup ({
           storeId: new FormControl('', Validators.required),
           bookId: new FormControl('', Validators.required),
@@ -114,6 +124,7 @@ export class InventoryAddComponent
         });
       this.inventoryArray.push(inventoryGroup);
     }
+
 
   private validateLocation(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {

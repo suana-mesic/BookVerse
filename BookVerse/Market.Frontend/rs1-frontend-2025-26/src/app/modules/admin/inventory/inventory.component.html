@@ -59,7 +59,7 @@
         </mat-form-field>
 
         <!-- Clear Filters Button -->
-        <button mat-stroked-button (click)="clearFilters()" [disabled]="!searchControl.value && !searchBookId.value && !searchStoreId.value"
+        <button mat-stroked-button (click)="clearFilters()" [disabled]="!searchControl.value && !booksAutocompleteInput.value && !storesAutocompleteInput.value"
           class="clear-filters-btn">
           <mat-icon>clear_all</mat-icon>
           <span>{{ 'INVENTORY.CLEAR_FILTERS' | translate }}</span>

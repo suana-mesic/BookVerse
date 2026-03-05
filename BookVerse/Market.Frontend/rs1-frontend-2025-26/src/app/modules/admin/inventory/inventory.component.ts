@@ -64,7 +64,7 @@ export class InventoryComponent
 
   filteredBookOptions!:Observable<ListBooksQueryDto[]>;
   filteredStoresOptions!:Observable<ListStoresQueryDto[]>;
-
+  
   stores:ListStoresQueryDto[]=[];
   books:ListBooksQueryDto[]=[];
 
