@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace Market.Application.Modules.Shopping.OrdersOrderItems.Queries.List
 {
-    public class ListInventoryQuery: BasePagedQuery<ListInventoryQueryDto> //provjeriti 
+    public class ListInventoryQuery: BasePagedQuery<ListInventoryQueryDto> 
     {
-        public string ? Search { get; set; }
-        public string? Status { get; set; }
+        public string ? Search { get; set; } //property location
+        public string? Book { get; set; }
+        public string? Store { get; set; }
     }
 }

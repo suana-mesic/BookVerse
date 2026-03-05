@@ -148,7 +148,7 @@
     "FILTER_STATUS": "Filter by Status",
     "ALL_STATUSES": "All Statuses",
     "SEARCH_PLACEHOLDER": "Search inventory...",
-    "SEARCH_INPUT_PLACEHOLDER": "Book title, store name...",
+    "SEARCH_INPUT_PLACEHOLDER": "Location on shelf",
     "SEARCH_MIN_LENGTH": "Enter at least 3 characters to search",
     "CLEAR_FILTERS": "Clear Filters",
     "LOADING": "Loading inventory...",
@@ -168,6 +168,13 @@
       "LOCATION": "Location",
       "QUANTITYINSTOCKFORONLINEORDERS": "Quantity for Online Orders",
       "ACTIONS": "Actions"
+    },
+    "FORM": {
+      "LOADING": "Loading...",
+      "CANCEL": "Cancel",
+      "SAVE": "Save",
+      "UPDATE": "Update",
+      "ADD":"Add"
     },
     "ACTIONS": {
       "VIEW_DETAILS": "View Details",

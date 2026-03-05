@@ -14,13 +14,18 @@ namespace Market.Application.Modules.Shopping.OrdersOrderItems.Queries.List
             if (!string.IsNullOrWhiteSpace(request.Search))
             {
                 var searchFilter = request.Search.ToLower();
-                q = q.Where(x =>
-                    (x.Store.StoreName.ToString() != null && x.Store.StoreName.ToString().ToLower().Contains(searchFilter)) ||
-                    (x.Book.ISBN.ToString() != null && x.Book.ISBN.ToLower().Contains(searchFilter)) ||
-                    (x.Book.Title.ToString() != null && x.Book.Title.ToLower().Contains(searchFilter)) ||
-                    (x.Location.ToString() != null && x.Location.ToLower().Contains(searchFilter))
-                );
+                q = q.Where(x => x.Location.ToString() != null && x.Location.ToLower().Contains(searchFilter));
             }
+
+            if (!string.IsNullOrWhiteSpace(request.Book))
+                q = q
+                    .Include(x=>x.Book)
+                    .Where(x => x.Book.Title.Contains(request.Book.ToLower()));
+
+            if (!string.IsNullOrWhiteSpace(request.Store))
+                q = q
+                    .Include(x => x.Store)
+                    .Where(x => x.Store.StoreName.Contains(request.Store.ToLower()));
 
             var query = q.OrderBy(x => x.StoreId).Select(x => new ListInventoryQueryDto
             {

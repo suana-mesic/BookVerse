@@ -1,7 +1,7 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, map, startWith, takeUntil } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { BaseListPagedComponent } from '../../../core/components/base-classes/base-list-paged-component';
 import { ListOrdersQueryDto, ListOrdersRequest, OrderStatusType } from '../../../api-services/orders/orders-api.models';
@@ -13,6 +13,10 @@ import { InventoryApiService } from '../../../api-services/inventory/inventory-a
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogHelperService } from '../../shared/services/dialog-helper.service';
 import { DialogButton } from '../../shared/models/dialog-config.model';
+import { BooksApiService } from '../../../api-services/books/books-api.service';
+import { StoresApiService } from '../../../api-services/stores/stores-api.service';
+import { ListBooksQueryDto, ListBooksRequest } from '../../../api-services/books/books-api.models';
+import { ListStoresQueryDto, ListStoresRequest } from '../../../api-services/stores/stores-api.model';
 
 
 @Component({
@@ -33,6 +37,8 @@ export class InventoryComponent
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private dialogHelper = inject(DialogHelperService);
+  private booksApi = inject(BooksApiService);
+  private storesApi = inject(StoresApiService);
   
 
   // Table columns
@@ -46,22 +52,21 @@ export class InventoryComponent
     'location',
     'quantityInStockForOnlineOrders',
     'actions'
-    // 'trackingNumber',
-    // 'customer',
-    // 'orderedAt',
-    // 'totalAmount',
-    // 'status',
   ];
 
   // Search control with debounce
   searchControl = new FormControl('');
+  booksAutocompleteInput = new FormControl('');
+  storesAutocompleteInput = new FormControl('');
+  
+  searchStoreId = new FormControl(null);
+  searchBookId = new FormControl(null);
 
-  // Status filter
-  statusFilter: OrderStatusType | null = null;
-  statusOptions = OrderStatusHelper.getStatusOptions();
+  filteredBookOptions!:Observable<ListBooksQueryDto[]>;
+  filteredStoresOptions!:Observable<ListStoresQueryDto[]>;
 
-  // Expose OrderStatusType for template
-  OrderStatusType = OrderStatusType;
+  stores:ListStoresQueryDto[]=[];
+  books:ListBooksQueryDto[]=[];
 
   constructor() {
     super();
@@ -70,6 +75,8 @@ export class InventoryComponent
 
     this.request = new ListInventoryRequest();
     this.request.paging.pageSize = 20;
+    this.setFilteredBookOptions();
+    this.setFilteredStoresOptions();
   }
 
   ngOnInit(): void {
@@ -77,13 +84,76 @@ export class InventoryComponent
     this.globalCounter += this.globalCounter;
 
     this.initList();
+    this.loadBooks();
+    this.loadStores();
     this.setupSearchDebounce();
+    this.setupSearchByBookDebounce();
+    this.setupSearchByStoreDebounce();
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
+
+  setFilteredBookOptions(){
+    console.log("Pozvana je metoda setFilteredBookOptions");
+    this.filteredBookOptions = this.booksAutocompleteInput.valueChanges.pipe(
+      startWith(''),
+        map(value=> this._filterBooks(value || '')),
+      );
+  }
+
+  setFilteredStoresOptions(){
+    console.log("Pozvana je metoda setFilteredStoresOptions");
+    this.filteredStoresOptions = this.storesAutocompleteInput.valueChanges.pipe(
+      startWith(''),
+        map(value=> this._filterStores(value || '')),
+      );
+  }
+
+
+  private setupSearchByBookDebounce(): void {
+    console.log(this.globalCounter, ". Pozvan je setupSearchByBookDebounce:");
+    this.globalCounter += this.globalCounter;
+
+    this.booksAutocompleteInput.valueChanges
+      .pipe(
+        debounceTime(400), 
+        distinctUntilChanged(), // Only if value actually changed
+        takeUntil(this.destroy$)
+      )
+      .subscribe((searchTerm) => {
+          this.onSearchChange();
+      });
+  }
+
+  private setupSearchByStoreDebounce(): void {
+    console.log(this.globalCounter, ". Pozvan je setupSearchByStoreDebounce:");
+    this.globalCounter += this.globalCounter;
+
+    this.storesAutocompleteInput.valueChanges
+      .pipe(
+        debounceTime(400), 
+        distinctUntilChanged(), // Only if value actually changed
+        takeUntil(this.destroy$)
+      )
+      .subscribe((searchTerm) => {
+          this.onSearchChange();
+      });
+  }
+
+
+  private _filterBooks(value: string):ListBooksQueryDto[]{
+    const filterValue = value.toLowerCase();
+    return this.books.filter(book=>book.title.toLowerCase().includes(filterValue));
+  }
+
+  private _filterStores(value: string):ListStoresQueryDto[]{
+    const filterValue = value.toLowerCase();
+    return this.stores.filter(store=>store.storeName.toLowerCase().includes(filterValue));
+  }
+
 
   /**
    * Setup search with debounce and minimum length
@@ -126,23 +196,15 @@ export class InventoryComponent
 
   // === Filters ===
 
-  onSearchChange(searchTerm: string): void {
+  onSearchChange(searchTerm?: string): void {
     console.log(this.globalCounter, ". Pozvan je onSearchChange:");
     this.globalCounter += this.globalCounter;
 
     this.request.search = searchTerm;
+    this.request.book = this.booksAutocompleteInput.value ?? null;
+    this.request.store = this.storesAutocompleteInput.value ?? null;
     this.request.paging.page = 1; // Reset to first page
-    this.loadPagedData();
-  }
 
-  onStatusFilterChange(status: OrderStatusType | null): void {
-    console.log(this.globalCounter, ". Pozvan je onStatusFilterChange:");
-    this.globalCounter += this.globalCounter;
-
-    this.statusFilter = status;
-    // Note: Backend needs to support status filter
-    // For now, we filter client-side or update backend
-    this.request.paging.page = 1;
     this.loadPagedData();
   }
 
@@ -152,36 +214,31 @@ export class InventoryComponent
 
 
     this.searchControl.setValue('', { emitEvent: false });
-    this.statusFilter = null;
-    this.request.search = null;
+    this.booksAutocompleteInput.setValue(null);
+    this.storesAutocompleteInput.setValue(null);
+    this.request.store = null;
     this.request.paging.page = 1;
     this.loadPagedData();
   }
 
+  private loadBooks(){
+      const request = new ListBooksRequest();
+      request.paging.pageSize=10000000;
+      this.booksApi.list(request).subscribe({
+        next:(response)=>this.books=response.items,
+        error:(err)=>this.toaster.error("Greška prilikom dohvatanja knjiga.")
+      });
+    }
+  
+    private loadStores(){
+      const request = new ListStoresRequest();
+      request.paging.pageSize=10000000;
+      this.storesApi.list(request).subscribe({
+        next:(response)=>this.stores=response.items,
+        error:(err)=>this.toaster.error("Greška prilikom dohvatanja knjiga.")
+      });
+    }
 
-  // onViewDetails(order: ListOrdersQueryDto, event?: MouseEvent): void {
-  //   console.log(this.globalCounter, ". Pozvan je onViewDetails:");
-  //   this.globalCounter += this.globalCounter;
-
-  //   // spriječi da klik sa dugmeta ode na <tr> i ponovo otvori dialog
-  //   event?.stopPropagation();
-
-  //   const dialogRef = this.dialog.open(OrderDetailsDialogComponent, {
-  //     width: '900px',
-  //     maxWidth: '95vw',
-  //     maxHeight: '90vh',
-  //     data: {
-  //       orderId: order.id
-  //     },
-  //     panelClass: 'order-details-dialog'
-  //   });
-
-  //   dialogRef.afterClosed().subscribe((changed: boolean) => {
-  //     if (changed) {
-  //       this.loadPagedData(); // Reload if status changed
-  //     }
-  //   });
-  // }
 
   onChangeStatus(order: ListOrdersQueryDto, event?: Event): void {
     console.log(this.globalCounter, ". Pozvan je onChangeStatus:");
@@ -200,88 +257,6 @@ export class InventoryComponent
       },
       panelClass: 'change-status-dialog'
     });
-
-    // dialogRef.afterClosed().subscribe((newStatus: OrderStatusType | undefined) => {
-    //   if (newStatus !== undefined) {
-    //     this.changeOrderStatus(order.id, newStatus);
-    //   }
-    // });
-  }
-
-  // private changeOrderStatus(orderId: number, newStatus: OrderStatusType): void {
-  //   this.startLoading();
-
-  //   this.inventoryApi.changeStatus(orderId, newStatus).subscribe({
-  //     next: () => {
-  //       this.toaster.success('Order status updated successfully');
-  //       this.loadPagedData(); // Reload list
-  //     },
-  //     error: (err) => {
-  //       this.stopLoading();
-
-  //       // Extract error message
-  //       const errorMessage = this.extractErrorMessage(err);
-  //       this.toaster.error(errorMessage || 'Failed to update order status');
-
-  //       console.error('Change status error:', err);
-  //     }
-  //   });
-  // }
-
-  // === Status Helpers (for template) ===
-
-  getStatusLabel(status: OrderStatusType): string {
-    return OrderStatusHelper.getLabel(status);
-  }
-
-  getStatusIcon(status: OrderStatusType): string {
-    console.log("Order status type is, ", status);
-    return OrderStatusHelper.getIcon(status);
-  }
-
-  getStatusClass(status: OrderStatusType): string {
-    return OrderStatusHelper.getColorClass(status);
-  }
-
-  canChangeStatus(order: ListOrdersQueryDto): boolean {
-    // Can change if not in final state
-    return order.statusNameEnum !== OrderStatusType.Completed &&
-      order.statusNameEnum !== OrderStatusType.Cancelled;
-  }
-
-  // === Display Helpers ===
-
-  getCustomerName(order: ListOrdersQueryDto): string {
-    return `${order.userInfo.firstName} ${order.userInfo.lastName}`;
-  }
-
-  getCustomerAddress(order: ListOrdersQueryDto): string {
-    return `${order.userInfo.userAddress}, ${order.userInfo.userCity}`;
-  }
-
-  /**
-   * Extract user-friendly error message from HTTP error response
-   */
-  private extractErrorMessage(err: any): string | null {
-    if (err?.error) {
-      if (typeof err.error === 'string') {
-        return err.error;
-      }
-
-      if (err.error.message) {
-        return err.error.message;
-      }
-
-      if (err.error.title) {
-        return err.error.title;
-      }
-    }
-
-    if (err?.message) {
-      return err.message;
-    }
-
-    return null;
   }
 
   editInventory(storeId: number, bookId: number) {

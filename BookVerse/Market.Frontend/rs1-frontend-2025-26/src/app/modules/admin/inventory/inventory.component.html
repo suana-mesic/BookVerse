@@ -12,7 +12,7 @@
 
       <!-- Right: Filters and Actions -->
       <div class="actions-container">
-            <!-- Search -->
+      <!-- Search -->
         <mat-form-field class="search-field" appearance="fill">
           <mat-label>{{ 'INVENTORY.SEARCH_PLACEHOLDER' | translate }}</mat-label>
           <input matInput [formControl]="searchControl" [placeholder]="'INVENTORY.SEARCH_INPUT_PLACEHOLDER' | translate" />
@@ -22,8 +22,44 @@
           </mat-hint>
         </mat-form-field>
 
+        <!-- Filter by Stores -->
+        <mat-form-field>
+          <mat-label>Prodavnica</mat-label>
+          <input
+              type="text"
+              placeholder="Unesite naziv prodavnice"
+              aria-label="store"
+              matInput
+              [formControl]="storesAutocompleteInput"
+              [matAutocomplete]="autoStores">
+          <mat-autocomplete #autoStores="matAutocomplete">
+          @for(s of filteredStoresOptions | async; track s.id){
+            <mat-option [value]="s.storeName">{{s.storeName}}</mat-option>
+          }
+          </mat-autocomplete>
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+        
+        <!-- Filter by Books -->
+        <mat-form-field>
+          <mat-label>Knjiga</mat-label>
+          <input
+              type="text"
+              placeholder="Unesite naziv knjige"
+              aria-label="book"
+              matInput
+              [formControl]="booksAutocompleteInput"
+              [matAutocomplete]="autoBooks">
+          <mat-autocomplete #autoBooks="matAutocomplete">
+          @for(b of filteredBookOptions | async; track b.id){
+            <mat-option [value]="b.title">{{b.title}}</mat-option>
+          }
+          </mat-autocomplete>
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+
         <!-- Clear Filters Button -->
-        <button mat-stroked-button (click)="clearFilters()" [disabled]="!searchControl.value && !statusFilter"
+        <button mat-stroked-button (click)="clearFilters()" [disabled]="!searchControl.value && !searchBookId.value && !searchStoreId.value"
           class="clear-filters-btn">
           <mat-icon>clear_all</mat-icon>
           <span>{{ 'INVENTORY.CLEAR_FILTERS' | translate }}</span>
@@ -200,7 +236,7 @@
           <div class="no-data-content">
             <mat-icon>shopping_cart</mat-icon>
             <p>
-              <ng-container *ngIf="searchControl.value || statusFilter; else noDataDefault">
+              <ng-container *ngIf="searchControl.value; else noDataDefault">
                 {{ 'ORDERS.NO_DATA_FILTER' | translate }}
               </ng-container>
               <ng-template #noDataDefault>

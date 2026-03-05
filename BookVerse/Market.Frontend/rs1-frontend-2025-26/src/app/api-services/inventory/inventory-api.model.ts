@@ -9,7 +9,8 @@ import { BasePagedQuery } from '../../core/models/paging/base-paged-query';
  */
 export class ListInventoryRequest extends BasePagedQuery {
   search?: string | null;
-  onlyEnabled?:boolean|null;
+  book?:string|null;
+  store?:string|null;
 }
 
 /**
@@ -63,4 +64,10 @@ export interface UpdateInventoryCommand {
   quantityInStock:number;
   reorderTreshold:number;
   location:string|null;
+}
+
+export interface StoreBookPairs {
+  // Vanjski objekat — ključ je storeId (broj), vrijednost je još jedan objekat
+  // Unutrašnji objekat — ključ je bookId (broj), vrijednost je string (naziv knjige)
+  [storeId: number]: {[bookId: number]: string};
 }

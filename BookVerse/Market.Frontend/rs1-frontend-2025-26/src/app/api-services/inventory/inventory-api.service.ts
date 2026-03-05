@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { buildHttpParams } from '../../core/models/build-http-params';
-import { CreateInventoryCommand, GetInventoryByIdQueryDto, ListInventoryRequest, ListInventoryResponse, UpdateInventoryCommand } from './inventory-api.model';
+import { CreateInventoryCommand, GetInventoryByIdQueryDto, ListInventoryRequest, ListInventoryResponse, StoreBookPairs, UpdateInventoryCommand } from './inventory-api.model';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +18,9 @@ export class InventoryApiService {
       return this.http.get<ListInventoryResponse>(this.baseUrl, {
         params,
       });
+    }
+    getStoreBookPairs(): Observable<StoreBookPairs> {
+      return this.http.get<StoreBookPairs>(`${this.baseUrl}/storeBookPairs`);
     }
 
     getById(storeId: number, bookId:number): Observable<GetInventoryByIdQueryDto> {

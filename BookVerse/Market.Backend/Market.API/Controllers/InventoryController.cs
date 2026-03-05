@@ -2,6 +2,7 @@
 using Market.Application.Modules.Catalog.Inventory.Commands.Delete;
 using Market.Application.Modules.Catalog.Inventory.Commands.Update;
 using Market.Application.Modules.Catalog.Inventory.Queries.GetById;
+using Market.Application.Modules.Catalog.Inventory.Queries.GetStoresAndBooksPairs;
 using Market.Application.Modules.Shopping.OrdersOrderItems.Queries.List;
 namespace Market.API.Controllers;
 
@@ -14,6 +15,13 @@ public class InventoryController(ISender sender) : ControllerBase
     public async Task<PageResult<ListInventoryQueryDto>> List([FromQuery] ListInventoryQuery query, CancellationToken ct)
     {
         var result = await sender.Send(query, ct);
+        return result;
+    }
+
+    [HttpGet("storeBookPairs")]
+    public async Task<Dictionary<int,Dictionary<int, string>>> List(CancellationToken ct)
+    {
+        var result = await sender.Send(new GetStoresAndBooksPairsQuery(), ct);
         return result;
     }
 
