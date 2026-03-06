@@ -30,6 +30,12 @@ $hover-bg: rgba(73, 118, 181, 0.04);
   min-height: 100vh;
 }
 
+.delete-btn {
+  background: rgba(239, 83, 80, 0.05)!important; 
+  color:#c94644 !important;
+  border: 1px solid #ef5350
+}
+
 // Header Card
 .header-card {
   background: white;

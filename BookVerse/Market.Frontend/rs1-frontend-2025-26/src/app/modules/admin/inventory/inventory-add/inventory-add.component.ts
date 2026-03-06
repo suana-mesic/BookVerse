@@ -10,7 +10,7 @@ import { GetInventoryByIdQueryDto, StoreBookPairs } from '../../../../api-servic
 import { ListStoresQueryDto, ListStoresRequest } from '../../../../api-services/stores/stores-api.model';
 import { StoresApiService } from '../../../../api-services/stores/stores-api.service';
 import { map, Observable, startWith } from 'rxjs';
-import { C } from '@angular/cdk/keycodes';
+import { B, C } from '@angular/cdk/keycodes';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 @Component({
   selector: 'app-products-edit',
@@ -32,23 +32,28 @@ export class InventoryAddComponent
   private bookId: number = 0;
   private storeId: number = 0;
   private formBuilder = inject(FormBuilder);
-  private numberOfStoreInputs = 0;
-  private numberOfBookInputs = 0;
   form!:FormGroup;
   
-  productId!: number;
   books:ListBooksQueryDto[]=[];
   stores:ListStoresQueryDto[]=[];
   inventory!: GetInventoryByIdQueryDto;
   storeBookPairs!:StoreBookPairs;
+  
+  filteredBookOptions: Observable<[number,string][]>[] = []; //Observable koji "emituje" niz tuple-ova
+  filteredStoreOptions:Observable<ListStoresQueryDto[]>[] = [];
+
+  storesAutocompleteInputs = new FormArray<FormControl>([]);
+  booksAutocompleteInputs = new FormArray<FormControl>([]);
 
   ngOnInit(): void {
     this.startLoading();
     this.bookId = +this.route.snapshot.params['bookId'];
     this.storeId = +this.route.snapshot.params['storeId'];
     this.loadForm();
+    this.addStoreAutocompleteInput();
+    this.addBookAutocompleteInput();
   }
-  
+
   private loadForm(){
     this.loadBooks();
     this.loadStores();
@@ -56,10 +61,117 @@ export class InventoryAddComponent
     this.createForm();
   }
 
-  onStoreSelected(event:MatAutocompleteSelectedEvent){
+  private setFilteredStoreOptions(): void {
+  this.filteredStoreOptions = this.storesAutocompleteInputs.controls.map(
+    //index daje informaciju o tome koja se kontrola promijenila (koji input prodavnice)
+    (control: FormControl, index:number) =>
+      control.valueChanges.pipe(
+        startWith(''),
+        map(value => this._filterStores(value || '', index))
+      )
+  );
+  }
+
+  private _filterStores(enteredValue: string, index:number):ListStoresQueryDto[]{
+    //ima 1 filter
+    //filter definiše korisnik -> npr. unese slovo "a" u store autocomplete polju za unos
+
+    const filterValue = enteredValue.toLowerCase();
+    const result = this.stores.filter(store=>store.storeName.toLowerCase().includes(filterValue));
+    return result;
+  }
+
+  clearBookInSameRow(index:number){
+    //počistiti autocomplete polje u istom redu gdje se unosi naziv knjige
+    this.booksAutocompleteInputs.at(index).setValue('');
+  }
+
+  private setFilteredBookOptions(): void {
+  this.filteredBookOptions = this.booksAutocompleteInputs.controls.map(
+    //index daje informaciju o tome koja se kontrola promijenila (koji input prodavnice)
+    (control: FormControl, index:number) =>
+      control.valueChanges.pipe(
+        startWith(''),
+        map(value => this._filterBooks(value || '', index))
+      )
+  );
+  }
+
+  private _filterBooks(enteredValue: string, index:number):[number,string][]{
+    //ima 3 filtera
+    //1. filter je predodređen -> na osnovu onog kakva je prodavnica odabrana u stores
+    //2. filter ispiši samo one knjige koje nisu prethodno selektovane ZA TU PRODAVNICU *
+    //3. filter definiše korisnik -> npr. unese slovo "a" u book autocomplete polju za unos
+
+    const filterValue = enteredValue.toLowerCase();
+    const storeId = this.inventoryArray.at(index).get('storeId')?.value;
+
+    //filter2 se radi samo ako je za trenutni storeId pronađeno više od 2 knjige u storesAutocompleteInputs
+    let applyFilter2: boolean = false;
+    const allEnteredStoreIds =  this.storesAutocompleteInputs.controls.map((control)=>control.value)
+    const x = allEnteredStoreIds.filter(storeId=>storeId == storeId).length;
+
+    if(x >= 2)
+      applyFilter2 = true;
+
+    //ako je storeId = 5, onda this.storeBookPairs[5] će dohvatiti values za ključ storeId = 5, values je [string, int][] -> array tuple-ova
+    const filter1 = this.storeBookPairs?.[storeId];
+    if(!filter1) return [];
+
+    //iz cijele forme gledamo koji su to odabrani parovi storeId i bookId (šta je to popunjeno na formi)
+    const prethodnoOdabraniNaslovi: string[] = this.inventoryArray.controls
+    .map((control)=>`${control.get('storeId')?.value} ${control.get('bookId')?.value}`)
+    .filter(v => v !== null && v !== undefined);
+
+    if(applyFilter2){
+      const filter2 = Object.entries(filter1).filter(([bookId, title])=>!prethodnoOdabraniNaslovi.includes(`${storeId} ${bookId}`))
+      
+      const filter3 = this.applyFilter3(filter2, filterValue);
+      console.log(`filter1_2_3 za storeId: ${storeId}`);
+      console.log(filter3);
+      return filter3;
+    }
+    
+    const filter3 = this.applyFilter3(Object.entries(filter1),filterValue);
+    console.log(`filter1_2 za storeId: ${storeId}`);
+    console.log(filter3);
+    return filter3;
+  }
+
+  applyFilter3(filter:[string,string][], filterValue:string){
+    return filter
+      .filter(([bookId, bookName])=>bookName.toLowerCase().includes(filterValue))
+      .map(([bookId,bookName])=> [Number(bookId),bookName] as [number,string]);
+  }
+
+  addStoreAutocompleteInput(){
+    this.storesAutocompleteInputs.push(new FormControl('', Validators.required));
+    this.setFilteredStoreOptions();
+  }
+  
+  addBookAutocompleteInput(){
+    this.booksAutocompleteInputs.push(new FormControl('',  Validators.required));
+    this.setFilteredBookOptions();
+  }
+
+  deleteInventoryRow(index: number){
+    this.inventoryArray.removeAt(index);
+    this.booksAutocompleteInputs.removeAt(index);
+    this.storesAutocompleteInputs.removeAt(index);
+    this.setFilteredBookOptions();
+  }
+
+  onStoreSelected(event:MatAutocompleteSelectedEvent, index:number){
+    this.clearBookInSameRow(index);
     const storeId = this.stores.filter(x=>x.storeName == event.option.value).at(0)?.id;
     if(storeId)
-      this.form.get('storeId')?.setValue(storeId);
+      this.inventoryArray.at(index).get('storeId')?.setValue(storeId);
+  }
+
+  onBookSelected(event:MatAutocompleteSelectedEvent, index:number){
+    const bookId = this.books.filter(x=>x.title == event.option.value).at(0)?.id;
+    if(bookId)
+      this.inventoryArray.at(index).get('bookId')?.setValue(bookId);
   }
 
   loadStoreBookPairs() {
@@ -67,14 +179,6 @@ export class InventoryAddComponent
       next:(response) => this.storeBookPairs = response,
       error:(err) => this.toaster.error("Greška prilikom dohvatanja parova prodavnica i knjiga.")
     });
-  }
-
-  storeEntires(){
-    return Object.entries(this.storeBookPairs || {});
-  }
-
-  bookEntries (books: {[bookId:number]:string}){
-    return Object.entries(books);
   }
   
   public get inventoryArray():FormArray {
@@ -114,7 +218,7 @@ export class InventoryAddComponent
     });
   }
 
-  dodajNoviInventar() {
+  addNewInventoryRow() {
     const inventoryGroup = new FormGroup ({
           storeId: new FormControl('', Validators.required),
           bookId: new FormControl('', Validators.required),
@@ -123,6 +227,8 @@ export class InventoryAddComponent
           location: new FormControl('', this.validateLocation())
         });
       this.inventoryArray.push(inventoryGroup);
+      this.addStoreAutocompleteInput(); //dodaji novi mat-autocomplete za prodavnice
+      this.addBookAutocompleteInput(); //dodaji novi mat-autocomplete za knjige
     }
 
 

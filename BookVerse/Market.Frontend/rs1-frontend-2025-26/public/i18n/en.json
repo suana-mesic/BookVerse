@@ -162,7 +162,7 @@
       "BOOK_ID": "Book ID",
       "ISBN": "ISBN",
       "TITLE": "Book Title",
-      "QUANTITYINSTOCK": "Quantity in Store",
+      "QUANTITYINSTOCK": "Quantity",
       "LASTRESTOCKED": "Last Restocked",
       "REORDERTRESHOLD": "Reorder Threshold",
       "LOCATION": "Location",
@@ -174,7 +174,8 @@
       "CANCEL": "Cancel",
       "SAVE": "Save",
       "UPDATE": "Update",
-      "ADD":"Add"
+      "ADD":"Add",
+      "DELETE":"Delete"
     },
     "ACTIONS": {
       "VIEW_DETAILS": "View Details",

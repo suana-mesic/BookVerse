@@ -3,7 +3,6 @@ using Market.Application.Modules.Catalog.Adresses.Commands.Delete;
 using Market.Application.Modules.Catalog.Adresses.Commands.Update;
 using Market.Application.Modules.Catalog.Adresses.Queries.GetById;
 using Market.Application.Modules.Catalog.Adresses.Queries.List;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Market.API.Controllers;
 

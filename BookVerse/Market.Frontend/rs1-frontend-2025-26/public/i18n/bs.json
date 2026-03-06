@@ -174,12 +174,13 @@
     "ERROR_TITLE": "Greška pri Učitavanju Inventara",
     "NO_DATA": "Nema inventara",
     "NO_DATA_FILTER": "Nema inventara koji odgovara filterima",
-      "FORM": {
+    "FORM": {
       "LOADING": "Učitavanje...",
       "CANCEL": "Otkaži",
       "SAVE": "Sačuvaj",
       "UPDATE": "Ažuriraj",
-      "ADD":"Dodaj"
+      "ADD":"Dodaj",
+      "DELETE":"Obriši"
     },
     "STATUS": {
       "DRAFT": "Nacrt",
@@ -202,7 +203,7 @@
       "BOOK_ID":"ID knjige",
       "ISBN":"ISBN",
       "TITLE":"Naslov knjige",
-      "QUANTITYINSTOCK":"Količina u prodavnici",
+      "QUANTITYINSTOCK":"Količina",
       "LASTRESTOCKED":"Zadnja dopuna",
       "REORDERTRESHOLD":"Prag za naručivanje",
       "LOCATION":"Lokacija",
