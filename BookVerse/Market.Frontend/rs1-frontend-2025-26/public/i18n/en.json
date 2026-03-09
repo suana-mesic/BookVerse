@@ -36,8 +36,10 @@
       "SYSTEM": "SYSTEM",
       "SETTINGS": "Settings",
       "LOGOUT": "Logout",
-      "COUPONS":"Coupons",
-      "INVENTORY":"Inventory"
+      "COUPONS": "Coupons",
+      "INVENTORY": "Inventory",
+      "DATA_VISUALIZATION": "Data visualization",
+      "STATISTICS": "Statistics"
     }
   },
   "BOOKS_CATEGORIES": {
@@ -174,32 +176,31 @@
       "CANCEL": "Cancel",
       "SAVE": "Save",
       "UPDATE": "Update",
-      "ADD":"Add",
-      "DELETE":"Delete"
+      "ADD": "Add",
+      "DELETE": "Delete"
     },
     "ACTIONS": {
       "VIEW_DETAILS": "View Details",
       "EDIT_INVENTORY": "Edit Inventory",
-      "ADD_INVENTORY":"Add new inventory"
-
+      "ADD_INVENTORY": "Add new inventory"
     },
     "DETAILS": {
       "TITLE": "Inventory Details",
       "LOADING": "Loading inventory details..."
     },
     "DIALOGS": {
-    "DELETE_TITLE": "Delete Inventory",
-    "DELETE_MESSAGE": "Are you sure you want to delete the inventory for store \"{{storeName}}\" and book \"{{title}}\"?",
-    "CONFIRM_ENABLE": "Are you sure you want to activate the inventory for store \"{{storeName}}\" and book \"{{title}}\"?",
-    "CONFIRM_DISABLE": "Are you sure you want to deactivate the inventory for store \"{{storeName}}\" and book \"{{title}}\"?",
-    "SUCCESS_CREATE": "Inventory successfully created.",
-    "SUCCESS_UPDATE": "Inventory successfully updated.",
-    "SUCCESS_DELETE": "Inventory successfully deleted.",
-    "ERROR_CREATE": "Error creating inventory.",
-    "ERROR_UPDATE": "Error updating inventory.",
-    "ERROR_DELETE": "Error deleting inventory.",
-    "ERROR_TOGGLE": "Error changing inventory status."
-  }
+      "DELETE_TITLE": "Delete Inventory",
+      "DELETE_MESSAGE": "Are you sure you want to delete the inventory for store \"{{storeName}}\" and book \"{{title}}\"?",
+      "CONFIRM_ENABLE": "Are you sure you want to activate the inventory for store \"{{storeName}}\" and book \"{{title}}\"?",
+      "CONFIRM_DISABLE": "Are you sure you want to deactivate the inventory for store \"{{storeName}}\" and book \"{{title}}\"?",
+      "SUCCESS_CREATE": "Inventory successfully created.",
+      "SUCCESS_UPDATE": "Inventory successfully updated.",
+      "SUCCESS_DELETE": "Inventory successfully deleted.",
+      "ERROR_CREATE": "Error creating inventory.",
+      "ERROR_UPDATE": "Error updating inventory.",
+      "ERROR_DELETE": "Error deleting inventory.",
+      "ERROR_TOGGLE": "Error changing inventory status."
+    }
   },
   "ORDERS": {
     "TITLE": "Orders",

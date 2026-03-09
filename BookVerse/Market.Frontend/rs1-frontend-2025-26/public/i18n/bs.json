@@ -36,8 +36,10 @@
       "SYSTEM": "SISTEM",
       "SETTINGS": "Postavke",
       "LOGOUT": "Odjava",
-      "COUPONS":"Kuponi",
-      "INVENTORY":"Popis inventara"
+      "COUPONS": "Kuponi",
+      "INVENTORY": "Popis inventara",
+      "DATA_VISUALIZATION": "Vizualizacija podataka",
+      "STATISTICS": "Statistika"
     }
   },
   "BOOKS_CATEGORIES": {
@@ -179,8 +181,8 @@
       "CANCEL": "Otkaži",
       "SAVE": "Sačuvaj",
       "UPDATE": "Ažuriraj",
-      "ADD":"Dodaj",
-      "DELETE":"Obriši"
+      "ADD": "Dodaj",
+      "DELETE": "Obriši"
     },
     "STATUS": {
       "DRAFT": "Nacrt",
@@ -200,20 +202,20 @@
     "TABLE": {
       "STORE_ID": "ID Prodavnice",
       "STORE_NAME": "Naziv Prodavnice",
-      "BOOK_ID":"ID knjige",
-      "ISBN":"ISBN",
-      "TITLE":"Naslov knjige",
-      "QUANTITYINSTOCK":"Količina",
-      "LASTRESTOCKED":"Zadnja dopuna",
-      "REORDERTRESHOLD":"Prag za naručivanje",
-      "LOCATION":"Lokacija",
-      "QUANTITYINSTOCKFORONLINEORDERS":"Količina za online narudžbe",
+      "BOOK_ID": "ID knjige",
+      "ISBN": "ISBN",
+      "TITLE": "Naslov knjige",
+      "QUANTITYINSTOCK": "Količina",
+      "LASTRESTOCKED": "Zadnja dopuna",
+      "REORDERTRESHOLD": "Prag za naručivanje",
+      "LOCATION": "Lokacija",
+      "QUANTITYINSTOCKFORONLINEORDERS": "Količina za online narudžbe",
       "ACTIONS": "Akcije"
     },
     "ACTIONS": {
       "VIEW_DETAILS": "Pogledaj Detalje",
       "EDIT_INVENTORY": "Uredi inventar",
-      "ADD_INVENTORY":"Dodaj novi inventar"
+      "ADD_INVENTORY": "Dodaj novi inventar"
     },
     "DETAILS": {
       "TITLE": "Detalji Inventara",

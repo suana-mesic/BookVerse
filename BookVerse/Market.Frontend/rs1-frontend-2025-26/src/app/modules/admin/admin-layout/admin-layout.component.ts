@@ -7,46 +7,50 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
   selector: 'app-admin-layout',
   standalone: false,
   templateUrl: './admin-layout.component.html',
-  styleUrl: './admin-layout.component.scss'
+  styleUrl: './admin-layout.component.scss',
 })
-export class AdminLayoutComponent implements OnInit{
+export class AdminLayoutComponent implements OnInit {
   navSections = [
-  {
-    id:'catalog',
-    label:'ADMIN_PANEL.MENU.CATALOG',
-    items:[
-      {route: '/admin/product-categories',icon:'category', label:'ADMIN_PANEL.MENU.CATEGORIES'},
-      {route: '/admin/products',icon:'book', label:'ADMIN_PANEL.MENU.BOOKS'},
-      {route: '/admin/coupons',icon:'local_activity', label:'ADMIN_PANEL.MENU.COUPONS'},
-    ]
-  },
-  {
-    id:'orders',
-    label:'ADMIN_PANEL.MENU.SECTION',
-    items:[
-      {route: '/admin/orders',icon:'shopping_cart', label:'ADMIN_PANEL.MENU.ORDERS'},
-      {route: '/admin/inventory',icon:'inventory', label:'ADMIN_PANEL.MENU.INVENTORY'},
-    ]
-  },
     {
-    id:'system',
-    label:'ADMIN_PANEL.MENU.SYSTEM',
-    items:[
-      {route: '/admin/settings',icon:'settings', label:'ADMIN_PANEL.MENU.SETTINGS'},
-    ]
-  },
-];
+      id: 'catalog',
+      label: 'ADMIN_PANEL.MENU.CATALOG',
+      items: [
+        {
+          route: '/admin/product-categories',
+          icon: 'category',
+          label: 'ADMIN_PANEL.MENU.CATEGORIES',
+        },
+        { route: '/admin/products', icon: 'book', label: 'ADMIN_PANEL.MENU.BOOKS' },
+        { route: '/admin/coupons', icon: 'local_activity', label: 'ADMIN_PANEL.MENU.COUPONS' },
+      ],
+    },
+    {
+      id: 'orders',
+      label: 'ADMIN_PANEL.MENU.SECTION',
+      items: [
+        { route: '/admin/orders', icon: 'shopping_cart', label: 'ADMIN_PANEL.MENU.ORDERS' },
+        { route: '/admin/inventory', icon: 'inventory', label: 'ADMIN_PANEL.MENU.INVENTORY' },
+      ],
+    },
+    {
+      id: 'system',
+      label: 'ADMIN_PANEL.MENU.DATA_VISUALIZATION',
+      items: [
+        { route: '/admin/statistics', icon: 'bar_chart', label: 'ADMIN_PANEL.MENU.STATISTICS' },
+      ],
+    },
+  ];
 
   ngOnInit(): void {
     const saved = localStorage.getItem('navSectionsOrder');
-    if(saved){
+    if (saved) {
       const order = JSON.parse(saved);
-      this.navSections.sort((a,b)=>order.indexOf(a.id)-order.indexOf(b.id));
+      this.navSections.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
       //npr. ako je u localStorage bilo sačuvano
       //['orders', 'catalog', 'system']
       //a redoslijed u ovom fajlu je
       //['catalog', 'orders', 'system']
-      
+
       //1. poziv
       //order.indexOf('catalog') = 1 - order.indexOf('orders') = 0 => rezultat=1, orders ide prije catalog
 
@@ -57,7 +61,6 @@ export class AdminLayoutComponent implements OnInit{
       //order.indexOf('orders') = 0 - order.indexOf('system') = 2 => rezultat=-2, orders ide prije system
 
       //Zaključak: orders catalog system
-
     }
   }
 
@@ -68,13 +71,12 @@ export class AdminLayoutComponent implements OnInit{
 
   languages = [
     { code: 'bs', name: 'Bosanski', flag: '🇧🇦' },
-    { code: 'en', name: 'English', flag: '🇬🇧' }
+    { code: 'en', name: 'English', flag: '🇬🇧' },
   ];
 
   constructor() {
     this.currentLang = this.translate.currentLang || 'bs';
   }
-
 
   switchLanguage(langCode: string): void {
     this.currentLang = langCode;
@@ -83,11 +85,11 @@ export class AdminLayoutComponent implements OnInit{
   }
 
   getCurrentLanguage() {
-    return this.languages.find(lang => lang.code === this.currentLang);
+    return this.languages.find((lang) => lang.code === this.currentLang);
   }
 
-  onSectionDrop(event: CdkDragDrop<any[]>){
-    moveItemInArray(this.navSections, event.previousIndex,event.currentIndex);
-    localStorage.setItem('navSectionsOrder',JSON.stringify(this.navSections.map(s=>s.id)))
+  onSectionDrop(event: CdkDragDrop<any[]>) {
+    moveItemInArray(this.navSections, event.previousIndex, event.currentIndex);
+    localStorage.setItem('navSectionsOrder', JSON.stringify(this.navSections.map((s) => s.id)));
   }
 }

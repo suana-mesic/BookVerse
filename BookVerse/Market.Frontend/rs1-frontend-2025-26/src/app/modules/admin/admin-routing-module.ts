@@ -7,7 +7,7 @@ import { BooksAddComponent } from './catalogs/book/books-add/books-add.component
 import { BooksEditComponent } from './catalogs/book/books-edit/books-edit.component';
 import { ProductCategoriesComponent } from './catalogs/product-categories/product-categories.component';
 import { AdminOrdersComponent } from './orders/admin-orders.component';
-import { AdminSettingsComponent } from './admin-settings/admin-settings.component';
+import { StatisticsComponent } from './statistics/statistics.component';
 import { CouponsDynamicFormAddComponent } from './coupons-dynamic-form/coupons-dynamic-form-add.component';
 import { InventoryComponent } from './inventory/inventory.component';
 import { InventoryAddComponent } from './inventory/inventory-add/inventory-add.component';
@@ -63,8 +63,8 @@ const routes: Routes = [
       },
 
       {
-        path: 'settings',
-        component: AdminSettingsComponent,
+        path: 'statistics',
+        component: StatisticsComponent,
       },
 
 
