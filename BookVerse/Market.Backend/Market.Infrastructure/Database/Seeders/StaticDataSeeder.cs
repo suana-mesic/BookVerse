@@ -395,23 +395,23 @@ public partial class StaticDataSeeder
         modelBuilder.Entity<OrderStatus>().HasData(new List<OrderStatus>
         {
         new OrderStatus{
-            Id = (int) OrderStatusType.Draft,
+            Id = 1,
             StatusName = OrderStatusType.Draft
         },
         new OrderStatus{
-            Id = (int) OrderStatusType.Confirmed,
+            Id = 2,
             StatusName = OrderStatusType.Confirmed
         },
         new OrderStatus{
-            Id = (int) OrderStatusType.Paid,
+            Id = 3,
             StatusName = OrderStatusType.Paid
         },
         new OrderStatus{
-            Id = (int) OrderStatusType.Completed,
+            Id = 4,
             StatusName = OrderStatusType.Completed
         },
         new OrderStatus{
-            Id = (int) OrderStatusType.Cancelled,
+            Id = 5,
             StatusName = OrderStatusType.Cancelled
         }
       });

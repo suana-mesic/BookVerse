@@ -17,7 +17,7 @@ export enum OrderStatusType {
   /** Order has been shipped or delivered */
   Completed = 4,
   /** Order has been cancelled */
-  Cancelled = 5
+  Cancelled = 5,
 }
 
 // === QUERIES (READ) ===
@@ -28,6 +28,7 @@ export enum OrderStatusType {
  */
 export class ListOrdersRequest extends BasePagedQuery {
   search?: string | null;
+  status?: number | null;
   // Future filters: status?, dateFrom?, dateTo?, userId?
   constructor() {
     super();
@@ -57,7 +58,7 @@ export interface ListOrdersQueryDtoUser {
  * Corresponds to: ListOrdersQueryDto.cs
  */
 export interface ListOrdersQueryDto {
-  id: number;
+  orderId: number;
   trackingNumber: string | null;
   userInfo: ListOrdersQueryDtoUser;
   orderDate: string; // ISO date string

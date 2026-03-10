@@ -15,7 +15,14 @@
         <!-- Status Filter -->
         <mat-form-field class="filter-field" appearance="fill">
           <mat-label>{{ 'ORDERS.FILTER_STATUS' | translate }}</mat-label>
-          <mat-select [(ngModel)]="statusFilter" (selectionChange)="onStatusFilterChange($event.value)">
+          <mat-select
+            [(ngModel)]="statusFilter"
+            (selectionChange)="onStatusFilterChange($event.value)"
+          >
+            <mat-select-trigger>
+              {{ selectedStatusLabel | translate }}
+            </mat-select-trigger>
+
             <mat-option [value]="null">{{ 'ORDERS.ALL_STATUSES' | translate }}</mat-option>
             <mat-option *ngFor="let option of statusOptions" [value]="option.value">
               <div class="status-option">
@@ -30,7 +37,11 @@
         <!-- Search -->
         <mat-form-field class="search-field" appearance="fill">
           <mat-label>{{ 'ORDERS.SEARCH_PLACEHOLDER' | translate }}</mat-label>
-          <input matInput [formControl]="searchControl" [placeholder]="'ORDERS.SEARCH_INPUT_PLACEHOLDER' | translate" />
+          <input
+            matInput
+            [formControl]="searchControl"
+            [placeholder]="'ORDERS.SEARCH_INPUT_PLACEHOLDER' | translate"
+          />
           <mat-icon matSuffix>search</mat-icon>
           <mat-hint *ngIf="searchControl.value && searchControl.value.length < 3">
             {{ 'ORDERS.SEARCH_MIN_LENGTH' | translate }}
@@ -38,8 +49,12 @@
         </mat-form-field>
 
         <!-- Clear Filters Button -->
-        <button mat-stroked-button (click)="clearFilters()" [disabled]="!searchControl.value && !statusFilter"
-          class="clear-filters-btn">
+        <button
+          mat-stroked-button
+          (click)="clearFilters()"
+          [disabled]="!searchControl.value && !statusFilter"
+          class="clear-filters-btn"
+        >
           <mat-icon>clear_all</mat-icon>
           <span>{{ 'ORDERS.CLEAR_FILTERS' | translate }}</span>
         </button>
@@ -48,7 +63,12 @@
   </div>
 
   <!-- Skeleton Loader -->
-  <app-fit-table-skeleton *ngIf="isLoading && !errorMessage" [rows]="10" [columns]="5" [showActions]="true">
+  <app-fit-table-skeleton
+    *ngIf="isLoading && !errorMessage"
+    [rows]="10"
+    [columns]="5"
+    [showActions]="true"
+  >
   </app-fit-table-skeleton>
 
   <!-- Error -->
@@ -67,7 +87,6 @@
   <!-- Table Card -->
   <div class="table-card" *ngIf="!isLoading && !errorMessage">
     <table mat-table [dataSource]="items" class="orders-table">
-
       <!-- Tracking Number Column -->
       <ng-container matColumnDef="trackingNumber">
         <th mat-header-cell *matHeaderCellDef>
@@ -107,8 +126,8 @@
         </th>
         <td mat-cell *matCellDef="let order">
           <div class="date-info">
-            <span class="date">{{ order.orderDate | date:'dd.MM.yyyy' }}</span>
-            <span class="time">{{ order.orderDate | date:'HH:mm' }}</span>
+            <span class="date">{{ order.orderDate | date: 'dd.MM.yyyy' }}</span>
+            <span class="time">{{ order.orderDate | date: 'HH:mm' }}</span>
           </div>
         </td>
       </ng-container>
@@ -122,7 +141,7 @@
           </div>
         </th>
         <td mat-cell *matCellDef="let order">
-          <span class="amount">{{ order.total | number: '1.2-2'}} BAM</span>
+          <span class="amount">{{ order.total | number: '1.2-2' }} BAM</span>
         </td>
       </ng-container>
 
@@ -152,13 +171,23 @@
         </th>
         <td mat-cell *matCellDef="let order">
           <div class="action-buttons">
-            <button mat-icon-button color="primary" (click)="onViewDetails(order, $event)"
-              [matTooltip]="'ORDERS.ACTIONS.VIEW_DETAILS' | translate" class="action-btn view-btn">
+            <button
+              mat-icon-button
+              color="primary"
+              (click)="onViewDetails(order, $event)"
+              [matTooltip]="'ORDERS.ACTIONS.VIEW_DETAILS' | translate"
+              class="action-btn view-btn"
+            >
               <mat-icon>visibility</mat-icon>
             </button>
-            <button mat-icon-button color="accent" (click)="onChangeStatus(order, $event)"
-              [matTooltip]="'ORDERS.ACTIONS.CHANGE_STATUS' | translate" [disabled]="!canChangeStatus(order)"
-              class="action-btn status-btn">
+            <button
+              mat-icon-button
+              color="accent"
+              (click)="onChangeStatus(order, $event)"
+              [matTooltip]="'ORDERS.ACTIONS.CHANGE_STATUS' | translate"
+              [disabled]="!canChangeStatus(order)"
+              class="action-btn status-btn"
+            >
               <mat-icon>swap_horiz</mat-icon>
             </button>
           </div>
@@ -169,8 +198,12 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
 
       <!-- Data Rows -->
-      <tr mat-row *matRowDef="let row; columns: displayedColumns" class="data-row" (click)="onViewDetails(row)">
-      </tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        class="data-row"
+        (click)="onViewDetails(row)"
+      ></tr>
 
       <!-- No Data Row -->
       <tr class="mat-row no-data-row" *matNoDataRow>

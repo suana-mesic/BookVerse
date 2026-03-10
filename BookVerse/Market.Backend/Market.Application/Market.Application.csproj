@@ -23,9 +23,6 @@
 
   <ItemGroup>
     <Folder Include="Modules\Catalog\BookFormats\Commands\" />
-    <Folder Include="Modules\Shopping\OrdersOrderItems\Commands\Delete\" />
-    <Folder Include="Modules\Shopping\OrdersOrderItems\Commands\Update\" />
-    <Folder Include="Modules\Shopping\OrdersOrderItems\Commands\Status\" />
     <Folder Include="Modules\Shopping\OrdersOrderItems\Queries\GetById\" />
   </ItemGroup>
 

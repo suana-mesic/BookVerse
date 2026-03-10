@@ -4,13 +4,16 @@ import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { BaseListPagedComponent } from '../../../core/components/base-classes/base-list-paged-component';
-import { ListOrdersQueryDto, ListOrdersRequest, OrderStatusType } from '../../../api-services/orders/orders-api.models';
+import {
+  ListOrdersQueryDto,
+  ListOrdersRequest,
+  OrderStatusType,
+} from '../../../api-services/orders/orders-api.models';
 import { OrdersApiService } from '../../../api-services/orders/orders-api.service';
 import { ToasterService } from '../../../core/services/toaster.service';
 import { OrderStatusHelper } from '../../../api-services/orders/order-status.helper';
 import { ChangeStatusDialogComponent } from './change-status-dialog/change-status-dialog.component';
 import { OrderDetailsDialogComponent } from './admin-orders-details-dialog/order-details-dialog.component';
-
 
 @Component({
   selector: 'app-admin-orders',
@@ -20,7 +23,8 @@ import { OrderDetailsDialogComponent } from './admin-orders-details-dialog/order
 })
 export class AdminOrdersComponent
   extends BaseListPagedComponent<ListOrdersQueryDto, ListOrdersRequest>
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy
+{
   private ordersApi = inject(OrdersApiService);
   private dialog = inject(MatDialog);
   private toaster = inject(ToasterService);
@@ -34,7 +38,7 @@ export class AdminOrdersComponent
     'orderedAt',
     'totalAmount',
     'status',
-    'actions'
+    'actions',
   ];
 
   // Search control with debounce
@@ -49,16 +53,16 @@ export class AdminOrdersComponent
 
   constructor() {
     super();
-    console.log(this.globalCounter, ". Pozvan je constructor:");
+    console.log(this.globalCounter, '. Pozvan je constructor:');
     this.globalCounter += this.globalCounter;
 
     this.request = new ListOrdersRequest();
-    this.request.paging.page = 1; 
+    this.request.paging.page = 1;
     this.request.paging.pageSize = 20;
   }
 
   ngOnInit(): void {
-    console.log(this.globalCounter, ". Pozvan je ngOnInit:");
+    console.log(this.globalCounter, '. Pozvan je ngOnInit:');
     this.globalCounter += this.globalCounter;
 
     this.initList();
@@ -74,14 +78,14 @@ export class AdminOrdersComponent
    * Setup search with debounce and minimum length
    */
   private setupSearchDebounce(): void {
-    console.log(this.globalCounter, ". Pozvan je setupSearchDebounce:");
+    console.log(this.globalCounter, '. Pozvan je setupSearchDebounce:');
     this.globalCounter += this.globalCounter;
 
     this.searchControl.valueChanges
       .pipe(
         debounceTime(400), // Wait 400ms after user stops typing
         distinctUntilChanged(), // Only if value actually changed
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe((searchTerm) => {
         // Only search if 3+ characters or empty (to clear)
@@ -92,7 +96,7 @@ export class AdminOrdersComponent
   }
 
   protected loadPagedData(): void {
-    console.log(this.globalCounter, ". Pozvan je loadPagedData:");
+    console.log(this.globalCounter, '. Pozvan je loadPagedData:');
     this.globalCounter += this.globalCounter;
 
     this.startLoading();
@@ -100,6 +104,7 @@ export class AdminOrdersComponent
     this.ordersApi.list(this.request).subscribe({
       next: (response) => {
         this.handlePageResult(response);
+        console.log(response);
         this.stopLoading();
       },
       error: (err) => {
@@ -112,7 +117,7 @@ export class AdminOrdersComponent
   // === Filters ===
 
   onSearchChange(searchTerm: string): void {
-    console.log(this.globalCounter, ". Pozvan je onSearchChange:");
+    console.log(this.globalCounter, '. Pozvan je onSearchChange:');
     this.globalCounter += this.globalCounter;
 
     this.request.search = searchTerm;
@@ -121,10 +126,11 @@ export class AdminOrdersComponent
   }
 
   onStatusFilterChange(status: OrderStatusType | null): void {
-    console.log(this.globalCounter, ". Pozvan je onStatusFilterChange:");
+    console.log(this.globalCounter, '. Pozvan je onStatusFilterChange:');
     this.globalCounter += this.globalCounter;
 
     this.statusFilter = status;
+    this.request.status = status !== null ? status : null;
     // Note: Backend needs to support status filter
     // For now, we filter client-side or update backend
     this.request.paging.page = 1;
@@ -132,13 +138,13 @@ export class AdminOrdersComponent
   }
 
   clearFilters(): void {
-    console.log(this.globalCounter, ". Pozvan je clearFilters:");
+    console.log(this.globalCounter, '. Pozvan je clearFilters:');
     this.globalCounter += this.globalCounter;
-
 
     this.searchControl.setValue('', { emitEvent: false });
     this.statusFilter = null;
     this.request.search = null;
+    this.request.status = null;
     this.request.paging.page = 1;
     this.loadPagedData();
   }
@@ -146,7 +152,7 @@ export class AdminOrdersComponent
   // === Actions ===
 
   onViewDetails(order: ListOrdersQueryDto, event?: MouseEvent): void {
-    console.log(this.globalCounter, ". Pozvan je onViewDetails:");
+    console.log(this.globalCounter, '. Pozvan je onViewDetails:');
     this.globalCounter += this.globalCounter;
 
     // spriječi da klik sa dugmeta ode na <tr> i ponovo otvori dialog
@@ -157,9 +163,9 @@ export class AdminOrdersComponent
       maxWidth: '95vw',
       maxHeight: '90vh',
       data: {
-        orderId: order.id
+        orderId: order.orderId,
       },
-      panelClass: 'order-details-dialog'
+      panelClass: 'order-details-dialog',
     });
 
     dialogRef.afterClosed().subscribe((changed: boolean) => {
@@ -170,7 +176,10 @@ export class AdminOrdersComponent
   }
 
   onChangeStatus(order: ListOrdersQueryDto, event?: Event): void {
-    console.log(this.globalCounter, ". Pozvan je onChangeStatus:");
+    console.log('PROMJENA STATUSA');
+    console.log(order);
+
+    console.log(this.globalCounter, '. Pozvan je onChangeStatus:');
     this.globalCounter += this.globalCounter;
 
     // Prevent row click
@@ -182,14 +191,14 @@ export class AdminOrdersComponent
       width: '500px',
       maxWidth: '90vw',
       data: {
-        order: order
+        order: order,
       },
-      panelClass: 'change-status-dialog'
+      panelClass: 'change-status-dialog',
     });
 
     dialogRef.afterClosed().subscribe((newStatus: OrderStatusType | undefined) => {
       if (newStatus !== undefined) {
-        this.changeOrderStatus(order.id, newStatus);
+        this.changeOrderStatus(order.orderId, newStatus);
       }
     });
   }
@@ -210,8 +219,15 @@ export class AdminOrdersComponent
         this.toaster.error(errorMessage || 'Failed to update order status');
 
         console.error('Change status error:', err);
-      }
+      },
     });
+  }
+
+  get selectedStatusLabel(): string {
+    if (this.statusFilter == null) return 'ORDERS.ALL_STATUSES';
+    return (
+      this.statusOptions.find((x) => x.value === this.statusFilter)?.label ?? 'ORDERS.ALL_STATUSES'
+    );
   }
 
   // === Status Helpers (for template) ===
@@ -221,7 +237,6 @@ export class AdminOrdersComponent
   }
 
   getStatusIcon(status: OrderStatusType): string {
-    console.log("Order status type is, ", status);
     return OrderStatusHelper.getIcon(status);
   }
 
@@ -231,8 +246,10 @@ export class AdminOrdersComponent
 
   canChangeStatus(order: ListOrdersQueryDto): boolean {
     // Can change if not in final state
-    return order.statusNameEnum !== OrderStatusType.Completed &&
-      order.statusNameEnum !== OrderStatusType.Cancelled;
+    return (
+      order.statusNameEnum !== OrderStatusType.Completed &&
+      order.statusNameEnum !== OrderStatusType.Cancelled
+    );
   }
 
   // === Display Helpers ===

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Market.Domain.Entities.Shopping;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,25 +7,28 @@ using System.Threading.Tasks;
 
 namespace Market.Application.Modules.Shopping.OrdersOrderItems.Queries.List
 {
-    public sealed class ListOrderOrderItemsQueryHandler (IAppDbContext ctx): IRequestHandler<ListOrderOrderItemsQuery, PageResult<ListOrderOrderItemsQueryDto>>
+    public sealed class ListOrderOrderItemsQueryHandler(IAppDbContext ctx) : IRequestHandler<ListOrderOrderItemsQuery, PageResult<ListOrderOrderItemsQueryDto>>
     {
         public async Task<PageResult<ListOrderOrderItemsQueryDto>> Handle(ListOrderOrderItemsQuery request, CancellationToken ct)
         {
-            var q =  ctx.Orders.Include(x=>x.User).Include(x => x.OrderStatus).AsNoTracking();
+            var q = ctx.Orders.Include(x => x.User).Include(x => x.OrderStatus).AsNoTracking();
             if (!string.IsNullOrWhiteSpace(request.Search))
             {
-            var searchFilter = request.Search.ToLower();
+                var searchFilter = request.Search.ToLower();
                 q = q.Where(x =>
-                    (x.OrderStatus.StatusName.ToString() != null && x.OrderStatus.StatusName.ToString().ToLower().Contains(searchFilter)) ||
-                    (x.User != null && x.User.FirstName != null && x.User.FirstName.ToLower().Contains(searchFilter)) ||
-                    (x.User != null && x.User.LastName != null && x.User.LastName.ToLower().Contains(searchFilter)) ||
-                    (x.OrderDate != null && x.OrderDate.ToString().Contains(searchFilter)) ||
-                    (x.TrackingNumber != null && x.TrackingNumber.ToString().Contains(searchFilter)) ||
-                    (x.OrderStatus != null && x.OrderStatus.StatusName.ToString().ToLower().Contains(request.Status.ToLower()))
+                    (x.User.FirstName != null && x.User.FirstName.ToLower().Contains(searchFilter)) ||
+                    (x.User.LastName != null && x.User.LastName.ToLower().Contains(searchFilter)) ||
+                    (x.TrackingNumber != null && x.TrackingNumber.ToLower().Contains(searchFilter))
                 );
             }
 
-            var query = q.OrderBy(x => x.TrackingNumber).Select(x=> new ListOrderOrderItemsQueryDto
+            if (request.Status!=null)
+            {
+              
+                    q = q.Where(x => x.OrderStatus.StatusName == request.Status);
+            }
+
+            var query = q.OrderBy(x => x.TrackingNumber).Select(x => new ListOrderOrderItemsQueryDto
             {
                 OrderId = x.Id,
                 TrackingNumber = x.TrackingNumber,

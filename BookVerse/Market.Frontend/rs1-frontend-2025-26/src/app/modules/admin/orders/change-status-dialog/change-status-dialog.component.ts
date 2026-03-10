@@ -1,6 +1,9 @@
 import { Component, inject, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ListOrdersQueryDto, OrderStatusType } from '../../../../api-services/orders/orders-api.models';
+import {
+  ListOrdersQueryDto,
+  OrderStatusType,
+} from '../../../../api-services/orders/orders-api.models';
 import { OrderStatusHelper } from '../../../../api-services/orders/order-status.helper';
 
 export interface ChangeStatusDialogData {
@@ -11,7 +14,7 @@ export interface ChangeStatusDialogData {
   selector: 'app-change-status-dialog',
   standalone: false,
   templateUrl: './change-status-dialog.component.html',
-  styleUrl: './change-status-dialog.component.scss'
+  styleUrl: './change-status-dialog.component.scss',
 })
 export class ChangeStatusDialogComponent {
   private dialogRef = inject(MatDialogRef<ChangeStatusDialogComponent>);
@@ -67,8 +70,9 @@ export class ChangeStatusDialogComponent {
   }
 
   canConfirm(): boolean {
-    return this.selectedStatus !== undefined &&
-      this.selectedStatus !== this.data.order.statusNameEnum;
+    return (
+      this.selectedStatus !== undefined && this.selectedStatus !== this.data.order.statusNameEnum
+    );
   }
 
   protected readonly OrderStatusType = OrderStatusType;

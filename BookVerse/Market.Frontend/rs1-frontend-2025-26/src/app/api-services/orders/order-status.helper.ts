@@ -7,7 +7,6 @@ import { OrderStatusType } from './orders-api.models';
  * for order statuses throughout the application.
  */
 export class OrderStatusHelper {
-
   /**
    * Get human-readable label for order status
    *
@@ -92,7 +91,7 @@ export class OrderStatusHelper {
       OrderStatusType.Confirmed,
       OrderStatusType.Paid,
       OrderStatusType.Completed,
-      OrderStatusType.Cancelled
+      OrderStatusType.Cancelled,
     ];
   }
 
@@ -102,10 +101,10 @@ export class OrderStatusHelper {
    * @returns Array of status options with label and value
    */
   static getStatusOptions(): Array<{ label: string; value: OrderStatusType; icon: string }> {
-    return this.getAllStatuses().map(status => ({
+    return this.getAllStatuses().map((status) => ({
       label: this.getLabel(status),
       value: status,
-      icon: this.getIcon(status)
+      icon: this.getIcon(status),
     }));
   }
 
@@ -117,8 +116,7 @@ export class OrderStatusHelper {
    */
   static canEdit(status: OrderStatusType): boolean {
     // Only Draft and Confirmed orders can be edited
-    return status === OrderStatusType.Draft ||
-      status === OrderStatusType.Confirmed;
+    return status === OrderStatusType.Draft || status === OrderStatusType.Confirmed;
   }
 
   /**
@@ -130,9 +128,11 @@ export class OrderStatusHelper {
   static canCancel(status: OrderStatusType): boolean {
     // Can cancel Draft, Confirmed, and Paid orders
     // Cannot cancel Completed or already Cancelled orders
-    return status === OrderStatusType.Draft ||
+    return (
+      status === OrderStatusType.Draft ||
       status === OrderStatusType.Confirmed ||
-      status === OrderStatusType.Paid;
+      status === OrderStatusType.Paid
+    );
   }
 
   /**
@@ -144,15 +144,15 @@ export class OrderStatusHelper {
   static getNextStatuses(currentStatus: OrderStatusType): OrderStatusType[] {
     switch (currentStatus) {
       case OrderStatusType.Draft:
+        return [OrderStatusType.Cancelled];
+      case OrderStatusType.Paid:
         return [OrderStatusType.Confirmed, OrderStatusType.Cancelled];
       case OrderStatusType.Confirmed:
-        return [OrderStatusType.Paid, OrderStatusType.Cancelled];
-      case OrderStatusType.Paid:
         return [OrderStatusType.Completed, OrderStatusType.Cancelled];
       case OrderStatusType.Completed:
-        return []; // Final status
+        return [];
       case OrderStatusType.Cancelled:
-        return []; // Final status
+        return [];
       default:
         return [];
     }

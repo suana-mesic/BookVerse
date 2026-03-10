@@ -1,7 +1,8 @@
-﻿using Market.Application.Modules.Catalog.Book.Queries.List;
-using Market.Application.Modules.Shopping.OrdersOrderItems.Commands.Create;
+﻿using Market.Application.Modules.Shopping.OrdersOrderItems.Commands.Create;
 using Market.Application.Modules.Shopping.OrdersOrderItems.Commands.StripeWebhook;
+using Market.Application.Modules.Shopping.OrdersOrderItems.Commands.Update.ChangeStatus;
 using Market.Application.Modules.Shopping.OrdersOrderItems.Queries.List;
+using Market.Domain.Entities.Shopping;
 namespace Market.API.Controllers;
 
 [ApiController]
@@ -26,6 +27,15 @@ public class OrdersOrderItemsController(ISender sender) : ControllerBase
         return Ok(result);
     }
 
+    // Poziva se kada korisnik klikne na "Potvrdi narudžbu" u checkout komponenti.
+    [HttpPut("{id:int}/change-status")]
+    public async Task Create(
+   [FromRoute] int id, [FromBody] ChangeStatusRequest request, CancellationToken ct)
+    {
+        await sender.Send(new ChangeOrderStatusCommand { Id = id, NewStatus = request.NewStatus }, ct);
+    }
+
+
     // Poziva se automatski od strane Stripea nakon što korisnik plati.
     [HttpPost("stripe-webhook")]
     [AllowAnonymous]
@@ -43,4 +53,9 @@ public class OrdersOrderItemsController(ISender sender) : ControllerBase
 
         return Ok();
     }
+}
+
+public class ChangeStatusRequest
+{
+    public OrderStatusType NewStatus { get; set; }
 }

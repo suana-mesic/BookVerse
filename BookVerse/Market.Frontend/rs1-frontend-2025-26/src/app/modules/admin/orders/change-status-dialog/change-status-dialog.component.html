@@ -44,8 +44,16 @@
         <p>{{ 'ORDERS.CHANGE_STATUS.NO_TRANSITIONS' | translate }}</p>
       </div>
 
-      <mat-radio-group [(ngModel)]="selectedStatus" class="status-radio-group" *ngIf="availableStatuses.length > 0">
-        <mat-radio-button *ngFor="let status of availableStatuses" [value]="status" class="status-radio-option">
+      <mat-radio-group
+        [(ngModel)]="selectedStatus"
+        class="status-radio-group"
+        *ngIf="availableStatuses.length > 0"
+      >
+        <mat-radio-button
+          *ngFor="let status of availableStatuses"
+          [value]="status"
+          class="status-radio-option"
+        >
           <div class="status-badge" [ngClass]="getStatusClass(status)">
             <mat-icon>{{ getStatusIcon(status) }}</mat-icon>
             <span>{{ getStatusLabel(status) | translate }}</span>
