@@ -15,9 +15,9 @@ namespace Market.Application.Modules.Shopping.OrdersOrderItems.Commands.Create
             var userId = currentUser.UserId ?? throw new MarketNotFoundException("Korisnik nije prijavljen");
 
             var cart = await context.Carts
-                .Include(c => c.CartItems.Where(x => !x.IsDeleted && !x.SavedForLater))
+                .Include(c => c.CartItems.Where(x=>!x.SavedForLater))
                 .ThenInclude(ci => ci.Book)
-                .FirstOrDefaultAsync(c => c.UserId == userId && !c.IsDeleted, ct) ?? throw new MarketNotFoundException("Korpa nije pronađena");
+                .FirstOrDefaultAsync(c => c.UserId == userId, ct) ?? throw new MarketNotFoundException("Korpa nije pronađena");
 
             if (!cart.CartItems.Any())
                 throw new MarketConflictException("Korpa je prazna");

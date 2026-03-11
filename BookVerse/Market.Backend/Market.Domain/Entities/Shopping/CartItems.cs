@@ -1,14 +1,8 @@
-﻿using Market.Domain.Common;
-using Market.Domain.Entities.Catalog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Market.Domain.Entities.Catalog;
 
 namespace Market.Domain.Entities.Shopping
 {
-    public class CartItems:BaseEntity
+    public class CartItems
     {
         public int BookId { get; set; }
         public Books Book { get; set; }

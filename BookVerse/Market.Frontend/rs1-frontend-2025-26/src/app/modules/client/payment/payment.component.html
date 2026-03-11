@@ -3,39 +3,38 @@
   <h2>Plaćanje</h2>
 
   <div class="order-summary">
-    <p>Narudžba #{{ orderData?.orderId }}</p>
-    <strong>Ukupno: {{ totalPrice | number:'1.2-2':'en' }} KM</strong>
+    <strong>Ukupno: {{ totalPrice | number: '1.2-2' : 'en' }} KM</strong>
   </div>
 
   <div id="payment-element"></div>
 
   <div class="captcha-section">
-  <p>Sigurnosna provjera</p>
-  
-  <img [src]="captchaImage" alt="Captcha" />
-  
-  <button mat-stroked-button (click)="loadCaptcha()">
-    <mat-icon>cached</mat-icon>
-    <mat-label>Nova slika</mat-label>
-  </button>
+    <p>Sigurnosna provjera</p>
 
-  <mat-form-field>
-    <mat-label>Unesite tekst sa slike</mat-label>
-    <input matInput [(ngModel)]="captchaAnswer" />
-  </mat-form-field>
+    <img [src]="captchaImage" alt="Captcha" />
 
-  <button mat-raised-button color="accent"
-          (click)="verifyCaptcha()"
-          [disabled]="captchaVerified">
-    {{ captchaVerified ? '✓ Verificirano' : 'Potvrdi' }}
-  </button>
+    <button mat-stroked-button (click)="loadCaptcha()">
+      <mat-icon>cached</mat-icon>
+      <mat-label>Nova slika</mat-label>
+    </button>
 
-</div>
+    <mat-form-field appearance="outline">
+      <mat-label>Unesite tekst sa slike</mat-label>
+      <input matInput [(ngModel)]="captchaAnswer" />
+    </mat-form-field>
+
+    <button mat-raised-button color="accent" (click)="verifyCaptcha()" [disabled]="captchaVerified">
+      {{ captchaVerified ? '✓ Verificirano' : 'Potvrdi' }}
+    </button>
+  </div>
   <div class="payment-actions">
-    <button [disabled]="!this.captchaVerified" mat-raised-button color="primary" 
-            (click)="submitPayment()" 
-            [disabled]="isLoading">
-      {{ isLoading ? 'Obrada...' : 'Plati ' + (totalPrice | number:'1.2-2':'en') + ' KM' }}
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="submitPayment()"
+      [disabled]="isLoading || !captchaVerified"
+    >
+      {{ isLoading ? 'Obrada...' : 'Plati ' + (totalPrice | number: '1.2-2' : 'en') + ' KM' }}
     </button>
   </div>
 </div>

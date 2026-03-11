@@ -12,15 +12,12 @@ public class DeleteCartItemCommandHandler(IAppDbContext context, IAppCurrentUser
             .Include(x => x.Cart)
             .FirstOrDefaultAsync(x => x.CartId == request.CartId
                 && x.BookId == request.BookId
-                && !x.IsDeleted
                 && x.Cart.UserId == userId, cancellationToken);
 
         if (cartItem is null)
             throw new MarketNotFoundException("Stavka korpe ne postoji.");
 
-        cartItem.IsDeleted = true;
-        cartItem.ModifiedAtUtc = DateTime.UtcNow;
-
+        context.CartItems.Remove(cartItem);
         await context.SaveChangesAsync(cancellationToken);
         return "Stavka uspješno uklonjena iz korpe.";
     }

@@ -15,14 +15,12 @@ public class UpdateCartItemCommandHandler(IAppDbContext context, IAppCurrentUser
             .Include(x => x.Cart)
             .FirstOrDefaultAsync(x => x.CartId == request.CartId
                 && x.BookId == request.BookId
-                && !x.IsDeleted
                 && x.Cart.UserId == userId, cancellationToken);
 
         if (cartItem is null)
             throw new MarketNotFoundException("Stavka korpe ne postoji.");
 
         cartItem.Quantity = request.Quantity;
-        cartItem.ModifiedAtUtc = DateTime.UtcNow;
 
         await context.SaveChangesAsync(cancellationToken);
         return "Količina uspješno ažurirana.";

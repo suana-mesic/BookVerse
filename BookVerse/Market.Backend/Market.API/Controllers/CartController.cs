@@ -6,6 +6,7 @@ using Market.Application.Modules.Shopping.Cart.Queries.List;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Market.Application.Modules.Shopping.Cart.Commands.EmptyCart;
 
 namespace Market.API.Controllers;
 

@@ -9,14 +9,14 @@ public class ListCartQueryHandler(IAppDbContext context, IAppCurrentUser current
             ?? throw new MarketNotFoundException("Korisnik nije prijavljen.");
 
         var cart = await context.Carts
-            .FirstOrDefaultAsync(c => c.UserId == userId && !c.IsDeleted, cancellationToken);
+            .FirstOrDefaultAsync(c => c.UserId == userId, cancellationToken);
 
         if (cart is null)
             return new ListCartQueryDto();
 
         var items = await context.CartItems
             .AsNoTracking()
-            .Where(x => x.CartId == cart.Id && !x.IsDeleted)
+            .Where(x => x.CartId == cart.Id)
             .Select(x => new
             {
                 x.CartId,  

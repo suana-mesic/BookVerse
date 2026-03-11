@@ -15,11 +15,11 @@ public class CreateCartItemCommandHandler(IAppDbContext context, IAppCurrentUser
             throw new MarketNotFoundException("Knjiga ne postoji.");
 
         var cart = await context.Carts
-            .FirstOrDefaultAsync(c => c.UserId == userId && !c.IsDeleted, cancellationToken);
+            .FirstOrDefaultAsync(c => c.UserId == userId, cancellationToken);
 
         if (cart == null)
         {
-            cart = new Carts { UserId = userId, IsDeleted = false };
+            cart = new Carts { UserId = userId};
             context.Carts.Add(cart);
             await context.SaveChangesAsync(cancellationToken);
         }
@@ -33,10 +33,8 @@ public class CreateCartItemCommandHandler(IAppDbContext context, IAppCurrentUser
         if (existingItem != null)
         {
             // Ako je bila soft-deleted, reaktiviraj je
-            existingItem.IsDeleted = false;
             existingItem.SavedForLater = false;
             existingItem.Quantity = request.Quantity;
-            existingItem.ModifiedAtUtc = DateTime.UtcNow;
         }
         else
         {

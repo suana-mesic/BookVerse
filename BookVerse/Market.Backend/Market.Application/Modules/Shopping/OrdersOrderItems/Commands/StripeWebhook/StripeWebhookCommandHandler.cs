@@ -1,11 +1,7 @@
 ﻿using Market.Application.Common.Interfaces;
 using Market.Domain.Entities.Shopping;
 using Stripe;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace Market.Application.Modules.Shopping.OrdersOrderItems.Commands.StripeWebhook
 {
@@ -31,9 +27,26 @@ namespace Market.Application.Modules.Shopping.OrdersOrderItems.Commands.StripeWe
                 order.OrderStatusId = (int)OrderStatusType.Paid;
                 order.PaidAt = DateTime.UtcNow;
 
+                //Brisanje poručenih stavki iz korpe
+
+                var cart = await context.Carts
+                    .Include(x => x.CartItems)
+                    .FirstOrDefaultAsync(x => x.UserId == order.UserId, ct);
+
+                if (cart == null) return;
+
+                var itemsToDelete = cart.CartItems.Where(x => !x.SavedForLater).ToList();
+                foreach (var item in itemsToDelete)
+                    context.CartItems.Remove(item);
+
+                // Ako nema više stavki (ni savedForLater), briši i korpu
+                if (!cart.CartItems.Any(x => x.SavedForLater))
+                    context.Carts.Remove(cart);
+
                 //Evidentiramo podatke o kartici kojom je plaćanje izvršeno
                 // Sačuvaj podatke o kartici kojom je plaćeno
                 // Dohvati Charge odvojeno jer Stripe ga ne šalje automatski u webhook eventu
+
                 if (paymentIntent.LatestChargeId != null)
                 {
                     var chargeService = new ChargeService();

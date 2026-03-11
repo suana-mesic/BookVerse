@@ -77,10 +77,15 @@ public partial class DatabaseContext
         modelBuilder.Entity<StoreInventory>().HasQueryFilter(x => !x.IsDeleted && !x.Book.IsDeleted && !x.Store.IsDeleted);
 
         modelBuilder.Entity<CartItems>().HasKey(x => new { x.CartId, x.BookId });
-        modelBuilder.Entity<CartItems>().HasQueryFilter(x => !x.Book.IsDeleted && !x.Cart.IsDeleted);
+
+        modelBuilder.Entity<Carts>()
+            .HasMany(c => c.CartItems)
+            .WithOne(ci => ci.Cart)
+            .HasForeignKey(ci => ci.CartId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<OrderItems>().HasKey(x => new { x.OrderId, x.BookId });
-        modelBuilder.Entity<OrderItems>().HasQueryFilter(x => !x.Order.IsDeleted);
+        modelBuilder.Entity<OrderItems>().HasQueryFilter(x => !x.Order.IsDeleted && !x.Book.IsDeleted);
 
         modelBuilder.Entity<Refunds>()
         .HasKey(r => new { r.OrderId, r.BookId }); 

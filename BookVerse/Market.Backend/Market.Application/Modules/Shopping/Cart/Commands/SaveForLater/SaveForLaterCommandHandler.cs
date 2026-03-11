@@ -12,14 +12,12 @@ public class SaveForLaterCommandHandler(IAppDbContext context, IAppCurrentUser c
             .Include(x => x.Cart)
             .FirstOrDefaultAsync(x => x.CartId == request.CartId
                 && x.BookId == request.BookId
-                && !x.IsDeleted
                 && x.Cart.UserId == userId, cancellationToken);
 
         if (cartItem is null)
             throw new MarketNotFoundException("Stavka korpe ne postoji.");
 
         cartItem.SavedForLater = request.SavedForLater;
-        cartItem.ModifiedAtUtc = DateTime.UtcNow;
 
         await context.SaveChangesAsync(cancellationToken);
 

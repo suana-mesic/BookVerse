@@ -7,11 +7,11 @@ import {
   CreateCartItemRequest,
   UpdateCartItemRequest,
   SaveForLaterRequest,
-  DeleteCartItemRequest
+  DeleteCartItemRequest,
 } from './cart-api.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CartApiService {
   private readonly baseUrl = `${environment.apiUrl}/cart`;
