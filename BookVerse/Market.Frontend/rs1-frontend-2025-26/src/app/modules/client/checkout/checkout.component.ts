@@ -1,5 +1,13 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  AsyncValidatorFn,
+  FormBuilder,
+  FormControl,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { ShippingMethodDto } from '../../../api-services/shipping-methods/shipping-methods-api.model';
 import { UserAddressDto } from '../../../api-services/users/users-api.model';
@@ -14,6 +22,7 @@ import { CouponsApiService } from '../../../api-services/coupons/coupons-api.ser
 import { CartApiService } from '../../../api-services/cart/cart-api.service';
 import { ListCartDto } from '../../../api-services/cart/cart-api.model';
 import { OrdersApiService } from '../../../api-services/orders/orders-api.service';
+import { catchError, map, Observable, of, switchMap, timer } from 'rxjs';
 
 @Component({
   selector: 'app-checkout',
@@ -26,13 +35,13 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
   private router = inject(Router);
   private userService = inject(UsersApiService);
   private shippingMethodsService = inject(ShippingMethodsApiService);
-  private couponService=inject(CouponsApiService);
+  private couponService = inject(CouponsApiService);
   private storesService = inject(StoresApiService);
   private ordersService = inject(OrdersApiService);
   private toaster = inject(ToasterService);
 
   private cartService = inject(CartApiService);
-  cart: ListCartDto = {activeItems:[], savedForLaterItems:[], totalPrice:0};
+  cart: ListCartDto = { activeItems: [], savedForLaterItems: [], totalPrice: 0 };
 
   currentStep = 1;
   totalSteps = 3;
@@ -47,9 +56,9 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
   selectedStoreId: number | null = null;
 
   couponCode = '';
-  appliedCoupons: CouponDto []= [];
+  appliedCoupons: CouponDto[] = [];
   couponError = '';
-  allCoupons: ListCouponsQueryDto[]=[];
+  allCoupons: ListCouponsQueryDto[] = [];
 
   addressForm = this.fb.group({
     line1: ['', Validators.required],
@@ -58,16 +67,20 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
     country: ['', Validators.required],
   });
 
-  uneseniKupon:FormControl = new FormControl('', this.validirajUneseniKupon());
+  //async validator se prosljeđuje kao treći element
+  uneseniKupon: FormControl = new FormControl('', null, this.validirajUneseniKupon());
 
-  validirajUneseniKupon():ValidatorFn{
-    return (control:AbstractControl) : ValidationErrors | null => {
-      if(!control.value || !control || control.value=='')
-        return null;
+  validirajUneseniKupon(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      if (!control.value || !control || control.value == '') return of(null);
 
-      const postoji = this.allCoupons.some(x=>x.name.toLowerCase() == this.uneseniKupon.value.toLowerCase()); 
-      return postoji?null:{kuponNePostoji:true};
-    }
+      //čeka 500ms nakon prestanka tipkanja
+      return timer(500).pipe(
+        switchMap(() => this.couponService.validateCoupon(control.value)),
+        map(() => null), //kupojn postoji -> vrati null
+        catchError(() => of({ kuponNePostoji: true })), //kupon ne postoji -> vrati kuponNePostoji: true
+      );
+    };
   }
 
   ngOnInit(): void {
@@ -81,37 +94,35 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
       },
       error: () => {
         this.stopLoading('Greška pri učitavanju adrese.');
-      }
+      },
     });
 
     this.shippingMethodsService.getShippingMethods().subscribe({
-      next: (methods) => this.shippingMethods = methods
+      next: (methods) => (this.shippingMethods = methods),
     });
 
     this.storesService.list().subscribe({
-      next: (stores) => this.stores = stores.items
+      next: (stores) => (this.stores = stores.items),
     });
 
     this.cartService.getCart().subscribe({
-      next: (cart) => this.cart = cart
-    })
+      next: (cart) => (this.cart = cart),
+    });
 
     this.couponService.getAllCoupons().subscribe({
       next: (listaKupona) => {
         this.allCoupons = listaKupona;
         console.log(listaKupona);
-      }
-    })
+      },
+    });
   }
 
   nextStep(): void {
-    if (this.currentStep < this.totalSteps)
-      this.currentStep++;
+    if (this.currentStep < this.totalSteps) this.currentStep++;
   }
 
   prevStep(): void {
-    if (this.currentStep > 1)
-      this.currentStep--;
+    if (this.currentStep > 1) this.currentStep--;
   }
 
   isStep1Valid(): boolean {
@@ -125,11 +136,11 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
   }
 
   getSelectedShippingMethod(): ShippingMethodDto | null {
-    return this.shippingMethods.find(x => x.id === this.selectedShippingMethodId) ?? null;
+    return this.shippingMethods.find((x) => x.id === this.selectedShippingMethodId) ?? null;
   }
 
   getSelectedStore(): ListStoresQueryDto | null {
-    return this.stores.find(s => s.id === this.selectedStoreId) ?? null;
+    return this.stores.find((s) => s.id === this.selectedStoreId) ?? null;
   }
 
   getDeliveryAddress(): UserAddressDto | any {
@@ -142,61 +153,60 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
     const address = this.getDeliveryAddress();
 
     const request = {
-      shippingMethodId:this.selectedShippingMethodId!,
-      storeId: this.deliveryType=='pickup'?this.selectedStoreId:null,
-      useExistingAddress:this.useExistingAddress,
-      line1:this.useExistingAddress?null:address.line1,
-      line2:this.useExistingAddress?null:address.line2,
-      city:this.useExistingAddress?null:address.city,
-      country:this.useExistingAddress?null:address.country,
-      couponIds:this.appliedCoupons.map(c=>c.id)
+      shippingMethodId: this.selectedShippingMethodId!,
+      storeId: this.deliveryType == 'pickup' ? this.selectedStoreId : null,
+      useExistingAddress: this.useExistingAddress,
+      line1: this.useExistingAddress ? null : address.line1,
+      line2: this.useExistingAddress ? null : address.line2,
+      city: this.useExistingAddress ? null : address.city,
+      country: this.useExistingAddress ? null : address.country,
+      couponIds: this.appliedCoupons.map((c) => c.id),
     };
 
     this.ordersService.createOrder(request).subscribe({
-      next:(response)=>{
+      next: (response) => {
         this.stopLoading();
         this.toaster.success('Narudžba potvrđena! Preusmjeravamo na plaćanje...');
         this.router.navigate(['/client/payment'], {
-        state: { orderData: response }
-      });
+          state: { orderData: response },
+        });
       },
-      error:(err)=>{
+      error: (err) => {
         this.stopLoading();
-        this.toaster.error("Greška prilikom kreiranje narudćbe");
-      }
-    })
+        this.toaster.error('Greška prilikom kreiranje narudćbe');
+      },
+    });
   }
 
-applyCoupon(): void {
-  if (!this.uneseniKupon.value.trim()) return;
-  this.couponError = '';
+  applyCoupon(): void {
+    if (!this.uneseniKupon.value.trim()) return;
+    this.couponError = '';
 
-  if (this.appliedCoupons.some(c => c.promotionCode === this.uneseniKupon.value)) {
-    this.couponError = 'Ovaj kupon je već primijenjen.';
-    return;
-  }
-
-  this.couponService.validateCoupon(this.uneseniKupon.value).subscribe({
-    next: (coupon) => {
-      this.appliedCoupons.push(coupon);
-      this.uneseniKupon.setValue('');
-      this.toaster.success(`Kupon "${coupon.name}" uspješno primijenjen!`);
-    },
-    error: () => {
-      this.couponError = 'Kupon nije pronađen ili je istekao.';
+    if (this.appliedCoupons.some((c) => c.promotionCode === this.uneseniKupon.value)) {
+      this.couponError = 'Ovaj kupon je već primijenjen.';
+      return;
     }
-  });
-}
+
+    this.couponService.validateCoupon(this.uneseniKupon.value).subscribe({
+      next: (coupon) => {
+        this.appliedCoupons.push(coupon);
+        this.uneseniKupon.setValue('');
+        this.toaster.success(`Kupon "${coupon.name}" uspješno primijenjen!`);
+      },
+      error: () => {
+        this.couponError = 'Kupon nije pronađen ili je istekao.';
+      },
+    });
+  }
 
   removeCoupon(id: number): void {
-    this.appliedCoupons = this.appliedCoupons.filter(c => c.id !== id);
+    this.appliedCoupons = this.appliedCoupons.filter((c) => c.id !== id);
   }
 
   getDiscountAmount(totalPrice: number): number {
-    const shipping = this.deliveryType === 'shipping'
-      ? (this.getSelectedShippingMethod()?.price ?? 0)
-      : 0;
-    
+    const shipping =
+      this.deliveryType === 'shipping' ? (this.getSelectedShippingMethod()?.price ?? 0) : 0;
+
     let cijena = totalPrice + shipping;
 
     for (const coupon of this.appliedCoupons) {
@@ -206,13 +216,12 @@ applyCoupon(): void {
 
     if (cijena < 0) cijena = 0;
 
-    return (totalPrice + shipping) - cijena;
+    return totalPrice + shipping - cijena;
   }
 
   getFinalPrice(): number {
-    const shipping = this.deliveryType === 'shipping'
-      ? (this.getSelectedShippingMethod()?.price ?? 0)
-      : 0;
+    const shipping =
+      this.deliveryType === 'shipping' ? (this.getSelectedShippingMethod()?.price ?? 0) : 0;
     return this.cart.totalPrice + shipping - this.getDiscountAmount(this.cart.totalPrice);
   }
 }

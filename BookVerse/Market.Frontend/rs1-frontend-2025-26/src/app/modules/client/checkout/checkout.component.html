@@ -1,6 +1,5 @@
 <app-header></app-header>
 <div class="checkout-container">
-
   <!-- STEPPER -->
   <div class="stepper">
     <div class="step" [class.active]="currentStep === 1" [class.completed]="currentStep > 1">
@@ -42,7 +41,11 @@
       </label>
     </div>
 
-    <form [formGroup]="addressForm" *ngIf="!useExistingAddress || !userAddress?.line1" class="address-form">
+    <form
+      [formGroup]="addressForm"
+      *ngIf="!useExistingAddress || !userAddress?.line1"
+      class="address-form"
+    >
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Ulica i broj</mat-label>
         <input matInput formControlName="line1" placeholder="npr. Ul. Maršala Tita 10" />
@@ -102,21 +105,27 @@
 
     <div *ngIf="deliveryType === 'shipping'" class="shipping-methods">
       <h4>Odaberi kurirsku službu:</h4>
-      <label class="radio-card" *ngFor="let method of shippingMethods"
-             [class.selected]="selectedShippingMethodId === method.id">
+      <label
+        class="radio-card"
+        *ngFor="let method of shippingMethods"
+        [class.selected]="selectedShippingMethodId === method.id"
+      >
         <input type="radio" [(ngModel)]="selectedShippingMethodId" [value]="method.id" />
         <div class="radio-card-content">
           <strong>{{ method.name }}</strong>
           <p>{{ method.description }}</p>
-          <span class="price">{{ method.price | number:'1.2-2':'en' }} KM</span>
+          <span class="price">{{ method.price | number: '1.2-2' : 'en' }} KM</span>
         </div>
       </label>
     </div>
 
     <div *ngIf="deliveryType === 'pickup'" class="stores">
       <h4>Odaberi prodavnicu:</h4>
-      <label class="radio-card" *ngFor="let store of stores"
-             [class.selected]="selectedStoreId === store.id">
+      <label
+        class="radio-card"
+        *ngFor="let store of stores"
+        [class.selected]="selectedStoreId === store.id"
+      >
         <input type="radio" [(ngModel)]="selectedStoreId" [value]="store.id" />
         <div class="radio-card-content">
           <strong>{{ store.storeName }}</strong>
@@ -150,7 +159,7 @@
       <h4>Način dostave</h4>
       <div *ngIf="deliveryType === 'shipping'">
         <p>{{ getSelectedShippingMethod()?.name }}</p>
-        <p>Cijena dostave: {{ getSelectedShippingMethod()?.price | number:'1.2-2':'en' }} KM</p>
+        <p>Cijena dostave: {{ getSelectedShippingMethod()?.price | number: '1.2-2' : 'en' }} KM</p>
       </div>
       <div *ngIf="deliveryType === 'pickup'">
         <p>Preuzimanje u: {{ getSelectedStore()?.storeName }}</p>
@@ -158,57 +167,63 @@
       </div>
     </div>
 
-<!-- KUPON -->
-<div class="review-section">
-  <h4>Kupon / Promo kod</h4>
+    <!-- KUPON -->
+    <div class="review-section">
+      <h4>Kupon / Promo kod</h4>
 
-  <div class="coupon-input">
-    <mat-form-field appearance="outline" class="coupon-field">
-      <mat-label>Unesi promo kod</mat-label>
-      <input matInput [formControl]="uneseniKupon" placeholder="npr. SUMMER20" />
-      @if(uneseniKupon.hasError('kuponNePostoji')){
-        <mat-error>Uneseni kupon ne postoji ili je istekao!</mat-error>
-      }
-    </mat-form-field>
-    <button mat-raised-button color="accent" (click)="applyCoupon()" 
-            [disabled]="!uneseniKupon.valid || !uneseniKupon.value">
-      Primijeni
-    </button>
-    <mat-error *ngIf="couponError">{{ couponError }}</mat-error>
-  </div>
+      <div class="coupon-input">
+        <mat-form-field appearance="outline" class="coupon-field">
+          <mat-label>Unesi promo kod</mat-label>
+          <input matInput [formControl]="uneseniKupon" placeholder="npr. SUMMER20" />
+          @if (uneseniKupon.pending) {
+            <mat-hint>Provjeravam kupon...</mat-hint>
+          }
+          @if (uneseniKupon.hasError('kuponNePostoji')) {
+            <mat-error>Uneseni kupon ne postoji ili je istekao!</mat-error>
+          }
+        </mat-form-field>
+        <button
+          mat-raised-button
+          color="accent"
+          (click)="applyCoupon()"
+          [disabled]="!uneseniKupon.valid || !uneseniKupon.value || uneseniKupon.pending"
+        >
+          Primijeni
+        </button>
+      </div>
 
-  <div *ngFor="let coupon of appliedCoupons" class="applied-coupon">
-    <span class="coupon-badge">🏷️ {{ coupon.name }}</span>
-    <span *ngIf="coupon.amountOff">- {{ coupon.amountOff | number:'1.2-2':'en' }} KM</span>
-    <span *ngIf="coupon.percentOff">- {{ coupon.percentOff }}%</span>
-    <button mat-icon-button color="warn" (click)="removeCoupon(coupon.id)">✕</button>
-  </div>
-</div>
+      <div *ngFor="let coupon of appliedCoupons" class="applied-coupon">
+        <span class="coupon-badge">🏷️ {{ coupon.name }}</span>
+        <span *ngIf="coupon.amountOff">- {{ coupon.amountOff | number: '1.2-2' : 'en' }} KM</span>
+        <span *ngIf="coupon.percentOff">- {{ coupon.percentOff }}%</span>
+        <button mat-icon-button color="warn" (click)="removeCoupon(coupon.id)">✕</button>
+      </div>
+    </div>
 
-<!-- PREGLED CIJENE -->
-<div class="review-section price-summary">
-  <h4>Pregled cijene</h4>
-  <div class="price-row">
-    <span>Cijena proizvoda:</span>
-    <strong>{{ cart.totalPrice | number:'1.2-2':'en' }} KM</strong>
-  </div>
-  <div class="price-row" *ngIf="deliveryType === 'shipping' && getSelectedShippingMethod()">
-    <span>Dostava ({{ getSelectedShippingMethod()?.name }}):</span>
-    <strong>{{ getSelectedShippingMethod()?.price | number:'1.2-2':'en' }} KM</strong>
-  </div>
-  <div class="price-row" *ngIf="deliveryType === 'pickup'">
-    <span>Dostava:</span>
-    <strong>Besplatno</strong>
-  </div>
-  <div class="price-row discount" *ngIf="appliedCoupons.length > 0">
-    <span>Popust:</span>
-    <strong>- {{ getDiscountAmount(cart.totalPrice) | number:'1.2-2':'en' }} KM</strong>
-  </div>
-  <div class="price-row total">
-    <span>Ukupno za plaćanje:</span>
-    <strong>{{ getFinalPrice() | number:'1.2-2':'en' }} KM</strong>
-  </div>
-</div>
+    <!-- PREGLED CIJENE -->
+    <div class="review-section price-summary">
+      <h4>Pregled cijene</h4>
+      <div class="price-row">
+        <span>Cijena proizvoda:</span>
+        <strong>{{ cart.totalPrice | number: '1.2-2' : 'en' }} KM</strong>
+      </div>
+      <div class="price-row" *ngIf="deliveryType === 'shipping' && getSelectedShippingMethod()">
+        <span>Dostava ({{ getSelectedShippingMethod()?.name }}):</span>
+        <strong>{{ getSelectedShippingMethod()?.price | number: '1.2-2' : 'en' }} KM</strong>
+      </div>
+      <div class="price-row" *ngIf="deliveryType === 'pickup'">
+        <span>Dostava:</span>
+        <strong>Besplatno</strong>
+      </div>
+      <div class="price-row discount" *ngIf="appliedCoupons.length > 0">
+        <span>Popust:</span>
+        <strong>- {{ getDiscountAmount(cart.totalPrice) | number: '1.2-2' : 'en' }} KM</strong>
+      </div>
+      <div class="price-row total">
+        <span>Ukupno za plaćanje:</span>
+        <strong>{{ getFinalPrice() | number: '1.2-2' : 'en' }} KM</strong>
+      </div>
+    </div>
 
     <div class="step-actions">
       <button mat-button (click)="prevStep()">← Nazad</button>
@@ -217,5 +232,4 @@
       </button>
     </div>
   </div>
-
 </div>
