@@ -1,6 +1,7 @@
 ﻿using Market.Application.Modules.Shopping.OrdersOrderItems.Commands.Create;
 using Market.Application.Modules.Shopping.OrdersOrderItems.Commands.StripeWebhook;
 using Market.Application.Modules.Shopping.OrdersOrderItems.Commands.Update.ChangeStatus;
+using Market.Application.Modules.Shopping.OrdersOrderItems.Queries.GetById;
 using Market.Application.Modules.Shopping.OrdersOrderItems.Queries.List;
 using Market.Domain.Entities.Shopping;
 namespace Market.API.Controllers;
@@ -15,6 +16,13 @@ public class OrdersOrderItemsController(ISender sender) : ControllerBase
     public async Task<PageResult<ListOrderOrderItemsQueryDto>> List([FromQuery] ListOrderOrderItemsQuery query, CancellationToken ct)
     {
         var result = await sender.Send(query, ct);
+        return result;
+    }
+
+    [HttpGet("{id:int}")]
+    public async Task<GetOrderByIdQueryDto> List([FromRoute] int id, CancellationToken ct)
+    {
+        var result = await sender.Send(new GetOrderByIdQuery { Id = id }, ct);
         return result;
     }
 

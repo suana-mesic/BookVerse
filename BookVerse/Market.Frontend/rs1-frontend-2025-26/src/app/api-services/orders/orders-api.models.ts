@@ -118,55 +118,6 @@ export interface ListOrdersWithItemsQueryDto {
 }
 
 /**
- * User info in GetById response
- */
-export interface GetByIdOrderQueryDtoUser {
-  userFirstname: string | null;
-  userLastname: string | null;
-  userAddress: string | null;
-  userCity: string | null;
-}
-
-/**
- * Product info in GetById order item
- */
-export interface GetByIdOrderQueryDtoItemProduct {
-  id: number;
-  name: string | null;
-  price: number;
-}
-
-/**
- * Order item in GetById response
- */
-export interface GetByIdOrderQueryDtoItem {
-  id: number;
-  product: GetByIdOrderQueryDtoItemProduct;
-  quantity: number;
-  unitPrice: number;
-  discountPercent: number;
-  discountAmount: number;
-  subtotal: number;
-  total: number;
-}
-
-/**
- * Response for GET /Orders/{id}
- * Corresponds to: GetOrderByIdQueryDto.cs
- */
-export interface GetOrderByIdQueryDto {
-  id: number;
-  trackingNumber: string | null;
-  user: GetByIdOrderQueryDtoUser;
-  orderedAtUtc: string; // ISO date string
-  paidAtUtc: string | null; // ISO date string
-  status: OrderStatusType;
-  totalAmount: number;
-  note: string | null;
-  items: GetByIdOrderQueryDtoItem[];
-}
-
-/**
  * Paged response for GET /Orders
  */
 export type ListOrdersResponse = PageResult<ListOrdersQueryDto>;
@@ -229,4 +180,35 @@ export interface CreateOrderWithItemsQueryDto {
   clientSecret: string;
   publishableKey: string;
   totalPrice: number;
+}
+export interface GetOrderByIdQueryDto {
+  id: number;
+  trackingNumber: string | null;
+  user: GetByIdOrderQueryDtoUser;
+  orderedAtUtc: string;
+  paidAtUtc: string | null;
+  status: OrderStatusType;
+  totalAmount: number;
+  subtotal: number;
+  shippingPriceAtTheTime: number;
+  discountAmount: number | null;
+  items: GetByIdOrderQueryDtoItem[];
+}
+
+export interface GetByIdOrderQueryDtoUser {
+  userFirstname: string | null;
+  userLastname: string | null;
+  userAddress: string | null;
+  userCity: string | null;
+}
+
+export interface GetByIdOrderQueryDtoItem {
+  book: GetByIdOrderQueryDtoItemBook;
+  quantity: number;
+  unitPrice: number;
+}
+
+export interface GetByIdOrderQueryDtoItemBook {
+  bookId: number;
+  title: string;
 }

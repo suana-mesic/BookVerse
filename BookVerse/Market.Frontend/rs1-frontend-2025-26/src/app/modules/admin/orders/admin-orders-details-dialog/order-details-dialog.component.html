@@ -33,7 +33,6 @@
 
   <!-- Content -->
   <div mat-dialog-content *ngIf="!isLoading && !errorMessage && order" class="dialog-content">
-
     <!-- Status Section -->
     <div class="status-section">
       <div class="status-badge-large" [ngClass]="getStatusClass(order.status)">
@@ -46,14 +45,14 @@
           <mat-icon>schedule</mat-icon>
           <div>
             <span class="label">{{ 'ORDERS.DETAILS.ORDERED_AT' | translate }}</span>
-            <span class="value">{{ order.orderedAtUtc | date:'dd.MM.yyyy HH:mm' }}</span>
+            <span class="value">{{ orderedAtLocal | date: 'dd.MM.yyyy HH:mm' }}</span>
           </div>
         </div>
         <div class="date-item" *ngIf="order.paidAtUtc">
           <mat-icon>payment</mat-icon>
           <div>
             <span class="label">{{ 'ORDERS.DETAILS.PAID_AT' | translate }}</span>
-            <span class="value">{{ order.paidAtUtc | date:'dd.MM.yyyy HH:mm' }}</span>
+            <span class="value">{{ paidAtLocal | date: 'dd.MM.yyyy HH:mm' }}</span>
           </div>
         </div>
       </div>
@@ -92,53 +91,59 @@
               <th>{{ 'ORDERS.DETAILS.BOOKS' | translate }}</th>
               <th class="text-right">{{ 'ORDERS.DETAILS.QUANTITY' | translate }}</th>
               <th class="text-right">{{ 'ORDERS.DETAILS.UNIT_PRICE' | translate }}</th>
-              <th class="text-right">{{ 'ORDERS.DETAILS.DISCOUNT' | translate }}</th>
-              <th class="text-right">{{ 'ORDERS.DETAILS.TOTAL' | translate }}</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let item of order.items">
               <td class="product-cell">
-                <span class="product-name">{{ item.product.name }}</span>
+                <span class="product-name">{{ item.book.title }}</span>
               </td>
               <td class="text-right">{{ item.quantity }}</td>
-              <td class="text-right">{{ item.unitPrice | currency:'BAM' }}</td>
-              <td class="text-right discount-cell">
-                <span *ngIf="item.discountAmount > 0">
-                  -{{ item.discountAmount | currency:'BAM' }}
-                  <span class="discount-percent">({{ item.discountPercent }}%)</span>
-                </span>
-                <span *ngIf="item.discountAmount === 0">-</span>
-              </td>
-              <td class="text-right total-cell">{{ item.total | currency:'BAM' }}</td>
+              <td class="text-right">{{ item.unitPrice | number: '1.2-2' }} KM</td>
             </tr>
           </tbody>
           <tfoot>
+            <tr class="subtotal-row">
+              <td colspan="2" class="text-right">
+                {{ 'ORDERS.DETAILS.SUBTOTAL' | translate }}
+              </td>
+              <td class="text-right">{{ order.subtotal | number: '1.2-2' }} KM</td>
+            </tr>
+
+            <tr class="shipping-row" *ngIf="order.shippingPriceAtTheTime">
+              <td colspan="2" class="text-right">
+                {{ 'ORDERS.DETAILS.SHIPPING' | translate }}
+              </td>
+              <td class="text-right">{{ order.shippingPriceAtTheTime | number: '1.2-2' }} KM</td>
+            </tr>
+
+            <tr class="discount-row" *ngIf="order.discountAmount">
+              <td colspan="2" class="text-right">
+                {{ 'ORDERS.DETAILS.DISCOUNT' | translate }}
+              </td>
+              <td class="text-right discount-amount">
+                - {{ order.discountAmount | number: '1.2-2' }} KM
+              </td>
+            </tr>
+
             <tr class="total-row">
-              <td colspan="4" class="text-right"><strong>{{ 'ORDERS.DETAILS.ORDER_TOTAL' | translate }}</strong></td>
-              <td class="text-right total-amount"><strong>{{ order.totalAmount | currency:'BAM' }}</strong></td>
+              <td colspan="2" class="text-right">
+                <strong>{{ 'ORDERS.DETAILS.ORDER_TOTAL' | translate }}</strong>
+              </td>
+              <td class="text-right total-amount">
+                <strong>{{ order.totalAmount | number: '1.2-2' }} KM</strong>
+              </td>
             </tr>
           </tfoot>
         </table>
       </mat-card-content>
     </mat-card>
 
-    <!-- Note Section (if exists) -->
-    <mat-card class="info-card" *ngIf="order.note">
-      <mat-card-header>
-        <mat-icon mat-card-avatar>notes</mat-icon>
-        <mat-card-title>{{ 'ORDERS.DETAILS.NOTE' | translate }}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <p class="note-text">{{ order.note }}</p>
-      </mat-card-content>
-    </mat-card>
-  </div>
-
-  <!-- Actions -->
-  <div mat-dialog-actions class="dialog-actions" *ngIf="!isLoading && !errorMessage">
-    <button mat-button (click)="onClose()">
-      {{ 'COMMON.CLOSE' | translate }}
-    </button>
+    <!-- Actions -->
+    <div mat-dialog-actions class="dialog-actions" *ngIf="!isLoading && !errorMessage">
+      <button mat-button (click)="onClose()">
+        {{ 'COMMON.CLOSE' | translate }}
+      </button>
+    </div>
   </div>
 </div>

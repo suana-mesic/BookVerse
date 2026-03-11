@@ -7,12 +7,12 @@ public class ValidateCouponQueryHandler(IAppDbContext context)
     //ako nije pronađen, baca se exception
     public async Task<ValidateCouponQueryDto> Handle(ValidateCouponQuery request, CancellationToken ct)
     {
-        var now = DateTime.UtcNow;
+        var now = DateTime.Now;
 
         var coupon = await context.Coupons
             .AsNoTracking()
             .Where(x => !x.IsDeleted
-                && x.PromotionCode == request.PromotionCode
+                && x.PromotionCode.ToLower() == request.PromotionCode.ToLower()
                 && x.StartDate <= now
                 && x.EndDate >= now)
             .Select(x => new ValidateCouponQueryDto

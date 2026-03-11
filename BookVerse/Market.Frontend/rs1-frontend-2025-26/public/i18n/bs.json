@@ -285,13 +285,15 @@
       "CUSTOMER_NAME": "Ime",
       "ADDRESS": "Adresa",
       "ORDER_ITEMS": "Stavke Narudžbe",
-      "BOOKS": "Proizvod",
+      "BOOKS": "Knjige",
       "QUANTITY": "Količina",
       "UNIT_PRICE": "Jedinična Cijena",
       "DISCOUNT": "Popust",
-      "TOTAL": "Ukupno",
       "ORDER_TOTAL": "Ukupna Narudžba",
-      "NOTE": "Napomena"
+      "NOTE": "Napomena",
+      "TOTAL": "Ukupno",
+      "SUBTOTAL": "Cijena bez dostave i kupona",
+      "SHIPPING": "Cijena dostave"
     },
     "CHANGE_STATUS": {
       "TITLE": "Promijeni Status Narudžbe",

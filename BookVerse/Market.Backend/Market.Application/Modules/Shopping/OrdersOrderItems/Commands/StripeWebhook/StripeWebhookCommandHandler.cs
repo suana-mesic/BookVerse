@@ -29,6 +29,7 @@ namespace Market.Application.Modules.Shopping.OrdersOrderItems.Commands.StripeWe
 
                 if (order == null) return;
                 order.OrderStatusId = (int)OrderStatusType.Paid;
+                order.PaidAt = DateTime.UtcNow;
 
                 //Evidentiramo podatke o kartici kojom je plaćanje izvršeno
                 // Sačuvaj podatke o kartici kojom je plaćeno

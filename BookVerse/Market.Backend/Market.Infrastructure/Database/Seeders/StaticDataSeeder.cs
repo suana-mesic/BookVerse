@@ -32,6 +32,7 @@ public partial class StaticDataSeeder
         SeedShippingMethods(modelBuilder);
         SeedOrderStatuses(modelBuilder);
         SeedInventory(modelBuilder);
+        SeedCoupons(modelBuilder);
     }
 
     private static void SeedReviews(ModelBuilder modelBuilder)
@@ -447,6 +448,32 @@ public partial class StaticDataSeeder
             ReorderTreshold=5,
             Location="Polica A-15",
             IsDeleted=false,
+        },
+      });
+    }
+
+    private static void SeedCoupons(ModelBuilder modelBuilder)
+    {
+
+        modelBuilder.Entity<Coupons>().HasData(new List<Coupons>
+        {
+        new Coupons{
+            Id = 1,
+            Name = "Welcome discount",
+            Description= "Welcome discount with amountoff 10",
+            AmountOff = 10,
+            StartDate = DateTime.Now,
+            EndDate = DateTime.Now.AddDays(365),
+            PromotionCode = "WELCOME10A"
+        },
+        new Coupons{
+            Id = 2,
+            Name = "Summer discount ",
+            Description = "Summer discount with percentoff 20",
+            PercentOff = 20,
+            StartDate = DateTime.Now,
+            EndDate = DateTime.Now.AddDays(365),
+            PromotionCode = "WELCOME20P"
         },
       });
     }

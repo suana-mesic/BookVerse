@@ -54,20 +54,25 @@ namespace Market.Application.Modules.Shopping.OrdersOrderItems.Commands.Create
             var subTotal = cart.CartItems.Sum(x => x.Book.Price * x.Quantity);
             var shippingPrice = request.StoreId.HasValue ? 0 : shippingMethod.Price;
             var totalPrice = subTotal + shippingPrice;
+            var discountAmount = 0m;
 
             var coupons = new List<Market.Domain.Entities.Shopping.Coupons>();
             if (request.CouponIds.Any())
             {
                 coupons = await context.Coupons
-                    .Where(x=>request.CouponIds.Contains(x.Id) && !x.IsDeleted)
+                    .Where(x => request.CouponIds.Contains(x.Id) && !x.IsDeleted)
                     .ToListAsync(ct);
 
                 foreach (var coupon in coupons)
                 {
+                    decimal couponDiscount = 0;
                     if (coupon.AmountOff.HasValue)
-                        totalPrice -= coupon.AmountOff.Value;
+                        couponDiscount = coupon.AmountOff.Value;
                     else if (coupon.PercentOff.HasValue)
-                        totalPrice -= totalPrice * (coupon.PercentOff.Value / 100);
+                        couponDiscount = subTotal * (coupon.PercentOff.Value / 100); // ← na subTotal, ne totalPrice
+
+                    discountAmount += couponDiscount;
+                    totalPrice -= couponDiscount;
                 }
             }
 
@@ -90,19 +95,20 @@ namespace Market.Application.Modules.Shopping.OrdersOrderItems.Commands.Create
             {
                 UserId = userId,
                 OrderDate = DateTime.UtcNow,
-                SubTotal = subTotal,
                 TotalPrice = totalPrice,
+                SubTotal = subTotal,
+                ShippingPriceAtTheTime = shippingPrice,
+                DiscountAmount = discountAmount,
                 OrderStatusId = (int)OrderStatusType.Draft,
                 ShipToAddressId = shipToAddressId,
                 ShippingMethodId = request.ShippingMethodId,
-                ShippingPriceAtTheTime = shippingPrice,
                 PaymentSummaryId = paymentSummary.Id,
                 TrackingNumber = Guid.NewGuid().ToString("N")[..10].ToUpper(),
                 PaymentIntentId = ""
             };
 
             //dodavanje stavki narudžbe
-            foreach(var cartItem in cart.CartItems)
+            foreach (var cartItem in cart.CartItems)
             {
                 order.OrderItems.Add(new OrderItems
                 {

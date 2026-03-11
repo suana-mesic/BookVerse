@@ -252,13 +252,15 @@
       "CUSTOMER_NAME": "Name",
       "ADDRESS": "Address",
       "ORDER_ITEMS": "Order Items",
-      "BOOKS": "Product",
+      "BOOKS": "Books",
       "QUANTITY": "Quantity",
       "UNIT_PRICE": "Unit Price",
       "DISCOUNT": "Discount",
       "TOTAL": "Total",
       "ORDER_TOTAL": "Order Total",
-      "NOTE": "Order Note"
+      "NOTE": "Order Note",
+      "SUBTOTAL": "Subtotal",
+      "SHIPPING": "Shipping cost"
     },
     "CHANGE_STATUS": {
       "TITLE": "Change Order Status",

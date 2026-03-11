@@ -1,5 +1,8 @@
 import { Component, inject, Inject } from '@angular/core';
-import { GetOrderByIdQueryDto, OrderStatusType } from '../../../../api-services/orders/orders-api.models';
+import {
+  GetOrderByIdQueryDto,
+  OrderStatusType,
+} from '../../../../api-services/orders/orders-api.models';
 import { OrderStatusHelper } from '../../../../api-services/orders/order-status.helper';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { OrdersApiService } from '../../../../api-services/orders/orders-api.service';
@@ -22,7 +25,7 @@ export class OrderDetailsDialogComponent {
   isLoading = false;
   errorMessage: string | null = null;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: OrderDetailsDialogData) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: OrderDetailsDialogData) {}
 
   ngOnInit(): void {
     this.loadOrderDetails();
@@ -41,10 +44,17 @@ export class OrderDetailsDialogComponent {
         this.errorMessage = 'Failed to load order details';
         this.isLoading = false;
         console.error('Load order details error:', err);
-      }
+      },
     });
   }
 
+  get orderedAtLocal(): Date {
+    return new Date(this.order!.orderedAtUtc + 'Z');
+  }
+
+  get paidAtLocal(): Date | null {
+    return this.order?.paidAtUtc ? new Date(this.order.paidAtUtc + 'Z') : null;
+  }
   // === Status Helpers ===
 
   getStatusLabel(status: OrderStatusType): string {
