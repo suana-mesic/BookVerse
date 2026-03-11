@@ -1,111 +1,185 @@
-<!-- <div style="display: flex; flex-wrap: wrap; gap: 2rem; padding: 20px; align-items: baseline">
-  <div style="width: 45%">
-    <canvas id="revenueChart"></canvas>
-  </div>
-  <div style="width: 45%">
-    <canvas id="ordersChart"></canvas>
-  </div>
-  <div style="width: 45%">
-    <canvas id="topBooksChart"></canvas>
-  </div>
-  <div style="width: 30%">
-    <canvas id="shippersChart"></canvas>
-  </div>
-</div> -->
-<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; padding: 20px">
-  <!-- Prvi grafikon -->
-  <div
-    style="
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 16px;
-      background: white;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    "
-  >
-    <canvas
-      id="revenueChart"
-      style="width: 100%; height: auto; aspect-ratio: 16/9; display: block"
-    ></canvas>
+<div class="statistics-page">
+  <!-- HEADER SA VREMENOM OSVJEŽAVANJA -->
+  <div class="dashboard-header">
+    <h1>Admin Dashboard</h1>
+    <div class="refresh-timestamp" *ngIf="summary">
+      <mat-icon>schedule</mat-icon>
+      {{ summary.generatedAt | date: 'dd.MM.yyyy HH:mm' }}
+    </div>
   </div>
 
-  <!-- Drugi grafikon -->
-  <div
-    style="
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 16px;
-      background: white;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    "
-  >
-    <canvas
-      id="ordersChart"
-      style="width: 100%; height: auto; aspect-ratio: 16/9; display: block"
-    ></canvas>
+  <!-- SUMMARY KARTICE -->
+  <div class="summary-grid">
+    <div class="summary-card card-revenue">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Ukupni prihod</div>
+          <div class="card-value">{{ summary?.totalRevenue | number: '1.2-2' }} KM</div>
+        </div>
+        <div class="card-icon">
+          <mat-icon>attach_money</mat-icon>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span>od početka godine</span>
+        <span class="trend up">
+          <mat-icon>trending_up</mat-icon>
+          {{ (summary?.revenueChangePercent ?? 0) >= 0 ? '+' : ''
+          }}{{ summary?.revenueChangePercent }} %
+        </span>
+      </div>
+    </div>
+
+    <div class="summary-card card-orders">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Ukupno narudžbi</div>
+          <div class="card-value">{{ summary?.totalOrders }}+</div>
+        </div>
+        <div class="card-icon">
+          <mat-icon>shopping_cart</mat-icon>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span>ukupno</span>
+        <span class="trend up">
+          <mat-icon>trending_up</mat-icon>
+          {{ (summary?.ordersChangePercent ?? 0) >= 0 ? '+' : ''
+          }}{{ summary?.ordersChangePercent }} %
+        </span>
+      </div>
+    </div>
+
+    <div class="summary-card card-users">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Ukupno korisnika</div>
+          <div class="card-value">{{ summary?.totalUsers }}</div>
+        </div>
+        <div class="card-icon">
+          <mat-icon>people</mat-icon>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span>aktivnih</span>
+        <span class="trend down">
+          <mat-icon>trending_down</mat-icon> {{ (summary?.usersChangePercent ?? 0) >= 0 ? '+' : ''
+          }}{{ summary?.usersChangePercent }} %
+        </span>
+      </div>
+    </div>
+
+    <div class="summary-card card-books">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Prodanih knjiga</div>
+          <div class="card-value">{{ summary?.totalBooksSold }}</div>
+        </div>
+        <div class="card-icon">
+          <mat-icon>menu_book</mat-icon>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span>ove godine</span>
+        <span class="trend up">
+          <mat-icon>trending_up</mat-icon>
+          {{ (summary?.booksSoldChangePercent ?? 0) >= 0 ? '+' : ''
+          }}{{ summary?.booksSoldChangePercent }} %
+        </span>
+      </div>
+    </div>
   </div>
 
-  <!-- Treći grafikon -->
-  <div
-    style="
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 16px;
-      background: white;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    "
-  >
-    <canvas
-      id="topBooksChart"
-      style="width: 100%; height: auto; aspect-ratio: 16/9; display: block"
-    ></canvas>
+  <!-- GRAFIKONI -->
+  <div class="charts-grid">
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>Mjesečni prihod (KM)</h3>
+        <div class="chart-actions"><mat-icon>bar_chart</mat-icon></div>
+      </div>
+      <canvas id="revenueChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>Broj narudžbi po mjesecima</h3>
+        <div class="chart-actions"><mat-icon>show_chart</mat-icon></div>
+      </div>
+      <canvas id="ordersChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>Top 5 najprodavanijih knjiga</h3>
+        <div class="chart-actions"><mat-icon>star</mat-icon></div>
+      </div>
+      <canvas id="topBooksChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>Narudžbe po dostavljačima</h3>
+        <div class="chart-actions"><mat-icon>local_shipping</mat-icon></div>
+      </div>
+      <canvas id="shippersChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>Popularnost kategorija</h3>
+        <div class="chart-actions"><mat-icon>category</mat-icon></div>
+      </div>
+      <canvas id="categoriesChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>Prihod po kategorijama (mjesečno)</h3>
+        <div class="chart-actions"><mat-icon>stacked_bar_chart</mat-icon></div>
+      </div>
+      <canvas id="monthlyCategoryRevenueChart"></canvas>
+    </div>
   </div>
 
-  <!-- Četvrti grafikon -->
-  <div
-    style="
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 16px;
-      background: white;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    "
-  >
-    <canvas
-      id="shippersChart"
-      style="width: 100%; height: auto; aspect-ratio: 16/9; display: block"
-    ></canvas>
-  </div>
+  <!-- PDF IZVJEŠTAJ -->
+  <div class="report-section" *ngIf="!isLoading">
+    <h3><mat-icon>picture_as_pdf</mat-icon> Generiši izvještaj narudžbi</h3>
 
-  <!-- Peti grafikon -->
-  <div
-    style="
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 16px;
-      background: white;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    "
-  >
-    <canvas
-      id="categoriesChart"
-      style="width: 100%; height: auto; aspect-ratio: 16/9; display: block"
-    ></canvas>
-  </div>
+    <div class="report-filters">
+      <mat-form-field appearance="outline" class="filter-item" subscriptSizing="dynamic">
+        <mat-label>Datum od</mat-label>
+        <input matInput [matDatepicker]="pickerOd" [(ngModel)]="dateFrom" />
+        <mat-datepicker-toggle matIconSuffix [for]="pickerOd"></mat-datepicker-toggle>
+        <mat-datepicker #pickerOd></mat-datepicker>
+      </mat-form-field>
 
-  <!-- Šesti grafikon -->
-  <div
-    style="
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 16px;
-      background: white;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    "
-  >
-    <canvas
-      id="monthlyCategoryRevenueChart"
-      style="width: 100%; height: auto; aspect-ratio: 16/9; display: block"
-    ></canvas>
+      <mat-form-field appearance="outline" class="filter-item" subscriptSizing="dynamic">
+        <mat-label>Datum do</mat-label>
+        <input matInput [matDatepicker]="pickerDo" [(ngModel)]="dateTo" />
+        <mat-datepicker-toggle matIconSuffix [for]="pickerDo"></mat-datepicker-toggle>
+        <mat-datepicker #pickerDo></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filter-item" subscriptSizing="dynamic">
+        <mat-label>Korisnik</mat-label>
+        <input
+          type="text"
+          placeholder="Odaberite korisnika"
+          matInput
+          [formControl]="usersAutocompleteInput"
+          [matAutocomplete]="autoUsers"
+        />
+        <mat-autocomplete #autoUsers="matAutocomplete" (optionSelected)="onUsersSelected($event)">
+          @for (user of filteredUsersOptions | async; track user.id) {
+            <mat-option [value]="user.fullName">{{ user.fullName }}</mat-option>
+          }
+        </mat-autocomplete>
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+
+      <button mat-raised-button (click)="downloadReport()" [disabled]="!dateFrom || !dateTo">
+        Preuzmi PDF
+      </button>
+    </div>
   </div>
 </div>

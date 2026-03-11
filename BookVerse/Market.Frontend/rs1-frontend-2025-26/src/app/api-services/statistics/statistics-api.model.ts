@@ -31,3 +31,16 @@ export interface GetRevenueByMonthAndCategoryQueryDto {
   categoryName: string;
   revenue: number;
 }
+
+export interface GetDashboardCardSummaryDto {
+  totalRevenue: number;
+  totalOrders: number;
+  totalUsers: number;
+  totalBooksSold: number;
+  generatedAt: Date;
+
+  revenueChangePercent: number;
+  ordersChangePercent: number;
+  usersChangePercent: number;
+  booksSoldChangePercent: number;
+}

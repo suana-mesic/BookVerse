@@ -2,6 +2,14 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Chart } from 'chart.js/auto';
 import { StatisticsApiService } from '../../../api-services/statistics/statistics-api.service';
 import { ToasterService } from '../../core/services/toaster.service';
+import { GetDashboardCardSummaryDto } from '../../../api-services/statistics/statistics-api.model';
+import { ReportsApiServices } from '../../../api-services/reports/reports-api.service';
+import { UsersApiService } from '../../../api-services/users/users-api.service';
+import { FormControl } from '@angular/forms';
+import { map, Observable, startWith } from 'rxjs';
+import { ListUsersQueryDto } from '../../../api-services/users/users-api.model';
+import { BaseComponent } from '../../core/components/base-classes/base-component';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-admin-settings',
@@ -9,17 +17,61 @@ import { ToasterService } from '../../core/services/toaster.service';
   templateUrl: './statistics.component.html',
   styleUrl: './statistics.component.scss',
 })
-export class StatisticsComponent implements OnInit {
+export class StatisticsComponent extends BaseComponent implements OnInit {
   private statisticsApi = inject(StatisticsApiService);
+  private usersApi = inject(UsersApiService);
+  private reportsApi = inject(ReportsApiServices);
   private toaster = inject(ToasterService);
+  summary: GetDashboardCardSummaryDto | null = null;
+  dateFrom: Date = new Date(new Date().getFullYear(), 0, 1); //1.1. trenutne godine
+  dateTo: Date = new Date();
+  selectedUserId: number = 0;
+  usersAutocompleteInput = new FormControl('');
+  filteredUsersOptions!: Observable<ListUsersQueryDto[]>;
+  allUsers!: ListUsersQueryDto[];
+
+  constructor() {
+    super();
+    this.setUserFiltering();
+  }
 
   ngOnInit(): void {
+    this.startLoading();
     this.getMonthlyRevenue();
     this.getMonthlyOrdersCount();
     this.getTop5Books();
     this.getShippersOrdersCount();
     this.getCategoriesPopularity();
     this.getRevenueByMonthAndCategory();
+    this.getDashboardCardSummary();
+    this.dohvatiSveKorisnike();
+  }
+
+  setUserFiltering() {
+    this.filteredUsersOptions = this.usersAutocompleteInput.valueChanges.pipe(
+      startWith(''),
+      map((value) => this._filterUsers(value || '')),
+    );
+  }
+
+  private _filterUsers(value: string): ListUsersQueryDto[] {
+    const filterValue = value.toLowerCase();
+    return this.allUsers.filter((x) => x.fullName.toLowerCase().includes(filterValue));
+  }
+
+  onUsersSelected(event: MatAutocompleteSelectedEvent) {
+    const userId = this.allUsers.filter((x) => x.fullName == event?.option.value).at(0)?.id;
+    if (userId) this.selectedUserId = userId;
+  }
+
+  private dohvatiSveKorisnike() {
+    this.usersApi.ListUsers().subscribe({
+      next: (response) => {
+        this.allUsers = response;
+        this.stopLoading();
+      },
+      error: (err) => this.toaster.error('Greška prilikom dohvatanja svih korisnika'),
+    });
   }
 
   makeChart(
@@ -143,7 +195,7 @@ export class StatisticsComponent implements OnInit {
           options: {
             responsive: true,
             maintainAspectRatio: true,
-            aspectRatio: 16 / 9,
+            aspectRatio: 5 / 3,
             plugins: {
               legend: { position: 'top' },
               title: { display: true, text: 'Narudžbe po dostavljačima' },
@@ -170,17 +222,17 @@ export class StatisticsComponent implements OnInit {
               {
                 label: 'Prodaja po kategorijama',
                 data: values,
-                backgroundColor: 'rgba(255, 140, 165, 0.2)',
-                borderColor: 'rgba(255, 140, 165, 1)',
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                borderColor: 'rgba(54, 162, 235, 1)',
                 borderWidth: 2,
-                pointBackgroundColor: 'rgba(255, 140, 165, 0)',
+                pointBackgroundColor: 'rgba(54, 162, 235, 0.2)',
               },
             ],
           },
           options: {
             responsive: true,
             maintainAspectRatio: true,
-            aspectRatio: 16 / 9,
+            aspectRatio: 5 / 3,
             plugins: {
               legend: { position: 'top' },
               title: {
@@ -237,7 +289,7 @@ export class StatisticsComponent implements OnInit {
           options: {
             responsive: true,
             maintainAspectRatio: true,
-            aspectRatio: 16 / 9,
+            aspectRatio: 5 / 3,
             plugins: {
               title: {
                 display: true,
@@ -259,5 +311,28 @@ export class StatisticsComponent implements OnInit {
         this.toaster.error('Greška prilikom dohvatanja prihoda po kategorijama');
       },
     });
+  }
+
+  getDashboardCardSummary() {
+    this.statisticsApi.getDashboardCardSummary().subscribe({
+      next: (data) => (this.summary = data),
+      error: () => this.toaster.error('Greška pri učitavanju sumarnih podataka'),
+    });
+  }
+
+  downloadReport(): void {
+    this.reportsApi
+      .generateOrdersReport(this.dateFrom, this.dateTo, this.selectedUserId, undefined)
+      .subscribe({
+        next: (blob) => {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `narudzbe-report.pdf`;
+          a.click();
+          window.URL.revokeObjectURL(url);
+        },
+        error: () => this.toaster.error('Greška pri generisanju izvještaja'),
+      });
   }
 }

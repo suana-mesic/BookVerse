@@ -1,4 +1,5 @@
 ﻿using Market.Application.Modules.Statistics.Queries.CategoriesPopularity;
+using Market.Application.Modules.Statistics.Queries.DashboardCardsSummary;
 using Market.Application.Modules.Statistics.Queries.MonthlyOrdersCount;
 using Market.Application.Modules.Statistics.Queries.MonthlyRevenue;
 using Market.Application.Modules.Statistics.Queries.RevenueByMonthAndCategory;
@@ -47,5 +48,12 @@ public class StatisticsController(ISender sender) : ControllerBase
     public async Task<List<GetRevenueByMonthAndCategoryQueryDto>> GetRevenueByMonthAndCategory(CancellationToken ct)
     {
         return await sender.Send(new GetRevenueByMonthAndCategoryQuery(), ct);
+    }
+
+
+    [HttpGet("dashboard-card-summary")]
+    public async Task<GetDashboardCardSummaryDto> GetDashboardCardSummary(CancellationToken ct)
+    {
+        return await sender.Send(new GetDashboardCardSummary(), ct);
     }
 }

@@ -12,6 +12,13 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 export class AdminLayoutComponent implements OnInit {
   navSections = [
     {
+      id: 'system',
+      label: 'ADMIN_PANEL.MENU.DATA_VISUALIZATION',
+      items: [
+        { route: '/admin/statistics', icon: 'bar_chart', label: 'ADMIN_PANEL.MENU.DASHBOARD' },
+      ],
+    },
+    {
       id: 'catalog',
       label: 'ADMIN_PANEL.MENU.CATALOG',
       items: [
@@ -26,17 +33,10 @@ export class AdminLayoutComponent implements OnInit {
     },
     {
       id: 'orders',
-      label: 'ADMIN_PANEL.MENU.SECTION',
+      label: 'ADMIN_PANEL.MENU.RESOURCE_MANAGEMENT',
       items: [
         { route: '/admin/orders', icon: 'shopping_cart', label: 'ADMIN_PANEL.MENU.ORDERS' },
         { route: '/admin/inventory', icon: 'inventory', label: 'ADMIN_PANEL.MENU.INVENTORY' },
-      ],
-    },
-    {
-      id: 'system',
-      label: 'ADMIN_PANEL.MENU.DATA_VISUALIZATION',
-      items: [
-        { route: '/admin/statistics', icon: 'bar_chart', label: 'ADMIN_PANEL.MENU.STATISTICS' },
       ],
     },
   ];

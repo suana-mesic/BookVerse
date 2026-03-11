@@ -26,3 +26,8 @@ export interface UserAddressDto {
   city: string | null;
   country: string | null;
 }
+
+export interface ListUsersQueryDto {
+  id: number;
+  fullName: string;
+}

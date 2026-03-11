@@ -39,7 +39,8 @@
       "COUPONS": "Coupons",
       "INVENTORY": "Inventory",
       "DATA_VISUALIZATION": "Data visualization",
-      "STATISTICS": "Statistics"
+      "DASHBOARD": "Dashboard",
+      "RESOURCE_MANAGEMENT": "Resource management"
     }
   },
   "BOOKS_CATEGORIES": {

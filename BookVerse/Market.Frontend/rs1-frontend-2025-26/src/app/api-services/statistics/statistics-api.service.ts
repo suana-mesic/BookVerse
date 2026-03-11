@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import {
   GetCategoriesPopularityQueryDto,
+  GetDashboardCardSummaryDto,
   GetMonthlyOrdersCountQueryDto,
   GetMonthlyRevenueQueryDto,
   GetRevenueByMonthAndCategoryQueryDto,
@@ -44,5 +45,9 @@ export class StatisticsApiService {
     return this.http.get<GetRevenueByMonthAndCategoryQueryDto[]>(
       `${this.baseUrl}/revenue-by-month-and-category`,
     );
+  }
+
+  getDashboardCardSummary(): Observable<GetDashboardCardSummaryDto> {
+    return this.http.get<GetDashboardCardSummaryDto>(`${this.baseUrl}/dashboard-card-summary`);
   }
 }

@@ -17,6 +17,7 @@ import { CouponsDynamicFormAddComponent } from './coupons-dynamic-form/coupons-d
 import { InventoryComponent } from './inventory/inventory.component';
 import { InventoryEditComponent } from './inventory/inventory-edit/inventory-edit.component';
 import { InventoryAddComponent } from './inventory/inventory-add/inventory-add.component';
+import { MatTabsModule } from '@angular/material/tabs';
 @NgModule({
   declarations: [
     BooksComponent,
@@ -34,6 +35,6 @@ import { InventoryAddComponent } from './inventory/inventory-add/inventory-add.c
     InventoryEditComponent,
     InventoryAddComponent,
   ],
-  imports: [AdminRoutingModule, SharedModule, DragDropModule],
+  imports: [AdminRoutingModule, SharedModule, DragDropModule, MatTabsModule],
 })
 export class AdminModule {}

@@ -39,7 +39,8 @@
       "COUPONS": "Kuponi",
       "INVENTORY": "Popis inventara",
       "DATA_VISUALIZATION": "Vizualizacija podataka",
-      "STATISTICS": "Statistika"
+      "DASHBOARD": "Kontrolna ploča",
+      "RESOURCE_MANAGEMENT": "Upravljanje resursima"
     }
   },
   "BOOKS_CATEGORIES": {

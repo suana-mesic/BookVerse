@@ -1,6 +1,7 @@
 ﻿using Market.Application.Modules.Users.Commands.UpdateMyProfile;
 using Market.Application.Modules.Users.Queries.GetById;
 using Market.Application.Modules.Users.Queries.GetUserAddress;
+using Market.Application.Modules.Users.Queries.List;
 namespace Market.API.Controllers;
 
 [ApiController]
@@ -27,5 +28,13 @@ public class UsersController(ISender sender) : ControllerBase
     {
         var result = await sender.Send(new GetUserAddressQuery(), ct);
         return Ok(result);
+    }
+
+    [HttpGet("all-users")]
+    [Authorize] //task: admin only dodati kasnije!!!
+    public async Task<List<ListUsersQueryDto>> GetAllUsers(CancellationToken ct)
+    {
+        var result = await sender.Send(new ListUsersQuery(), ct);
+        return result;
     }
 }
