@@ -15,7 +15,7 @@ namespace Market.Application.Modules.Shopping.OrdersOrderItems.Commands.Create
             var userId = currentUser.UserId ?? throw new MarketNotFoundException("Korisnik nije prijavljen");
 
             var cart = await context.Carts
-                .Include(c => c.CartItems.Where(x=>!x.SavedForLater))
+                .Include(c => c.CartItems.Where(x => !x.SavedForLater))
                 .ThenInclude(ci => ci.Book)
                 .FirstOrDefaultAsync(c => c.UserId == userId, ct) ?? throw new MarketNotFoundException("Korpa nije pronađena");
 
@@ -45,10 +45,27 @@ namespace Market.Application.Modules.Shopping.OrdersOrderItems.Commands.Create
                 shipToAddressId = newAdress.Id;
             }
 
-            //shipping metoda
-            var shippingMethod = await context.ShippingMethods
-            .FirstOrDefaultAsync(x => x.Id == request.ShippingMethodId && !x.IsDeleted, ct)
-            ?? throw new MarketNotFoundException("Način dostave nije pronađen.");
+            var shippingMethod = new Domain.Entities.Shopping.ShippingMethods();
+            var pickupStore = new Store();
+
+            if (!request.StoreId.HasValue && !request.ShippingMethodId.HasValue)
+                throw new MarketConflictException("Morate odabrati način dostave ili prodavnicu za preuzimanje.");
+
+            //ako je poslan shipping method
+            if (request.ShippingMethodId != null)
+            {
+                shippingMethod = await context.ShippingMethods
+                .FirstOrDefaultAsync(x => x.Id == request.ShippingMethodId && !x.IsDeleted, ct)
+                ?? throw new MarketNotFoundException("Način dostave nije pronađen.");
+            }
+
+            //ako je poslan pickup store
+            if (request.StoreId != null)
+            {
+                pickupStore = await context.Stores
+                .FirstOrDefaultAsync(x => x.Id == request.StoreId && !x.IsDeleted, ct)
+                ?? throw new MarketNotFoundException("Prodavnica nije pronađena.");
+            }
 
             //izračunavanje cijena
             var subTotal = cart.CartItems.Sum(x => x.Book.Price * x.Quantity);
@@ -78,17 +95,6 @@ namespace Market.Application.Modules.Shopping.OrdersOrderItems.Commands.Create
 
             if (totalPrice < 0) totalPrice = 0;
 
-            //kreiranje payment summary-a
-            var paymentSummary = new PaymentSummaries
-            {
-                Last4Digits = 0,
-                Brand = "Unknown",
-                ExpMonth = 0,
-                ExpYear = 0
-            };
-
-            context.PaymentSummaries.Add(paymentSummary);
-            await context.SaveChangesAsync(ct);
 
             //kreiranje narudžbe
             var order = new Orders
@@ -101,11 +107,15 @@ namespace Market.Application.Modules.Shopping.OrdersOrderItems.Commands.Create
                 DiscountAmount = discountAmount,
                 OrderStatusId = (int)OrderStatusType.Draft,
                 ShipToAddressId = shipToAddressId,
-                ShippingMethodId = request.ShippingMethodId,
-                PaymentSummaryId = paymentSummary.Id,
                 TrackingNumber = Guid.NewGuid().ToString("N")[..10].ToUpper(),
                 PaymentIntentId = ""
             };
+
+            if (request.ShippingMethodId != null)
+                order.ShippingMethodId = shippingMethod.Id;
+
+            if (request.StoreId != null)
+                order.PickupStoreId = pickupStore.Id;
 
             //dodavanje stavki narudžbe
             foreach (var cartItem in cart.CartItems)

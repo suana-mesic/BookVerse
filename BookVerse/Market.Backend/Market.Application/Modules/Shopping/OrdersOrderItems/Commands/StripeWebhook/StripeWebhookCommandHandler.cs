@@ -1,6 +1,7 @@
 ﻿using Market.Application.Common.Interfaces;
 using Market.Domain.Entities.Shopping;
 using Stripe;
+using System.Configuration;
 using System.Threading;
 
 namespace Market.Application.Modules.Shopping.OrdersOrderItems.Commands.StripeWebhook
@@ -17,15 +18,45 @@ namespace Market.Application.Modules.Shopping.OrdersOrderItems.Commands.StripeWe
             // Plaćanje je uspješno prošlo
             if (stripeEvent.Type == EventTypes.PaymentIntentSucceeded)
             {
+
                 var paymentIntent = stripeEvent.Data.Object as PaymentIntent;
                 if (paymentIntent == null)
                     return;
 
-                var order = await context.Orders.Include(x => x.PaymentSummary).FirstOrDefaultAsync(o => o.PaymentIntentId == paymentIntent.Id, ct);
+                var order = await context.Orders
+                    .Include(x => x.OrderItems)
+                    .ThenInclude(x => x.Book)
+                    .FirstOrDefaultAsync(o => o.PaymentIntentId == paymentIntent.Id, ct);
+
 
                 if (order == null) return;
                 order.OrderStatusId = (int)OrderStatusType.Paid;
                 order.PaidAt = DateTime.UtcNow;
+
+
+                //smanji količinu na skladištu za svaku knjigu 
+                //ako ShipToAddressId != null, onda briši QuantityInStockForOnlineOrders za svaku knjigu
+                //ako PickupStoreId != null, onda izbriši QuantityInStock u StoreInventory tabelu za prodavnicu u kojoj će biti preuzeta knjiga
+
+                if (order.ShippingMethodId != null)
+                    foreach (var item in order.OrderItems)
+                        item.Book.QuantityInStockForOnlineOrders -= item.Quantity;
+
+                if (order.PickupStoreId != null)
+                {
+                    var inventoryDictionary = context.StoreInventory
+                        .Where(x => x.StoreId == order.PickupStoreId)
+                        .ToDictionary(x => x.BookId);
+
+                    foreach (var item in order.OrderItems)
+                    {
+                        if (inventoryDictionary.TryGetValue(item.BookId, out var inventoryForBook))
+                            inventoryForBook.QuantityInStock -= item.Quantity;
+                        else
+                            throw new Exception($"Book {item.BookId} nije u StoreInventory za Store {order.PickupStoreId}");
+                    }
+
+                }
 
                 //Brisanje poručenih stavki iz korpe
 
@@ -54,10 +85,17 @@ namespace Market.Application.Modules.Shopping.OrdersOrderItems.Commands.StripeWe
 
                     if (charge?.PaymentMethodDetails?.Card is { } card)
                     {
-                        order.PaymentSummary.Last4Digits = int.Parse(card.Last4 ?? "0");
-                        order.PaymentSummary.Brand = card.Brand ?? "Unknown";
-                        order.PaymentSummary.ExpMonth = (int)card.ExpMonth;
-                        order.PaymentSummary.ExpYear = (int)card.ExpYear;
+                        var paymentSummary = new PaymentSummaries
+                        {
+                            Last4Digits = int.Parse(card.Last4 ?? "0"),
+                            Brand = card.Brand ?? "Unknown",
+                            ExpMonth = (int)card.ExpMonth,
+                            ExpYear = (int)card.ExpYear,
+                        };
+                        context.PaymentSummaries.Add(paymentSummary);
+                        await context.SaveChangesAsync(ct);
+
+                        order.PaymentSummaryId = paymentSummary.Id;
                     }
                 }
                 await context.SaveChangesAsync(ct);

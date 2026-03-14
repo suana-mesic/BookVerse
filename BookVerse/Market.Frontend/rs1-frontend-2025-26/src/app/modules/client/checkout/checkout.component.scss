@@ -29,12 +29,26 @@
     font-weight: 600;
   }
 
-  span { font-size: 0.85rem; color: #888; }
+  span {
+    font-size: 0.85rem;
+    color: #888;
+  }
 
-  &.active .step-circle { background: #1a73e8; color: #fff; }
-  &.active span { color: #1a73e8; font-weight: 600; }
-  &.completed .step-circle { background: #2e7d32; color: #fff; }
-  &.completed span { color: #2e7d32; }
+  &.active .step-circle {
+    background: #1a73e8;
+    color: #fff;
+  }
+  &.active span {
+    color: #1a73e8;
+    font-weight: 600;
+  }
+  &.completed .step-circle {
+    background: #2e7d32;
+    color: #fff;
+  }
+  &.completed span {
+    color: #2e7d32;
+  }
 }
 
 .step-line {
@@ -43,12 +57,21 @@
   background: #e0e0e0;
   margin: 0 0.5rem;
   margin-bottom: 1.5rem;
-  &.completed { background: #2e7d32; }
+  &.completed {
+    background: #2e7d32;
+  }
 }
 
 .step-content {
-  h3 { font-size: 1.4rem; margin-bottom: 1.5rem; }
-  h4 { font-size: 1rem; margin: 1rem 0 0.5rem; color: #555; }
+  h3 {
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+  }
+  h4 {
+    font-size: 1rem;
+    margin: 1rem 0 0.5rem;
+    color: #555;
+  }
 }
 
 .radio-card {
@@ -62,15 +85,32 @@
   cursor: pointer;
   transition: border-color 0.2s;
 
-  &.selected { border-color: #1a73e8; background: #f0f7ff; }
-  &:hover { border-color: #aaa; }
+  &.selected {
+    border-color: #1a73e8;
+    background: #f0f7ff;
+  }
+  &:hover {
+    border-color: #aaa;
+  }
 
-  input[type="radio"] { margin-top: 3px; }
+  input[type='radio'] {
+    margin-top: 3px;
+  }
 
   .radio-card-content {
-    strong { display: block; margin-bottom: 0.3rem; }
-    p { margin: 0.2rem 0; font-size: 0.9rem; color: #555; }
-    .price { font-weight: 600; color: #1a73e8; }
+    strong {
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+    p {
+      margin: 0.2rem 0;
+      font-size: 0.9rem;
+      color: #555;
+    }
+    .price {
+      font-weight: 600;
+      color: #1a73e8;
+    }
   }
 }
 
@@ -88,7 +128,10 @@
   font-size: 1rem;
   width: 100%;
   box-sizing: border-box;
-  &:focus { outline: none; border-color: #1a73e8; }
+  &:focus {
+    outline: none;
+    border-color: #1a73e8;
+  }
 }
 
 .review-section {
@@ -96,8 +139,14 @@
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   margin-bottom: 1rem;
-  h4 { margin: 0 0 0.5rem; color: #1a73e8; }
-  p { margin: 0.2rem 0; font-size: 0.95rem; }
+  h4 {
+    margin: 0 0 0.5rem;
+    color: #1a73e8;
+  }
+  p {
+    margin: 0.2rem 0;
+    font-size: 0.95rem;
+  }
 }
 
 .step-actions {
@@ -115,9 +164,22 @@
   }
 }
 
-.btn-prev { background: #f0f0f0; color: #333; }
-.btn-next { background: #1a73e8; color: #fff; &:disabled { background: #ccc; cursor: not-allowed; } }
-.btn-checkout { background: #2e7d32; color: #fff; }
+.btn-prev {
+  background: #f0f0f0;
+  color: #333;
+}
+.btn-next {
+  background: #1a73e8;
+  color: #fff;
+  &:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+}
+.btn-checkout {
+  background: #2e7d32;
+  color: #fff;
+}
 
 .coupon-input {
   display: flex;
@@ -152,12 +214,44 @@
     padding: 0.4rem 0;
     border-bottom: 1px solid #f0f0f0;
 
-    &.discount strong { color: #2e7d32; }
+    &.discount strong {
+      color: #2e7d32;
+    }
     &.total {
       padding-top: 0.8rem;
       font-size: 1.1rem;
       border-bottom: none;
-      strong { color: #1a73e8; font-size: 1.2rem; }
+      strong {
+        color: #1a73e8;
+        font-size: 1.2rem;
+      }
     }
   }
+}
+
+.radio-card {
+  // dodaj u postojeći .radio-card blok:
+  &.unavailable {
+    opacity: 0.6;
+    cursor: not-allowed;
+    border-color: #ffcdd2;
+    background: #fff8f8;
+
+    &:hover {
+      border-color: #ffcdd2;
+    }
+
+    input[type='radio'] {
+      cursor: not-allowed;
+    }
+  }
+}
+
+.unavailable-text {
+  color: #c62828;
+  font-size: 0.85rem;
+  margin-top: 0.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
 }

@@ -152,8 +152,13 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
 
     const address = this.getDeliveryAddress();
 
+    console.log('selectedShippingMethodId');
+    console.log(this.selectedShippingMethodId);
+    console.log('selectedStoreId');
+    console.log(this.selectedStoreId);
+
     const request = {
-      shippingMethodId: this.selectedShippingMethodId!,
+      shippingMethodId: this.selectedShippingMethodId ?? null,
       storeId: this.deliveryType == 'pickup' ? this.selectedStoreId : null,
       useExistingAddress: this.useExistingAddress,
       line1: this.useExistingAddress ? null : address.line1,
@@ -173,7 +178,7 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
       },
       error: (err) => {
         this.stopLoading();
-        this.toaster.error('Greška prilikom kreiranje narudćbe');
+        this.toaster.error('Greška prilikom kreiranje narudžbe');
       },
     });
   }
@@ -223,5 +228,35 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
     const shipping =
       this.deliveryType === 'shipping' ? (this.getSelectedShippingMethod()?.price ?? 0) : 0;
     return this.cart.totalPrice + shipping - this.getDiscountAmount(this.cart.totalPrice);
+  }
+
+  isBookAvailableInStore(storeId: number): boolean {
+    return this.cart.activeItems.every((item) => {
+      const qtyInStock = item.quantityInStockInStores?.[storeId] ?? 0; //količina na skladištu
+      return qtyInStock >= item.quantity; //true ako je količina na skladištu veća ili jednaka odabranoj količini za kupovinu
+    });
+  }
+
+  isBookAvailableForShipping(): boolean {
+    return this.cart.activeItems.every((item) => {
+      return item.quantityInStockForOnlineOrders >= item.quantity;
+    });
+  }
+
+  getUnavailableBooksForStore(storeId: number): string[] {
+    return this.cart.activeItems
+      .filter((item) => {
+        const qtyInStock = item.quantityInStockInStores?.[storeId] ?? 0; //količina na skladištu
+        return qtyInStock < item.quantity;
+      })
+      .map((item) => item.bookTitle);
+  }
+
+  getUnavailableBooksForShipping(): string[] {
+    return this.cart.activeItems
+      .filter((item) => {
+        return item.quantityInStockForOnlineOrders < item.quantity;
+      })
+      .map((item) => item.bookTitle);
   }
 }

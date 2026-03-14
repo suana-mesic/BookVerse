@@ -1,4 +1,6 @@
-﻿namespace Market.Application.Modules.Shopping.Cart.Queries.List;
+﻿using Market.Application.Modules.Catalog.Stores.Queries.GetById;
+
+namespace Market.Application.Modules.Shopping.Cart.Queries.List;
 
 public class ListCartQueryDto
 {
@@ -12,6 +14,8 @@ public class CartItemDto
     public int CartId { get; set; }
     public int BookId { get; set; }
     public string BookTitle { get; set; }
+    public int? QuantityInStockForOnlineOrders { get; set; }
+    public Dictionary <int, decimal>? QuantityInStockInStores { get; set; }
     public string? ImageUrl { get; set; }
     public decimal Price { get; set; }
     public int Quantity { get; set; }

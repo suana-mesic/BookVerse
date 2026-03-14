@@ -141,9 +141,53 @@
     </div>
   </div>
 
-  <!-- PDF IZVJEŠTAJ -->
+  <!-- PDF IZVJEŠTAJ ZA NARUDŽBE -->
   <div class="report-section" *ngIf="!isLoading">
     <h3><mat-icon>picture_as_pdf</mat-icon> Generiši izvještaj narudžbi</h3>
+
+    <div class="report-filters">
+      <mat-form-field appearance="outline" class="filter-item" subscriptSizing="dynamic">
+        <mat-label>Datum od</mat-label>
+        <input matInput [matDatepicker]="pickerOd" [(ngModel)]="dateFrom" required />
+        <mat-datepicker-toggle matIconSuffix [for]="pickerOd"></mat-datepicker-toggle>
+        <mat-datepicker #pickerOd></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filter-item" subscriptSizing="dynamic">
+        <mat-label>Datum do</mat-label>
+        <input matInput [matDatepicker]="pickerDo" [(ngModel)]="dateTo" required />
+        <mat-datepicker-toggle matIconSuffix [for]="pickerDo"></mat-datepicker-toggle>
+        <mat-datepicker #pickerDo></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filter-item" subscriptSizing="dynamic">
+        <mat-label>Korisnik</mat-label>
+        <input
+          type="text"
+          placeholder="Odaberite korisnika"
+          matInput
+          [formControl]="usersAutocompleteInput"
+          [matAutocomplete]="autoUsers"
+        />
+        <mat-autocomplete #autoUsers="matAutocomplete">
+          @for (user of filteredUsersOptions | async; track user.id) {
+            <mat-option [value]="user.fullName">{{ user.fullName }}</mat-option>
+          }
+        </mat-autocomplete>
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+
+      <button mat-raised-button (click)="downloadOrdersReport()" [disabled]="!dateFrom || !dateTo">
+        Preuzmi PDF
+      </button>
+    </div>
+  </div>
+
+  <br />
+
+  <!-- PDF IZVJEŠTAJ O PRODAJI KNJIGA -->
+  <div class="report-section" *ngIf="!isLoading">
+    <h3><mat-icon>picture_as_pdf</mat-icon> Generiši izvještaj o prodaji knjiga</h3>
 
     <div class="report-filters">
       <mat-form-field appearance="outline" class="filter-item" subscriptSizing="dynamic">
@@ -161,23 +205,23 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="filter-item" subscriptSizing="dynamic">
-        <mat-label>Korisnik</mat-label>
+        <mat-label>Knjiga</mat-label>
         <input
           type="text"
-          placeholder="Odaberite korisnika"
+          placeholder="Odaberite knjigu"
           matInput
-          [formControl]="usersAutocompleteInput"
-          [matAutocomplete]="autoUsers"
+          [formControl]="booksAutocompleteInput"
+          [matAutocomplete]="autoBooks"
         />
-        <mat-autocomplete #autoUsers="matAutocomplete" (optionSelected)="onUsersSelected($event)">
-          @for (user of filteredUsersOptions | async; track user.id) {
-            <mat-option [value]="user.fullName">{{ user.fullName }}</mat-option>
+        <mat-autocomplete #autoBooks="matAutocomplete">
+          @for (book of filteredBooksOptions | async; track book.id) {
+            <mat-option [value]="book.title">{{ book.title }}</mat-option>
           }
         </mat-autocomplete>
         <mat-icon matSuffix>search</mat-icon>
       </mat-form-field>
 
-      <button mat-raised-button (click)="downloadReport()" [disabled]="!dateFrom || !dateTo">
+      <button mat-raised-button (click)="downloadBooksReport()" [disabled]="!dateFrom || !dateTo">
         Preuzmi PDF
       </button>
     </div>

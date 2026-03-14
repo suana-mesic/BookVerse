@@ -165,7 +165,7 @@ export interface UpdateOrderCommand {
 }
 
 export interface CreateOrderWithItemsQuery {
-  shippingMethodId: number;
+  shippingMethodId: number | null;
   storeId: number | null;
   useExistingAddress: boolean;
   line1: string | null;

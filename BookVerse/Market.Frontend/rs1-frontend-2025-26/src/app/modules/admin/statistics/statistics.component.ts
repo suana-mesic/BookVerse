@@ -9,7 +9,8 @@ import { FormControl } from '@angular/forms';
 import { map, Observable, startWith } from 'rxjs';
 import { ListUsersQueryDto } from '../../../api-services/users/users-api.model';
 import { BaseComponent } from '../../core/components/base-classes/base-component';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { BooksApiService } from '../../../api-services/books/books-api.service';
+import { ListBooksForAutocompleteQueryDto } from '../../../api-services/books/books-api.models';
 
 @Component({
   selector: 'app-admin-settings',
@@ -20,19 +21,30 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 export class StatisticsComponent extends BaseComponent implements OnInit {
   private statisticsApi = inject(StatisticsApiService);
   private usersApi = inject(UsersApiService);
+  private booksApi = inject(BooksApiService);
   private reportsApi = inject(ReportsApiServices);
   private toaster = inject(ToasterService);
+
   summary: GetDashboardCardSummaryDto | null = null;
   dateFrom: Date = new Date(new Date().getFullYear(), 0, 1); //1.1. trenutne godine
   dateTo: Date = new Date();
-  selectedUserId: number = 0;
+
+  selectedUserId: number | undefined = 0;
+  selectedBookId: number | undefined = 0;
+
   usersAutocompleteInput = new FormControl('');
+  booksAutocompleteInput = new FormControl('');
+
   filteredUsersOptions!: Observable<ListUsersQueryDto[]>;
+  filteredBooksOptions!: Observable<ListBooksForAutocompleteQueryDto[]>;
+
   allUsers!: ListUsersQueryDto[];
+  allBooks!: ListBooksForAutocompleteQueryDto[];
 
   constructor() {
     super();
-    this.setUserFiltering();
+    this.setUsersFiltering();
+    this.setBooksFiltering();
   }
 
   ngOnInit(): void {
@@ -45,12 +57,17 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
     this.getRevenueByMonthAndCategory();
     this.getDashboardCardSummary();
     this.dohvatiSveKorisnike();
+    this.dohvatiSveKnjige();
   }
 
-  setUserFiltering() {
+  setUsersFiltering() {
     this.filteredUsersOptions = this.usersAutocompleteInput.valueChanges.pipe(
       startWith(''),
-      map((value) => this._filterUsers(value || '')),
+      map((value) => {
+        const userId = this.allUsers.find((x) => x.fullName == value)?.id;
+        this.selectedUserId = userId ?? undefined;
+        return this._filterUsers(value || '');
+      }),
     );
   }
 
@@ -59,15 +76,36 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
     return this.allUsers.filter((x) => x.fullName.toLowerCase().includes(filterValue));
   }
 
-  onUsersSelected(event: MatAutocompleteSelectedEvent) {
-    const userId = this.allUsers.filter((x) => x.fullName == event?.option.value).at(0)?.id;
-    if (userId) this.selectedUserId = userId;
+  setBooksFiltering() {
+    this.filteredBooksOptions = this.booksAutocompleteInput.valueChanges.pipe(
+      startWith(''),
+      map((value) => {
+        const bookId = this.allBooks.find((x) => x.title == value)?.id;
+        this.selectedBookId = bookId ?? undefined;
+        return this._filterBooks(value || '');
+      }),
+    );
+  }
+
+  private _filterBooks(value: string): ListBooksForAutocompleteQueryDto[] {
+    const filterValue = value.toLowerCase();
+    return this.allBooks.filter((x) => x.title.toLowerCase().includes(filterValue));
   }
 
   private dohvatiSveKorisnike() {
     this.usersApi.ListUsers().subscribe({
       next: (response) => {
         this.allUsers = response;
+      },
+      error: (err) => this.toaster.error('Greška prilikom dohvatanja svih korisnika'),
+    });
+  }
+
+  private dohvatiSveKnjige() {
+    this.booksApi.listBooksForAutocomplete().subscribe({
+      next: (response) => {
+        this.allBooks = response;
+        this.stopLoading();
         this.stopLoading();
       },
       error: (err) => this.toaster.error('Greška prilikom dohvatanja svih korisnika'),
@@ -320,7 +358,7 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
     });
   }
 
-  downloadReport(): void {
+  downloadOrdersReport(): void {
     this.reportsApi
       .generateOrdersReport(this.dateFrom, this.dateTo, this.selectedUserId, undefined)
       .subscribe({
@@ -332,7 +370,21 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
           a.click();
           window.URL.revokeObjectURL(url);
         },
-        error: () => this.toaster.error('Greška pri generisanju izvještaja'),
+        error: () => this.toaster.error('Greška pri generisanju izvještaja o narudžbama'),
       });
+  }
+
+  downloadBooksReport(): void {
+    this.reportsApi.generateBooksReport(this.dateFrom, this.dateTo, this.selectedBookId).subscribe({
+      next: (blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `knjige-report.pdf`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+      },
+      error: () => this.toaster.error('Greška pri generisanju izvještaja o prodaji knjiga'),
+    });
   }
 }

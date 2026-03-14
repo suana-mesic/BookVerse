@@ -29,4 +29,19 @@ export class ReportsApiServices {
       responseType: 'blob',
     });
   }
+
+  generateBooksReport(dateFrom: Date, dateTo: Date, bookId?: number): Observable<Blob> {
+    const params: any = {
+      dateFrom: dateFrom.toISOString(),
+      dateTo: dateTo.toISOString(),
+      _t: new Date().getTime(),
+    };
+
+    if (bookId) params.bookId = bookId;
+
+    return this.http.get(`${this.baseUrl}/books-report`, {
+      params,
+      responseType: 'blob',
+    });
+  }
 }

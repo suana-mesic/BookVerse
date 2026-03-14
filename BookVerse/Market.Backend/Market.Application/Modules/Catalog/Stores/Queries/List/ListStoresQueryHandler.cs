@@ -1,18 +1,10 @@
-﻿using Market.Application.Modules.Catalog.Authors.Queries.List;
-using Market.Application.Modules.Catalog.Categories.Queries.List;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Market.Application.Modules.Catalog.Stores.Queries.List
+﻿namespace Market.Application.Modules.Catalog.Stores.Queries.List
 {
     public class ListStoresQueryHandler(IAppDbContext context) : IRequestHandler<ListStoresQuery, PageResult<ListStoresQueryDto>>
     {
         public async Task<PageResult<ListStoresQueryDto>> Handle(ListStoresQuery request, CancellationToken cancellationToken)
         {
-            var q = context.Stores.AsNoTracking();
+            var q = context.Stores.Include(x=>x.Address).AsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(request.Search))
             {
@@ -24,8 +16,8 @@ namespace Market.Application.Modules.Catalog.Stores.Queries.List
                 {
                     Id = x.Id,
                     StoreName = x.StoreName,
-                    AddressId = x.AddressId,
-                    Address = x.Address,
+                    City = x.Address.City,
+                    Line1 = x.Address.Line1,
                     Phone = x.Phone,
                     Email = x.Email,
                     OpeningHours = x.OpeningHours

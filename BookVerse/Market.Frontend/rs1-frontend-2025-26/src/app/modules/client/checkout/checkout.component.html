@@ -88,10 +88,22 @@
     <h3>Način dostave</h3>
 
     <div class="delivery-type">
-      <label class="radio-card" [class.selected]="deliveryType === 'shipping'">
-        <input type="radio" [(ngModel)]="deliveryType" value="shipping" />
+      <label
+        class="radio-card"
+        [class.selected]="deliveryType === 'shipping'"
+        [class.unavailable]="!isBookAvailableForShipping()"
+      >
+        <input
+          type="radio"
+          [(ngModel)]="deliveryType"
+          value="shipping"
+          [disabled]="!isBookAvailableForShipping()"
+        />
         <div class="radio-card-content">
           <strong>🚚 Dostava kurirskom službom</strong>
+          <p *ngIf="!isBookAvailableForShipping()" class="unavailable-text">
+            ⚠️ Nedostupne knjige: {{ getUnavailableBooksForShipping().join(', ') }}
+          </p>
         </div>
       </label>
 
@@ -109,8 +121,15 @@
         class="radio-card"
         *ngFor="let method of shippingMethods"
         [class.selected]="selectedShippingMethodId === method.id"
+        [class.unavailable]="!isBookAvailableForShipping()"
       >
-        <input type="radio" [(ngModel)]="selectedShippingMethodId" [value]="method.id" />
+        >
+        <input
+          type="radio"
+          [(ngModel)]="selectedShippingMethodId"
+          [value]="method.id"
+          [disabled]="!isBookAvailableForShipping()"
+        />
         <div class="radio-card-content">
           <strong>{{ method.name }}</strong>
           <p>{{ method.description }}</p>
@@ -125,13 +144,22 @@
         class="radio-card"
         *ngFor="let store of stores"
         [class.selected]="selectedStoreId === store.id"
+        [class.unavailable]="!isBookAvailableInStore(store.id)"
       >
-        <input type="radio" [(ngModel)]="selectedStoreId" [value]="store.id" />
+        <input
+          type="radio"
+          [(ngModel)]="selectedStoreId"
+          [value]="store.id"
+          [disabled]="!isBookAvailableInStore(store.id)"
+        />
         <div class="radio-card-content">
           <strong>{{ store.storeName }}</strong>
           <p>{{ store.line1 }}, {{ store.city }}</p>
           <p>📞 {{ store.phone }}</p>
           <p>🕐 {{ store.openingHours }}</p>
+          <p *ngIf="!isBookAvailableInStore(store.id)" class="unavailable-text">
+            ⚠️ Nedostupno: {{ getUnavailableBooksForStore(store.id).join(', ') }}
+          </p>
         </div>
       </label>
     </div>

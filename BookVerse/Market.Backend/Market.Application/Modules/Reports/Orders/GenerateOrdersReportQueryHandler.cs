@@ -1,4 +1,5 @@
-﻿using QuestPDF.Fluent;
+﻿using Market.Domain.Entities.Shopping;
+using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 
@@ -11,11 +12,18 @@ namespace Market.Application.Modules.Reports.Orders
         {
             QuestPDF.Settings.License = LicenseType.Community;
 
+            var timeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+            var dateFromLocal = TimeZoneInfo.ConvertTimeFromUtc(request.DateFrom, timeZone);
+            var dateToLocal = TimeZoneInfo.ConvertTimeFromUtc(request.DateTo, timeZone);
+
             var query = context.Orders
                 .AsNoTracking()
                 .Include(x => x.User)
                 .Include(x => x.OrderStatus)
-                .Where(x => x.CreatedAtUtc >= request.DateFrom && x.CreatedAtUtc <= request.DateTo);
+                .Where(x => 
+                x.CreatedAtUtc >= request.DateFrom &&
+                x.CreatedAtUtc <= request.DateTo &&
+                (x.OrderStatus.StatusName == OrderStatusType.Paid || x.OrderStatus.StatusName == OrderStatusType.Completed));
 
             if (request.UserId.HasValue)
                 query = query.Where(x => x.UserId == request.UserId);
@@ -43,8 +51,8 @@ namespace Market.Application.Modules.Reports.Orders
                     page.Margin(2, QuestPDF.Infrastructure.Unit.Centimetre);
                     page.DefaultTextStyle(x => x.FontSize(11));
 
-                    page.Header().Text($"Izvještaj narudžbi: {request.DateFrom:dd.MM.yyyy} - {request.DateTo:dd.MM.yyyy}")
-                    .SemiBold().FontSize(16).FontColor(Colors.Blue.Medium);
+                    page.Header().Text($"Izvještaj narudžbi: {dateFromLocal:dd.MM.yyyy} - {dateToLocal:dd.MM.yyyy}")
+                      .SemiBold().FontSize(16).FontColor(Colors.Blue.Medium);
 
                     page.Content().Column(col =>
                     {

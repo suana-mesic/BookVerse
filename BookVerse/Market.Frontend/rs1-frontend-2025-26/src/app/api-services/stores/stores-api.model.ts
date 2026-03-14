@@ -1,5 +1,5 @@
-import { BasePagedQuery } from "../../core/models/paging/base-paged-query";
-import { PageResult } from "../../core/models/paging/page-result";
+import { BasePagedQuery } from '../../core/models/paging/base-paged-query';
+import { PageResult } from '../../core/models/paging/page-result';
 
 export interface ListStoresQueryDto {
   id: number;
@@ -8,6 +8,7 @@ export interface ListStoresQueryDto {
   line1: string;
   phone: string;
   openingHours: string;
+  email: string;
 }
 
 export class ListStoresRequest extends BasePagedQuery {

@@ -3,13 +3,13 @@
 public class ListCartQueryHandler(IAppDbContext context, IAppCurrentUser currentUser)
     : IRequestHandler<ListCartQuery, ListCartQueryDto>
 {
-    public async Task<ListCartQueryDto> Handle(ListCartQuery request, CancellationToken cancellationToken)
+    public async Task<ListCartQueryDto> Handle(ListCartQuery request, CancellationToken ct)
     {
         var userId = currentUser.UserId
             ?? throw new MarketNotFoundException("Korisnik nije prijavljen.");
 
         var cart = await context.Carts
-            .FirstOrDefaultAsync(c => c.UserId == userId, cancellationToken);
+            .FirstOrDefaultAsync(c => c.UserId == userId, ct);
 
         if (cart is null)
             return new ListCartQueryDto();
@@ -26,9 +26,25 @@ public class ListCartQueryHandler(IAppDbContext context, IAppCurrentUser current
                 x.Book.Price,
                 x.Quantity,
                 x.DateAdded,
-                x.SavedForLater
+                x.SavedForLater,
+                x.Book.QuantityInStockForOnlineOrders,
             })
-            .ToListAsync(cancellationToken);
+            .ToListAsync(ct);
+
+        var bookIds = items.Select(x => x.BookId).ToList();
+
+        var storeInventories = await context.StoreInventory
+            .AsNoTracking()
+            .Where(x => bookIds.Contains(x.BookId) && !x.IsDeleted)
+            .Select(x => new { x.BookId, x.StoreId, x.QuantityInStock })
+            .ToListAsync(ct);
+
+        var inventoryByBook = storeInventories
+            .GroupBy(x => x.BookId)
+            .ToDictionary(
+                g => g.Key,
+                g => g.ToDictionary(x => x.StoreId, x => (decimal)x.QuantityInStock)
+                );
 
         var activeItems = items
             .Where(x => !x.SavedForLater)
@@ -41,8 +57,11 @@ public class ListCartQueryHandler(IAppDbContext context, IAppCurrentUser current
                 Price = x.Price,
                 Quantity = x.Quantity,
                 Subtotal = x.Price * x.Quantity,
-                DateAdded = x.DateAdded
+                DateAdded = x.DateAdded,
+                QuantityInStockForOnlineOrders = x.QuantityInStockForOnlineOrders,
+                QuantityInStockInStores = inventoryByBook.TryGetValue(x.BookId, out var dict) ? dict : null
             }).ToList();
+
 
         var savedItems = items
             .Where(x => x.SavedForLater)
@@ -55,7 +74,9 @@ public class ListCartQueryHandler(IAppDbContext context, IAppCurrentUser current
                 Price = x.Price,
                 Quantity = x.Quantity,
                 Subtotal = x.Price * x.Quantity,
-                DateAdded = x.DateAdded
+                DateAdded = x.DateAdded,
+                QuantityInStockForOnlineOrders = x.QuantityInStockForOnlineOrders,
+                QuantityInStockInStores = inventoryByBook.TryGetValue(x.BookId, out var dict) ? dict : null
             }).ToList();
 
         return new ListCartQueryDto

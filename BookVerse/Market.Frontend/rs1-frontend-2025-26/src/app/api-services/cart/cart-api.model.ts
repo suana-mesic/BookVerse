@@ -7,6 +7,8 @@ export interface CartItemDto {
   quantity: number;
   subtotal: number;
   dateAdded: string;
+  quantityInStockForOnlineOrders: number;
+  quantityInStockInStores: { [storeId: number]: number } | null;
 }
 
 export interface ListCartDto {

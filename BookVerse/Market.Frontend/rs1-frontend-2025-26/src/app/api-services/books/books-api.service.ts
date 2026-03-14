@@ -7,12 +7,13 @@ import {
   CreateBookCommand,
   UpdateBookCommand,
   ListBooksRequest,
-  ListBooksResponse
+  ListBooksResponse,
+  ListBooksForAutocompleteQueryDto,
 } from './books-api.models';
 import { buildHttpParams } from '../../core/models/build-http-params';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BooksApiService {
   private readonly baseUrl = `${environment.apiUrl}/Books`;
@@ -36,6 +37,10 @@ export class BooksApiService {
    */
   getById(id: number): Observable<GetBookByIdQueryDto> {
     return this.http.get<GetBookByIdQueryDto>(`${this.baseUrl}/${id}`);
+  }
+
+  listBooksForAutocomplete(): Observable<ListBooksForAutocompleteQueryDto[]> {
+    return this.http.get<ListBooksForAutocompleteQueryDto[]>(`${this.baseUrl}/dropdown`);
   }
 
   /**

@@ -1,9 +1,9 @@
-﻿using Market.Application.Modules.Catalog.Authors.Commands.Delete;
-using Market.Application.Modules.Catalog.Book.Commands.Create;
+﻿using Market.Application.Modules.Catalog.Book.Commands.Create;
 using Market.Application.Modules.Catalog.Book.Commands.Delete;
 using Market.Application.Modules.Catalog.Book.Commands.Update;
 using Market.Application.Modules.Catalog.Book.Queries.GetById;
 using Market.Application.Modules.Catalog.Book.Queries.List;
+using Market.Application.Modules.Catalog.Book.Queries.ListForAutocomplete;
 namespace Market.API.Controllers;
 
 [ApiController]
@@ -25,6 +25,13 @@ public class BooksController(ISender sender) : ControllerBase
     {
         var category = await sender.Send(new GetBookByIdQuery { Id = id }, ct);
         return category; // if NotFoundException -> 404 via middleware
+    }
+
+    [HttpGet("dropdown")]
+    public async Task<List<ListBooksForAutocompleteQueryDto>> ListBooksForAutocomplete(CancellationToken ct)
+    {
+        var result = await sender.Send(new ListBooksForAutocompleteQuery(), ct);
+        return result;
     }
 
     [HttpPost]

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Market.Application.Modules.Shopping.OrdersOrderItems.Commands.Create
 {
-    public class CreateOrderOrderItemsCommand:IRequest<CreateOrderOrderItemsCommandDto>
+    public class CreateOrderOrderItemsCommand : IRequest<CreateOrderOrderItemsCommandDto>
     {
-        public int ShippingMethodId { get; set; }
+        public int? ShippingMethodId { get; set; }
         public int? StoreId { get; set; }
         public bool UseExistingAddress { get; set; }
         public string? Line1 { get; set; }

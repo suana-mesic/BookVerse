@@ -1,23 +1,44 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, map, startWith, takeUntil } from 'rxjs/operators';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+  startWith,
+  takeUntil,
+} from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { BaseListPagedComponent } from '../../../core/components/base-classes/base-list-paged-component';
-import { ListOrdersQueryDto, ListOrdersRequest, OrderStatusType } from '../../../api-services/orders/orders-api.models';
+import {
+  ListOrdersQueryDto,
+  ListOrdersRequest,
+  OrderStatusType,
+} from '../../../api-services/orders/orders-api.models';
 import { ToasterService } from '../../../core/services/toaster.service';
 import { OrderStatusHelper } from '../../../api-services/orders/order-status.helper';
 import { ChangeStatusDialogComponent } from '../orders/change-status-dialog/change-status-dialog.component';
-import { ListInventoryQueryDto, ListInventoryRequest } from '../../../api-services/inventory/inventory-api.model';
+import {
+  ListInventoryQueryDto,
+  ListInventoryRequest,
+} from '../../../api-services/inventory/inventory-api.model';
 import { InventoryApiService } from '../../../api-services/inventory/inventory-api.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogHelperService } from '../../shared/services/dialog-helper.service';
 import { DialogButton } from '../../shared/models/dialog-config.model';
 import { BooksApiService } from '../../../api-services/books/books-api.service';
 import { StoresApiService } from '../../../api-services/stores/stores-api.service';
-import { ListBooksQueryDto, ListBooksRequest } from '../../../api-services/books/books-api.models';
-import { ListStoresQueryDto, ListStoresRequest } from '../../../api-services/stores/stores-api.model';
-
+import {
+  ListBooksForAutocompleteQueryDto,
+  ListBooksQueryDto,
+  ListBooksRequest,
+} from '../../../api-services/books/books-api.models';
+import {
+  ListStoresQueryDto,
+  ListStoresRequest,
+} from '../../../api-services/stores/stores-api.model';
+import { ListBookFormatsRequest } from '../../../api-services/book-formats/book-format-api.model';
 
 @Component({
   selector: 'app-admin-orders',
@@ -27,8 +48,8 @@ import { ListStoresQueryDto, ListStoresRequest } from '../../../api-services/sto
 })
 export class InventoryComponent
   extends BaseListPagedComponent<ListInventoryQueryDto, ListInventoryRequest>
-  implements OnInit, OnDestroy {
-
+  implements OnInit, OnDestroy
+{
   private inventoryApi = inject(InventoryApiService);
   private dialog = inject(MatDialog);
   private toaster = inject(ToasterService);
@@ -39,7 +60,6 @@ export class InventoryComponent
   private dialogHelper = inject(DialogHelperService);
   private booksApi = inject(BooksApiService);
   private storesApi = inject(StoresApiService);
-  
 
   // Table columns
   displayedColumns: string[] = [
@@ -51,26 +71,26 @@ export class InventoryComponent
     'reorderTreshold',
     'location',
     'quantityInStockForOnlineOrders',
-    'actions'
+    'actions',
   ];
 
   // Search control with debounce
   searchControl = new FormControl('');
   booksAutocompleteInput = new FormControl('');
   storesAutocompleteInput = new FormControl('');
-  
+
   searchStoreId = new FormControl(null);
   searchBookId = new FormControl(null);
 
-  filteredBookOptions!:Observable<ListBooksQueryDto[]>;
-  filteredStoresOptions!:Observable<ListStoresQueryDto[]>;
-  
-  stores:ListStoresQueryDto[]=[];
-  books:ListBooksQueryDto[]=[];
+  filteredBookOptions!: Observable<ListBooksForAutocompleteQueryDto[]>;
+  filteredStoresOptions!: Observable<ListStoresQueryDto[]>;
+
+  stores: ListStoresQueryDto[] = [];
+  books: ListBooksForAutocompleteQueryDto[] = [];
 
   constructor() {
     super();
-    console.log(this.globalCounter, ". Pozvan je constructor:");
+    console.log(this.globalCounter, '. Pozvan je constructor:');
     this.globalCounter += this.globalCounter;
 
     this.request = new ListInventoryRequest();
@@ -80,7 +100,7 @@ export class InventoryComponent
   }
 
   ngOnInit(): void {
-    console.log(this.globalCounter, ". Pozvan je ngOnInit:");
+    console.log(this.globalCounter, '. Pozvan je ngOnInit:');
     this.globalCounter += this.globalCounter;
 
     this.initList();
@@ -96,77 +116,74 @@ export class InventoryComponent
     this.destroy$.complete();
   }
 
-  setFilteredBookOptions(){
-    console.log("Pozvana je metoda setFilteredBookOptions");
+  setFilteredBookOptions() {
+    console.log('Pozvana je metoda setFilteredBookOptions');
     this.filteredBookOptions = this.booksAutocompleteInput.valueChanges.pipe(
       startWith(''),
-        map(value=> this._filterBooks(value || '')),
-      );
+      map((value) => this._filterBooks(value || '')),
+    );
   }
 
-  setFilteredStoresOptions(){
-    console.log("Pozvana je metoda setFilteredStoresOptions");
+  setFilteredStoresOptions() {
+    console.log('Pozvana je metoda setFilteredStoresOptions');
     this.filteredStoresOptions = this.storesAutocompleteInput.valueChanges.pipe(
       startWith(''),
-        map(value=> this._filterStores(value || '')),
-      );
+      map((value) => this._filterStores(value || '')),
+    );
   }
 
-
   private setupSearchByBookDebounce(): void {
-    console.log(this.globalCounter, ". Pozvan je setupSearchByBookDebounce:");
+    console.log(this.globalCounter, '. Pozvan je setupSearchByBookDebounce:');
     this.globalCounter += this.globalCounter;
 
     this.booksAutocompleteInput.valueChanges
       .pipe(
-        debounceTime(400), 
+        debounceTime(400),
         distinctUntilChanged(), // Only if value actually changed
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe((searchTerm) => {
-          this.onSearchChange();
+        this.onSearchChange();
       });
   }
 
   private setupSearchByStoreDebounce(): void {
-    console.log(this.globalCounter, ". Pozvan je setupSearchByStoreDebounce:");
+    console.log(this.globalCounter, '. Pozvan je setupSearchByStoreDebounce:');
     this.globalCounter += this.globalCounter;
 
     this.storesAutocompleteInput.valueChanges
       .pipe(
-        debounceTime(400), 
+        debounceTime(400),
         distinctUntilChanged(), // Only if value actually changed
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe((searchTerm) => {
-          this.onSearchChange();
+        this.onSearchChange();
       });
   }
 
-
-  private _filterBooks(value: string):ListBooksQueryDto[]{
+  private _filterBooks(value: string): ListBooksForAutocompleteQueryDto[] {
     const filterValue = value.toLowerCase();
-    return this.books.filter(book=>book.title.toLowerCase().includes(filterValue));
+    return this.books.filter((book) => book.title.toLowerCase().includes(filterValue));
   }
 
-  private _filterStores(value: string):ListStoresQueryDto[]{
+  private _filterStores(value: string): ListStoresQueryDto[] {
     const filterValue = value.toLowerCase();
-    return this.stores.filter(store=>store.storeName.toLowerCase().includes(filterValue));
+    return this.stores.filter((store) => store.storeName.toLowerCase().includes(filterValue));
   }
-
 
   /**
    * Setup search with debounce and minimum length
    */
   private setupSearchDebounce(): void {
-    console.log(this.globalCounter, ". Pozvan je setupSearchDebounce:");
+    console.log(this.globalCounter, '. Pozvan je setupSearchDebounce:');
     this.globalCounter += this.globalCounter;
 
     this.searchControl.valueChanges
       .pipe(
         debounceTime(400), // Wait 400ms after user stops typing
         distinctUntilChanged(), // Only if value actually changed
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe((searchTerm) => {
         // Only search if 3+ characters or empty (to clear)
@@ -177,7 +194,7 @@ export class InventoryComponent
   }
 
   protected loadPagedData(): void {
-    console.log(this.globalCounter, ". Pozvan je loadPagedData:");
+    console.log(this.globalCounter, '. Pozvan je loadPagedData:');
     this.globalCounter += this.globalCounter;
 
     this.startLoading();
@@ -197,7 +214,7 @@ export class InventoryComponent
   // === Filters ===
 
   onSearchChange(searchTerm?: string): void {
-    console.log(this.globalCounter, ". Pozvan je onSearchChange:");
+    console.log(this.globalCounter, '. Pozvan je onSearchChange:');
     this.globalCounter += this.globalCounter;
 
     this.request.search = searchTerm;
@@ -209,9 +226,8 @@ export class InventoryComponent
   }
 
   clearFilters(): void {
-    console.log(this.globalCounter, ". Pozvan je clearFilters:");
+    console.log(this.globalCounter, '. Pozvan je clearFilters:');
     this.globalCounter += this.globalCounter;
-
 
     this.searchControl.setValue('', { emitEvent: false });
     this.booksAutocompleteInput.setValue(null);
@@ -221,27 +237,24 @@ export class InventoryComponent
     this.loadPagedData();
   }
 
-  private loadBooks(){
-      const request = new ListBooksRequest();
-      request.paging.pageSize=10000000;
-      this.booksApi.list(request).subscribe({
-        next:(response)=>this.books=response.items,
-        error:(err)=>this.toaster.error("Greška prilikom dohvatanja knjiga.")
-      });
-    }
-  
-    private loadStores(){
-      const request = new ListStoresRequest();
-      request.paging.pageSize=10000000;
-      this.storesApi.list(request).subscribe({
-        next:(response)=>this.stores=response.items,
-        error:(err)=>this.toaster.error("Greška prilikom dohvatanja knjiga.")
-      });
-    }
+  private loadBooks() {
+    this.booksApi.listBooksForAutocomplete().subscribe({
+      next: (response) => (this.books = response),
+      error: (err) => this.toaster.error('Greška prilikom dohvatanja knjiga.'),
+    });
+  }
 
+  private loadStores() {
+    const request = new ListStoresRequest();
+    request.paging.pageSize = 10000000;
+    this.storesApi.list(request).subscribe({
+      next: (response) => (this.stores = response.items),
+      error: (err) => this.toaster.error('Greška prilikom dohvatanja knjiga.'),
+    });
+  }
 
   onChangeStatus(order: ListOrdersQueryDto, event?: Event): void {
-    console.log(this.globalCounter, ". Pozvan je onChangeStatus:");
+    console.log(this.globalCounter, '. Pozvan je onChangeStatus:');
     this.globalCounter += this.globalCounter;
 
     // Prevent row click
@@ -253,34 +266,34 @@ export class InventoryComponent
       width: '500px',
       maxWidth: '90vw',
       data: {
-        order: order
+        order: order,
       },
-      panelClass: 'change-status-dialog'
+      panelClass: 'change-status-dialog',
     });
   }
 
   editInventory(storeId: number, bookId: number) {
     //inventory/edit/store/:id/book/:id
-    this.router.navigate(["/admin/inventory/edit/store", storeId,"book", bookId]);
+    this.router.navigate(['/admin/inventory/edit/store', storeId, 'book', bookId]);
   }
 
-  deleteInventory(storeId: number, storeName:string, bookId: number) {
-    this.dialogHelper.inventory.confirmDelete(storeName).subscribe(result => {
-        if (result && result.button === DialogButton.DELETE) {
-            this.performDelete(storeId, bookId);
-          }
-        });
+  deleteInventory(storeId: number, storeName: string, bookId: number) {
+    this.dialogHelper.inventory.confirmDelete(storeName).subscribe((result) => {
+      if (result && result.button === DialogButton.DELETE) {
+        this.performDelete(storeId, bookId);
+      }
+    });
   }
 
-  performDelete(storeId: number, bookId: number){
+  performDelete(storeId: number, bookId: number) {
     this.inventoryApi.delete(storeId, bookId).subscribe({
-      next:(response)=> {
+      next: (response) => {
         this.dialogHelper.inventory.showDeleteSuccess().subscribe();
         this.loadPagedData();
       },
-      error:(err)=>{
-        this.toaster.error("Greška prilikom brisanja inventara");
-      }
-    })
+      error: (err) => {
+        this.toaster.error('Greška prilikom brisanja inventara');
+      },
+    });
   }
 }

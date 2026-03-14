@@ -22,11 +22,12 @@ namespace Market.Domain.Entities.Shopping
         public OrderStatus OrderStatus { get; set; }
         public int ShipToAddressId { get; set; }
         public Address ShipToAddress { get; set; }
-        public int ShippingMethodId { get; set; }
+        public int? ShippingMethodId { get; set; }
+        public int? PickupStoreId { get; set; }
         public ShippingMethods ShippingMethod { get; set; }
         public string TrackingNumber { get; set; }
-        public int PaymentSummaryId { get; set; }
-        public PaymentSummaries PaymentSummary { get; set; }
+        public int? PaymentSummaryId { get; set; }
+        public PaymentSummaries? PaymentSummary { get; set; }
         public string PaymentIntentId { get; set; }
         public DateTime? PaidAt { get; set; }
 
