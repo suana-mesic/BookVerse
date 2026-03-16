@@ -121,3 +121,27 @@ export interface ListBooksForAutocompleteQueryDto {
   id: number;
   title: string;
 }
+
+export interface ListBooksQueryDtoCategory {
+  id: number;
+  name: string;
+}
+export interface ListMyBooksQueryDto {
+  bookId: number;
+  title: string;
+  imageUrl?: string | null;
+  price: number;
+  language: string;
+  description?: string | null;
+  categories: ListBooksQueryDtoCategory[];
+  userReview?: ListReviewsQueryDtoCategory | null;
+}
+
+export type ListMyBooksResponse = PageResult<ListMyBooksQueryDto>;
+
+export interface ListReviewsQueryDtoCategory {
+  rating: number;
+  comment: string;
+  createdAt: string;
+  updatedAt?: string | null;
+}

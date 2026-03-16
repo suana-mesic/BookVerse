@@ -2,6 +2,6 @@
 
 public class GetReviewsByIdQuery : IRequest<GetReviewsByIdQueryDto>
 {
-    public int? UserId { get; set; }
-    public int? BookId { get; set; }
+    [JsonIgnore]
+    public int BookId { get; set; }
 }

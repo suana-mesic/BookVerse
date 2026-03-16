@@ -5,10 +5,14 @@ public sealed class UpdateReviewCommandValidator
 {
     public UpdateReviewCommandValidator()
     {
-        RuleFor(x => x.UserId).GreaterThan(0);
-        RuleFor(x => x.BookId).GreaterThan(0);
-        RuleFor(x => x.Rating).InclusiveBetween(1,5).WithMessage("Recenzija mora imati vrijednost 1-5.");
+        RuleFor(x => x.Rating)
+           .InclusiveBetween(1, 5)
+           .WithMessage("Recenzija mora imati vrijednost između 1 i 5.");
+
         RuleFor(x => x.Comment)
-            .NotEmpty().WithMessage("Komentar je obavezan.");
+            .NotEmpty()
+            .WithMessage("Komentar je obavezan.")
+            .MaximumLength(2000)
+            .WithMessage("Komentar ne može biti duži od 2000 karaktera.");
     }
 }

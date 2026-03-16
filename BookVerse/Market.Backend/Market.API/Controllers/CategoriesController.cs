@@ -14,7 +14,7 @@ public class CategoriesController(ISender sender) : Controller
 {
     [HttpGet]
     [AllowAnonymous]
-    public async Task<PageResult<ListCategoriesQueryDto>> List([FromQuery] ListCategoriesQuery query, CancellationToken ct)
+    public async Task<List<ListCategoriesQueryDto>> List([FromQuery] ListCategoriesQuery query, CancellationToken ct)
     {
         var result = await sender.Send(query, ct);
         return result;

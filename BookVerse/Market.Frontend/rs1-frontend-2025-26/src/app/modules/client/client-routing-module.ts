@@ -6,6 +6,7 @@ import { CheckoutComponent } from './checkout/checkout.component';
 import { PaymentComponent } from './payment/payment.component';
 import { OrderSuccessComponent } from './order-success/order-success.component';
 import { UserOrdersComponent } from './user-orders/user-orders.component';
+import { UserBooksComponent } from './user-books/user-books.component';
 
 const routes: Routes = [
   {
@@ -31,6 +32,10 @@ const routes: Routes = [
   {
     path: 'user-orders',
     component: UserOrdersComponent,
+  },
+  {
+    path: 'user-books',
+    component: UserBooksComponent,
   },
 ];
 

@@ -9,8 +9,10 @@ import {
   ListBooksRequest,
   ListBooksResponse,
   ListBooksForAutocompleteQueryDto,
+  ListMyBooksResponse,
 } from './books-api.models';
 import { buildHttpParams } from '../../core/models/build-http-params';
+import { ListMyBooksRequest } from '../reviews/reviews-api.model';
 
 @Injectable({
   providedIn: 'root',
@@ -27,6 +29,14 @@ export class BooksApiService {
     const params = request ? buildHttpParams(request as any) : undefined;
 
     return this.http.get<ListBooksResponse>(this.baseUrl, {
+      params,
+    });
+  }
+
+  listMyBooks(request?: ListMyBooksRequest): Observable<ListMyBooksResponse> {
+    const params = request ? buildHttpParams(request as any) : undefined;
+
+    return this.http.get<ListMyBooksResponse>(`${this.baseUrl}/my-books`, {
       params,
     });
   }

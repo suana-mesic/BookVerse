@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace Market.Application.Modules.Catalog.Categories.Queries.List
 {
     public sealed class ListCategoriesQueryHandler(IAppDbContext ctx)
-        : IRequestHandler<ListCategoriesQuery, PageResult<ListCategoriesQueryDto>>
+        : IRequestHandler<ListCategoriesQuery, List<ListCategoriesQueryDto>>
     {
-        public async Task<PageResult<ListCategoriesQueryDto>> Handle(
+        public async Task<List<ListCategoriesQueryDto>> Handle(
             ListCategoriesQuery request, CancellationToken ct)
         {
 
@@ -20,15 +20,15 @@ namespace Market.Application.Modules.Catalog.Categories.Queries.List
                 q = q.Where(x => x.Name.Contains(request.Search));
             }
 
-            var projectedQuery = q.OrderBy(x => x.Name)
+            var categories = await q.OrderBy(x => x.Name)
                 .Select(x => new ListCategoriesQueryDto
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    isEnabled=x.IsEnabled,
-                });
+                    isEnabled = x.IsEnabled,
+                }).ToListAsync(ct);
 
-            return await PageResult<ListCategoriesQueryDto>.FromQueryableAsync(projectedQuery, request.Paging, ct);
+            return categories;
         }
     }
 }

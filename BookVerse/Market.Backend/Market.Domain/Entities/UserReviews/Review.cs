@@ -17,6 +17,7 @@ namespace Market.Domain.Entities.UserReviews
         public int Rating { get; set; }
         public string Comment { get; set; }
         public DateTime DatePosted { get; set; }
+        public DateTime? UpdatedAt { get; set; }
         public bool IsDeleted { get; set; }
     }
 }

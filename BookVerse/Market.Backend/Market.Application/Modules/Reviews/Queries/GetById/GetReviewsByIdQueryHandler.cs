@@ -1,49 +1,39 @@
-﻿using Market.Domain.Entities.UserReviews;
+﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Market.Application.Modules.Reviews.Queries.GetById;
 
-public class GetReviewsByIdQueryHandler(IAppDbContext context) : IRequestHandler<GetReviewsByIdQuery, GetReviewsByIdQueryDto>
+public class GetReviewsByIdQueryHandler(
+    IAppDbContext context,
+    IAppCurrentUser currentUser)
+    : IRequestHandler<GetReviewsByIdQuery, GetReviewsByIdQueryDto>
 {
-    public async Task<GetReviewsByIdQueryDto> Handle(GetReviewsByIdQuery request, CancellationToken cancellationToken)
+    public async Task<GetReviewsByIdQueryDto> Handle(
+        GetReviewsByIdQuery request,
+        CancellationToken ct)
     {
-        IQueryable<Review> query = context.Reviews.AsNoTracking();
+        if (currentUser.UserId == null)
+            throw new MarketNotFoundException("Niste autentificirani!");
 
-        if (request.BookId is null)
-        {
-            query = context.Reviews
-            .Where(x => x.UserId == request.UserId);
-        }
-        else if (request.UserId is null)
-        {
-            query = context.Reviews.Where(x => x.BookId == request.BookId);
-        }
-        else
-        {
-            query = context.Reviews
-            .Where(x => x.UserId == request.UserId && x.BookId == request.BookId);
-        }
-       
-        GetReviewsByIdQueryDto? review = await query.Select(x => new GetReviewsByIdQueryDto
-        {
-            Rating = x.Rating,
-            Comment = x.Comment,
-            DatePosted = x.DatePosted,
-            Book = new GetReviewsByIdQueryBookDto
-            {
-                ISBN = x.Book.ISBN,
-                Title = x.Book.Title
-            },
-            User = new GetReviewsByIdQueryUserDto
-            {
-                FirstName = x.User.FirstName,
-                LastName = x.User.LastName
-            }
-        }).FirstOrDefaultAsync(cancellationToken);
+        var userId = currentUser.UserId.Value;
 
-        if (review is null)
-        {
-            throw new MarketNotFoundException($"Recenzija sa unesenim UserId: {request.UserId} i BookId: {request.BookId} nije pronađena");
-        }
+        var review = await context.Reviews
+            .Where(r => r.UserId == userId &&
+                       r.BookId == request.BookId &&
+                       !r.IsDeleted)
+            .Select(r => new GetReviewsByIdQueryDto
+            {
+                BookId = r.BookId,
+                UserId = r.UserId,
+                Rating = r.Rating,
+                Comment = r.Comment,
+                DatePosted = r.DatePosted,
+                UpdatedAt = r.UpdatedAt
+            })
+            .FirstOrDefaultAsync(ct);
+
+        if (review == null)
+            throw new MarketNotFoundException("Recenzija nije pronađena.");
 
         return review;
     }

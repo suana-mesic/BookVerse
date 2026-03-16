@@ -1,4 +1,5 @@
 ﻿using Market.Domain.Common;
+using Market.Domain.Entities.Shopping;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace Market.Domain.Entities.Catalog
 
         public ICollection<Author> Authors { get; set; } = new List<Author>();
         public ICollection <Category> Categories { get; set; } = new List<Category>();
+        public ICollection<OrderItems> OrderItems { get; set; } = new List<OrderItems>();
 
         public int PublisherId { get; set; }
         public Publisher Publisher { get; set; }

@@ -67,7 +67,7 @@ public partial class DatabaseContext
             ));
 
         modelBuilder.Entity<Review>().HasKey(x => new { x.BookId, x.UserId });
-        modelBuilder.Entity<Review>().HasQueryFilter(x => !x.IsDeleted && !x.Book.IsDeleted && !x.User.IsDeleted);
+        modelBuilder.Entity<Review>().HasQueryFilter(x => !x.Book.IsDeleted && !x.User.IsDeleted);
 
 
         modelBuilder.Entity<WishlistItems>().HasKey(x => new { x.UserId, x.BookId });

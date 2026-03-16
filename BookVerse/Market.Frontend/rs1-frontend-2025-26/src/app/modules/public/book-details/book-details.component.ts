@@ -1,17 +1,20 @@
-import { Component, ElementRef, inject, input, signal, ViewChild } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { HeaderComponent } from '../header/header.component';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { BooksService } from '../Petar/books.service';
 import { AuthorsService } from '../Petar/authors.service';
 import { Book } from '../Petar/book/Book';
 import { Author } from '../Petar/author/Author';
-import { Review } from '../Petar/book/Review';
-import { ReviewsService } from '../Petar/reviews.service';
+import { ReviewsApiService } from '../../../api-services/reviews/reviews-api.service';
 import * as L from 'leaflet';
 import { MapComponent } from '../map/map.component';
 import { CartApiService } from '../../../api-services/cart/cart-api.service';
 import { ToasterService } from '../../core/services/toaster.service';
 import { AuthFacadeService } from '../../core/services/auth/auth-facade.service';
+import {
+  ListReviewsForBookQueryDto,
+  ListReviewsResponse,
+} from '../../../api-services/reviews/reviews-api.model';
 
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 
@@ -29,14 +32,13 @@ L.Icon.Default.mergeOptions({
   imports: [HeaderComponent, RouterLink, MapComponent],
 })
 export class BookDetailsComponent {
-
   book = signal<Book | null>(null);
   authors = signal<Array<Author>>([]);
-  reviews = signal<Array<Review>>([]);
+  reviews = signal<Array<ListReviewsForBookQueryDto>>([]);
 
   bookService = inject(BooksService);
   authorService = inject(AuthorsService);
-  reviewService = inject(ReviewsService);
+  reviewService = inject(ReviewsApiService);
   bookId!: string;
 
   reviewRating = 0;
@@ -47,16 +49,10 @@ export class BookDetailsComponent {
 
   cartService = inject(CartApiService);
   toaster = inject(ToasterService);
-  authFacadeService=inject(AuthFacadeService);
+  authFacadeService = inject(AuthFacadeService);
   router = inject(Router);
 
   constructor(private route: ActivatedRoute) {}
-
-  // updateRatingsBarWidth() {
-  //   for(let i=0; i<5;i++)
-  //   this.reviewRatingsBarWidth[i] =
-  //         (this.reviewRatingsCount[i] / this.reviewNumber) * 180;
-  // }
 
   // Stores info
   storeName = signal('');
@@ -110,37 +106,50 @@ export class BookDetailsComponent {
           this.authors.update((arr) => [...arr, author]);
         });
       }
-      this.reviewService.getReviewsByBookIdFromApi(Number(this.bookId)).subscribe((review: any) => {
-        this.reviews.update((arr) => [...arr, review]);
 
-        console.log(this.reviews());
-        this.reviewNumber++;
-        this.reviewRating += (review.rating - this.reviewRating) / this.reviewNumber;
-        this.reviewRatingsCount[review.rating - 1]++;
+      this.reviewService.getAllReviewsForBook(Number(this.bookId)).subscribe({
+        next: (response: ListReviewsResponse) => {
+          const items = response.items;
+          this.reviews.set(items);
 
-        this.reviewRatingsBarWidth[review.rating - 1] =
-          (this.reviewRatingsCount[review.rating - 1] / this.reviewNumber) * 180;
-        console.log(this.reviewRatingsBarWidth);
+          this.reviewNumber = items.length;
+          this.reviewRating = 0;
+          this.reviewRatingsCount = [0, 0, 0, 0, 0];
+          this.reviewRatingsBarWidth = [0, 0, 0, 0, 0];
+
+          for (const review of items) {
+            this.reviewRating += review.rating;
+            this.reviewRatingsCount[review.rating - 1]++;
+          }
+
+          if (this.reviewNumber > 0) {
+            this.reviewRating = this.reviewRating / this.reviewNumber;
+          }
+
+          for (let i = 0; i < 5; i++) {
+            this.reviewRatingsBarWidth[i] = (this.reviewRatingsCount[i] / this.reviewNumber) * 180;
+          }
+        },
+        error: (err) => {},
       });
     });
   }
 
-  dodajUkorpu(bookId: number|undefined) {
-    if(!bookId)
-      return;
+  dodajUkorpu(bookId: number | undefined) {
+    if (!bookId) return;
 
     if (!this.authFacadeService.isAuthenticated()) {
       this.router.navigate(['/auth/login']);
       return;
-  }
+    }
 
-    this.cartService.addToCart({bookId:bookId, quantity:1}).subscribe({
-      next:(response)=>{
-        this.toaster.success("Uspješno ste dodali knjigu u korpu");
+    this.cartService.addToCart({ bookId: bookId, quantity: 1 }).subscribe({
+      next: (response) => {
+        this.toaster.success('Uspješno ste dodali knjigu u korpu');
       },
-      error:(err)=>{
-        this.toaster.error("Greška prilikom dodavanje knjige u korpu");
-      }
-    })
+      error: (err) => {
+        this.toaster.error('Greška prilikom dodavanje knjige u korpu');
+      },
+    });
   }
 }

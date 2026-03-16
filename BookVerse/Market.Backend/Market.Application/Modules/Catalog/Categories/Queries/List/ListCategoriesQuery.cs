@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Market.Application.Modules.Catalog.Categories.Queries.List
 {
-    public sealed class ListCategoriesQuery : BasePagedQuery<ListCategoriesQueryDto>
+    public sealed class ListCategoriesQuery : IRequest<List<ListCategoriesQueryDto>>
     {
         public string? Search { get; init; }
     }

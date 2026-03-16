@@ -1,4 +1,5 @@
 ﻿using Market.API;
+using Market.API.Converters;
 using Market.API.Middleware;
 using Market.Application;
 using Market.Application.Common.Interfaces;
@@ -66,6 +67,12 @@ public partial class Program
             StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
             builder.Services.AddSingleton<IStripeSettings>(sp => sp.GetRequiredService<IOptions<StripeSettings>>().Value);
 
+            builder.Services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(new UtcDateTimeConverter());
+                });
+
             var app = builder.Build();
 
             // ---------------------------------------------------------
@@ -80,7 +87,7 @@ public partial class Program
             // Global exception handler (IExceptionHandler)
             app.UseExceptionHandler();
             app.UseMiddleware<RequestResponseLoggingMiddleware>();
-            
+
             app.UseCors("allowCors");
 
             app.UseHttpsRedirection();

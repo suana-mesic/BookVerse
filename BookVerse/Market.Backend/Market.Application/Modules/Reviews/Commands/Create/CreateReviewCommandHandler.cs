@@ -1,29 +1,43 @@
 ﻿using Market.Domain.Entities.UserReviews;
+using Microsoft.EntityFrameworkCore;
 
 namespace Market.Application.Modules.Reviews.Commands.Create;
 
-public class CreateReviewCommandHandler(IAppDbContext context)
-    : IRequestHandler<CreateReviewCommand, string>
+public class CreateReviewCommandHandler(IAppDbContext context, IAppCurrentUser currentUser)
+    : IRequestHandler<CreateReviewCommand, Unit>
 {
-    public async Task<string> Handle(CreateReviewCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(CreateReviewCommand request, CancellationToken cancellationToken)
     {
-        var userExists = await context.Users.AnyAsync(x => x.Id == request.UserId);
-        var bookExists = await context.Books.AnyAsync(x => x.Id == request.BookId);
-        var alreadyReviewed = await context.Reviews
-            .AnyAsync(x => x.UserId == request.UserId && x.BookId == request.BookId, cancellationToken);
+        // Provjera autentifikacije
+        if (currentUser.UserId == null)
+            throw new MarketNotFoundException("Niste autentificirani!");
 
-        if (!userExists)
-            throw new MarketNotFoundException("Korisnik ne postoji.");
+        var userId = currentUser.UserId.Value;
 
+        // Provjera da li je korisnik kupio knjigu
+        var hasPurchased = await context.Books
+            .AnyAsync(b => b.Id == request.BookId &&
+                          b.OrderItems.Any(oi => oi.Order.UserId == userId),
+                          cancellationToken);
+
+        if (!hasPurchased)
+            throw new MarketNotFoundException("Možete recenzirati samo knjige koje ste kupili.");
+
+        // Provjera da li knjiga postoji
+        var bookExists = await context.Books.AnyAsync(x => x.Id == request.BookId, cancellationToken);
         if (!bookExists)
-            throw new MarketNotFoundException("Knjiga ne postoji.");
+            throw new MarketNotFoundException("Knjiga koju želite recenzirati ne postoji.");
+
+        var alreadyReviewed = await context.Reviews
+            .AnyAsync(x => x.UserId == userId && x.BookId == request.BookId,
+                     cancellationToken);
 
         if (alreadyReviewed)
-            throw new MarketConflictException("Korisnik je već recenzirao ovu knjigu.");
+            throw new MarketConflictException("Već ste recenzirali ovu knjigu.");
 
         var review = new Review
         {
-            UserId = request.UserId,
+            UserId = userId, 
             BookId = request.BookId,
             Rating = request.Rating,
             Comment = request.Comment,
@@ -34,6 +48,6 @@ public class CreateReviewCommandHandler(IAppDbContext context)
         context.Reviews.Add(review);
         await context.SaveChangesAsync(cancellationToken);
 
-        return "Uspješno dodana recenzija";
+        return Unit.Value;
     }
 }

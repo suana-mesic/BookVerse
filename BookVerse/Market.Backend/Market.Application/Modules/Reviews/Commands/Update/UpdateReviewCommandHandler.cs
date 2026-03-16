@@ -1,21 +1,29 @@
 ﻿namespace Market.Application.Modules.Reviews.Commands.Update;
 
-public sealed class UpdateReviewCommandHandler(IAppDbContext ctx)
+public sealed class UpdateReviewCommandHandler(IAppDbContext context, IAppCurrentUser currentUser)
             : IRequestHandler<UpdateReviewCommand, Unit>
 {
     public async Task<Unit> Handle(UpdateReviewCommand request, CancellationToken ct)
     {
-        var entity = await ctx.Reviews
-          .Where(x => x.UserId == request.UserId && x.BookId == request.BookId)
-          .FirstOrDefaultAsync(ct);
+        if (currentUser.UserId == null)
+            throw new MarketNotFoundException("Niste autentificirani!");
 
-        if (entity is null)
-            throw new MarketNotFoundException($"Recenzija (User ID={request.UserId}, Book ID={request.BookId}) nije pronađena.");
+        var userId = currentUser.UserId.Value;
 
-        entity.Rating = request.Rating;
-        entity.Comment = request.Comment;
+        // Pronađi recenziju trenutnog korisnika za ovu knjigu
+        var review = await context.Reviews
+            .FirstOrDefaultAsync(r => r.UserId == userId &&
+                                     r.BookId == request.BookId &&
+                                     !r.IsDeleted, ct);
+        if (review == null)
+            throw new MarketNotFoundException("Recenzija nije pronađena ili ste je već obrisali.");
 
-        await ctx.SaveChangesAsync(ct);
+        // Ažuriraj podatke
+        review.Rating = request.Rating;
+        review.Comment = request.Comment;
+        review.UpdatedAt = DateTime.UtcNow;
+
+        await context.SaveChangesAsync(ct);
 
         return Unit.Value;
     }

@@ -4,6 +4,7 @@ using Market.Application.Modules.Catalog.Book.Commands.Update;
 using Market.Application.Modules.Catalog.Book.Queries.GetById;
 using Market.Application.Modules.Catalog.Book.Queries.List;
 using Market.Application.Modules.Catalog.Book.Queries.ListForAutocomplete;
+using Market.Application.Modules.Catalog.Book.Queries.ListMyBooks;
 namespace Market.API.Controllers;
 
 [ApiController]
@@ -14,6 +15,14 @@ public class BooksController(ISender sender) : ControllerBase
     [HttpGet]
     [AllowAnonymous]
     public async Task<PageResult<ListBooksQueryDto>> List([FromQuery] ListBooksQuery query,CancellationToken ct)
+    {
+        var result = await sender.Send(query, ct);
+        return result;
+    }
+
+    [HttpGet("my-books")]
+    [Authorize]
+    public async Task<PageResult<ListMyBooksQueryDto>> ListMyBooks([FromQuery] ListMyBooksQuery query, CancellationToken ct)
     {
         var result = await sender.Send(query, ct);
         return result;
