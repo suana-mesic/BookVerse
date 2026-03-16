@@ -1,11 +1,14 @@
 <app-header></app-header>
 <div class="cart-container">
   <h2>Moja korpa</h2>
+  <div class="book__return" routerLink="/">
+    <img src="icons/arrow_black.png" alt="arr" />
+    <h2>Nazad na početnu</h2>
+  </div>
 
   <div *ngIf="isLoading" class="loading">Učitavanje...</div>
 
   <ng-container *ngIf="!isLoading">
-
     <!-- AKTIVNE STAVKE -->
     <ng-container *ngIf="cart.activeItems.length > 0; else emptyCart">
       <div class="cart-item" *ngFor="let item of cart.activeItems">
@@ -13,7 +16,7 @@
 
         <div class="cart-item-info">
           <h4>{{ item.bookTitle }}</h4>
-          <p class="price">{{ item.price | number:'1.2-2' }}</p>
+          <p class="price">{{ item.price | number: '1.2-2' }}</p>
 
           <div class="quantity-control">
             <button (click)="updateQuantity(item.cartId, item.bookId, item.quantity - 1)">−</button>
@@ -21,20 +24,21 @@
             <button (click)="updateQuantity(item.cartId, item.bookId, item.quantity + 1)">+</button>
           </div>
 
-          <p class="subtotal">Ukupno: {{ item.subtotal | number:'1.2-2' }}</p>
+          <p class="subtotal">Ukupno: {{ item.subtotal | number: '1.2-2' }}</p>
         </div>
 
-          <div class="cart-item-actions">
-            <button class="btn-save" (click)="saveForLater(item.cartId, item.bookId)">Sačuvaj za kasnije</button>
-            <button class="btn-remove" (click)="removeItem(item.cartId, item.bookId)">Ukloni</button>
-          </div>
-
+        <div class="cart-item-actions">
+          <button class="btn-save" (click)="saveForLater(item.cartId, item.bookId)">
+            Sačuvaj za kasnije
+          </button>
+          <button class="btn-remove" (click)="removeItem(item.cartId, item.bookId)">Ukloni</button>
+        </div>
       </div>
 
       <!-- TOTAL -->
       <div class="cart-total">
         <span>Ukupno za plaćanje:</span>
-        <strong>{{ cart.totalPrice | number:'1.2-2' }}</strong>
+        <strong>{{ cart.totalPrice | number: '1.2-2' }}</strong>
       </div>
 
       <button class="btn-checkout" routerLink="/client/checkout">Nastavi na plaćanje</button>
@@ -52,15 +56,16 @@
 
         <div class="cart-item-info">
           <h4>{{ item.bookTitle }}</h4>
-          <p class="price">{{ item.price  | number:'1.2-2' }}</p>
+          <p class="price">{{ item.price | number: '1.2-2' }}</p>
         </div>
 
-       <div class="cart-item-actions">
-          <button class="btn-move" (click)="moveToCart(item.cartId, item.bookId)">Premjesti u korpu</button>
+        <div class="cart-item-actions">
+          <button class="btn-move" (click)="moveToCart(item.cartId, item.bookId)">
+            Premjesti u korpu
+          </button>
           <button class="btn-remove" (click)="removeItem(item.cartId, item.bookId)">Ukloni</button>
         </div>
       </div>
     </ng-container>
-
   </ng-container>
 </div>
