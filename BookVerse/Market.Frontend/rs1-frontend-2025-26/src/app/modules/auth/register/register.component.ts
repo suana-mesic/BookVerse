@@ -1,8 +1,12 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, ElementRef, inject, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
 import { RegisterCommandDto } from '../../../api-services/auth/auth-api.model';
+import { CountriesApiService } from '../../../api-services/CountriesNow/countires-api.service';
+import { DialogHelperService } from '../../shared/services/dialog-helper.service';
+import { DialogButton } from '../../shared/models/dialog-config.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -10,7 +14,7 @@ import { RegisterCommandDto } from '../../../api-services/auth/auth-api.model';
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
   http = inject(HttpClient);
   fb = inject(FormBuilder);
   showPassword: boolean = false;
@@ -19,6 +23,13 @@ export class RegisterComponent {
   showPassError: boolean = false;
   floatLabelAttribute: FloatLabelType = 'auto';
   invisible: boolean = true;
+  countriesService = inject(CountriesApiService);
+  dialogHelper = inject(DialogHelperService);
+  router = inject(Router);
+
+  countries: string[] = [];
+  cities: string[] = [];
+  loadingCities = false;
 
   @ViewChild('password') password!: ElementRef;
   @ViewChild('visibilityIcon') visibilityIcon!: ElementRef;
@@ -39,11 +50,39 @@ export class RegisterComponent {
     password: ['', [Validators.required, Validators.minLength(6)]],
     line1: ['', [Validators.required]],
     line2: [''],
-    city: ['', [Validators.required]],
+    city: [{ value: '', disabled: true }, [Validators.required]],
     country: ['', [Validators.required]],
     confirmedPassword: ['', [Validators.required, this.matchValuesCustom('password')]],
     fingerPrint: [''],
   });
+
+  ngOnInit(): void {
+    this.fetchCitiesFromApi();
+  }
+
+  private fetchCitiesFromApi() {
+    this.countriesService.getCountries().subscribe((countries) => {
+      this.countries = countries;
+    });
+  }
+
+  public onCountryChange(country: string) {
+    this.registerForm.get('city')?.reset();
+    this.registerForm.get('city')?.disable();
+    this.cities = [];
+
+    if (country) {
+      this.loadingCities = true;
+      this.countriesService.getCitiesByCountry(country).subscribe({
+        next: (cities) => {
+          this.cities = cities;
+          this.loadingCities = false;
+          this.registerForm.get('city')?.enable();
+        },
+        error: (err) => (this.loadingCities = false),
+      });
+    }
+  }
 
   matchValuesCustom(matchTo: string): ValidatorFn {
     return (control: AbstractControl) => {
@@ -84,15 +123,26 @@ export class RegisterComponent {
       })
       .subscribe({
         next: (result) => {
-          alert('Uspješno ste se registrovali');
           this.registerForm.reset();
           this.handleRegisterSuccess(result);
+          this.showMessage();
+          this.router.navigate(['/auth/login']);
         },
         error: (error) => {
           console.log(error.error.message);
         },
       });
   }
+
+  private showMessage() {
+    this.dialogHelper
+      .showSuccess('Uspješna registracija', 'Uspješno ste se registrovali')
+      .subscribe((result) => {
+        if (result && result.button === DialogButton.OK) {
+        }
+      });
+  }
+
   handleRegisterSuccess(result: RegisterCommandDto) {
     sessionStorage.setItem('accessToken', result.accessToken || '');
     sessionStorage.setItem('refreshToken', result.refreshToken || '');
@@ -154,5 +204,4 @@ export class RegisterComponent {
       strengthBar.style.setProperty('border-radius', '0 0 4px 4px', 'important');
     }
   }
-
 }

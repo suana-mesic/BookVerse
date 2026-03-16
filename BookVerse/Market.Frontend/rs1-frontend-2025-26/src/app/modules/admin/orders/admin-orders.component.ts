@@ -247,7 +247,7 @@ export class AdminOrdersComponent
   canChangeStatus(order: ListOrdersQueryDto): boolean {
     // Can change if not in final state
     return (
-      order.statusNameEnum !== OrderStatusType.Completed &&
+      order.statusNameEnum !== OrderStatusType.Shipped &&
       order.statusNameEnum !== OrderStatusType.Cancelled
     );
   }

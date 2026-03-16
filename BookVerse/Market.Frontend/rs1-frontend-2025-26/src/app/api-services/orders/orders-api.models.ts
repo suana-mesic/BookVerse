@@ -8,14 +8,14 @@ import { BasePagedQuery } from '../../core/models/paging/base-paged-query';
  * Corresponds to: OrderStatusType.cs
  */
 export enum OrderStatusType {
-  /** Order is created but not yet confirmed */
+  /** Order is created but not yet paid */
   Draft = 1,
-  /** Order is confirmed and awaiting payment */
-  Confirmed = 2,
+  /** Order is packed */
+  Packed = 2,
   /** Payment received and order is being processed */
   Paid = 3,
   /** Order has been shipped or delivered */
-  Completed = 4,
+  Shipped = 4,
   /** Order has been cancelled */
   Cancelled = 5,
 }
@@ -211,4 +211,36 @@ export interface GetByIdOrderQueryDtoItem {
 export interface GetByIdOrderQueryDtoItemBook {
   bookId: number;
   title: string;
+}
+export interface ListOrdersForUserQueryDto {
+  id: number;
+  trackingNumber: string;
+  orderedAtUtc: string;
+  paidAtUtc: string | null;
+  status: OrderStatusType;
+  totalAmount: number;
+  subtotal: number;
+  shippingPriceAtTheTime: number;
+  discountAmount: number | null;
+  items: ListOrdersForUserQueryDtoItem[];
+}
+
+export interface ListOrdersForUserQueryDtoItem {
+  book: ListOrdersForUserQueryDtoItemBook;
+  quantity: number;
+  unitPrice: number;
+}
+
+export interface ListOrdersForUserQueryDtoItemBook {
+  bookId: number;
+  title: string;
+  imageUrl: string | null;
+}
+
+export class ListOrdersForUserRequest extends BasePagedQuery {
+  search?: string | null;
+  status?: OrderStatusType | null;
+  constructor() {
+    super();
+  }
 }

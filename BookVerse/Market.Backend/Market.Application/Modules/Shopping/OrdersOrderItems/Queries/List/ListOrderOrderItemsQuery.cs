@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Market.Application.Modules.Shopping.OrdersOrderItems.Queries.List
 {
-    public class ListOrderOrderItemsQuery:BasePagedQuery<ListOrderOrderItemsQueryDto> //provjeriti 
+    public class ListOrderOrderItemsQuery:BasePagedQuery<ListOrderOrderItemsQueryDto> 
     {
         public string ? Search { get; set; }
         public OrderStatusType? Status { get; set; }

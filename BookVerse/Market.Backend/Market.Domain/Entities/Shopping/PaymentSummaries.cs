@@ -9,7 +9,7 @@ namespace Market.Domain.Entities.Shopping
 {
     public class PaymentSummaries:BaseEntity
     {
-        public int Last4Digits { get; set; }
+        public string Last4Digits { get; set; }
         public string Brand { get; set; }
         public int ExpMonth { get; set; }
         public int ExpYear { get; set; }

@@ -55,10 +55,10 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Stan, kat (opcionalno)</mat-label>
+        <mat-label>Stan, sprat (opcionalno)</mat-label>
         <input matInput formControlName="line2" />
       </mat-form-field>
-
+      <!-- 
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Grad</mat-label>
         <input matInput formControlName="city" placeholder="npr. Sarajevo" />
@@ -73,6 +73,26 @@
         <mat-error *ngIf="addressForm.get('country')?.hasError('required')">
           Država je obavezna.
         </mat-error>
+      </mat-form-field> -->
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Država</mat-label>
+        <mat-select formControlName="country" (selectionChange)="onCountryChange($event.value)">
+          <mat-option *ngFor="let country of countries" [value]="country">
+            {{ country }}
+          </mat-option>
+        </mat-select>
+        <mat-error>Država je obavezna.</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Grad</mat-label>
+        <mat-select formControlName="city">
+          <mat-option *ngIf="loadingCities" disabled>Učitavanje...</mat-option>
+          <mat-option *ngFor="let city of cities" [value]="city">
+            {{ city }}
+          </mat-option>
+        </mat-select>
+        <mat-error>Grad je obavezan.</mat-error>
       </mat-form-field>
     </form>
 
@@ -123,7 +143,6 @@
         [class.selected]="selectedShippingMethodId === method.id"
         [class.unavailable]="!isBookAvailableForShipping()"
       >
-        >
         <input
           type="radio"
           [(ngModel)]="selectedShippingMethodId"

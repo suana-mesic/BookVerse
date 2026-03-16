@@ -37,4 +37,7 @@
       {{ isLoading ? 'Obrada...' : 'Plati ' + (totalPrice | number: '1.2-2' : 'en') + ' KM' }}
     </button>
   </div>
+  <div class="step-actions">
+    <button mat-button (click)="prevStep()">← Nazad</button>
+  </div>
 </div>

@@ -20,9 +20,9 @@ namespace Market.Domain.Entities.Shopping
         public enum OrderStatusType
         {
             Draft = 1,
-            Confirmed = 2,
+            Packed = 2,
             Paid = 3,
-            Completed = 4,
+            Shipped = 4,
             Cancelled = 5
         }
 }

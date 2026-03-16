@@ -1,0 +1,243 @@
+<app-header></app-header>
+
+<div class="container">
+  <!-- Header Card -->
+  <div class="header-card">
+    <div class="book__return" routerLink="/">
+      <img src="icons/arrow_black.png" alt="arr" />
+      <h2>Nazad na početnu</h2>
+    </div>
+    <div class="header-card-content">
+      <div class="title-section">
+        <div class="title-icon">
+          <mat-icon>shopping_bag</mat-icon>
+        </div>
+        <h1>Moje narudžbe</h1>
+      </div>
+
+      <div class="actions-container">
+        <mat-form-field class="filter-field" appearance="outline">
+          <mat-label>Status</mat-label>
+          <mat-select
+            [(ngModel)]="statusFilter"
+            (selectionChange)="onStatusFilterChange($event.value)"
+          >
+            <mat-option [value]="null">Svi statusi</mat-option>
+            <mat-option [value]="OrderStatusType.Draft">Na čekanju</mat-option>
+            <mat-option [value]="OrderStatusType.Paid">Plaćeno</mat-option>
+            <mat-option [value]="OrderStatusType.Packed">Zapakovano</mat-option>
+            <mat-option [value]="OrderStatusType.Shipped">Poslano</mat-option>
+            <mat-option [value]="OrderStatusType.Cancelled">Otkazano</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="search-field" appearance="outline">
+          <mat-label>Pretraži</mat-label>
+          <input matInput [formControl]="searchControl" placeholder="Tracking broj..." />
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+
+        <button
+          mat-stroked-button
+          (click)="clearFilters()"
+          [disabled]="!searchControl.value && !statusFilter"
+        >
+          <mat-icon>clear_all</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <app-fit-table-skeleton
+    *ngIf="isLoading && !errorMessage"
+    [rows]="5"
+    [columns]="1"
+    [showActions]="false"
+  ></app-fit-table-skeleton>
+
+  <!-- Error -->
+  <div *ngIf="!isLoading && errorMessage" class="error-container">
+    <mat-icon>error_outline</mat-icon>
+    <p>{{ errorMessage }}</p>
+    <button mat-stroked-button (click)="loadPagedData()">Pokušaj ponovo</button>
+  </div>
+
+  <!-- Timeline + Detalji -->
+  <div class="timeline-wrapper" *ngIf="!isLoading && !errorMessage">
+    <!-- Lijevo — Timeline -->
+    <div class="timeline">
+      <div *ngIf="items.length === 0" class="no-data-content">
+        <mat-icon>shopping_bag</mat-icon>
+        <p>Nemate narudžbi.</p>
+      </div>
+
+      <div *ngFor="let order of items; let last = last" class="timeline-item">
+        <div class="timeline-line-container">
+          <div class="timeline-dot" [ngClass]="getStatusClass(order.status)"></div>
+          <div class="timeline-line" *ngIf="!last"></div>
+        </div>
+
+        <div class="timeline-content" [class.selected]="selectedOrder?.id === order.id">
+          <div class="timeline-header">
+            <div class="timeline-title">
+              <span class="tracking">{{ order.trackingNumber }}</span>
+              <span class="status-badge" [ngClass]="getStatusClass(order.status)">
+                {{ getStatusLabel(order.status) }}
+              </span>
+            </div>
+            <span class="timeline-date">{{ order.orderedAtUtc | date: 'dd.MM.yyyy' }}</span>
+          </div>
+
+          <div class="timeline-books">
+            <div *ngFor="let item of order.items" class="book-row">
+              <img
+                *ngIf="item.book.imageUrl"
+                [src]="item.book.imageUrl"
+                [alt]="item.book.title"
+                class="timeline-book-img"
+              />
+              <mat-icon *ngIf="!item.book.imageUrl" class="book-icon">menu_book</mat-icon>
+              <span class="book-title">{{ item.book.title }}</span>
+              <span class="book-price">
+                {{ item.quantity }}x {{ item.unitPrice | number: '1.2-2' : 'en' }} KM
+              </span>
+            </div>
+          </div>
+
+          <div class="timeline-footer">
+            <strong class="total">{{ order.totalAmount | number: '1.2-2' : 'en' }} KM</strong>
+            <div class="footer-actions">
+              <button
+                *ngIf="canCancel(order.status)"
+                mat-stroked-button
+                class="cancel-btn"
+                (click)="cancelOrder(order.id)"
+              >
+                <mat-icon>cancel</mat-icon>
+                Otkaži
+              </button>
+              <button
+                *ngIf="order.status === OrderStatusType.Draft"
+                mat-stroked-button
+                class="pay-btn"
+                (click)="payOrder(order)"
+              >
+                <mat-icon>payment</mat-icon>
+                Plati
+              </button>
+              <button mat-stroked-button class="details-btn" (click)="selectOrder(order)">
+                <mat-icon>{{ selectedOrder?.id === order.id ? 'chevron_right' : 'info' }}</mat-icon>
+                Detalji
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="paginator-wrapper">
+        <app-fit-paginator-bar [vm]="$any(this)"></app-fit-paginator-bar>
+      </div>
+    </div>
+
+    <!-- Desno — Detalji panel -->
+    <div class="order-details-panel" [class.empty]="!selectedOrder">
+      <ng-container *ngIf="!selectedOrder">
+        <mat-icon>info_outline</mat-icon>
+        <p>Odaberite narudžbu za pregled detalja</p>
+      </ng-container>
+
+      <ng-container *ngIf="selectedOrder">
+        <div class="details-header">
+          <h3>{{ selectedOrder.trackingNumber }}</h3>
+          <span class="status-badge" [ngClass]="getStatusClass(selectedOrder.status)">
+            {{ getStatusLabel(selectedOrder.status) }}
+          </span>
+        </div>
+
+        <div class="details-section">
+          <h4>Knjige ({{ selectedOrder.items.length }})</h4>
+
+          <!-- Carousel -->
+          <div class="carousel">
+            <button class="carousel-btn prev" (click)="prevSlide()" [disabled]="currentSlide === 0">
+              <mat-icon>chevron_left</mat-icon>
+            </button>
+
+            <div class="carousel-track">
+              <div class="carousel-slide" *ngIf="selectedOrder.items[currentSlide] as item">
+                <img
+                  *ngIf="item.book.imageUrl"
+                  [src]="item.book.imageUrl"
+                  [alt]="item.book.title"
+                  class="carousel-img"
+                />
+                <div *ngIf="!item.book.imageUrl" class="carousel-no-img">
+                  <mat-icon>menu_book</mat-icon>
+                </div>
+                <div class="carousel-info">
+                  <span class="carousel-title">{{ item.book.title }}</span>
+                  <span class="carousel-meta"
+                    >{{ item.quantity }} kom ×
+                    {{ item.unitPrice | number: '1.2-2' : 'en' }} KM</span
+                  >
+                  <strong class="carousel-price"
+                    >{{ item.quantity * item.unitPrice | number: '1.2-2' : 'en' }} KM</strong
+                  >
+                </div>
+              </div>
+            </div>
+
+            <button
+              class="carousel-btn next"
+              (click)="nextSlide()"
+              [disabled]="currentSlide === selectedOrder.items.length - 1"
+            >
+              <mat-icon>chevron_right</mat-icon>
+            </button>
+          </div>
+
+          <!-- Dots -->
+          <div class="carousel-dots">
+            <span
+              *ngFor="let item of selectedOrder.items; let i = index"
+              class="dot"
+              [class.active]="i === currentSlide"
+              (click)="goToSlide(i)"
+            ></span>
+          </div>
+        </div>
+
+        <div class="details-section">
+          <h4>Cijena</h4>
+          <div class="price-row">
+            <span>Subtotal</span>
+            <span>{{ selectedOrder.subtotal | number: '1.2-2' : 'en' }} KM</span>
+          </div>
+          <div class="price-row" *ngIf="selectedOrder.shippingPriceAtTheTime > 0">
+            <span>Dostava</span>
+            <span>{{ selectedOrder.shippingPriceAtTheTime | number: '1.2-2' : 'en' }} KM</span>
+          </div>
+          <div
+            class="price-row discount"
+            *ngIf="selectedOrder.discountAmount && selectedOrder.discountAmount > 0"
+          >
+            <span>Popust</span>
+            <span>- {{ selectedOrder.discountAmount | number: '1.2-2' : 'en' }} KM</span>
+          </div>
+          <div class="price-row total-row">
+            <strong>Ukupno</strong>
+            <strong>{{ selectedOrder.totalAmount | number: '1.2-2' : 'en' }} KM</strong>
+          </div>
+        </div>
+
+        <div class="details-section" *ngIf="selectedOrder.paidAtUtc">
+          <div class="detail-meta-row">
+            <mat-icon>payment</mat-icon>
+            <span>Plaćeno: {{ selectedOrder.paidAtUtc | date: 'dd.MM.yyyy HH:mm' }}</span>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

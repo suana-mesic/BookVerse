@@ -23,6 +23,7 @@ import { CartApiService } from '../../../api-services/cart/cart-api.service';
 import { ListCartDto } from '../../../api-services/cart/cart-api.model';
 import { OrdersApiService } from '../../../api-services/orders/orders-api.service';
 import { catchError, map, Observable, of, switchMap, timer } from 'rxjs';
+import { CountriesApiService } from '../../../api-services/CountriesNow/countires-api.service';
 
 @Component({
   selector: 'app-checkout',
@@ -39,6 +40,7 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
   private storesService = inject(StoresApiService);
   private ordersService = inject(OrdersApiService);
   private toaster = inject(ToasterService);
+  countriesService = inject(CountriesApiService);
 
   private cartService = inject(CartApiService);
   cart: ListCartDto = { activeItems: [], savedForLaterItems: [], totalPrice: 0 };
@@ -63,9 +65,13 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
   addressForm = this.fb.group({
     line1: ['', Validators.required],
     line2: [''],
-    city: ['', Validators.required],
+    city: [{ value: '', disabled: true }, [Validators.required]],
     country: ['', Validators.required],
   });
+
+  countries: string[] = [];
+  cities: string[] = [];
+  loadingCities = false;
 
   //async validator se prosljeđuje kao treći element
   uneseniKupon: FormControl = new FormControl('', null, this.validirajUneseniKupon());
@@ -84,12 +90,19 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const comingFromPayment = history?.state?.fromPayment;
+    if (!comingFromPayment) sessionStorage.removeItem('checkoutState');
+
+    const hasSavedState = !!sessionStorage.getItem('checkoutState');
+    this.restoreCheckoutState();
     this.startLoading();
 
     this.userService.getUserAddress().subscribe({
       next: (address) => {
         this.userAddress = address;
-        this.useExistingAddress = !!address?.line1;
+        if (!hasSavedState) {
+          this.useExistingAddress = !!address?.line1;
+        }
         this.stopLoading();
       },
       error: () => {
@@ -115,6 +128,28 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
         console.log(listaKupona);
       },
     });
+
+    this.countriesService.getCountries().subscribe((countries) => {
+      this.countries = countries;
+    });
+  }
+
+  public onCountryChange(country: string) {
+    this.addressForm.get('city')?.reset();
+    this.addressForm.get('city')?.disable();
+    this.cities = [];
+
+    if (country) {
+      this.loadingCities = true;
+      this.countriesService.getCitiesByCountry(country).subscribe({
+        next: (cities) => {
+          this.cities = cities;
+          this.loadingCities = false;
+          this.addressForm.get('city')?.enable();
+        },
+        error: (err) => (this.loadingCities = false),
+      });
+    }
   }
 
   nextStep(): void {
@@ -170,6 +205,7 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
 
     this.ordersService.createOrder(request).subscribe({
       next: (response) => {
+        this.saveCheckoutState();
         this.stopLoading();
         this.toaster.success('Narudžba potvrđena! Preusmjeravamo na plaćanje...');
         this.router.navigate(['/client/payment'], {
@@ -258,5 +294,54 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
         return item.quantityInStockForOnlineOrders < item.quantity;
       })
       .map((item) => item.bookTitle);
+  }
+
+  //Koristi se session storage kako bismo sačuvali podatke koje je korisnik odabrao prije nego je kliknuo na "Potvrdi i plati narudžbu"
+  //Ovi podaci su nam potrebni kada korisnik klikne na dugme "Nazad" na formi za plaćanje (payment) kako bismo mogli uraditi restore checkout forme
+  private saveCheckoutState() {
+    sessionStorage.setItem(
+      'checkoutState',
+      JSON.stringify({
+        currentStep: this.currentStep,
+        useExistingAddress: this.useExistingAddress,
+        deliveryType: this.deliveryType,
+        selectedShippingMethodId: this.selectedShippingMethodId,
+        selectedStoreId: this.selectedStoreId,
+        appliedCoupons: this.appliedCoupons,
+        addressForm: this.addressForm.getRawValue(),
+      }),
+    );
+  }
+  private restoreCheckoutState() {
+    const saved = sessionStorage.getItem('checkoutState');
+    if (!saved) return;
+
+    const state = JSON.parse(saved);
+    this.currentStep = state.currentStep;
+    this.useExistingAddress = state.useExistingAddress;
+    this.deliveryType = state.deliveryType;
+    this.selectedShippingMethodId = state.selectedShippingMethodId;
+    this.selectedStoreId = state.selectedStoreId;
+    this.appliedCoupons = state.appliedCoupons ?? [];
+
+    //ako je korisnik unosio novu adresu pri plaćanju
+    if (state.addressForm) {
+      this.addressForm.patchValue(state.addressForm);
+
+      // ako je država bila odabrana, učitaj gradove i enable-aj city
+      if (state.addressForm.country) {
+        this.loadingCities = true;
+        this.countriesService.getCitiesByCountry(state.addressForm.country).subscribe({
+          next: (cities) => {
+            this.cities = cities;
+            this.loadingCities = false;
+            this.addressForm.get('city')?.enable();
+            this.addressForm.get('city')?.setValue(state.addressForm.city);
+          },
+          error: () => (this.loadingCities = false),
+        });
+      }
+    }
+    sessionStorage.removeItem('checkoutState');
   }
 }

@@ -1,9 +1,13 @@
-﻿using Market.Application.Modules.Shopping.OrdersOrderItems.Commands.Create;
+﻿using Market.Application.Modules.Shopping.OrdersOrderItems.Commands.CancelOrder;
+using Market.Application.Modules.Shopping.OrdersOrderItems.Commands.Create;
 using Market.Application.Modules.Shopping.OrdersOrderItems.Commands.StripeWebhook;
 using Market.Application.Modules.Shopping.OrdersOrderItems.Commands.Update.ChangeStatus;
 using Market.Application.Modules.Shopping.OrdersOrderItems.Queries.GetById;
 using Market.Application.Modules.Shopping.OrdersOrderItems.Queries.List;
+using Market.Application.Modules.Shopping.OrdersOrderItems.Queries.ListOrdersForUser;
+using Market.Application.Modules.Shopping.OrdersOrderItems.Queries.PaymentIntentForOrder;
 using Market.Domain.Entities.Shopping;
+using MediatR;
 namespace Market.API.Controllers;
 
 [ApiController]
@@ -11,9 +15,17 @@ namespace Market.API.Controllers;
 [Route("[controller]")]
 public class OrdersOrderItemsController(ISender sender) : ControllerBase
 {
-    //Za pregled liste narudžbi
+    //Kada korisnik želi pregledati vlastite narudžbe
+    [HttpGet ("my-orders")]
+    public async Task<PageResult<ListOrdersForUserQueryDto>> ListOrdersForUser([FromQuery] ListOrdersForUserQuery query, CancellationToken ct)
+    {
+        var result = await sender.Send(query, ct);
+        return result;
+    }
+
+    //Za pregled liste narudžbneki
     [HttpGet]
-    public async Task<PageResult<ListOrderOrderItemsQueryDto>> List([FromQuery] ListOrderOrderItemsQuery query, CancellationToken ct)
+    public async Task<PageResult<ListOrderOrderItemsQueryDto>> ListOrdersForAdmin([FromQuery] ListOrderOrderItemsQuery query, CancellationToken ct)
     {
         var result = await sender.Send(query, ct);
         return result;
@@ -43,10 +55,22 @@ public class OrdersOrderItemsController(ISender sender) : ControllerBase
         await sender.Send(new ChangeOrderStatusCommand { Id = id, NewStatus = request.NewStatus }, ct);
     }
 
+    // Poziva se kada je narudžba već u statusu Draft i kada korisnik želi da je plati
+    // iz modula za pregled svih narudžbi (user-orders.component.ts)
+    // ovaj endpoint vraća: PublishableKey, ClientSecret i TotalPrice 
+    // ti elementi su potrebni da bi se Stripe forma na frontendu uopšte otvorila
+    // dakle, bez njih se ona ne može prikazati
+    [HttpGet("{id}/payment-intent")]
+    public async Task<IActionResult> GetPaymentIntent(int id)
+    {
+        var result = await sender.Send(new GetPaymentIntentForOrderQuery { OrderId = id });
+        return Ok(result);
+    }
+    
 
     // Poziva se automatski od strane Stripea nakon što korisnik plati.
     [HttpPost("stripe-webhook")]
-    [AllowAnonymous]
+    [AllowAnonymous] //ovo mora biti omogućeno jer Stripe ne šalje JWT tokene
     public async Task<IActionResult> StripeWebhook(CancellationToken ct)
     {
         using var reader = new StreamReader(Request.Body);
@@ -59,6 +83,13 @@ public class OrdersOrderItemsController(ISender sender) : ControllerBase
             StripeSignature = signature
         }, ct);
 
+        return Ok();
+    }
+
+    [HttpPost("{id}/cancel")]
+    public async Task<IActionResult> CancelOrder(int id)
+    {
+        await sender.Send(new CancelOrderCommand { OrderId = id });
         return Ok();
     }
 }

@@ -187,9 +187,9 @@
     },
     "STATUS": {
       "DRAFT": "Nacrt",
-      "CONFIRMED": "Potvrđena",
+      "PACKED": "Zapakovana",
       "PAID": "Plaćena",
-      "COMPLETED": "Završena",
+      "SHIPPED": "Poslana",
       "CANCELLED": "Otkazana",
       "UNKNOWN": "Nepoznato"
     },
@@ -197,7 +197,7 @@
       "DRAFT": "Inventar kreiran ali nije potvrđen",
       "CONFIRMED": "Inventar potvrđen i čeka plaćanje",
       "PAID": "Plaćanje primljeno i inventar se procesira",
-      "COMPLETED": "Inventar isporučen",
+      "SHIPPED": "Inventar poslan",
       "CANCELLED": "Inventar otkazan"
     },
     "TABLE": {
@@ -251,17 +251,17 @@
     "NO_DATA_FILTER": "Nema narudžbi koje odgovaraju filterima",
     "STATUS": {
       "DRAFT": "Nacrt",
-      "CONFIRMED": "Potvrđena",
+      "PACKED": "Zapakovana",
       "PAID": "Plaćena",
-      "COMPLETED": "Završena",
+      "SHIPPED": "Poslana",
       "CANCELLED": "Otkazana",
       "UNKNOWN": "Nepoznato"
     },
     "STATUS_DESCRIPTION": {
       "DRAFT": "Narudžba kreirana ali nije potvrđena",
-      "CONFIRMED": "Narudžba potvrđena i čeka plaćanje",
+      "PACKED": "Narudžba je zapakovana",
       "PAID": "Plaćanje primljeno i narudžba se procesira",
-      "COMPLETED": "Narudžba isporučena",
+      "SHIPPED": "Narudžba poslana",
       "CANCELLED": "Narudžba otkazana"
     },
     "TABLE": {

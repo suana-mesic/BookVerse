@@ -9,7 +9,7 @@
     <li>
       <a>Povrati <img src="icons/arrow_white.png" alt="icon" /></a>
     </li>
-    <li>
+    <li routerLink="/client/user-orders">
       <a>Narudžbe <img src="icons/arrow_white.png" alt="icon" /></a>
     </li>
     <li routerLink="/client/profile">
@@ -20,7 +20,7 @@
     </li>
   </ul>
   <h2 class="header__about-us">O nama</h2>
-  <h1 style="font-family: 'Meow Script';" class=" header__title">BookVerse</h1>
+  <h1 style="font-family: 'Meow Script'" class="header__title">BookVerse</h1>
   <div class="header__right-side">
     <button class="header__cart" routerLink="/client/cart">
       <h2>Korpa</h2>
@@ -29,10 +29,11 @@
     <!-- Ovo se treba prikazati tek kad je prijavljen korisnik -->
     <!--  (click)="showDropMenu()" -->
     <button class="header__profile" (click)="prijavaIliDropDown()">
-      @if(this.authFacadeService.isAuthenticated()){
-        <h2 #userName class="header__profile-name">{{authFacadeService.currentUser()?.fullName}}</h2>
-      }
-      @else{
+      @if (this.authFacadeService.isAuthenticated()) {
+        <h2 #userName class="header__profile-name">
+          {{ authFacadeService.currentUser()?.fullName }}
+        </h2>
+      } @else {
         <h2 #userName class="header__profile-name">Prijavi se</h2>
       }
       <img src="icons/default_profile_white.png" class="header__cart-icon" alt="ikona" />

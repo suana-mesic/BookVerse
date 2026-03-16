@@ -10,11 +10,12 @@
       <div class="book__title-and-authors">
         <h1>{{ book()?.title }}</h1>
         <div class="book__authors">
-          @for(author of authors(); let i = $index; track author.id){
-          <label>{{ `${author.firstName} ${author.lastName}` }}</label>
-          @if(i < authors().length - 1) {
-          <label>,&nbsp;</label>
-          } }
+          @for (author of authors(); let i = $index; track author.id) {
+            <label>{{ `${author.firstName} ${author.lastName}` }}</label>
+            @if (i < authors().length - 1) {
+              <label>,&nbsp;</label>
+            }
+          }
         </div>
       </div>
       <div class="book__rating">
@@ -38,24 +39,26 @@
   <div class="book__buy">
     <h1>Cijena: {{ book()?.price }} KM</h1>
     <div>
-      <button (click)="dodajUkorpu(book()?.id)">Dodaj u korpu <img src="icons/cart.png" alt="cart" /></button>
+      <button (click)="dodajUkorpu(book()?.id)">
+        Dodaj u korpu <img src="icons/cart.png" alt="cart" />
+      </button>
     </div>
   </div>
   <div class="book__stores">
     @if (storeInfoOpened) {
-    <div class="book__stores-info">
-      <h1>{{ this.storeName() }}</h1>
-      <div class="book__stores-info--close" (click)="toggleStoreInfo()">X</div>
-      <h2>Radno vrijeme:</h2>
-      <h3>Pon - Pet: {{ this.storeWorkTimeMonFri() }}</h3>
-      <h3>Sub - Ned: {{ this.storeWorkTimeSatSun() }}</h3>
-      <h2>Email:</h2>
-      <h3>{{ this.storeEmail() }}</h3>
-      <h2>Adresa:</h2>
-      <h3>{{ this.storeAddress() }}</h3>
-      <h2>Kontakt telefon:</h2>
-      <h3>{{ this.storePhone() }}</h3>
-    </div>
+      <div class="book__stores-info">
+        <h1>{{ this.storeName() }}</h1>
+        <div class="book__stores-info--close" (click)="toggleStoreInfo()">X</div>
+        <h2>Radno vrijeme:</h2>
+        <h3>Pon - Pet: {{ this.storeWorkTimeMonFri() }}</h3>
+        <h3>Sub - Ned: {{ this.storeWorkTimeSatSun() }}</h3>
+        <h2>Email:</h2>
+        <h3>{{ this.storeEmail() }}</h3>
+        <h2>Adresa:</h2>
+        <h3>{{ this.storeAddress() }}</h3>
+        <h2>Kontakt telefon:</h2>
+        <h3>{{ this.storePhone() }}</h3>
+      </div>
     }
     <span>
       <h2>Dostupno u prodavnicama:</h2>
@@ -140,23 +143,22 @@
       </div>
     </span>
     <aside class="book__review-section">
-      @for(review of reviews(); let i = $index; track review.bookId){
-      <article>
-        <img class="book__review-profile-picture" />
-        <section>
-          <h2>{{ review.user.firstName }} {{ review.user.lastName }}</h2>
-          <div class="book__review-user-rating">
-            <img src="icons/star.png" alt="star" [class.dark-star]="review.rating >= 1" />
-            <img src="icons/star.png" alt="star" [class.dark-star]="review.rating >= 2" />
-            <img src="icons/star.png" alt="star" [class.dark-star]="review.rating >= 3" />
-            <img src="icons/star.png" alt="star" [class.dark-star]="review.rating >= 4" />
-            <img src="icons/star.png" alt="star" [class.dark-star]="review.rating >= 5" />
-            <h3>{{ review.datePosted.toString().split('T')[0] }}</h3>
-          </div>
-        </section>
-      </article>
-      <h3>{{ review.comment }}</h3>
-
+      @for (review of reviews(); let i = $index; track review.bookId) {
+        <article>
+          <img class="book__review-profile-picture" />
+          <section>
+            <h2>{{ review.user.firstName }} {{ review.user.lastName }}</h2>
+            <div class="book__review-user-rating">
+              <img src="icons/star.png" alt="star" [class.dark-star]="review.rating >= 1" />
+              <img src="icons/star.png" alt="star" [class.dark-star]="review.rating >= 2" />
+              <img src="icons/star.png" alt="star" [class.dark-star]="review.rating >= 3" />
+              <img src="icons/star.png" alt="star" [class.dark-star]="review.rating >= 4" />
+              <img src="icons/star.png" alt="star" [class.dark-star]="review.rating >= 5" />
+              <h3>{{ review.datePosted.toString().split('T')[0] }}</h3>
+            </div>
+          </section>
+        </article>
+        <h3>{{ review.comment }}</h3>
       }
     </aside>
   </div>

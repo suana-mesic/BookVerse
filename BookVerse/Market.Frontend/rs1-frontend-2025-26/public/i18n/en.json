@@ -218,17 +218,17 @@
     "NO_DATA_FILTER": "No orders match your filters",
     "STATUS": {
       "DRAFT": "Draft",
-      "CONFIRMED": "Confirmed",
+      "PACKED": "Packed",
       "PAID": "Paid",
-      "COMPLETED": "Completed",
+      "SHIPPED": "Shipped",
       "CANCELLED": "Cancelled",
       "UNKNOWN": "Unknown"
     },
     "STATUS_DESCRIPTION": {
-      "DRAFT": "Order is created but not yet confirmed",
-      "CONFIRMED": "Order is confirmed and awaiting payment",
+      "DRAFT": "Order is created but not yet paid",
+      "PACKED": "Order is packed",
       "PAID": "Payment received and order is being processed",
-      "COMPLETED": "Order has been shipped or delivered",
+      "SHIPPED": "Order has been shipped or delivered",
       "CANCELLED": "Order has been cancelled"
     },
     "TABLE": {

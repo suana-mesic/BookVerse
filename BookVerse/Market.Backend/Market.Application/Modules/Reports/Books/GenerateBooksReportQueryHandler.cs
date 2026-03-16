@@ -25,7 +25,7 @@ namespace Market.Application.Modules.Reports.Books
                 .ThenInclude(x => x.OrderStatus)
                 .Where(x => x.Order.CreatedAtUtc >= request.DateFrom
                          && x.Order.CreatedAtUtc <= request.DateTo
-                         && (x.Order.OrderStatus.StatusName == OrderStatusType.Paid || x.Order.OrderStatus.StatusName == OrderStatusType.Completed));
+                         && (x.Order.OrderStatus.StatusName == OrderStatusType.Paid || x.Order.OrderStatus.StatusName == OrderStatusType.Packed ||x.Order.OrderStatus.StatusName == OrderStatusType.Shipped));
 
             if(request.BookId.HasValue)
                 query = query.Where(x => x.BookId == request.BookId);

@@ -13,8 +13,11 @@ import {
   OrderStatusType,
   CreateOrderWithItemsQuery,
   CreateOrderWithItemsQueryDto,
+  ListOrdersForUserRequest,
+  ListOrdersForUserQueryDto,
 } from './orders-api.models';
 import { buildHttpParams } from '../../core/models/build-http-params';
+import { PageResult } from '../../core/models/paging/page-result';
 
 @Injectable({
   providedIn: 'root',
@@ -88,5 +91,30 @@ export class OrdersApiService {
 
   createOrder(request: CreateOrderWithItemsQuery): Observable<CreateOrderWithItemsQueryDto> {
     return this.http.post<CreateOrderWithItemsQueryDto>(this.baseUrl, request);
+  }
+
+  listForUser(
+    request?: ListOrdersForUserRequest,
+  ): Observable<PageResult<ListOrdersForUserQueryDto>> {
+    const params = request ? buildHttpParams(request as any) : undefined;
+    return this.http.get<PageResult<ListOrdersForUserQueryDto>>(`${this.baseUrl}/my-orders`, {
+      params,
+    });
+  }
+
+  cancelOrder(id: number): Observable<void> {
+    return this.http.post<void>(`${this.baseUrl}/${id}/cancel`, {});
+  }
+
+  // Poziva se kada je narudžba već u statusu Draft i kada korisnik želi da je plati
+  // iz modula za pregled svih narudžbi (user-orders.component.ts)
+  // ovaj endpoint vraća: PublishableKey, ClientSecret i TotalPrice i to je potrebno kako bi se
+  // otvorila Stripe forma
+  getPaymentIntent(orderId: number): Observable<{
+    clientSecret: string;
+    publishableKey: string;
+    totalPrice: number;
+  }> {
+    return this.http.get<any>(`${this.baseUrl}/${orderId}/payment-intent`);
   }
 }

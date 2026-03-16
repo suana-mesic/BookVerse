@@ -8,6 +8,7 @@ import { CartComponent } from './cart/cart.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { PaymentComponent } from './payment/payment.component';
 import { OrderSuccessComponent } from './order-success/order-success.component';
+import { UserOrdersComponent } from './user-orders/user-orders.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { OrderSuccessComponent } from './order-success/order-success.component';
     CartComponent,
     CheckoutComponent,
     PaymentComponent,
-    OrderSuccessComponent
+    OrderSuccessComponent,
+    UserOrdersComponent
   ],
   imports: [
     SharedModule,

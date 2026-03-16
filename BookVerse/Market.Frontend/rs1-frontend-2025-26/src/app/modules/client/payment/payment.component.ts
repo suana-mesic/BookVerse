@@ -78,6 +78,10 @@ export class PaymentComponent extends BaseComponent implements OnInit {
     });
   }
 
+  prevStep() {
+    this.router.navigate(['/client/checkout'], { state: { fromPayment: true } });
+  }
+
   async initStripe(): Promise<void> {
     // loadStripe učitava Stripe.js sa Stripe servera koristeći naš publishableKey
     // publishableKey je javni ključ — bezbjedno ga koristiti na frontendu

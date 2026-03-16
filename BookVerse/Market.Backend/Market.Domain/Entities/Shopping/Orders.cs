@@ -30,6 +30,7 @@ namespace Market.Domain.Entities.Shopping
         public PaymentSummaries? PaymentSummary { get; set; }
         public string PaymentIntentId { get; set; }
         public DateTime? PaidAt { get; set; }
+        public DateTime? CancelledAt { get; set; }
 
         public ICollection<Coupons> Coupons { get; set; } = new List<Coupons>();
         public ICollection<OrderItems> OrderItems { get; set; } = new List<OrderItems>();

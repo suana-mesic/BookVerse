@@ -23,7 +23,8 @@ namespace Market.Application.Modules.Reports.Orders
                 .Where(x => 
                 x.CreatedAtUtc >= request.DateFrom &&
                 x.CreatedAtUtc <= request.DateTo &&
-                (x.OrderStatus.StatusName == OrderStatusType.Paid || x.OrderStatus.StatusName == OrderStatusType.Completed));
+                (x.OrderStatus.StatusName == OrderStatusType.Paid || x.OrderStatus.StatusName == OrderStatusType.Packed ||
+                  x.OrderStatus.StatusName == OrderStatusType.Shipped));
 
             if (request.UserId.HasValue)
                 query = query.Where(x => x.UserId == request.UserId);

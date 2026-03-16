@@ -401,7 +401,7 @@ public partial class StaticDataSeeder
         },
         new OrderStatus{
             Id = 2,
-            StatusName = OrderStatusType.Confirmed
+            StatusName = OrderStatusType.Packed
         },
         new OrderStatus{
             Id = 3,
@@ -409,7 +409,7 @@ public partial class StaticDataSeeder
         },
         new OrderStatus{
             Id = 4,
-            StatusName = OrderStatusType.Completed
+            StatusName = OrderStatusType.Shipped
         },
         new OrderStatus{
             Id = 5,

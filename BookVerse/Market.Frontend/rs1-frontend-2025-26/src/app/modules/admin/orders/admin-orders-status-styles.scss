@@ -14,7 +14,7 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
   white-space: nowrap;
-  
+
   mat-icon {
     font-size: 16px;
     width: 16px;
@@ -29,18 +29,18 @@
   background: rgba(158, 158, 158, 0.1);
   color: #616161;
   border: 1px solid rgba(158, 158, 158, 0.3);
-  
+
   mat-icon {
     color: #616161;
   }
 }
 
-// Confirmed - Blue (Order confirmed, awaiting payment)
-.status-confirmed {
+// Packed - Blue (Order packed)
+.status-packed {
   background: rgba(33, 150, 243, 0.1);
   color: #1976d2;
   border: 1px solid rgba(33, 150, 243, 0.3);
-  
+
   mat-icon {
     color: #1976d2;
   }
@@ -51,18 +51,18 @@
   background: rgba(76, 175, 80, 0.1);
   color: #388e3c;
   border: 1px solid rgba(76, 175, 80, 0.3);
-  
+
   mat-icon {
     color: #388e3c;
   }
 }
 
-// Completed - Dark Green (Order completed/delivered)
-.status-completed {
+// Shipped - Dark Green (Order Shipped/delivered)
+.status-shipped {
   background: rgba(46, 125, 50, 0.1);
   color: #1b5e20;
   border: 1px solid rgba(46, 125, 50, 0.3);
-  
+
   mat-icon {
     color: #1b5e20;
   }
@@ -73,7 +73,7 @@
   background: rgba(244, 67, 54, 0.1);
   color: #c62828;
   border: 1px solid rgba(244, 67, 54, 0.3);
-  
+
   mat-icon {
     color: #c62828;
   }
@@ -84,7 +84,7 @@
   background: rgba(189, 189, 189, 0.1);
   color: #757575;
   border: 1px solid rgba(189, 189, 189, 0.3);
-  
+
   mat-icon {
     color: #757575;
   }

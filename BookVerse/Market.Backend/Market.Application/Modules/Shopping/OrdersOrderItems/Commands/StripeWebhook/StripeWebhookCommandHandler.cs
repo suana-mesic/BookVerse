@@ -1,8 +1,6 @@
 ﻿using Market.Application.Common.Interfaces;
 using Market.Domain.Entities.Shopping;
 using Stripe;
-using System.Configuration;
-using System.Threading;
 
 namespace Market.Application.Modules.Shopping.OrdersOrderItems.Commands.StripeWebhook
 {
@@ -30,6 +28,10 @@ namespace Market.Application.Modules.Shopping.OrdersOrderItems.Commands.StripeWe
 
 
                 if (order == null) return;
+                //Stripe webhook može poslati isti event više puta, zbog toga provjerimo prvo da li je narudžba već plaćena
+                if (order.OrderStatusId == (int)OrderStatusType.Paid)
+                    return;
+
                 order.OrderStatusId = (int)OrderStatusType.Paid;
                 order.PaidAt = DateTime.UtcNow;
 
@@ -87,7 +89,7 @@ namespace Market.Application.Modules.Shopping.OrdersOrderItems.Commands.StripeWe
                     {
                         var paymentSummary = new PaymentSummaries
                         {
-                            Last4Digits = int.Parse(card.Last4 ?? "0"),
+                            Last4Digits = card.Last4,
                             Brand = card.Brand ?? "Unknown",
                             ExpMonth = (int)card.ExpMonth,
                             ExpYear = (int)card.ExpYear,

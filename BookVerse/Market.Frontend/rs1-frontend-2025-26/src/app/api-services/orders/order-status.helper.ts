@@ -17,12 +17,12 @@ export class OrderStatusHelper {
     switch (status) {
       case OrderStatusType.Draft:
         return 'ORDERS.STATUS.DRAFT';
-      case OrderStatusType.Confirmed:
-        return 'ORDERS.STATUS.CONFIRMED';
+      case OrderStatusType.Packed:
+        return 'ORDERS.STATUS.PACKED';
       case OrderStatusType.Paid:
         return 'ORDERS.STATUS.PAID';
-      case OrderStatusType.Completed:
-        return 'ORDERS.STATUS.COMPLETED';
+      case OrderStatusType.Shipped:
+        return 'ORDERS.STATUS.SHIPPED';
       case OrderStatusType.Cancelled:
         return 'ORDERS.STATUS.CANCELLED';
       default:
@@ -42,12 +42,12 @@ export class OrderStatusHelper {
     switch (status) {
       case OrderStatusType.Draft:
         return 'status-draft'; // Gray
-      case OrderStatusType.Confirmed:
-        return 'status-confirmed'; // Blue
+      case OrderStatusType.Packed:
+        return 'status-packed'; // Blue
       case OrderStatusType.Paid:
         return 'status-paid'; // Green
-      case OrderStatusType.Completed:
-        return 'status-completed'; // Dark Green
+      case OrderStatusType.Shipped:
+        return 'status-shipped'; // Dark Green
       case OrderStatusType.Cancelled:
         return 'status-cancelled'; // Red
       default:
@@ -65,11 +65,11 @@ export class OrderStatusHelper {
     switch (status) {
       case OrderStatusType.Draft:
         return 'edit_note'; // Draft/note icon
-      case OrderStatusType.Confirmed:
+      case OrderStatusType.Packed:
         return 'check_circle'; // Check circle
       case OrderStatusType.Paid:
         return 'payment'; // Payment icon
-      case OrderStatusType.Completed:
+      case OrderStatusType.Shipped:
         return 'done_all'; // Double check
       case OrderStatusType.Cancelled:
         return 'cancel'; // Cancel X icon
@@ -88,9 +88,9 @@ export class OrderStatusHelper {
   static getAllStatuses(): OrderStatusType[] {
     return [
       OrderStatusType.Draft,
-      OrderStatusType.Confirmed,
+      OrderStatusType.Packed,
       OrderStatusType.Paid,
-      OrderStatusType.Completed,
+      OrderStatusType.Shipped,
       OrderStatusType.Cancelled,
     ];
   }
@@ -115,8 +115,8 @@ export class OrderStatusHelper {
    * @returns true if order can be edited
    */
   static canEdit(status: OrderStatusType): boolean {
-    // Only Draft and Confirmed orders can be edited
-    return status === OrderStatusType.Draft || status === OrderStatusType.Confirmed;
+    // Only Draft and Packed orders can be edited
+    return status === OrderStatusType.Draft || status === OrderStatusType.Packed;
   }
 
   /**
@@ -126,11 +126,11 @@ export class OrderStatusHelper {
    * @returns true if order can be cancelled
    */
   static canCancel(status: OrderStatusType): boolean {
-    // Can cancel Draft, Confirmed, and Paid orders
-    // Cannot cancel Completed or already Cancelled orders
+    // Can cancel Draft, Packed, and Paid orders
+    // Cannot cancel Shipped or already Cancelled orders
     return (
       status === OrderStatusType.Draft ||
-      status === OrderStatusType.Confirmed ||
+      status === OrderStatusType.Packed ||
       status === OrderStatusType.Paid
     );
   }
@@ -146,10 +146,10 @@ export class OrderStatusHelper {
       case OrderStatusType.Draft:
         return [OrderStatusType.Cancelled];
       case OrderStatusType.Paid:
-        return [OrderStatusType.Confirmed, OrderStatusType.Cancelled];
-      case OrderStatusType.Confirmed:
-        return [OrderStatusType.Completed, OrderStatusType.Cancelled];
-      case OrderStatusType.Completed:
+        return [OrderStatusType.Packed, OrderStatusType.Cancelled];
+      case OrderStatusType.Packed:
+        return [OrderStatusType.Shipped, OrderStatusType.Cancelled];
+      case OrderStatusType.Shipped:
         return [];
       case OrderStatusType.Cancelled:
         return [];

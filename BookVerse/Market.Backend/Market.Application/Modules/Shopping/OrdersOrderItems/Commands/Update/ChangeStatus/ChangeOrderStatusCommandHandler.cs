@@ -38,9 +38,8 @@ public class ChangeOrderStatusCommandHandler(IAppDbContext db) : IRequestHandler
         var validTransitions = new Dictionary<OrderStatusType, OrderStatusType[]>
         {
             { OrderStatusType.Draft, new[] { OrderStatusType.Cancelled } },
-            { OrderStatusType.Paid, new[] { OrderStatusType.Confirmed, OrderStatusType.Cancelled } },
-            { OrderStatusType.Confirmed, new[] { OrderStatusType.Completed, OrderStatusType.Cancelled } },
-            { OrderStatusType.Completed, Array.Empty<OrderStatusType>() },
+            { OrderStatusType.Paid, new[] { OrderStatusType.Packed, OrderStatusType.Cancelled } },
+            { OrderStatusType.Packed, new[] { OrderStatusType.Shipped, OrderStatusType.Cancelled } },
             { OrderStatusType.Cancelled, Array.Empty<OrderStatusType>() }
         };
 
