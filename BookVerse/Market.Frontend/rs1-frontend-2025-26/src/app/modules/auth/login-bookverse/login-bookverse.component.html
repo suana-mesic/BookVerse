@@ -1,46 +1,71 @@
 <div class="parent">
-    <div class="signup-container">
-            <!--@if uslov - prikazuje login formu samo kada 2FA nije aktivan -->
-            @if(!requiresTwoFactor) {
-        <form id="signup-form" class="signup-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-            @if(showLoginError){
-            <div class="login-error-banner">
-                <mat-icon class="error-icon">error_outline</mat-icon>
-                <span class="error_message">Neispravna e-mail adresa ili lozinka. Molimo pokušajte ponovo.</span>
-            </div>
-            }
-            <h1>Prijava</h1>
-            <mat-form-field class="form-control">
-                <mat-label>Email</mat-label>
-                <input type="text" formControlName="email" id="email" name="email" placeholder="Email" matInput
-                    required />
-                <mat-error>Unesite važeću email adresu.</mat-error>
-            </mat-form-field>
+  <div class="signup-container">
+    <!--@if uslov - prikazuje login formu samo kada 2FA nije aktivan -->
+    @if (!requiresTwoFactor) {
+      <form id="signup-form" class="signup-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        @if (showLoginError) {
+          <div class="login-error-banner">
+            <mat-icon class="error-icon">error_outline</mat-icon>
+            <span class="error_message">
+              <!-- 403 = korisnik postoji ali je deaktiviran -->
+              @if (loginErrorStatus === 404) {
+                Vaš nalog je deaktiviran. Kontaktirajte administratora.
+              } @else {
+                <!-- za sve ostale greške (404, 401) uvijek ista poruka iz sigurnosnih razloga -->
+                Pogrešni kredencijali. Molimo pokušajte ponovo.
+              }
+            </span>
+          </div>
+        }
+        <h1>Prijava</h1>
+        <mat-form-field class="form-control">
+          <mat-label>Email</mat-label>
+          <input
+            type="text"
+            formControlName="email"
+            id="email"
+            name="email"
+            placeholder="Email"
+            matInput
+            required
+          />
+          <mat-error>Unesite važeću email adresu.</mat-error>
+        </mat-form-field>
 
-            <mat-form-field class="form-control">
-                <mat-label>Password</mat-label>
-                <input type="password" formControlName="password" id="password" name="password" placeholder="Lozinka"
-                    matInput required />
-                <mat-error>Lozinka mora imati najmanje 6 karaktera.</mat-error>
-            </mat-form-field>
-            <button type="submit" class="login-button" [disabled]="loginForm.invalid || isLoading">
-                Prijavi se
-            </button>
+        <mat-form-field class="form-control">
+          <mat-label>Password</mat-label>
+          <input
+            type="password"
+            formControlName="password"
+            id="password"
+            name="password"
+            placeholder="Lozinka"
+            matInput
+            required
+          />
+          <mat-error>Lozinka mora imati najmanje 6 karaktera.</mat-error>
+        </mat-form-field>
+        <button type="submit" class="login-button" [disabled]="loginForm.invalid || isLoading">
+          Prijavi se
+        </button>
 
-            <div class="login-link">
-                <p class="sign-up">Novi ste ovdje? <a routerLink="/auth/register">Registrujte se</a></p>
-            </div>
-        </form>
+        <div class="login-link">
+          <p class="sign-up">Novi ste ovdje? <a routerLink="/auth/register">Registrujte se</a></p>
+        </div>
+      </form>
     }
-    @if(requiresTwoFactor) {
+    @if (requiresTwoFactor) {
       <div class="signup-form">
         <h1>Dvofaktorska autentifikacija</h1>
 
         <!-- prikazuje email na koji je kod poslan -->
-        <p class="two-factor-info">Poslali smo kod na <strong>{{ twoFactorEmail }}</strong>. Unesite ga ispod.</p>
+        <p class="two-factor-info">
+          Poslali smo kod na <strong>{{ twoFactorEmail }}</strong
+          >. Unesite ga ispod.
+        </p>
 
         <!-- greška ako je kod neispravan -->
-        @if(showTwoFactorError) {
+        @if (showTwoFactorError) {
           <div class="login-error-banner">
             <mat-icon class="error-icon">error_outline</mat-icon>
             <span class="error_message">Neispravan ili istekao kod. Pokušajte ponovo.</span>
@@ -48,20 +73,27 @@
         }
 
         <!-- input za unos koda -->
-            <mat-form-field class="form-control two-factor-field">
-            <input matInput [(ngModel)]="twoFactorCode" placeholder="Verifikacijski kod" maxlength="6" />
-            </mat-form-field>
+        <mat-form-field class="form-control two-factor-field">
+          <input
+            matInput
+            [(ngModel)]="twoFactorCode"
+            placeholder="Verifikacijski kod"
+            maxlength="6"
+          />
+        </mat-form-field>
 
-          <!-- dugme za potvrdu koda -->
-        <button class="login-button" (click)="onVerifyTwoFactor()" [disabled]="!twoFactorCode || isLoading">
+        <!-- dugme za potvrdu koda -->
+        <button
+          class="login-button"
+          (click)="onVerifyTwoFactor()"
+          [disabled]="!twoFactorCode || isLoading"
+        >
           Potvrdi
         </button>
 
         <!-- dugme za povratak na login formu -->
-        <button class="back-button" (click)="requiresTwoFactor = false">
-          ← Nazad
-        </button>
+        <button class="back-button" (click)="requiresTwoFactor = false">← Nazad</button>
       </div>
     }
-    </div>
+  </div>
 </div>

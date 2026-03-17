@@ -4,7 +4,11 @@ import { BaseComponent } from '../../core/components/base-classes/base-component
 import { AuthFacadeService } from '../../core/services/auth/auth-facade.service';
 import { Router } from '@angular/router';
 import { CurrentUserService } from '../../core/services/auth/current-user.service';
-import { LoginCommand, LoginCommandDto, VerifyTwoFactorCommand } from '../../../api-services/auth/auth-api.model';
+import {
+  LoginCommand,
+  LoginCommandDto,
+  VerifyTwoFactorCommand,
+} from '../../../api-services/auth/auth-api.model';
 
 @Component({
   selector: 'app-login-bookverse',
@@ -20,12 +24,13 @@ export class LoginBookverseComponent extends BaseComponent {
 
   hidePassword = true;
   showLoginError: boolean = false;
-  
+
   // 2FA state
   requiresTwoFactor: boolean = false;
   twoFactorEmail: string = '';
   twoFactorCode: string = '';
   showTwoFactorError: boolean = false;
+  loginErrorStatus: number = 0;
 
   loginForm = this.fb.group({
     email: ['admin@gmail.com', [Validators.required, Validators.email]],
@@ -44,7 +49,7 @@ export class LoginBookverseComponent extends BaseComponent {
     };
 
     this.auth.login(payload).subscribe({
-      next: (response:LoginCommandDto) => {
+      next: (response: LoginCommandDto) => {
         console.log('login response:', response);
         this.stopLoading();
         // ako backend traži 2FA
@@ -57,8 +62,10 @@ export class LoginBookverseComponent extends BaseComponent {
         this.router.navigate([target]);
       },
       error: (err) => {
-        this.stopLoading('Invalid credentials. Please try again.');
+        this.stopLoading();
         this.showLoginError = true;
+        // čuvamo status kod za prikaz poruke
+        this.loginErrorStatus = err.status;
         console.error('Login error:', err);
       },
     });
@@ -76,21 +83,20 @@ export class LoginBookverseComponent extends BaseComponent {
 
     const payload: VerifyTwoFactorCommand = {
       email: this.twoFactorEmail,
-      code: this.twoFactorCode
+      code: this.twoFactorCode,
     };
 
     this.auth.verifyTwoFactor(payload).subscribe({
-    next: () => {
-
-      this.stopLoading();
-      const target = this.currentUser.getDefaultRoute();
-      this.router.navigate([target]);
-    },
-    error: (err) => {
-      this.stopLoading();
-      this.showTwoFactorError = true;
-      console.error('2FA error:', err);
-    }
-  });
-  } 
+      next: () => {
+        this.stopLoading();
+        const target = this.currentUser.getDefaultRoute();
+        this.router.navigate([target]);
+      },
+      error: (err) => {
+        this.stopLoading();
+        this.showTwoFactorError = true;
+        console.error('2FA error:', err);
+      },
+    });
+  }
 }

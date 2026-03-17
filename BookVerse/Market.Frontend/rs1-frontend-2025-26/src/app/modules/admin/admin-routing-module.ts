@@ -12,6 +12,8 @@ import { CouponsDynamicFormAddComponent } from './coupons-dynamic-form/coupons-d
 import { InventoryComponent } from './inventory/inventory.component';
 import { InventoryAddComponent } from './inventory/inventory-add/inventory-add.component';
 import { InventoryEditComponent } from './inventory/inventory-edit/inventory-edit.component';
+import { UsersComponent } from './users/users.component';
+import { UsersEditComponent } from './users/users-edit/users-edit.component';
 
 const routes: Routes = [
   {
@@ -67,6 +69,15 @@ const routes: Routes = [
         component: StatisticsComponent,
       },
 
+      //users
+      {
+        path: 'users',
+        component: UsersComponent,
+      },
+      {
+        path: 'users/edit/:userId',
+        component: UsersEditComponent,
+      },
 
       // default admin route → /admin/products
       {
@@ -82,4 +93,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class AdminRoutingModule { }
+export class AdminRoutingModule {}

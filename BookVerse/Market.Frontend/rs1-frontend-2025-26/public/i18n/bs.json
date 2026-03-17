@@ -40,7 +40,8 @@
       "INVENTORY": "Popis inventara",
       "DATA_VISUALIZATION": "Vizualizacija podataka",
       "DASHBOARD": "Kontrolna ploča",
-      "RESOURCE_MANAGEMENT": "Upravljanje resursima"
+      "RESOURCE_MANAGEMENT": "Upravljanje resursima",
+      "USERS": "Korisnici"
     }
   },
   "BOOKS_CATEGORIES": {

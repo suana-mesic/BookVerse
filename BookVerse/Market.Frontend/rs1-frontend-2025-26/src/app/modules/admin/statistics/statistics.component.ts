@@ -93,7 +93,7 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
   }
 
   private dohvatiSveKorisnike() {
-    this.usersApi.ListUsers().subscribe({
+    this.usersApi.getAllUserNames().subscribe({
       next: (response) => {
         this.allUsers = response;
       },
