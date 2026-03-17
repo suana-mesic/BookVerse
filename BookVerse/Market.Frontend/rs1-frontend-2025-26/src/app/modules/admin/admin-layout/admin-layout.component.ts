@@ -37,6 +37,7 @@ export class AdminLayoutComponent implements OnInit {
       items: [
         { route: '/admin/orders', icon: 'shopping_cart', label: 'ADMIN_PANEL.MENU.ORDERS' },
         { route: '/admin/inventory', icon: 'inventory', label: 'ADMIN_PANEL.MENU.INVENTORY' },
+        { route: '/admin/users', icon: 'account_circle', label: 'ADMIN_PANEL.MENU.USERS' },
       ],
     },
   ];

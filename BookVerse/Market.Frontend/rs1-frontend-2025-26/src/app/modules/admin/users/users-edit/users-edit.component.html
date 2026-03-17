@@ -1,0 +1,104 @@
+<div class="container">
+  <!-- Header -->
+  <div class="header-card mat-elevation-z2">
+    <h1>Uredi korisnika</h1>
+  </div>
+
+  <!-- Info o korisniku -->
+  <div class="user-info-card mat-elevation-z2" *ngIf="user && !isLoading">
+    <div class="user-avatar">
+      <mat-icon>account_circle</mat-icon>
+    </div>
+    <div class="user-details">
+      <h3>{{ user.firstName }} {{ user.lastName }}</h3>
+      <p>{{ user.email }}</p>
+    </div>
+  </div>
+
+  <!-- Form Card -->
+  <div class="form-card mat-elevation-z2">
+    <form [formGroup]="form" (ngSubmit)="save()" *ngIf="!isLoading || form">
+      <!-- Error Message -->
+      <div *ngIf="errorMessage" class="error-banner">
+        <mat-icon>error</mat-icon>
+        <span>{{ errorMessage }}</span>
+      </div>
+
+      <!-- Role sekcija -->
+      <h3 class="section-title">
+        <mat-icon>admin_panel_settings</mat-icon>
+        Role korisnika
+      </h3>
+
+      <div class="toggles-grid">
+        <div class="toggle-item">
+          <mat-slide-toggle formControlName="isAdmin" color="warn">
+            <span class="toggle-label">
+              <mat-icon>security</mat-icon>
+              Admin
+            </span>
+          </mat-slide-toggle>
+          <p class="toggle-description">Pun pristup svim funkcionalnostima</p>
+        </div>
+
+        <div class="toggle-item">
+          <mat-slide-toggle formControlName="isManager" color="accent">
+            <span class="toggle-label">
+              <mat-icon>manage_accounts</mat-icon>
+              Manager
+            </span>
+          </mat-slide-toggle>
+          <p class="toggle-description">Upravljanje katalogom i narudžbama</p>
+        </div>
+
+        <div class="toggle-item">
+          <mat-slide-toggle formControlName="isEmployee" color="primary">
+            <span class="toggle-label">
+              <mat-icon>badge</mat-icon>
+              Employee
+            </span>
+          </mat-slide-toggle>
+          <p class="toggle-description">Pregled narudžbi i inventara</p>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <!-- Status sekcija -->
+      <h3 class="section-title">
+        <mat-icon>toggle_on</mat-icon>
+        Status korisnika
+      </h3>
+
+      <div class="toggles-grid">
+        <div class="toggle-item">
+          <mat-slide-toggle formControlName="isEnabled" color="primary">
+            <span class="toggle-label">
+              <mat-icon>check_circle</mat-icon>
+              Aktivan
+            </span>
+          </mat-slide-toggle>
+          <p class="toggle-description">Korisnik se može prijaviti u sistem</p>
+        </div>
+      </div>
+
+      <!-- Akcije -->
+      <div class="form-actions">
+        <button type="button" mat-stroked-button (click)="onCancel()" [disabled]="isLoading">
+          <mat-icon>close</mat-icon>
+          Odustani
+        </button>
+        <button type="submit" mat-raised-button color="primary" [disabled]="isLoading">
+          <mat-icon>save</mat-icon>
+          Sačuvaj
+        </button>
+      </div>
+    </form>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading && !form" class="loading-overlay">
+      <mat-spinner diameter="50"></mat-spinner>
+      <p>Učitavanje...</p>
+    </div>
+  </div>
+</div>

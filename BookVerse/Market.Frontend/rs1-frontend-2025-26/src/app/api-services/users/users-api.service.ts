@@ -4,10 +4,15 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import {
   GetMyProfileQueryDto,
+  GetUserByIdQueryDto,
   ListUsersQueryDto,
+  ListUsersRequest,
+  ListUsersResponse,
   UpdateMyProfileCommand,
+  UpdateUserRolesCommand,
   UserAddressDto,
 } from './users-api.model';
+import { buildHttpParams } from '../../core/models/build-http-params';
 
 @Injectable({
   providedIn: 'root',
@@ -28,7 +33,22 @@ export class UsersApiService {
     return this.http.get<UserAddressDto>(`${this.baseUrl}/user-address`);
   }
 
-  ListUsers(): Observable<ListUsersQueryDto[]> {
-    return this.http.get<ListUsersQueryDto[]>(`${this.baseUrl}/all-users`);
+  //Vraća sve ID-eve i Full Names u modulu za statistiku
+  getAllUserNames(): Observable<ListUsersQueryDto[]> {
+    return this.http.get<ListUsersQueryDto[]>(`${this.baseUrl}/all-user-names`);
+  }
+
+  //Vraća sve korisnike za tabelarni prikaz u admin panelu
+  list(request?: ListUsersRequest): Observable<ListUsersResponse> {
+    const params = request ? buildHttpParams(request as any) : undefined;
+    return this.http.get<ListUsersResponse>(`${this.baseUrl}/all-users`, { params });
+  }
+
+  getById(id: number): Observable<GetUserByIdQueryDto> {
+    return this.http.get<GetUserByIdQueryDto>(`${this.baseUrl}/${id}`);
+  }
+
+  updateRoles(id: number, payload: UpdateUserRolesCommand): Observable<void> {
+    return this.http.put<void>(`${this.baseUrl}/${id}/roles`, payload);
   }
 }

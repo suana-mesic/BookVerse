@@ -40,7 +40,8 @@
       "INVENTORY": "Inventory",
       "DATA_VISUALIZATION": "Data visualization",
       "DASHBOARD": "Dashboard",
-      "RESOURCE_MANAGEMENT": "Resource management"
+      "RESOURCE_MANAGEMENT": "Resource management",
+      "USERS": "Users"
     }
   },
   "BOOKS_CATEGORIES": {
