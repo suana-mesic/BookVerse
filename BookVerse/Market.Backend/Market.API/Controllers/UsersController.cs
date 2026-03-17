@@ -6,10 +6,11 @@ namespace Market.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize]
+
 public class UsersController(ISender sender) : ControllerBase
 {
     [HttpGet("my-profile")]
-    [AllowAnonymous]
     public async Task<ActionResult<GetMyProfileQueryDto>> GetMyProfile(CancellationToken ct)
     {
         return Ok(await sender.Send(new GetMyProfileQuery(), ct));
@@ -23,7 +24,6 @@ public class UsersController(ISender sender) : ControllerBase
     }
 
     [HttpGet("user-address")]
-    [Authorize]
     public async Task<IActionResult> GetUserAddress(CancellationToken ct)
     {
         var result = await sender.Send(new GetUserAddressQuery(), ct);
@@ -31,7 +31,7 @@ public class UsersController(ISender sender) : ControllerBase
     }
 
     [HttpGet("all-users")]
-    [Authorize] //task: admin only dodati kasnije!!!
+    [Authorize(Policy = "AdminOnly")]
     public async Task<List<ListUsersQueryDto>> GetAllUsers(CancellationToken ct)
     {
         var result = await sender.Send(new ListUsersQuery(), ct);

@@ -40,6 +40,11 @@ public static class DependencyInjection
             .ValidateDataAnnotations()
             .ValidateOnStart();
 
+        services.AddOptions<CaptchaOptions>()
+            .Bind(configuration.GetSection(CaptchaOptions.SectionName))  // Čita vrijednosti iz appsettings.json sekcije "CaptchaOptions"
+            .ValidateDataAnnotations()
+            .ValidateOnStart(); // Puca na startu aplikacije ako SecretKey nije postavljen
+
         // JWT auth (reads from IOptions<JwtOptions>)
         services.AddAuthentication(o =>
         {
@@ -68,6 +73,16 @@ public static class DependencyInjection
             o.FallbackPolicy = new AuthorizationPolicyBuilder()
                 .RequireAuthenticatedUser()
                 .Build();
+
+
+            //Admin policy
+            o.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+
+            //Staff policy
+            o.AddPolicy("Staff", policy => policy.RequireRole("Admin", "Employee", "Manager"));
+
+            //Management
+            o.AddPolicy("Management", policy => policy.RequireRole("Admin", "Manager"));
         });
 
         // Swagger with Bearer auth

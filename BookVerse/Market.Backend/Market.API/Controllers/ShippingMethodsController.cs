@@ -1,20 +1,9 @@
-﻿using Market.Application.Modules.Catalog.Adresses.Commands.Create;
-using Market.Application.Modules.Catalog.Adresses.Commands.Delete;
-using Market.Application.Modules.Catalog.Adresses.Commands.Update;
-using Market.Application.Modules.Catalog.Adresses.Queries.GetById;
-using Market.Application.Modules.Catalog.Adresses.Queries.List;
-using Market.Application.Modules.Shopping.ShippingMethods.Queries.List;
-using Market.Application.Modules.Users.Commands.UpdateMyProfile;
-using Market.Application.Modules.Users.Queries.GetById;
-using Market.Application.Modules.Users.Queries.GetUserAddress;
-using MediatR;
-using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Mvc;
+﻿using Market.Application.Modules.Shopping.ShippingMethods.Queries.List;
 
 namespace Market.API.Controllers;
 
 [ApiController]
-[Authorize]
+[AllowAnonymous]
 [Route("[controller]")]
 public class ShippingMethodsController(ISender sender) : ControllerBase
 {

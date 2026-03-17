@@ -6,10 +6,10 @@ using Market.Application.Modules.Catalog.Stores.Queries.List;
 
 namespace Market.API.Controllers;
 
-    [ApiController]
-    [Route("[controller]")]
-    public class StoresController(ISender sender) : ControllerBase
-    {
+[ApiController]
+[Route("[controller]")]
+public class StoresController(ISender sender) : ControllerBase
+{
     [HttpGet]
     [AllowAnonymous]
     public async Task<PageResult<ListStoresQueryDto>> List([FromQuery] ListStoresQuery query, CancellationToken ct)
@@ -28,7 +28,7 @@ namespace Market.API.Controllers;
     }
 
     [HttpPost]
-    [AllowAnonymous]
+    [Authorize(Policy = "AdminOnly")]
     public async Task<IActionResult> Create(CreateStoreCommand command, CancellationToken ct)
     {
         var result = await sender.Send(command, ct);
@@ -36,7 +36,7 @@ namespace Market.API.Controllers;
     }
 
     [HttpPut("{id:int}")]
-    [AllowAnonymous]
+    [Authorize(Policy = "AdminOnly")]
     public async Task<IActionResult> Update(int id, UpdateStoreCommand command, CancellationToken ct)
     {
         // ID from the route takes precedence
@@ -46,7 +46,7 @@ namespace Market.API.Controllers;
     }
 
     [HttpDelete("{id:int}")]
-    [AllowAnonymous]
+    [Authorize(Policy = "AdminOnly")]
     public async Task<IActionResult> Delete(int id, CancellationToken ct)
     {
         var command = new DeleteStoreCommand { Id = id };

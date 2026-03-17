@@ -3,9 +3,6 @@ using Market.Application.Modules.Catalog.Authors.Commands.Delete;
 using Market.Application.Modules.Catalog.Authors.Commands.Update;
 using Market.Application.Modules.Catalog.Authors.Queries.GetById;
 using Market.Application.Modules.Catalog.Authors.Queries.List;
-using Market.Application.Modules.Catalog.Book.Commands.Create;
-using Market.Application.Modules.Catalog.Book.Queries.List;
-using Market.Application.Modules.Catalog.Publishers.Queries;
 namespace Market.API.Controllers;
 
 [ApiController]
@@ -29,7 +26,7 @@ public class AuthorsController(ISender sender) : ControllerBase
     }
 
     [HttpPost]
-    [AllowAnonymous]
+    [Authorize(Policy = "Staff")]
     public async Task<ActionResult<int>> CreateAuthor(CreateAuthorCommand command, CancellationToken ct)
     {
         int id = await sender.Send(command, ct);
@@ -38,7 +35,7 @@ public class AuthorsController(ISender sender) : ControllerBase
     }
 
     [HttpPut("{id:int}")]
-    [AllowAnonymous]
+    [Authorize(Policy = "Staff")]
     public async Task UpdateAuthor(int id, UpdateAuthorCommand command, CancellationToken ct)
     {
         // ID from the route takes precedence
@@ -48,7 +45,7 @@ public class AuthorsController(ISender sender) : ControllerBase
     }
 
     [HttpDelete("{id:int}")]
-    [AllowAnonymous]
+    [Authorize(Policy = "AdminOnly")]
     public async Task<IActionResult> DeleteAuthor(int id, CancellationToken ct)
     {
         await sender.Send(new DeleteAuthorCommand { Id = id }, ct);

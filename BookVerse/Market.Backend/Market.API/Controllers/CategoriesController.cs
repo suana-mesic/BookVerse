@@ -10,7 +10,7 @@ namespace Market.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class CategoriesController(ISender sender) : Controller
+public class CategoriesController(ISender sender) : ControllerBase
 {
     [HttpGet]
     [AllowAnonymous]
@@ -29,7 +29,7 @@ public class CategoriesController(ISender sender) : Controller
     }
 
     [HttpPost]
-    [AllowAnonymous]
+    [Authorize(Policy = "Staff")]
     public async Task<ActionResult<int>> CreateCategory(CreateCategoryCommand command, CancellationToken ct)
     {
         int id = await sender.Send(command, ct);
@@ -38,7 +38,7 @@ public class CategoriesController(ISender sender) : Controller
     }
 
     [HttpPut("{id:int}")]
-    [AllowAnonymous]
+    [Authorize(Policy = "Staff")]
     public async Task UpdateCategory(int id, UpdateCategoryCommand command, CancellationToken ct)
     {
         // ID from the route takes precedence
@@ -48,7 +48,7 @@ public class CategoriesController(ISender sender) : Controller
     }
 
     [HttpDelete("{id:int}")]
-    [AllowAnonymous]
+    [Authorize(Policy = "AdminOnly")]
     public async Task<IActionResult> DeleteCategory(int id, CancellationToken ct)
     {
         await sender.Send(new DeleteCategoryCommand { Id = id }, ct);
@@ -56,7 +56,7 @@ public class CategoriesController(ISender sender) : Controller
     }
 
     [HttpPut("{id:int}/disable")]
-    [AllowAnonymous]
+    [Authorize(Policy = "AdminOnly")]
     public async Task<IActionResult> DisableCategory(int id, CancellationToken ct)
     {
         await sender.Send(new DisableCategoryComamnd { Id = id }, ct);
@@ -64,7 +64,7 @@ public class CategoriesController(ISender sender) : Controller
     }
 
     [HttpPut("{id:int}/enable")]
-    [AllowAnonymous]
+    [Authorize(Policy = "AdminOnly")]
     public async Task<IActionResult> EnableCategory(int id, CancellationToken ct)
     {
         await sender.Send(new EnableCategoryComamnd { Id = id }, ct);

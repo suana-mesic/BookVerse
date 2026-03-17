@@ -34,17 +34,29 @@ public sealed class JwtTokenService : IJwtTokenService
             new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new(ClaimTypes.NameIdentifier,   user.Id.ToString()),
             new(ClaimTypes.Email,            user.Email),
+            new("firstName",   user.FirstName), 
+            new("lastName",    user.LastName),    
+            new("fullName",    $"{user.FirstName} {user.LastName}"),
             new("is_admin",    user.IsAdmin.ToString().ToLowerInvariant()),
             new("is_manager",  user.IsManager.ToString().ToLowerInvariant()),
             new("is_employee", user.IsEmployee.ToString().ToLowerInvariant()),
             new("ver",         user.TokenVersion.ToString()),
             new(JwtRegisteredClaimNames.Iat, ToUnixTimeSeconds(nowInstant).ToString(), ClaimValueTypes.Integer64),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
-            new(JwtRegisteredClaimNames.Aud, _jwt.Audience),
-            new("firstName", user.FirstName),
-            new("lastName", user.LastName),
-            new("fullName", $"{user.FirstName} {user.LastName}"),
+            new(JwtRegisteredClaimNames.Aud, _jwt.Audience)
         };
+
+        // Add role claims for RBAC
+        if (user.IsAdmin)
+            claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+        if (user.IsManager)
+            claims.Add(new Claim(ClaimTypes.Role, "Manager"));
+        if (user.IsEmployee)
+            claims.Add(new Claim(ClaimTypes.Role, "Employee"));
+
+        // Fallback role if no flags are set
+        if (!user.IsAdmin && !user.IsManager && !user.IsEmployee)
+            claims.Add(new Claim(ClaimTypes.Role, "Customer"));
 
         // --- Signature ---
         var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.Key));

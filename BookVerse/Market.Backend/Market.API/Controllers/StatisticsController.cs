@@ -8,7 +8,7 @@ using Market.Application.Modules.Statistics.Queries.Top5Books;
 namespace Market.API.Controllers;
 
 [ApiController]
-[Authorize]
+[Authorize(Policy = "Management")]
 [Route("[controller]")]
 public class StatisticsController(ISender sender) : ControllerBase
 {

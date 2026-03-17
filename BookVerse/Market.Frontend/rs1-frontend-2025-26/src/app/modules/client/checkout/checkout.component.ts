@@ -60,7 +60,6 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
   couponCode = '';
   appliedCoupons: CouponDto[] = [];
   couponError = '';
-  allCoupons: ListCouponsQueryDto[] = [];
 
   addressForm = this.fb.group({
     line1: ['', Validators.required],
@@ -120,13 +119,6 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
 
     this.cartService.getCart().subscribe({
       next: (cart) => (this.cart = cart),
-    });
-
-    this.couponService.getAllCoupons().subscribe({
-      next: (listaKupona) => {
-        this.allCoupons = listaKupona;
-        console.log(listaKupona);
-      },
     });
 
     this.countriesService.getCountries().subscribe((countries) => {

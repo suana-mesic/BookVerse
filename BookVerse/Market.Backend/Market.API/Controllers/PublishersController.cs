@@ -1,6 +1,4 @@
-﻿using Market.Application.Modules.Catalog.Book.Queries.List;
-using Market.Application.Modules.Catalog.Categories.Commands.Delete;
-using Market.Application.Modules.Catalog.Publishers.Commands.Create;
+﻿using Market.Application.Modules.Catalog.Publishers.Commands.Create;
 using Market.Application.Modules.Catalog.Publishers.Commands.Delete;
 using Market.Application.Modules.Catalog.Publishers.Commands.Update;
 using Market.Application.Modules.Catalog.Publishers.Queries.GetById;
@@ -28,7 +26,7 @@ public class PublisherController(ISender sender) : ControllerBase
     }
 
     [HttpPost]
-    [AllowAnonymous]
+    [Authorize(Policy = "Staff")]
     public async Task<IActionResult> CreatePublisher(CreatePublisherCommand command,CancellationToken ct)
     {
         int id = await sender.Send(command, ct);
@@ -37,7 +35,7 @@ public class PublisherController(ISender sender) : ControllerBase
     }
 
     [HttpPut("{id:int}")]
-    [AllowAnonymous]
+    [Authorize(Policy = "Staff")]
     public async Task UpdatePublisher(int id, UpdatePublisherCommand command, CancellationToken ct)
     {
         command.Id = id;
@@ -45,7 +43,7 @@ public class PublisherController(ISender sender) : ControllerBase
     }
 
     [HttpDelete("{id:int}")]
-    [AllowAnonymous]
+    [Authorize(Policy = "AdminOnly")]
     public async Task<IActionResult> DeletePublisher(int id, CancellationToken ct)
     {
         await sender.Send(new DeletePublisherCommand { Id = id }, ct);

@@ -7,12 +7,12 @@ using Market.Application.Modules.Reviews.Queries.ListForBook;
 namespace Market.API.Controllers;
 
 [ApiController]
-[AllowAnonymous]
 [Route("[controller]")]
 public class ReviewsController(ISender sender) : ControllerBase
 {
     //Recenzija za neku knjigu ali samo za trenutnog korisnika
     [HttpGet("{bookId:int}")]
+    [Authorize]
     public async Task<GetReviewsByIdQueryDto> GetById(int bookId, CancellationToken ct)
     {
         var review = await sender.Send(new GetReviewsByIdQuery { BookId = bookId }, ct);
@@ -31,6 +31,7 @@ public class ReviewsController(ISender sender) : ControllerBase
 
     //Poziva se kada korisnik želi napisati novu recenziju
     [HttpPost]
+    [Authorize]
     public async Task<ActionResult> Create(CreateReviewCommand command, CancellationToken ct)
     {
         var poruka = await sender.Send(command, ct);
@@ -39,14 +40,17 @@ public class ReviewsController(ISender sender) : ControllerBase
 
     //Poziva se kada korisnik želi urediti postojeću recenziju
     [HttpPut("{bookId:int}")]
-    public async Task<ActionResult> Update(int bookId, int userId, UpdateReviewCommand command, CancellationToken ct)
+    [Authorize]
+    public async Task<ActionResult> Update(int bookId, UpdateReviewCommand command, CancellationToken ct)
     {
         command.BookId = bookId;
         var result = await sender.Send(command, ct);
         return Ok(result);
     }
 
+    //Poziva se kada korisnik želi izbrisati svoju recenziju
     [HttpDelete("{bookId:int}")]
+    [Authorize]
     public async Task Delete(int bookId, CancellationToken ct)
     {
         await sender.Send(new DeleteReviewCommand { BookId = bookId }, ct);

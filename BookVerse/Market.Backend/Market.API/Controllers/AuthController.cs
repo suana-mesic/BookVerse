@@ -42,7 +42,7 @@ public sealed class AuthController(IMediator mediator) : ControllerBase
     //Vraća(frontendu) → LoginCommandDto sa JWT tokenima ako je kod ispravan
 
     [HttpPost("verify-2fa")]
-    [AllowAnonymous]
+    [Authorize]
     public async Task<ActionResult<LoginCommandDto>> VerifyTwoFactor([FromBody] VerifyTwoFactorCommand command, CancellationToken ct)
     {
         return Ok(await mediator.Send(command, ct));

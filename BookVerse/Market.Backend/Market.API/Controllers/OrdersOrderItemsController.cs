@@ -7,7 +7,6 @@ using Market.Application.Modules.Shopping.OrdersOrderItems.Queries.List;
 using Market.Application.Modules.Shopping.OrdersOrderItems.Queries.ListOrdersForUser;
 using Market.Application.Modules.Shopping.OrdersOrderItems.Queries.PaymentIntentForOrder;
 using Market.Domain.Entities.Shopping;
-using MediatR;
 namespace Market.API.Controllers;
 
 [ApiController]
@@ -15,7 +14,7 @@ namespace Market.API.Controllers;
 [Route("[controller]")]
 public class OrdersOrderItemsController(ISender sender) : ControllerBase
 {
-    //Kada korisnik želi pregledati vlastite narudžbe
+    //Kada korisnik želi pregledati vlastite narudžbe -> DONE
     [HttpGet ("my-orders")]
     public async Task<PageResult<ListOrdersForUserQueryDto>> ListOrdersForUser([FromQuery] ListOrdersForUserQuery query, CancellationToken ct)
     {
@@ -23,21 +22,26 @@ public class OrdersOrderItemsController(ISender sender) : ControllerBase
         return result;
     }
 
-    //Za pregled liste narudžbneki
+    //Za pregled liste narudžbi svih korisnika -> DONE
     [HttpGet]
+    [Authorize(Policy = "Staff")]
     public async Task<PageResult<ListOrderOrderItemsQueryDto>> ListOrdersForAdmin([FromQuery] ListOrderOrderItemsQuery query, CancellationToken ct)
     {
         var result = await sender.Send(query, ct);
         return result;
     }
 
+    // -> DONE
     [HttpGet("{id:int}")]
+    [Authorize(Policy = "Staff")]
+
     public async Task<GetOrderByIdQueryDto> List([FromRoute] int id, CancellationToken ct)
     {
         var result = await sender.Send(new GetOrderByIdQuery { Id = id }, ct);
         return result;
     }
 
+    // -> DONE
     // Poziva se kada korisnik klikne na "Potvrdi narudžbu" u checkout komponenti.
     [HttpPost]
     public async Task<ActionResult<CreateOrderOrderItemsCommandDto>> Create(
@@ -47,8 +51,10 @@ public class OrdersOrderItemsController(ISender sender) : ControllerBase
         return Ok(result);
     }
 
-    // Poziva se kada korisnik klikne na "Potvrdi narudžbu" u checkout komponenti.
+    // -> DONE
+    //Poziva osoblje kada želi promijeniti status narudžbe
     [HttpPut("{id:int}/change-status")]
+    [Authorize(Policy = "Staff")]
     public async Task Create(
    [FromRoute] int id, [FromBody] ChangeStatusRequest request, CancellationToken ct)
     {
@@ -86,6 +92,7 @@ public class OrdersOrderItemsController(ISender sender) : ControllerBase
         return Ok();
     }
 
+    //Poziva user kada želi otkazati narudžbu
     [HttpPost("{id}/cancel")]
     public async Task<IActionResult> CancelOrder(int id)
     {

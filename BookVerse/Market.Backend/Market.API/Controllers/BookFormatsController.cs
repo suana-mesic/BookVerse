@@ -1,10 +1,4 @@
 ﻿using Market.Application.Modules.Catalog.BookFormats.Queries.List;
-using Market.Application.Modules.Catalog.Categories.Commands.Create;
-using Market.Application.Modules.Catalog.Categories.Commands.Delete;
-using Market.Application.Modules.Catalog.Categories.Commands.Update;
-using Market.Application.Modules.Catalog.Categories.Queries.GetById;
-using Market.Application.Modules.Catalog.Categories.Queries.List;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Market.API.Controllers;
 

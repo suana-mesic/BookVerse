@@ -11,7 +11,7 @@ namespace Market.API.Controllers;
 public class AddressesController(ISender sender): ControllerBase
 {
     [HttpGet]
-    [AllowAnonymous]
+    [Authorize]
     public async Task<PageResult<ListAddressesQueryDto>> List([FromQuery] ListAddressesQuery query, CancellationToken ct)
     {
         var result = await sender.Send(query, ct);
@@ -19,7 +19,7 @@ public class AddressesController(ISender sender): ControllerBase
     }
 
     [HttpGet("{id:int}")]
-    [AllowAnonymous]
+    [Authorize]
     public async Task<GetAddressByIdQueryDto> GetById(int id, CancellationToken ct)
     {
         var address = await sender.Send(new GetAddressByIdQuery { Id = id }, ct);
@@ -27,7 +27,7 @@ public class AddressesController(ISender sender): ControllerBase
     }
 
     [HttpPost]
-    [AllowAnonymous]
+    [Authorize]
     public async Task<ActionResult<int>> CreateAddress(CreateAddressCommand command, CancellationToken ct)
     {
         int id = await sender.Send(command, ct);
@@ -36,7 +36,7 @@ public class AddressesController(ISender sender): ControllerBase
     }
 
     [HttpPut("{id:int}")]
-    [AllowAnonymous]
+    [Authorize]
     public async Task UpdateAddress(int id, UpdateAddressCommand command, CancellationToken ct)
     {
         // ID from the route takes precedence
@@ -46,7 +46,7 @@ public class AddressesController(ISender sender): ControllerBase
     }
 
     [HttpDelete("{id:int}")]
-    [AllowAnonymous]
+    [Authorize]
     public async Task<IActionResult> DeleteAddress(int id, CancellationToken ct)
     {
         await sender.Send(new DeleteAddressCommand { Id = id }, ct);

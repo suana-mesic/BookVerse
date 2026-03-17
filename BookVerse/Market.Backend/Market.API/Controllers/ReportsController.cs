@@ -3,7 +3,7 @@ using Market.Application.Modules.Reports.Orders;
 namespace Market.API.Controllers;
 
 [ApiController]
-[Authorize]
+[Authorize(Policy = "Management")] //admin i manager
 [Route("[controller]")]
 public class ReportsController(ISender sender) : ControllerBase
 {

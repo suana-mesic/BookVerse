@@ -3,10 +3,6 @@ using Market.Application.Modules.Shopping.Cart.Commands.Delete;
 using Market.Application.Modules.Shopping.Cart.Commands.Update;
 using Market.Application.Modules.Shopping.Cart.Commands.SaveForLater;
 using Market.Application.Modules.Shopping.Cart.Queries.List;
-using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Market.Application.Modules.Shopping.Cart.Commands.EmptyCart;
 
 namespace Market.API.Controllers;
 
@@ -16,6 +12,7 @@ namespace Market.API.Controllers;
 public class CartController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
+
     public async Task<IActionResult> GetCart(CancellationToken ct)
     {
         var result = await mediator.Send(new ListCartQuery(), ct);
@@ -23,6 +20,7 @@ public class CartController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost]
+
     public async Task<IActionResult> AddToCart([FromBody] CreateCartItemCommand command, CancellationToken ct)
     {
         var result = await mediator.Send(command, ct);
@@ -30,6 +28,7 @@ public class CartController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("quantity")]
+
     public async Task<IActionResult> UpdateQuantity([FromBody] UpdateCartItemCommand command, CancellationToken ct)
     {
         var result = await mediator.Send(command, ct);
@@ -37,6 +36,7 @@ public class CartController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("save-for-later")]
+
     public async Task<IActionResult> SaveForLater([FromBody] SaveForLaterCommand command, CancellationToken ct)
     {
         var result = await mediator.Send(command, ct);
@@ -44,6 +44,7 @@ public class CartController(IMediator mediator) : ControllerBase
     }
 
     [HttpDelete]
+
     public async Task<IActionResult> RemoveFromCart([FromBody] DeleteCartItemCommand command, CancellationToken ct)
     {
         var result = await mediator.Send(command, ct);

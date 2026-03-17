@@ -1,16 +1,16 @@
 ﻿using Market.Application.Modules.Shopping.Coupons.Commands;
 using Market.Application.Modules.Shopping.Coupons.Queries.List;
 using Market.Application.Modules.Shopping.Coupons.Queries.ValidateCoupon;
-using SixLabors.ImageSharp;
 
 namespace Market.API.Controllers;
 
 [ApiController]
-[AllowAnonymous]
 [Route("[controller]")]
 public class CouponsController(ISender sender) : ControllerBase
 {
     [HttpGet("validate-coupon/{code}")]
+    [Authorize]
+
     public async Task<IActionResult> ValidateCoupon(string code, CancellationToken ct)
     {
         var result = await sender.Send(new ValidateCouponQuery { PromotionCode = code }, ct);
@@ -18,6 +18,8 @@ public class CouponsController(ISender sender) : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Policy = "Staff")]
+
     public async Task<List<ListCouponsQueryDto>> List(CancellationToken ct)
     {
         var result = await sender.Send(new ListCouponsQuery(), ct);
@@ -25,6 +27,8 @@ public class CouponsController(ISender sender) : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Policy = "Staff")]
+
     public async Task<ActionResult<int>> Create([FromBody] CreateCouponCommand request, CancellationToken ct)
     {
         var result = await sender.Send(request, ct);
@@ -32,6 +36,7 @@ public class CouponsController(ISender sender) : ControllerBase
     }
 
     [HttpGet("form-config/{couponType}")]
+    [Authorize(Policy = "Staff")]
     public IActionResult GetFormConfig(string couponType)
     {
         var commonFields = new[]

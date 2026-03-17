@@ -7,7 +7,7 @@ using Market.Application.Modules.Shopping.OrdersOrderItems.Queries.List;
 namespace Market.API.Controllers;
 
 [ApiController]
-[Authorize]
+[Authorize(Policy = "Staff")]
 [Route("[controller]")]
 public class InventoryController(ISender sender) : ControllerBase
 {
@@ -49,6 +49,7 @@ public class InventoryController(ISender sender) : ControllerBase
     }
 
     [HttpDelete("store/{storeId:int}/book/{bookId:int}")]
+    [Authorize(Policy = "AdminOnly")]
     public async Task<IActionResult> DeleteInventory(int storeId, int bookId, CancellationToken ct)
     {
         await sender.Send(new DeleteInventoryCommand { StoreId = storeId, BookId = bookId }, ct);

@@ -8,7 +8,6 @@ using Market.Application.Modules.Catalog.Book.Queries.ListMyBooks;
 namespace Market.API.Controllers;
 
 [ApiController]
-[AllowAnonymous]
 [Route("[controller]")]
 public class BooksController(ISender sender) : ControllerBase
 {
@@ -37,6 +36,7 @@ public class BooksController(ISender sender) : ControllerBase
     }
 
     [HttpGet("dropdown")]
+    [Authorize(Policy = "Staff")]
     public async Task<List<ListBooksForAutocompleteQueryDto>> ListBooksForAutocomplete(CancellationToken ct)
     {
         var result = await sender.Send(new ListBooksForAutocompleteQuery(), ct);
@@ -44,7 +44,7 @@ public class BooksController(ISender sender) : ControllerBase
     }
 
     [HttpPost]
-    [AllowAnonymous]
+    [Authorize(Policy = "Staff")]
 
     public async Task<ActionResult<int>> CreateBook(CreateBookCommand command, CancellationToken ct)
     {
@@ -54,7 +54,7 @@ public class BooksController(ISender sender) : ControllerBase
     }
 
     [HttpPut("{id:int}")]
-    [AllowAnonymous]
+    [Authorize(Policy = "Staff")]
 
     public async Task UpdatBook(int id, UpdateBookCommand command, CancellationToken ct)
     {
@@ -65,7 +65,7 @@ public class BooksController(ISender sender) : ControllerBase
     }
 
     [HttpDelete("{id:int}")]
-    [AllowAnonymous]
+    [Authorize(Policy = "AdminOnly")]
     public async Task<IActionResult> DeleteBook(int id, CancellationToken ct)
     {
         await sender.Send(new DeleteBookCommand { Id = id }, ct);
