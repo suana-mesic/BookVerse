@@ -3,14 +3,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { BooksFormService } from '../services/book-form.service';
 import { BaseFormComponent } from '../../../../../core/components/base-classes/base-form-component';
-import { GetBookByIdQueryDto, UpdateBookCommand } from '../../../../../api-services/books/books-api.models';
 import {
-  ProductCategoriesApiService
-} from '../../../../../api-services/product-categories/product-categories-api.service';
+  GetBookByIdQueryDto,
+  UpdateBookCommand,
+} from '../../../../../api-services/books/books-api.models';
+import { ProductCategoriesApiService } from '../../../../../api-services/product-categories/product-categories-api.service';
 import { ToasterService } from '../../../../../core/services/toaster.service';
-import {
-  ListProductCategoriesQueryDto
-} from '../../../../../api-services/product-categories/product-categories-api.model';
+import { ListProductCategoriesQueryDto } from '../../../../../api-services/product-categories/product-categories-api.model';
 import { largePaging } from '../../../../../core/models/paging/paging-utils';
 import { ListBookFormatsQueryDto } from '../../../../../api-services/book-formats/book-format-api.model';
 import { BookFormatApiService } from '../../../../../api-services/book-formats/book-format-api.service';
@@ -20,18 +19,14 @@ import { PublishersService } from '../../../../../api-services/publishers/publis
 import { AuthorsApiService } from '../../../../../api-services/authors/authors-api.service';
 import { BooksApiService } from '../../../../../api-services/books/books-api.service';
 
-
 @Component({
   selector: 'app-products-edit',
   standalone: false,
   templateUrl: './books-edit.component.html',
   styleUrl: './books-edit.component.scss',
-  providers: [BooksFormService]
+  providers: [BooksFormService],
 })
-export class BooksEditComponent
-  extends BaseFormComponent<GetBookByIdQueryDto>
-  implements OnInit {
-
+export class BooksEditComponent extends BaseFormComponent<GetBookByIdQueryDto> implements OnInit {
   private api = inject(BooksApiService);
   private categoriesApi = inject(ProductCategoriesApiService);
   private bookFormatsApi = inject(BookFormatApiService);
@@ -59,14 +54,14 @@ export class BooksEditComponent
     // Load product and categories in parallel
     forkJoin({
       product: this.api.getById(this.productId),
-      categories: this.categoriesApi.list({ onlyEnabled: true, paging: largePaging }),
+      categories: this.categoriesApi.list(),
       bookFormats: this.bookFormatsApi.list({ onlyEnabled: true, paging: largePaging }),
       authors: this.authorsApi.list({ onlyEnabled: true, paging: largePaging }),
       publishers: this.publishersApi.list({ onlyEnabled: true, paging: largePaging }),
     }).subscribe({
       next: ({ product, categories, bookFormats, authors, publishers }) => {
         this.model = product;
-        this.categories = categories.items;
+        this.categories = categories;
         this.bookFormats = bookFormats.items;
         this.authors = authors.items;
         this.publishers = publishers.items;
@@ -78,7 +73,7 @@ export class BooksEditComponent
         this.toaster.error('Product not found');
         console.error('Load product error:', err);
         this.router.navigate(['/admin/products']);
-      }
+      },
     });
   }
 
@@ -103,11 +98,13 @@ export class BooksEditComponent
       quantityInStockForOnlineOrders: this.form.value.quantityInStockForOnlineOrders,
       imageUrl: this.form.value.imageUrl,
       publishedDate: this.form.value.publishedDate
-        ? new Date(Date.UTC(
-          this.form.value.publishedDate.getFullYear(),
-          this.form.value.publishedDate.getMonth(),
-          this.form.value.publishedDate.getDate()
-        ))
+        ? new Date(
+            Date.UTC(
+              this.form.value.publishedDate.getFullYear(),
+              this.form.value.publishedDate.getMonth(),
+              this.form.value.publishedDate.getDate(),
+            ),
+          )
         : null,
     };
 
@@ -120,7 +117,7 @@ export class BooksEditComponent
       error: (err) => {
         this.stopLoading('Failed to update product');
         console.error('Update product error:', err);
-      }
+      },
     });
   }
 

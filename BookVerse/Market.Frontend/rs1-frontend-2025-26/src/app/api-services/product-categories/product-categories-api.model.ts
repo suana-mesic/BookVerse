@@ -12,6 +12,10 @@ export class ListProductCategoriesRequest extends BasePagedQuery {
   onlyEnabled?: boolean | null;
 }
 
+export class ListProductCategoriesQuery {
+  search?: string | null;
+}
+
 /**
  * Response item for GET /ProductCategories
  * Corresponds to: ListProductCategoriesQueryDto.cs
