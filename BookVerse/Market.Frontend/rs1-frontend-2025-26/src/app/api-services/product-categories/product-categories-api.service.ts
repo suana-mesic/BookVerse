@@ -7,7 +7,9 @@ import {
   ListProductCategoriesResponse,
   GetProductCategoryByIdQueryDto,
   CreateProductCategoryCommand,
-  UpdateProductCategoryCommand
+  UpdateProductCategoryCommand,
+  ListProductCategoriesQueryDto,
+  ListProductCategoriesQuery,
 } from './product-categories-api.model';
 import { buildHttpParams } from '../../core/models/build-http-params';
 
@@ -22,10 +24,20 @@ export class ProductCategoriesApiService {
    * GET /ProductCategories
    * List categories with optional query parameters.
    */
-  list(request?: ListProductCategoriesRequest): Observable<ListProductCategoriesResponse> {
+  list(request?: ListProductCategoriesQuery): Observable<ListProductCategoriesQueryDto[]> {
     const params = request ? buildHttpParams(request as any) : undefined;
 
-    return this.http.get<ListProductCategoriesResponse>(this.baseUrl, {
+    return this.http.get<ListProductCategoriesQueryDto[]>(this.baseUrl, { params });
+  }
+
+  /**
+   * GET /ProductCategories
+   * List categories with optional query parameters.
+   */
+  listPaged(request?: ListProductCategoriesRequest): Observable<ListProductCategoriesResponse> {
+    const params = request ? buildHttpParams(request as any) : undefined;
+
+    return this.http.get<ListProductCategoriesResponse>(`${this.baseUrl}/list-paged`, {
       params,
     });
   }

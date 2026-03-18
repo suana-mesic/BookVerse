@@ -19,33 +19,33 @@ import { ProductCategoryUpsertComponent } from './product-category-upsert/produc
 })
 export class ProductCategoriesComponent
   extends BaseListPagedComponent<ListProductCategoriesQueryDto, ListProductCategoriesRequest>
-  implements OnInit {
+  implements OnInit
+{
   private api = inject(ProductCategoriesApiService);
   private dialog = inject(MatDialog);
   private toaster = inject(ToasterService);
   private dialogHelper = inject(DialogHelperService);
 
   displayedColumns: string[] = ['name', 'isEnabled', 'actions'];
-  showOnlyEnabled = true;
+  showOnlyEnabled = false;
 
-  editingCategoryId:number|null=null;
-  editingName:string='';
+  editingCategoryId: number | null = null;
+  editingName: string = '';
 
-  
   constructor() {
     super();
     this.request = new ListProductCategoriesRequest();
-    this.request.onlyEnabled = true;
+    this.request.onlyEnabled = false;
   }
-  
+
   ngOnInit(): void {
     this.initList();
   }
-  
+
   protected loadPagedData(): void {
     this.startLoading();
-    
-    this.api.list(this.request).subscribe({
+
+    this.api.listPaged(this.request).subscribe({
       next: (response) => {
         this.handlePageResult(response);
         this.stopLoading();
@@ -56,7 +56,7 @@ export class ProductCategoriesComponent
       },
     });
   }
-  
+
   // === Filters ===
 
   onSearchChange(searchTerm: string): void {
@@ -116,7 +116,7 @@ export class ProductCategoriesComponent
   }
 
   onDelete(category: ListProductCategoriesQueryDto): void {
-    this.dialogHelper.productCategory.confirmDelete(category.name).subscribe(result => {
+    this.dialogHelper.productCategory.confirmDelete(category.name).subscribe((result) => {
       if (result && result.button === DialogButton.DELETE) {
         this.performDelete(category);
       }
@@ -137,10 +137,9 @@ export class ProductCategoriesComponent
         const errorMessage = this.extractErrorMessage(err);
 
         // Show error dialog instead of toast
-        this.dialogHelper.showError(
-          'DIALOGS.TITLES.ERROR',
-          'BOOKS_CATEGORIES.DIALOGS.ERROR_DELETE'
-        ).subscribe();
+        this.dialogHelper
+          .showError('DIALOGS.TITLES.ERROR', 'BOOKS_CATEGORIES.DIALOGS.ERROR_DELETE')
+          .subscribe();
 
         console.error('Delete category error:', err);
       },
@@ -168,11 +167,13 @@ export class ProductCategoriesComponent
 
         if (err.status === 409) {
           // Business rule conflict - show dialog for important errors
-          this.dialogHelper.showWarning(
-            'DIALOGS.TITLES.WARNING',
-            errorMessage || 'BOOKS_CATEGORIES.DIALOGS.ERROR_TOGGLE',
-            { name: category.name }
-          ).subscribe();
+          this.dialogHelper
+            .showWarning(
+              'DIALOGS.TITLES.WARNING',
+              errorMessage || 'BOOKS_CATEGORIES.DIALOGS.ERROR_TOGGLE',
+              { name: category.name },
+            )
+            .subscribe();
         } else {
           // Generic error - just toast
           this.toaster.error(errorMessage || 'Failed to change category status');
@@ -220,21 +221,21 @@ export class ProductCategoriesComponent
     return null;
   }
 
-  startEdit(category:ListProductCategoriesQueryDto){
-    this.editingCategoryId=category.id;
-    this.editingName=category.name;
+  startEdit(category: ListProductCategoriesQueryDto) {
+    this.editingCategoryId = category.id;
+    this.editingName = category.name;
   }
   cancelEdit(): void {
     this.editingCategoryId = null;
     this.editingName = '';
   }
   saveEdit(category: ListProductCategoriesQueryDto) {
-    if(!this.editingName.trim() || this.editingName == category.name){
+    if (!this.editingName.trim() || this.editingName == category.name) {
       this.cancelEdit();
       return;
     }
-    this.api.update(category.id, {name:this.editingName}).subscribe({
-      next:()=>{
+    this.api.update(category.id, { name: this.editingName }).subscribe({
+      next: () => {
         this.toaster.success('Category updated successfully');
         this.cancelEdit();
         this.loadPagedData();
@@ -242,7 +243,7 @@ export class ProductCategoriesComponent
       error: (err) => {
         this.toaster.error('Failed to update category');
         console.error(err);
-      }
-    })
+      },
+    });
   }
 }

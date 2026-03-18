@@ -5,6 +5,7 @@ using Market.Application.Modules.Catalog.Categories.Commands.Status.Enable;
 using Market.Application.Modules.Catalog.Categories.Commands.Update;
 using Market.Application.Modules.Catalog.Categories.Queries.GetById;
 using Market.Application.Modules.Catalog.Categories.Queries.List;
+using Market.Application.Modules.Catalog.Categories.Queries.ListPaged;
 
 namespace Market.API.Controllers;
 
@@ -12,9 +13,19 @@ namespace Market.API.Controllers;
 [Route("[controller]")]
 public class CategoriesController(ISender sender) : ControllerBase
 {
+    //Only enabled categories -> used for adding books
     [HttpGet]
     [AllowAnonymous]
     public async Task<List<ListCategoriesQueryDto>> List([FromQuery] ListCategoriesQuery query, CancellationToken ct)
+    {
+        var result = await sender.Send(query, ct);
+        return result;
+    }
+
+    //Paged result
+    [HttpGet("list-paged")]
+    [AllowAnonymous]
+    public async Task<PageResult<ListCategoriesPagedQueryDto>> ListPaged([FromQuery] ListCategoriesPagedQuery query, CancellationToken ct)
     {
         var result = await sender.Send(query, ct);
         return result;

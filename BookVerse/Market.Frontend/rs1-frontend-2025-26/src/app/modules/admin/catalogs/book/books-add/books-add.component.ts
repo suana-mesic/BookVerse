@@ -1,15 +1,14 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BooksFormService } from '../services/book-form.service';
-import { CreateBookCommand, GetBookByIdQueryDto } from '../../../../../api-services/books/books-api.models';
+import {
+  CreateBookCommand,
+  GetBookByIdQueryDto,
+} from '../../../../../api-services/books/books-api.models';
 import { BaseFormComponent } from '../../../../../core/components/base-classes/base-form-component';
-import {
-  ProductCategoriesApiService
-} from '../../../../../api-services/product-categories/product-categories-api.service';
+import { ProductCategoriesApiService } from '../../../../../api-services/product-categories/product-categories-api.service';
 import { ToasterService } from '../../../../../core/services/toaster.service';
-import {
-  ListProductCategoriesQueryDto
-} from '../../../../../api-services/product-categories/product-categories-api.model';
+import { ListProductCategoriesQueryDto } from '../../../../../api-services/product-categories/product-categories-api.model';
 import { largePaging } from '../../../../../core/models/paging/paging-utils';
 import { PublishersService } from '../../../../../api-services/publishers/publishers-api.service';
 import { ListPublishersQueryDto } from '../../../../../api-services/publishers/publishers-api.model';
@@ -24,12 +23,9 @@ import { BooksApiService } from '../../../../../api-services/books/books-api.ser
   standalone: false,
   templateUrl: './books-add.component.html',
   styleUrl: './books-add.component.scss',
-  providers: [BooksFormService]
+  providers: [BooksFormService],
 })
-export class BooksAddComponent
-  extends BaseFormComponent<GetBookByIdQueryDto>
-  implements OnInit {
-
+export class BooksAddComponent extends BaseFormComponent<GetBookByIdQueryDto> implements OnInit {
   private api = inject(BooksApiService);
   private categoriesApi = inject(ProductCategoriesApiService);
   private publishersApi = inject(PublishersService);
@@ -69,14 +65,17 @@ export class BooksAddComponent
       language: this.form.value.language,
       pageCount: this.form.value.pageCount,
       description: this.form.value.description,
-      quantityInStockForOnlineOrders: this.form.value.quantityInStockForOnlineOrders == "" ? null : this.form.value.quantityInStockForOnlineOrders,
+      quantityInStockForOnlineOrders:
+        this.form.value.quantityInStockForOnlineOrders == ''
+          ? null
+          : this.form.value.quantityInStockForOnlineOrders,
       publisherId: this.form.value.publisherId,
       price: this.form.value.price,
       bookFormatId: this.form.value.bookFormatId,
       publishedDate: this.form.value.publishedDate,
       imageUrl: this.form.value.imageUrl,
       categoryIds: this.form.value.categoryIds,
-      authorIds: this.form.value.authorIds
+      authorIds: this.form.value.authorIds,
     };
 
     this.api.create(command).subscribe({
@@ -88,19 +87,19 @@ export class BooksAddComponent
       error: (err) => {
         this.stopLoading('Failed to create product');
         console.error('Create product error:', err);
-      }
+      },
     });
   }
 
   private loadCategories(): void {
-    this.categoriesApi.list({ onlyEnabled: true, paging: largePaging }).subscribe({
+    this.categoriesApi.list().subscribe({
       next: (response) => {
-        this.categories = response.items;
+        this.categories = response;
       },
       error: (err) => {
         this.toaster.error('Failed to load categories');
         console.error('Load categories error:', err);
-      }
+      },
     });
   }
   private loadPublishers(): void {
@@ -111,7 +110,7 @@ export class BooksAddComponent
       error: (err) => {
         this.toaster.error('Failed to load publishers');
         console.error('Load publishers error:', err);
-      }
+      },
     });
   }
 
@@ -123,7 +122,7 @@ export class BooksAddComponent
       error: (err) => {
         this.toaster.error('Failed to load book formats');
         console.error('Load book formats error:', err);
-      }
+      },
     });
   }
 
@@ -135,7 +134,7 @@ export class BooksAddComponent
       error: (err) => {
         this.toaster.error('Failed to load authors');
         console.error('Load authors error:', err);
-      }
+      },
     });
   }
   protected override initForm(isEdit: boolean): void {
