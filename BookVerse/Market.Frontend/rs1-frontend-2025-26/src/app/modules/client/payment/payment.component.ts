@@ -1,12 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToasterService } from '../../core/services/toaster.service';
-import { OrdersApiService } from '../../../api-services/orders/orders-api.service';
 import { loadStripe, Stripe, StripeElements, StripePaymentElement } from '@stripe/stripe-js';
 import { BaseComponent } from '../../core/components/base-classes/base-component';
 import { CaptchaApiService } from '../../../api-services/captcha/captcha-api.service';
 import { CartApiService } from '../../../api-services/cart/cart-api.service';
-
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-payment',
   standalone: false,
@@ -18,6 +17,7 @@ export class PaymentComponent extends BaseComponent implements OnInit {
   private toaster = inject(ToasterService);
   private captchaService = inject(CaptchaApiService);
   private cartService = inject(CartApiService);
+  private location = inject(Location);
 
   captchaImage: string = '';
   captchaToken: string = '';
@@ -129,5 +129,9 @@ export class PaymentComponent extends BaseComponent implements OnInit {
       this.stopLoading();
       this.toaster.error(error.message ?? 'Greška pri plaćanju.');
     }
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 }

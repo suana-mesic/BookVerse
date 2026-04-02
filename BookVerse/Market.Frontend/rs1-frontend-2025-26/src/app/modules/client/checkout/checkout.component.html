@@ -1,64 +1,70 @@
 <app-header></app-header>
+
 <div class="checkout-container">
-  <!-- STEPPER -->
-  <div class="stepper">
-    <div class="step" [class.active]="currentStep === 1" [class.completed]="currentStep > 1">
-      <div class="step-circle">1</div>
-      <span>Adresa dostave</span>
-    </div>
-    <div class="step-line" [class.completed]="currentStep > 1"></div>
-    <div class="step" [class.active]="currentStep === 2" [class.completed]="currentStep > 2">
-      <div class="step-circle">2</div>
-      <span>Način dostave</span>
-    </div>
-    <div class="step-line" [class.completed]="currentStep > 2"></div>
-    <div class="step" [class.active]="currentStep === 3">
-      <div class="step-circle">3</div>
-      <span>Pregled narudžbe</span>
-    </div>
-  </div>
-
-  <!-- KORAK 1 — ADRESA -->
-  <div *ngIf="currentStep === 1" class="step-content">
-    <h3>Adresa dostave</h3>
-
-    <div *ngIf="userAddress?.line1" class="existing-address">
-      <label class="radio-card" [class.selected]="useExistingAddress">
-        <input type="radio" [(ngModel)]="useExistingAddress" [value]="true" />
-        <div class="radio-card-content">
-          <strong>Moja adresa</strong>
-          <p>{{ userAddress?.line1 }}</p>
-          <p *ngIf="userAddress?.line2">{{ userAddress?.line2 }}</p>
-          <p>{{ userAddress?.city }}, {{ userAddress?.country }}</p>
-        </div>
-      </label>
-
-      <label class="radio-card" [class.selected]="!useExistingAddress">
-        <input type="radio" [(ngModel)]="useExistingAddress" [value]="false" />
-        <div class="radio-card-content">
-          <strong>Unesi novu adresu</strong>
-        </div>
-      </label>
+  <a class="back-nav" (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+    Nazad
+  </a>
+  <div class="checkout-container">
+    <!-- STEPPER -->
+    <div class="stepper">
+      <div class="step" [class.active]="currentStep === 1" [class.completed]="currentStep > 1">
+        <div class="step-circle">1</div>
+        <span>Adresa dostave</span>
+      </div>
+      <div class="step-line" [class.completed]="currentStep > 1"></div>
+      <div class="step" [class.active]="currentStep === 2" [class.completed]="currentStep > 2">
+        <div class="step-circle">2</div>
+        <span>Način dostave</span>
+      </div>
+      <div class="step-line" [class.completed]="currentStep > 2"></div>
+      <div class="step" [class.active]="currentStep === 3">
+        <div class="step-circle">3</div>
+        <span>Pregled narudžbe</span>
+      </div>
     </div>
 
-    <form
-      [formGroup]="addressForm"
-      *ngIf="!useExistingAddress || !userAddress?.line1"
-      class="address-form"
-    >
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Ulica i broj</mat-label>
-        <input matInput formControlName="line1" placeholder="npr. Ul. Maršala Tita 10" />
-        <mat-error *ngIf="addressForm.get('line1')?.hasError('required')">
-          Ulica i broj su obavezni.
-        </mat-error>
-      </mat-form-field>
+    <!-- KORAK 1 — ADRESA -->
+    <div *ngIf="currentStep === 1" class="step-content">
+      <h3>Adresa dostave</h3>
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Stan, sprat (opcionalno)</mat-label>
-        <input matInput formControlName="line2" />
-      </mat-form-field>
-      <!-- 
+      <div *ngIf="userAddress?.line1" class="existing-address">
+        <label class="radio-card" [class.selected]="useExistingAddress">
+          <input type="radio" [(ngModel)]="useExistingAddress" [value]="true" />
+          <div class="radio-card-content">
+            <strong>Moja adresa</strong>
+            <p>{{ userAddress?.line1 }}</p>
+            <p *ngIf="userAddress?.line2">{{ userAddress?.line2 }}</p>
+            <p>{{ userAddress?.city }}, {{ userAddress?.country }}</p>
+          </div>
+        </label>
+
+        <label class="radio-card" [class.selected]="!useExistingAddress">
+          <input type="radio" [(ngModel)]="useExistingAddress" [value]="false" />
+          <div class="radio-card-content">
+            <strong>Unesi novu adresu</strong>
+          </div>
+        </label>
+      </div>
+
+      <form
+        [formGroup]="addressForm"
+        *ngIf="!useExistingAddress || !userAddress?.line1"
+        class="address-form"
+      >
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Ulica i broj</mat-label>
+          <input matInput formControlName="line1" placeholder="npr. Ul. Maršala Tita 10" />
+          <mat-error *ngIf="addressForm.get('line1')?.hasError('required')">
+            Ulica i broj su obavezni.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Stan, sprat (opcionalno)</mat-label>
+          <input matInput formControlName="line2" />
+        </mat-form-field>
+        <!-- 
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Grad</mat-label>
         <input matInput formControlName="city" placeholder="npr. Sarajevo" />
@@ -75,208 +81,211 @@
         </mat-error>
       </mat-form-field> -->
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Država</mat-label>
-        <mat-select formControlName="country" (selectionChange)="onCountryChange($event.value)">
-          <mat-option *ngFor="let country of countries" [value]="country">
-            {{ country }}
-          </mat-option>
-        </mat-select>
-        <mat-error>Država je obavezna.</mat-error>
-      </mat-form-field>
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Grad</mat-label>
-        <mat-select formControlName="city">
-          <mat-option *ngIf="loadingCities" disabled>Učitavanje...</mat-option>
-          <mat-option *ngFor="let city of cities" [value]="city">
-            {{ city }}
-          </mat-option>
-        </mat-select>
-        <mat-error>Grad je obavezan.</mat-error>
-      </mat-form-field>
-    </form>
-
-    <div class="step-actions">
-      <button mat-raised-button color="primary" (click)="nextStep()" [disabled]="!isStep1Valid()">
-        Nastavi →
-      </button>
-    </div>
-  </div>
-
-  <!-- KORAK 2 — NAČIN DOSTAVE -->
-  <div *ngIf="currentStep === 2" class="step-content">
-    <h3>Način dostave</h3>
-
-    <div class="delivery-type">
-      <label
-        class="radio-card"
-        [class.selected]="deliveryType === 'shipping'"
-        [class.unavailable]="!isBookAvailableForShipping()"
-      >
-        <input
-          type="radio"
-          [(ngModel)]="deliveryType"
-          value="shipping"
-          [disabled]="!isBookAvailableForShipping()"
-        />
-        <div class="radio-card-content">
-          <strong>🚚 Dostava kurirskom službom</strong>
-          <p *ngIf="!isBookAvailableForShipping()" class="unavailable-text">
-            ⚠️ Nedostupne knjige: {{ getUnavailableBooksForShipping().join(', ') }}
-          </p>
-        </div>
-      </label>
-
-      <label class="radio-card" [class.selected]="deliveryType === 'pickup'">
-        <input type="radio" [(ngModel)]="deliveryType" value="pickup" />
-        <div class="radio-card-content">
-          <strong>🏪 Preuzimanje u prodavnici</strong>
-        </div>
-      </label>
-    </div>
-
-    <div *ngIf="deliveryType === 'shipping'" class="shipping-methods">
-      <h4>Odaberi kurirsku službu:</h4>
-      <label
-        class="radio-card"
-        *ngFor="let method of shippingMethods"
-        [class.selected]="selectedShippingMethodId === method.id"
-        [class.unavailable]="!isBookAvailableForShipping()"
-      >
-        <input
-          type="radio"
-          [(ngModel)]="selectedShippingMethodId"
-          [value]="method.id"
-          [disabled]="!isBookAvailableForShipping()"
-        />
-        <div class="radio-card-content">
-          <strong>{{ method.name }}</strong>
-          <p>{{ method.description }}</p>
-          <span class="price">{{ method.price | number: '1.2-2' : 'en' }} KM</span>
-        </div>
-      </label>
-    </div>
-
-    <div *ngIf="deliveryType === 'pickup'" class="stores">
-      <h4>Odaberi prodavnicu:</h4>
-      <label
-        class="radio-card"
-        *ngFor="let store of stores"
-        [class.selected]="selectedStoreId === store.id"
-        [class.unavailable]="!isBookAvailableInStore(store.id)"
-      >
-        <input
-          type="radio"
-          [(ngModel)]="selectedStoreId"
-          [value]="store.id"
-          [disabled]="!isBookAvailableInStore(store.id)"
-        />
-        <div class="radio-card-content">
-          <strong>{{ store.storeName }}</strong>
-          <p>{{ store.line1 }}, {{ store.city }}</p>
-          <p>📞 {{ store.phone }}</p>
-          <p>🕐 {{ store.openingHours }}</p>
-          <p *ngIf="!isBookAvailableInStore(store.id)" class="unavailable-text">
-            ⚠️ Nedostupno: {{ getUnavailableBooksForStore(store.id).join(', ') }}
-          </p>
-        </div>
-      </label>
-    </div>
-
-    <div class="step-actions">
-      <button mat-button (click)="prevStep()">← Nazad</button>
-      <button mat-raised-button color="primary" (click)="nextStep()" [disabled]="!isStep2Valid()">
-        Nastavi →
-      </button>
-    </div>
-  </div>
-
-  <!-- KORAK 3 — PREGLED -->
-  <div *ngIf="currentStep === 3" class="step-content">
-    <h3>Pregled narudžbe</h3>
-
-    <div class="review-section">
-      <h4>Adresa dostave</h4>
-      <p>{{ getDeliveryAddress()?.line1 }}</p>
-      <p *ngIf="getDeliveryAddress()?.line2">{{ getDeliveryAddress()?.line2 }}</p>
-      <p>{{ getDeliveryAddress()?.city }}, {{ getDeliveryAddress()?.country }}</p>
-    </div>
-
-    <div class="review-section">
-      <h4>Način dostave</h4>
-      <div *ngIf="deliveryType === 'shipping'">
-        <p>{{ getSelectedShippingMethod()?.name }}</p>
-        <p>Cijena dostave: {{ getSelectedShippingMethod()?.price | number: '1.2-2' : 'en' }} KM</p>
-      </div>
-      <div *ngIf="deliveryType === 'pickup'">
-        <p>Preuzimanje u: {{ getSelectedStore()?.storeName }}</p>
-        <p>{{ getSelectedStore()?.line1 }}, {{ getSelectedStore()?.city }}</p>
-      </div>
-    </div>
-
-    <!-- KUPON -->
-    <div class="review-section">
-      <h4>Kupon / Promo kod</h4>
-
-      <div class="coupon-input">
-        <mat-form-field appearance="outline" class="coupon-field">
-          <mat-label>Unesi promo kod</mat-label>
-          <input matInput [formControl]="uneseniKupon" placeholder="npr. SUMMER20" />
-          @if (uneseniKupon.pending) {
-            <mat-hint>Provjeravam kupon...</mat-hint>
-          }
-          @if (uneseniKupon.hasError('kuponNePostoji')) {
-            <mat-error>Uneseni kupon ne postoji ili je istekao!</mat-error>
-          }
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Država</mat-label>
+          <mat-select formControlName="country" (selectionChange)="onCountryChange($event.value)">
+            <mat-option *ngFor="let country of countries" [value]="country">
+              {{ country }}
+            </mat-option>
+          </mat-select>
+          <mat-error>Država je obavezna.</mat-error>
         </mat-form-field>
-        <button
-          mat-raised-button
-          color="accent"
-          (click)="applyCoupon()"
-          [disabled]="!uneseniKupon.valid || !uneseniKupon.value || uneseniKupon.pending"
-        >
-          Primijeni
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Grad</mat-label>
+          <mat-select formControlName="city">
+            <mat-option *ngIf="loadingCities" disabled>Učitavanje...</mat-option>
+            <mat-option *ngFor="let city of cities" [value]="city">
+              {{ city }}
+            </mat-option>
+          </mat-select>
+          <mat-error>Grad je obavezan.</mat-error>
+        </mat-form-field>
+      </form>
+
+      <div class="step-actions">
+        <button mat-raised-button color="primary" (click)="nextStep()" [disabled]="!isStep1Valid()">
+          Nastavi →
         </button>
       </div>
+    </div>
 
-      <div *ngFor="let coupon of appliedCoupons" class="applied-coupon">
-        <span class="coupon-badge">🏷️ {{ coupon.name }}</span>
-        <span *ngIf="coupon.amountOff">- {{ coupon.amountOff | number: '1.2-2' : 'en' }} KM</span>
-        <span *ngIf="coupon.percentOff">- {{ coupon.percentOff }}%</span>
-        <button mat-icon-button color="warn" (click)="removeCoupon(coupon.id)">✕</button>
+    <!-- KORAK 2 — NAČIN DOSTAVE -->
+    <div *ngIf="currentStep === 2" class="step-content">
+      <h3>Način dostave</h3>
+
+      <div class="delivery-type">
+        <label
+          class="radio-card"
+          [class.selected]="deliveryType === 'shipping'"
+          [class.unavailable]="!isBookAvailableForShipping()"
+        >
+          <input
+            type="radio"
+            [(ngModel)]="deliveryType"
+            value="shipping"
+            [disabled]="!isBookAvailableForShipping()"
+          />
+          <div class="radio-card-content">
+            <strong>🚚 Dostava kurirskom službom</strong>
+            <p *ngIf="!isBookAvailableForShipping()" class="unavailable-text">
+              ⚠️ Nedostupne knjige: {{ getUnavailableBooksForShipping().join(', ') }}
+            </p>
+          </div>
+        </label>
+
+        <label class="radio-card" [class.selected]="deliveryType === 'pickup'">
+          <input type="radio" [(ngModel)]="deliveryType" value="pickup" />
+          <div class="radio-card-content">
+            <strong>🏪 Preuzimanje u prodavnici</strong>
+          </div>
+        </label>
+      </div>
+
+      <div *ngIf="deliveryType === 'shipping'" class="shipping-methods">
+        <h4>Odaberi kurirsku službu:</h4>
+        <label
+          class="radio-card"
+          *ngFor="let method of shippingMethods"
+          [class.selected]="selectedShippingMethodId === method.id"
+          [class.unavailable]="!isBookAvailableForShipping()"
+        >
+          <input
+            type="radio"
+            [(ngModel)]="selectedShippingMethodId"
+            [value]="method.id"
+            [disabled]="!isBookAvailableForShipping()"
+          />
+          <div class="radio-card-content">
+            <strong>{{ method.name }}</strong>
+            <p>{{ method.description }}</p>
+            <span class="price">{{ method.price | number: '1.2-2' : 'en' }} KM</span>
+          </div>
+        </label>
+      </div>
+
+      <div *ngIf="deliveryType === 'pickup'" class="stores">
+        <h4>Odaberi prodavnicu:</h4>
+        <label
+          class="radio-card"
+          *ngFor="let store of stores"
+          [class.selected]="selectedStoreId === store.id"
+          [class.unavailable]="!isBookAvailableInStore(store.id)"
+        >
+          <input
+            type="radio"
+            [(ngModel)]="selectedStoreId"
+            [value]="store.id"
+            [disabled]="!isBookAvailableInStore(store.id)"
+          />
+          <div class="radio-card-content">
+            <strong>{{ store.storeName }}</strong>
+            <p>{{ store.line1 }}, {{ store.city }}</p>
+            <p>📞 {{ store.phone }}</p>
+            <p>🕐 {{ store.openingHours }}</p>
+            <p *ngIf="!isBookAvailableInStore(store.id)" class="unavailable-text">
+              ⚠️ Nedostupno: {{ getUnavailableBooksForStore(store.id).join(', ') }}
+            </p>
+          </div>
+        </label>
+      </div>
+
+      <div class="step-actions">
+        <button mat-button (click)="prevStep()">← Nazad</button>
+        <button mat-raised-button color="primary" (click)="nextStep()" [disabled]="!isStep2Valid()">
+          Nastavi →
+        </button>
       </div>
     </div>
 
-    <!-- PREGLED CIJENE -->
-    <div class="review-section price-summary">
-      <h4>Pregled cijene</h4>
-      <div class="price-row">
-        <span>Cijena proizvoda:</span>
-        <strong>{{ cart.totalPrice | number: '1.2-2' : 'en' }} KM</strong>
-      </div>
-      <div class="price-row" *ngIf="deliveryType === 'shipping' && getSelectedShippingMethod()">
-        <span>Dostava ({{ getSelectedShippingMethod()?.name }}):</span>
-        <strong>{{ getSelectedShippingMethod()?.price | number: '1.2-2' : 'en' }} KM</strong>
-      </div>
-      <div class="price-row" *ngIf="deliveryType === 'pickup'">
-        <span>Dostava:</span>
-        <strong>Besplatno</strong>
-      </div>
-      <div class="price-row discount" *ngIf="appliedCoupons.length > 0">
-        <span>Popust:</span>
-        <strong>- {{ getDiscountAmount(cart.totalPrice) | number: '1.2-2' : 'en' }} KM</strong>
-      </div>
-      <div class="price-row total">
-        <span>Ukupno za plaćanje:</span>
-        <strong>{{ getFinalPrice() | number: '1.2-2' : 'en' }} KM</strong>
-      </div>
-    </div>
+    <!-- KORAK 3 — PREGLED -->
+    <div *ngIf="currentStep === 3" class="step-content">
+      <h3>Pregled narudžbe</h3>
 
-    <div class="step-actions">
-      <button mat-button (click)="prevStep()">← Nazad</button>
-      <button mat-raised-button color="primary" (click)="proceedToPayment()">
-        Potvrdi i plati narudžbu →
-      </button>
+      <div class="review-section">
+        <h4>Adresa dostave</h4>
+        <p>{{ getDeliveryAddress()?.line1 }}</p>
+        <p *ngIf="getDeliveryAddress()?.line2">{{ getDeliveryAddress()?.line2 }}</p>
+        <p>{{ getDeliveryAddress()?.city }}, {{ getDeliveryAddress()?.country }}</p>
+      </div>
+
+      <div class="review-section">
+        <h4>Način dostave</h4>
+        <div *ngIf="deliveryType === 'shipping'">
+          <p>{{ getSelectedShippingMethod()?.name }}</p>
+          <p>
+            Cijena dostave: {{ getSelectedShippingMethod()?.price | number: '1.2-2' : 'en' }} KM
+          </p>
+        </div>
+        <div *ngIf="deliveryType === 'pickup'">
+          <p>Preuzimanje u: {{ getSelectedStore()?.storeName }}</p>
+          <p>{{ getSelectedStore()?.line1 }}, {{ getSelectedStore()?.city }}</p>
+        </div>
+      </div>
+
+      <!-- KUPON -->
+      <div class="review-section">
+        <h4>Kupon / Promo kod</h4>
+
+        <div class="coupon-input">
+          <mat-form-field appearance="outline" class="coupon-field">
+            <mat-label>Unesi promo kod</mat-label>
+            <input matInput [formControl]="uneseniKupon" placeholder="npr. SUMMER20" />
+            @if (uneseniKupon.pending) {
+              <mat-hint>Provjeravam kupon...</mat-hint>
+            }
+            @if (uneseniKupon.hasError('kuponNePostoji')) {
+              <mat-error>Uneseni kupon ne postoji ili je istekao!</mat-error>
+            }
+          </mat-form-field>
+          <button
+            mat-raised-button
+            color="accent"
+            (click)="applyCoupon()"
+            [disabled]="!uneseniKupon.valid || !uneseniKupon.value || uneseniKupon.pending"
+          >
+            Primijeni
+          </button>
+        </div>
+
+        <div *ngFor="let coupon of appliedCoupons" class="applied-coupon">
+          <span class="coupon-badge">🏷️ {{ coupon.name }}</span>
+          <span *ngIf="coupon.amountOff">- {{ coupon.amountOff | number: '1.2-2' : 'en' }} KM</span>
+          <span *ngIf="coupon.percentOff">- {{ coupon.percentOff }}%</span>
+          <button mat-icon-button color="warn" (click)="removeCoupon(coupon.id)">✕</button>
+        </div>
+      </div>
+
+      <!-- PREGLED CIJENE -->
+      <div class="review-section price-summary">
+        <h4>Pregled cijene</h4>
+        <div class="price-row">
+          <span>Cijena proizvoda:</span>
+          <strong>{{ cart.totalPrice | number: '1.2-2' : 'en' }} KM</strong>
+        </div>
+        <div class="price-row" *ngIf="deliveryType === 'shipping' && getSelectedShippingMethod()">
+          <span>Dostava ({{ getSelectedShippingMethod()?.name }}):</span>
+          <strong>{{ getSelectedShippingMethod()?.price | number: '1.2-2' : 'en' }} KM</strong>
+        </div>
+        <div class="price-row" *ngIf="deliveryType === 'pickup'">
+          <span>Dostava:</span>
+          <strong>Besplatno</strong>
+        </div>
+        <div class="price-row discount" *ngIf="appliedCoupons.length > 0">
+          <span>Popust:</span>
+          <strong>- {{ getDiscountAmount(cart.totalPrice) | number: '1.2-2' : 'en' }} KM</strong>
+        </div>
+        <div class="price-row total">
+          <span>Ukupno za plaćanje:</span>
+          <strong>{{ getFinalPrice() | number: '1.2-2' : 'en' }} KM</strong>
+        </div>
+      </div>
+
+      <div class="step-actions">
+        <button mat-button (click)="prevStep()">← Nazad</button>
+        <button mat-raised-button color="primary" (click)="proceedToPayment()">
+          Potvrdi i plati narudžbu →
+        </button>
+      </div>
     </div>
   </div>
 </div>

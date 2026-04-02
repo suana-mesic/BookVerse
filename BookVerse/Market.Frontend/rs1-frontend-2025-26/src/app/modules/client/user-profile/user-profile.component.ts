@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 import { BaseComponent } from '../../core/components/base-classes/base-component';
 import { ToasterService } from '../../core/services/toaster.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-user-profile',
@@ -11,11 +12,12 @@ import { ToasterService } from '../../core/services/toaster.service';
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.scss',
 })
-export class UserProfileComponent extends BaseComponent implements OnInit{
+export class UserProfileComponent extends BaseComponent implements OnInit {
   private api = inject(UsersApiService);
   private router = inject(Router);
   private fb = inject(FormBuilder);
   private toaster = inject(ToasterService);
+  private location = inject(Location);
 
   profileForm = this.fb.group({
     firstName: ['', Validators.required],
@@ -25,7 +27,7 @@ export class UserProfileComponent extends BaseComponent implements OnInit{
     line2: [''],
     city: ['', Validators.required],
     country: ['', Validators.required],
-    twoFactorEnabled: [false]
+    twoFactorEnabled: [false],
   });
   ngOnInit(): void {
     this.loadProfile();
@@ -41,10 +43,10 @@ export class UserProfileComponent extends BaseComponent implements OnInit{
       error: (err) => {
         this.stopLoading('Greška pri učitavanju profila.');
         console.error(err);
-      }
+      },
     });
   }
-    onSave(): void {
+  onSave(): void {
     if (this.profileForm.invalid || this.isLoading) return;
 
     this.startLoading();
@@ -56,22 +58,22 @@ export class UserProfileComponent extends BaseComponent implements OnInit{
       line2: this.profileForm.value.line2 ?? '',
       city: this.profileForm.value.city ?? '',
       country: this.profileForm.value.country ?? '',
-      twoFactorEnabled: this.profileForm.value.twoFactorEnabled ?? false
+      twoFactorEnabled: this.profileForm.value.twoFactorEnabled ?? false,
     };
 
-  this.api.updateMyProfile(payload).subscribe({
-        next: () => {
-          this.stopLoading();
-          this.toaster.success("Uspješno ste ažurirali profil");
-        },
-        error: (err) => {
-          this.stopLoading('Greška pri snimanju profila.');
-          console.error(err);
-        }
-      });
-    }
+    this.api.updateMyProfile(payload).subscribe({
+      next: () => {
+        this.stopLoading();
+        this.toaster.success('Uspješno ste ažurirali profil');
+      },
+      error: (err) => {
+        this.stopLoading('Greška pri snimanju profila.');
+        console.error(err);
+      },
+    });
+  }
 
-    goBack(): void {
-      this.router.navigate(['/']);
-    }
+  goBack(): void {
+    this.location.back();
+  }
 }

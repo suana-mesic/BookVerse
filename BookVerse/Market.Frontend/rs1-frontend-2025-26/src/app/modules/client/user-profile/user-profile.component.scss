@@ -1,12 +1,18 @@
-// profile.component.scss
-
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap');
+$primary: #4976b5;
+$primary-light: #6b96d1;
+$primary-lighter: #e8f0f9;
+$primary-dark: #3a5e91;
+$text-primary: #1e2d42;
+$text-secondary: #546e7a;
+$text-muted: #90a4ae;
+$border: rgba(73, 118, 181, 0.15);
+$error: #ef5350;
+$success: #56d39c;
 
 :host {
   display: block;
-  font-family: 'Outfit', sans-serif;
-  background-color: #f5f5f5;
-  min-height: calc(100vh - 70px); // Oduzimamo visinu headera
+  background-color: #faf9fd;
+  min-height: calc(100vh - 70px);
 }
 
 .profile-container {
@@ -15,128 +21,136 @@
   padding: 32px 24px;
 }
 
-// Header sekcija
 .profile-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 40px;
-  
+
   h1 {
-    font-size: 28px;
-    font-weight: 600;
-    color: #1e293b;
+    font-size: 22px;
+    font-weight: 700;
+    color: $text-primary;
     margin: 0;
   }
-  
-  .back-btn {
-    background: transparent;
-    border: none;
-    color: #3498db;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    padding: 8px 0;
-    transition: color 0.2s;
-    
-    &:hover {
-      color: #2980b9;
-      text-decoration: underline;
-    }
-  }
-  
+
   .save-btn {
-    background-color: #3498db;
+    background: linear-gradient(135deg, $primary, $primary-dark);
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 9px;
     padding: 10px 24px;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
-    font-family: 'Outfit', sans-serif;
     cursor: pointer;
-    transition: background-color 0.2s;
-    
+    transition: all 0.2s ease;
+    box-shadow: 0 3px 10px rgba($primary, 0.28);
+
     &:hover:not(:disabled) {
-      background-color: #2980b9;
+      box-shadow: 0 5px 16px rgba($primary, 0.38);
+      transform: translateY(-1px);
     }
-    
+
     &:disabled {
-      background-color: #ccc;
-      color: #666;
+      opacity: 0.5;
       cursor: not-allowed;
+      transform: none;
     }
   }
 }
 
-// Glavni sadržaj
+.back-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: $text-secondary;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  transition: all 0.18s ease;
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+  &:hover {
+    background: $primary-lighter;
+    color: $primary;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+
 .profile-content {
   display: grid;
   grid-template-columns: 240px 1fr;
   gap: 40px;
   margin-bottom: 48px;
-  
+
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
   }
 }
 
-// Avatar sekcija
 .avatar-section {
   display: flex;
   flex-direction: column;
   align-items: center;
-  
+
   .avatar {
     width: 180px;
     height: 180px;
     border-radius: 50%;
-    background-color: #e9f0f5;
+    background-color: $primary-lighter;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 16px;
-    border: 3px solid #3498db;
-    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
-    
+    border: 3px solid $primary-light;
+    box-shadow: 0 4px 12px rgba($primary, 0.2);
+
     mat-icon {
       font-size: 100px;
       width: 100px;
       height: 100px;
-      color: #3498db;
+      color: $primary;
     }
   }
-  
+
   .avatar-action {
     background: transparent;
     border: none;
-    color: #3498db;
+    color: $primary;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
     padding: 6px 0;
     transition: color 0.2s;
-    
+
     &:hover {
-      color: #2980b9;
+      color: $primary-dark;
       text-decoration: underline;
     }
   }
 }
 
-// Forma sekcija
 .form-section {
   background: white;
-  border-radius: 12px;
+  border-radius: 14px;
   padding: 24px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid $border;
+  box-shadow: 0 2px 8px rgba(73, 118, 181, 0.08);
 }
 
 .form-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
-  
+
   @media (max-width: 640px) {
     grid-template-columns: 1fr;
   }
@@ -145,61 +159,63 @@
 .form-field {
   display: flex;
   flex-direction: column;
-  
+
   label {
-    font-size: 14px;
-    font-weight: 500;
-    color: #1e293b;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: $text-muted;
     margin-bottom: 6px;
   }
-  
+
   input {
     height: 44px;
-    border: 2px solid #e2e8f0;
-    border-radius: 8px;
+    border: 1.5px solid $border;
+    border-radius: 9px;
     padding: 0 16px;
-    font-size: 15px;
-    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    color: $text-primary;
     transition: all 0.2s;
-    
+    outline: none;
+
     &:focus {
-      outline: none;
-      border-color: #3498db;
-      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+      border-color: $primary;
+      box-shadow: 0 0 0 3px rgba($primary, 0.1);
     }
-    
+
     &:hover:not(.disabled-field) {
-      border-color: #3498db;
+      border-color: $primary-light;
     }
-    
+
     &.disabled-field {
       background-color: #f8fafc;
-      color: #64748b;
+      color: $text-muted;
       cursor: not-allowed;
-      
+
       &:hover {
-        border-color: #e2e8f0;
+        border-color: $border;
       }
     }
   }
 }
 
-// Sigurnosna sekcija
 .security-section {
   background: white;
-  border-radius: 12px;
+  border-radius: 14px;
   padding: 24px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  
+  border: 1px solid $border;
+  box-shadow: 0 2px 8px rgba(73, 118, 181, 0.08);
+
   h2 {
-    font-size: 20px;
-    font-weight: 600;
-    color: #1e293b;
-    margin: 0 0 12px 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: $text-primary;
+    margin: 0 0 12px;
   }
-  
+
   mat-divider {
-    border-top-color: #e2e8f0;
+    border-top-color: $border;
     margin-bottom: 20px;
   }
 }
@@ -208,84 +224,73 @@
   display: flex;
   gap: 24px;
   margin-bottom: 24px;
-  
+
   @media (max-width: 640px) {
     flex-direction: column;
     gap: 12px;
   }
-  
+
   a {
-    color: #3498db;
+    color: $primary;
     text-decoration: none;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 500;
     transition: color 0.2s;
-    
+
     &:hover {
-      color: #2980b9;
+      color: $primary-dark;
       text-decoration: underline;
     }
   }
 }
 
-// 2FA Toggle
 .two-factor-toggle {
   padding: 8px 0;
-  
+
   ::ng-deep {
-    .mat-slide-toggle {
-      .mat-slide-toggle-label {
-        font-family: 'Outfit', sans-serif;
+    .mat-slide-toggle-thumb {
+      background-color: white;
+    }
+    .mat-slide-toggle-bar {
+      background-color: $border;
+    }
+
+    &.mat-checked {
+      .mat-slide-toggle-bar {
+        background-color: $primary;
       }
-      
       .mat-slide-toggle-thumb {
         background-color: white;
       }
-      
-      .mat-slide-toggle-bar {
-        background-color: #e2e8f0;
-      }
-      
-      &.mat-checked {
-        .mat-slide-toggle-bar {
-          background-color: #3498db;
-        }
-        
-        .mat-slide-toggle-thumb {
-          background-color: white;
-        }
-      }
     }
-    
+
     .mat-slide-toggle-content {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 500;
-      color: #1e293b;
+      color: $text-primary;
     }
   }
 }
 
-// Responsive dodatno
 @media (max-width: 768px) {
   .profile-container {
     padding: 24px 16px;
   }
-  
+
   .profile-header {
     flex-wrap: wrap;
     gap: 16px;
-    
+
     h1 {
-      font-size: 24px;
+      font-size: 20px;
       order: 1;
       width: 100%;
       text-align: center;
     }
-    
-    .back-btn {
+
+    .back-nav {
       order: 2;
     }
-    
     .save-btn {
       order: 3;
     }

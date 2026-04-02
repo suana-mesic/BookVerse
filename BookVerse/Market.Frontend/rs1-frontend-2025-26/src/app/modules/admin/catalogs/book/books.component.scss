@@ -30,7 +30,6 @@ $hover-bg: rgba(73, 118, 181, 0.04);
   display: inline-block;
 }
 
-
 // Container
 .container {
   padding: 24px;
@@ -46,12 +45,16 @@ $hover-bg: rgba(73, 118, 181, 0.04);
   border-radius: 16px;
   padding: 24px 32px;
   margin-bottom: 24px;
-  box-shadow: 0 2px 8px rgba(73, 118, 181, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
+  box-shadow:
+    0 2px 8px rgba(73, 118, 181, 0.08),
+    0 1px 3px rgba(0, 0, 0, 0.06);
   border: 1px solid $border-color;
   transition: all 0.3s ease;
 
   &:hover {
-    box-shadow: 0 4px 16px rgba(73, 118, 181, 0.12), 0 2px 6px rgba(0, 0, 0, 0.08);
+    box-shadow:
+      0 4px 16px rgba(73, 118, 181, 0.12),
+      0 2px 6px rgba(0, 0, 0, 0.08);
   }
 
   .header-card-content {
@@ -124,7 +127,6 @@ $hover-bg: rgba(73, 118, 181, 0.04);
           }
 
           .mat-mdc-form-field.mat-focused {
-
             .mdc-notched-outline__leading,
             .mdc-notched-outline__notch,
             .mdc-notched-outline__trailing {
@@ -236,7 +238,9 @@ $hover-bg: rgba(73, 118, 181, 0.04);
   background: white;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(73, 118, 181, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
+  box-shadow:
+    0 2px 8px rgba(73, 118, 181, 0.08),
+    0 1px 3px rgba(0, 0, 0, 0.06);
   border: 1px solid $border-color;
 
   table {
@@ -443,7 +447,6 @@ $hover-bg: rgba(73, 118, 181, 0.04);
 
   .mat-elevation-z8 {
     table {
-
       th,
       td {
         padding: 10px 8px;

@@ -15,7 +15,7 @@ import { BooksApiService } from '../../../api-services/books/books-api.service';
 import { CategoriesService } from '../../public/Petar/categories.service';
 import { DialogButton } from '../../shared/models/dialog-config.model';
 import { Categories } from '../../public/Petar/book/Categories';
-
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-my-books',
   standalone: false,
@@ -33,6 +33,7 @@ export class UserBooksComponent
   private destroy$ = new Subject<void>();
   private dialogHelper = inject(DialogHelperService);
   public userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  private location = inject(Location);
 
   selectedBook: ListMyBooksQueryDto | null = null;
 
@@ -282,5 +283,8 @@ export class UserBooksComponent
     //index i=2, i<rating -> TRUE -> 3. zvijezda popunjena
     //index i=3, i<rating -> FALSE
     //index i=4, i<rating -> FALSE
+  }
+  goBack(): void {
+    this.location.back();
   }
 }

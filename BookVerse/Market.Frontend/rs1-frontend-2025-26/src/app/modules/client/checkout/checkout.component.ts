@@ -5,7 +5,6 @@ import {
   FormBuilder,
   FormControl,
   ValidationErrors,
-  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -17,14 +16,14 @@ import { ShippingMethodsApiService } from '../../../api-services/shipping-method
 import { StoresApiService } from '../../../api-services/stores/stores-api.service';
 import { BaseComponent } from '../../core/components/base-classes/base-component';
 import { ToasterService } from '../../core/services/toaster.service';
-import { CouponDto, ListCouponsQueryDto } from '../../../api-services/coupons/coupons-api.model';
+import { CouponDto } from '../../../api-services/coupons/coupons-api.model';
 import { CouponsApiService } from '../../../api-services/coupons/coupons-api.service';
 import { CartApiService } from '../../../api-services/cart/cart-api.service';
 import { ListCartDto } from '../../../api-services/cart/cart-api.model';
 import { OrdersApiService } from '../../../api-services/orders/orders-api.service';
 import { catchError, map, Observable, of, switchMap, timer } from 'rxjs';
 import { CountriesApiService } from '../../../api-services/CountriesNow/countires-api.service';
-
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-checkout',
   standalone: false,
@@ -40,6 +39,8 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
   private storesService = inject(StoresApiService);
   private ordersService = inject(OrdersApiService);
   private toaster = inject(ToasterService);
+  private location = inject(Location);
+
   countriesService = inject(CountriesApiService);
 
   private cartService = inject(CartApiService);
@@ -335,5 +336,8 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
       }
     }
     sessionStorage.removeItem('checkoutState');
+  }
+  goBack(): void {
+    this.location.back();
   }
 }
