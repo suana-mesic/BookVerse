@@ -8,7 +8,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { LogoutComponent } from './logout/logout.component';
 import { SharedModule } from '../shared/shared-module';
 import { LoginBookverseComponent } from './login-bookverse/login-bookverse.component';
-
+import { HeaderComponent } from '../public/header/header.component';
 
 @NgModule({
   declarations: [
@@ -17,11 +17,8 @@ import { LoginBookverseComponent } from './login-bookverse/login-bookverse.compo
     RegisterComponent,
     ForgotPasswordComponent,
     LogoutComponent,
-    LoginBookverseComponent
+    LoginBookverseComponent,
   ],
-  imports: [
-    AuthRoutingModule,
-    SharedModule
-  ]
+  imports: [AuthRoutingModule, SharedModule, HeaderComponent],
 })
-export class AuthModule { }
+export class AuthModule {}

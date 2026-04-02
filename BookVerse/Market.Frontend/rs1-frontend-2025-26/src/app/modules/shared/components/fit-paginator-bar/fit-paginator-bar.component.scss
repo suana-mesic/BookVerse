@@ -1,319 +1,210 @@
-// Teget paleta
-$primary-color: #4976b5;
+$primary: #4976b5;
 $primary-light: #6b96d1;
 $primary-lighter: #e8f0f9;
 $primary-dark: #3a5e91;
-
-$text-primary: #2c3e50;
+$text-primary: #1e2d42;
 $text-secondary: #546e7a;
-$border-color: rgba(73, 118, 181, 0.15);
-$hover-bg: rgba(73, 118, 181, 0.08);
+$text-muted: #90a4ae;
+$border: rgba(73, 118, 181, 0.15);
+$font: 'DM Sans', system-ui, sans-serif;
 
 .paginator-bar {
-  padding: 0;
+  font-family: $font;
+}
+
+.paginator-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 14px 24px;
+  background: white;
+  border-top: 1px solid $border;
+  border-radius: 0 0 14px 14px;
+}
+
+.nav-buttons {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.nav-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
   background: transparent;
+  border: none;
+  border-radius: 8px;
+  font-family: $font;
+  font-size: 13px;
+  font-weight: 600;
+  color: $text-secondary;
+  cursor: pointer;
+  transition: all 0.18s ease;
 
-  .paginator-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 24px;
-    flex-wrap: wrap;
-    padding: 16px 24px;
-    background: white;
-    border-radius: 0 0 16px 16px;
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
   }
 
-  // Info Section
-  .paginator-info {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    color: $text-secondary;
-    font-size: 14px;
-    flex-wrap: wrap;
-
-    .info-icon {
-      font-size: 20px;
-      width: 20px;
-      height: 20px;
-      color: $primary-color;
-    }
-
-    .info-text,
-    .info-total {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-
-      strong {
-        color: $primary-color;
-        font-weight: 600;
-      }
-    }
-
-    .info-divider {
-      color: rgba(73, 118, 181, 0.3);
-      font-weight: bold;
-    }
+  &:not(:disabled):hover {
+    background: $primary-lighter;
+    color: $primary;
   }
 
-  // Actions Section
-  .paginator-actions {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    flex-wrap: wrap;
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+}
 
-    // Page Size Selector
-    .page-size-selector {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+.page-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 34px;
+  padding: 0 6px;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  font-family: $font;
+  font-size: 13px;
+  font-weight: 600;
+  color: $text-secondary;
+  cursor: pointer;
+  transition: all 0.18s ease;
 
-      .selector-label {
-        color: $text-secondary;
-        font-size: 14px;
-        font-weight: 500;
-        white-space: nowrap;
+  &:not(:disabled):not(.active):hover {
+    background: $primary-lighter;
+    color: $primary;
+  }
+
+  &.active {
+    background: $primary;
+    color: white;
+    box-shadow: 0 2px 8px rgba($primary, 0.35);
+    cursor: default;
+  }
+
+  &:disabled:not(.active) {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+}
+
+.page-ellipsis {
+  width: 28px;
+  text-align: center;
+  color: $text-muted;
+  font-size: 14px;
+  user-select: none;
+  line-height: 34px;
+}
+
+.page-size-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .selector-label {
+    font-size: 13px;
+    color: $text-muted;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .page-size-field {
+    width: 90px;
+
+    ::ng-deep {
+      .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+        background-color: $primary-lighter !important;
+        border-radius: 8px !important;
       }
 
-      .page-size-field {
-        width: 80px;
-        height: 65px;
-
-        ::ng-deep {
-          .mat-form-field-wrapper {
-            padding-bottom: 0;
-            margin: 0;
-          }
-          .mdc-text-field--filled:not(.mdc-text-field--disabled) {
-            background-color: white !important;
-          }
-
-          .mat-form-field-flex {
-            height: 40px;
-            align-items: center;
-            padding: 0 8px;
-          }
-
-          .mat-form-field-outline {
-            color: $border-color;
-          }
-
-          .mat-form-field-outline-thick {
-            color: $primary-color;
-          }
-
-          .mat-form-field-infix {
-            padding: 8px 0;
-            border-top: none;
-            width: auto;
-          }
-
-          .mat-select {
-            padding: 0;
-          }
-
-          .mat-select-value {
-            color: $primary-color;
-            font-weight: 600;
-            font-size: 15px;
-          }
-
-          .mat-select-arrow {
-            color: $primary-color;
-            margin: 0 0 0 4px;
-          }
-
-          .mat-form-field-subscript-wrapper {
-            display: none;
-          }
-        }
-      }
-    }
-
-    // Navigation Buttons
-    .nav-buttons {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-
-      .nav-btn {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        height: 40px;
-        padding: 0 16px;
-        border: 2px solid $border-color;
-        border-radius: 8px;
-        color: $primary-color;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        background: white;
-
-        mat-icon {
-          font-size: 20px;
-          width: 20px;
-          height: 20px;
-        }
-
-        &:not(:disabled):hover {
-          background: $primary-lighter;
-          border-color: $primary-color;
-          transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba(73, 118, 181, 0.2);
-        }
-
-        &:not(:disabled):active {
-          transform: translateY(0);
-        }
-
-        &:disabled {
-          opacity: 0.4;
-          cursor: not-allowed;
-          background: #f5f5f5;
-          border-color: #e0e0e0;
-          color: $text-secondary;
-        }
+      .mdc-text-field--filled:not(.mdc-text-field--disabled):hover {
+        background-color: darken($primary-lighter, 3%) !important;
       }
 
-      .page-indicator {
-        min-width: 48px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: linear-gradient(135deg, $primary-color 0%, $primary-light 100%);
-        color: white;
-        font-weight: 700;
-        font-size: 16px;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(73, 118, 181, 0.3);
-        padding: 0 12px;
+      .mdc-line-ripple {
+        display: none !important;
+      }
+
+      .mat-mdc-form-field-infix {
+        padding: 8px 0 !important;
+        min-height: unset !important;
+      }
+
+      .mat-mdc-select-value {
+        color: $primary !important;
+        font-weight: 700 !important;
+        font-size: 13px !important;
+        font-family: $font !important;
+      }
+
+      .mat-mdc-select-arrow {
+        color: $primary !important;
+      }
+
+      .mat-mdc-form-field-subscript-wrapper {
+        display: none !important;
       }
     }
   }
 }
 
-// Mat Select Panel Styling
-::ng-deep .mat-select-panel {
-  .mat-option {
-    font-size: 14px;
-    height: 44px;
+.paginator-info {
+  .info-text {
+    font-size: 13px;
+    color: $text-muted;
+    font-weight: 500;
 
-    &.mat-selected {
-      background: $primary-lighter;
-      color: $primary-dark;
-      font-weight: 600;
+    strong {
+      color: $text-primary;
+      font-weight: 700;
+    }
+  }
+}
+
+::ng-deep .mat-mdc-select-panel {
+  border-radius: 10px !important;
+  box-shadow: 0 6px 20px rgba(73, 118, 181, 0.14) !important;
+
+  .mat-mdc-option {
+    font-size: 13px !important;
+    font-family: $font !important;
+    min-height: 40px !important;
+
+    &.mdc-list-item--selected {
+      background: $primary-lighter !important;
+      color: $primary !important;
+      font-weight: 700 !important;
     }
 
     &:hover {
-      background: $hover-bg;
-    }
-
-    .mat-option-text {
-      display: flex;
-      align-items: center;
+      background: rgba($primary, 0.05) !important;
     }
   }
 }
 
-// Responzivnost
-@media (max-width: 768px) {
-  .paginator-bar {
-    .paginator-container {
-      flex-direction: column;
-      align-items: stretch;
-      padding: 16px;
-      gap: 16px;
-    }
-
-    .paginator-info {
-      justify-content: center;
-      text-align: center;
-      font-size: 13px;
-
-      .info-divider {
-        display: none;
-      }
-
-      .info-text,
-      .info-total {
-        flex-direction: column;
-        gap: 2px;
-      }
-    }
-
-    .paginator-actions {
-      flex-direction: column;
-      gap: 12px;
-
-      .page-size-selector {
-        width: 100%;
-        justify-content: center;
-      }
-
-      .nav-buttons {
-        width: 100%;
-        justify-content: space-between;
-
-        .nav-btn {
-          flex: 1;
-          max-width: calc(50% - 30px);
-
-          span {
-            display: none;
-          }
-
-          &.prev-btn {
-            justify-content: center;
-          }
-
-          &.next-btn {
-            justify-content: center;
-          }
-        }
-
-        .page-indicator {
-          min-width: 56px;
-        }
-      }
-    }
+@media (max-width: 640px) {
+  .paginator-container {
+    flex-direction: column;
+    align-items: center;
+    padding: 14px 16px;
+    gap: 12px;
   }
-}
 
-@media (max-width: 480px) {
-  .paginator-bar {
-    .paginator-info {
-      font-size: 12px;
-      flex-direction: column;
-      gap: 8px;
+  .nav-arrow span {
+    display: none;
+  }
 
-      .info-icon {
-        font-size: 18px;
-        width: 18px;
-        height: 18px;
-      }
-    }
-
-    .paginator-actions {
-      .nav-buttons {
-        .nav-btn {
-          padding: 0 12px;
-
-          mat-icon {
-            font-size: 18px;
-            width: 18px;
-            height: 18px;
-          }
-        }
-
-        .page-indicator {
-          min-width: 44px;
-          font-size: 14px;
-        }
-      }
-    }
+  .paginator-info {
+    text-align: center;
   }
 }

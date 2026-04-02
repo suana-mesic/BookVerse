@@ -10,10 +10,9 @@ import { BaseListPagedComponent } from '../../core/components/base-classes/base-
 import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { getMatTooltipInvalidPositionError } from '@angular/material/tooltip';
 import { DialogHelperService } from '../../shared/services/dialog-helper.service';
 import { DialogButton } from '../../shared/models/dialog-config.model';
-
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-user-orders',
   standalone: false,
@@ -29,6 +28,7 @@ export class UserOrdersComponent
   private destroy$ = new Subject<void>();
   private router = inject(Router);
   private dialogHelper = inject(DialogHelperService);
+  private location = inject(Location);
 
   searchControl = new FormControl('');
   statusFilter: OrderStatusType | null = null;
@@ -178,5 +178,9 @@ export class UserOrdersComponent
         this.toaster.error('Greška pri dohvatanju podataka za plaćanje.');
       },
     });
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 }

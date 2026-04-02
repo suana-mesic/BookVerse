@@ -36,6 +36,7 @@ export class ProductCategoriesComponent
     super();
     this.request = new ListProductCategoriesRequest();
     this.request.onlyEnabled = false;
+    this.request.paging.pageSize = 20;
   }
 
   ngOnInit(): void {
