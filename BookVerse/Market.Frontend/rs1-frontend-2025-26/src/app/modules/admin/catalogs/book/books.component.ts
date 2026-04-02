@@ -4,7 +4,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   ListBooksRequest,
-  ListBooksQueryDto
+  ListBooksQueryDto,
 } from '../../../../api-services/books/books-api.models';
 import { BaseListPagedComponent } from '../../../../core/components/base-classes/base-list-paged-component';
 import { ToasterService } from '../../../../core/services/toaster.service';
@@ -16,12 +16,12 @@ import { BooksApiService } from '../../../../api-services/books/books-api.servic
   selector: 'app-products',
   standalone: false,
   templateUrl: './books.component.html',
-  styleUrl: './books.component.scss'
+  styleUrl: './books.component.scss',
 })
 export class BooksComponent
   extends BaseListPagedComponent<ListBooksQueryDto, ListBooksRequest>
-  implements OnInit {
-
+  implements OnInit
+{
   private api = inject(BooksApiService);
   private router = inject(Router);
   private toaster = inject(ToasterService);
@@ -36,12 +36,13 @@ export class BooksComponent
     'format',
     'stockQuantity',
     'isDeleted',
-    'actions'
+    'actions',
   ];
 
   constructor() {
     super();
     this.request = new ListBooksRequest();
+    this.request.paging.pageSize = 20;
   }
 
   ngOnInit(): void {
@@ -59,7 +60,7 @@ export class BooksComponent
       error: (err) => {
         this.stopLoading('Failed to load products');
         console.error('Load products error:', err);
-      }
+      },
     });
   }
 
@@ -74,7 +75,7 @@ export class BooksComponent
   }
 
   onDelete(product: ListBooksQueryDto): void {
-    this.dialogHelper.product.confirmDelete(product.title).subscribe(result => {
+    this.dialogHelper.product.confirmDelete(product.title).subscribe((result) => {
       if (result && result.button === DialogButton.DELETE) {
         this.performDelete(product);
       }
@@ -92,13 +93,12 @@ export class BooksComponent
       error: (err) => {
         this.stopLoading();
 
-        this.dialogHelper.showError(
-          'DIALOGS.TITLES.ERROR',
-          'BOOKS.DIALOGS.ERROR_DELETE'
-        ).subscribe();
+        this.dialogHelper
+          .showError('DIALOGS.TITLES.ERROR', 'BOOKS.DIALOGS.ERROR_DELETE')
+          .subscribe();
 
         console.error('Delete product error:', err);
-      }
+      },
     });
   }
 

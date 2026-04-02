@@ -32,7 +32,9 @@ $hover-bg: rgba(73, 118, 181, 0.04);
   border-radius: 16px;
   padding: 24px 32px;
   margin-bottom: 24px;
-  box-shadow: 0 2px 8px rgba(73, 118, 181, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
+  box-shadow:
+    0 2px 8px rgba(73, 118, 181, 0.08),
+    0 1px 3px rgba(0, 0, 0, 0.06);
   border: 1px solid $border-color;
 
   .header-card-content {
@@ -370,7 +372,8 @@ $hover-bg: rgba(73, 118, 181, 0.04);
       display: block;
       overflow-x: auto;
 
-      th, td {
+      th,
+      td {
         white-space: nowrap;
       }
     }

@@ -1,3 +1,14 @@
+$primary: #4976b5;
+$primary-light: #6b96d1;
+$primary-lighter: #e8f0f9;
+$primary-dark: #3a5e91;
+$text-primary: #1e2d42;
+$text-secondary: #546e7a;
+$text-muted: #90a4ae;
+$border: rgba(73, 118, 181, 0.15);
+$error: #ef5350;
+$success: #56d39c;
+
 .container {
   max-width: 1200px;
   margin: 40px auto;
@@ -702,4 +713,30 @@
 
 .paginator-wrapper {
   margin-top: 24px;
+}
+
+.back-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: $text-secondary;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  transition: all 0.18s ease;
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+  &:hover {
+    background: $primary-lighter;
+    color: $primary;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
 }

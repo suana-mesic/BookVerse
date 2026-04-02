@@ -1,43 +1,55 @@
 <app-header></app-header>
-<div class="payment-container">
-  <h2>Plaćanje</h2>
 
-  <div class="order-summary">
-    <strong>Ukupno: {{ totalPrice | number: '1.2-2' : 'en' }} KM</strong>
-  </div>
+<div class="page-wrapper">
+  <a class="back-nav" (click)="goBack()" style="cursor: pointer">
+    <mat-icon>arrow_back</mat-icon>
+    <span>Nazad</span>
+  </a>
 
-  <div id="payment-element"></div>
+  <div class="payment-container">
+    <div class="order-summary">
+      <strong>Ukupno za plaćanje</strong>
+      <strong>{{ totalPrice | number: '1.2-2' : 'en' }} KM</strong>
+    </div>
 
-  <div class="captcha-section">
-    <p>Sigurnosna provjera</p>
+    <div id="payment-element"></div>
 
-    <img [src]="captchaImage" alt="Captcha" />
+    <div class="captcha-section">
+      <p class="captcha-label">Sigurnosna provjera</p>
 
-    <button mat-stroked-button (click)="loadCaptcha()">
-      <mat-icon>cached</mat-icon>
-      <mat-label>Nova slika</mat-label>
-    </button>
+      <div class="captcha-image-row">
+        <img [src]="captchaImage" alt="Captcha" />
+        <button mat-stroked-button (click)="loadCaptcha()">
+          <mat-icon>cached</mat-icon>
+          Nova slika
+        </button>
+      </div>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Unesite tekst sa slike</mat-label>
-      <input matInput [(ngModel)]="captchaAnswer" />
-    </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Unesite tekst sa slike</mat-label>
+        <input matInput [(ngModel)]="captchaAnswer" />
+      </mat-form-field>
 
-    <button mat-raised-button color="accent" (click)="verifyCaptcha()" [disabled]="captchaVerified">
-      {{ captchaVerified ? '✓ Verificirano' : 'Potvrdi' }}
-    </button>
-  </div>
-  <div class="payment-actions">
-    <button
-      mat-raised-button
-      color="primary"
-      (click)="submitPayment()"
-      [disabled]="isLoading || !captchaVerified"
-    >
-      {{ isLoading ? 'Obrada...' : 'Plati ' + (totalPrice | number: '1.2-2' : 'en') + ' KM' }}
-    </button>
-  </div>
-  <div class="step-actions">
-    <button mat-button (click)="prevStep()">← Nazad</button>
+      <button
+        class="verify-btn"
+        mat-raised-button
+        (click)="verifyCaptcha()"
+        [disabled]="captchaVerified"
+      >
+        <mat-icon *ngIf="captchaVerified">check_circle</mat-icon>
+        {{ captchaVerified ? 'Verificirano' : 'Potvrdi' }}
+      </button>
+    </div>
+
+    <div class="payment-actions">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="submitPayment()"
+        [disabled]="isLoading || !captchaVerified"
+      >
+        {{ isLoading ? 'Obrada...' : 'Plati ' + (totalPrice | number: '1.2-2' : 'en') + ' KM' }}
+      </button>
+    </div>
   </div>
 </div>

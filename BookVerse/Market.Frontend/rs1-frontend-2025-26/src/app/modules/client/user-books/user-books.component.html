@@ -1,12 +1,11 @@
 <app-header></app-header>
 
 <div class="container">
-  <!-- Header Card -->
   <div class="header-card">
-    <div class="book__return" routerLink="/">
-      <img src="icons/arrow_black.png" alt="arr" />
-      <h2>Nazad na početnu</h2>
-    </div>
+    <a class="back-nav" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+      Nazad
+    </a>
 
     <div class="header-card-content">
       <div class="title-section">

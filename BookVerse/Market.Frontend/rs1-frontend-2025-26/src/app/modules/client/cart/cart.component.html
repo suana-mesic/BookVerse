@@ -1,10 +1,11 @@
 <app-header></app-header>
 <div class="cart-container">
-  <h2>Moja korpa</h2>
-  <div class="book__return" routerLink="/">
-    <img src="icons/arrow_black.png" alt="arr" />
-    <h2>Nazad na početnu</h2>
-  </div>
+  <a class="back-nav" (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+    Nazad
+  </a>
+
+  <h2 class="page-title">Moja korpa</h2>
 
   <div *ngIf="isLoading" class="loading">Učitavanje...</div>
 
@@ -45,7 +46,7 @@
     </ng-container>
 
     <ng-template #emptyCart>
-      <p class="empty-message">Vaša korpa je prazna.</p>
+      <p class="empty-message">Vaša korpa je prazna</p>
     </ng-template>
 
     <!-- SAČUVANO ZA KASNIJE -->

@@ -25,6 +25,7 @@ export class UsersComponent
   constructor() {
     super();
     this.request = new ListUsersRequest();
+    this.request.paging.pageSize = 20;
   }
 
   ngOnInit(): void {

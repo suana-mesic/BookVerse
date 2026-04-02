@@ -3,12 +3,19 @@
 :host {
   all: unset;
   display: flex;
+  flex-direction: column;
   font-family: 'Outfit', sans-serif;
-  justify-content: center;
-  align-items: center;
   height: 100vh;
   width: 100%;
   background-color: #fff;
+}
+
+.parent {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
 .wizard-form {
