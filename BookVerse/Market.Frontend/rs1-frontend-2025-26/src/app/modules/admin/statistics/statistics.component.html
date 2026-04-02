@@ -1,7 +1,7 @@
 <div class="statistics-page">
   <!-- HEADER SA VREMENOM OSVJEŽAVANJA -->
   <div class="dashboard-header">
-    <h1>Admin Dashboard</h1>
+    <h1>{{ 'STATISTICS.TITLE' | translate }}</h1>
     <div class="refresh-timestamp" *ngIf="summary">
       <mat-icon>schedule</mat-icon>
       {{ summary.generatedAt | date: 'dd.MM.yyyy HH:mm' }}
@@ -13,7 +13,7 @@
     <div class="summary-card card-revenue">
       <div class="card-header">
         <div>
-          <div class="card-title">Ukupni prihod</div>
+          <div class="card-title">{{ 'STATISTICS.CARDS.TOTAL_REVENUE' | translate }}</div>
           <div class="card-value">{{ summary?.totalRevenue | number: '1.2-2' }} KM</div>
         </div>
         <div class="card-icon">
@@ -21,7 +21,7 @@
         </div>
       </div>
       <div class="card-footer">
-        <span>od početka godine</span>
+        <span>{{ 'STATISTICS.CARDS.SINCE_YEAR_START' | translate }}</span>
         <span class="trend up">
           <mat-icon>trending_up</mat-icon>
           {{ (summary?.revenueChangePercent ?? 0) >= 0 ? '+' : ''
@@ -33,7 +33,7 @@
     <div class="summary-card card-orders">
       <div class="card-header">
         <div>
-          <div class="card-title">Ukupno narudžbi</div>
+          <div class="card-title">{{ 'STATISTICS.CARDS.TOTAL_ORDERS' | translate }}</div>
           <div class="card-value">{{ summary?.totalOrders }}+</div>
         </div>
         <div class="card-icon">
@@ -41,7 +41,7 @@
         </div>
       </div>
       <div class="card-footer">
-        <span>ukupno</span>
+        <span>{{ 'STATISTICS.CARDS.TOTAL' | translate }}</span>
         <span class="trend up">
           <mat-icon>trending_up</mat-icon>
           {{ (summary?.ordersChangePercent ?? 0) >= 0 ? '+' : ''
@@ -53,7 +53,7 @@
     <div class="summary-card card-users">
       <div class="card-header">
         <div>
-          <div class="card-title">Ukupno korisnika</div>
+          <div class="card-title">{{ 'STATISTICS.CARDS.TOTAL_USERS' | translate }}</div>
           <div class="card-value">{{ summary?.totalUsers }}</div>
         </div>
         <div class="card-icon">
@@ -61,7 +61,7 @@
         </div>
       </div>
       <div class="card-footer">
-        <span>aktivnih</span>
+        <span>{{ 'STATISTICS.CARDS.ACTIVE' | translate }}</span>
         <span class="trend down">
           <mat-icon>trending_down</mat-icon> {{ (summary?.usersChangePercent ?? 0) >= 0 ? '+' : ''
           }}{{ summary?.usersChangePercent }} %
@@ -72,7 +72,7 @@
     <div class="summary-card card-books">
       <div class="card-header">
         <div>
-          <div class="card-title">Prodanih knjiga</div>
+          <div class="card-title">{{ 'STATISTICS.CARDS.BOOKS_SOLD' | translate }}</div>
           <div class="card-value">{{ summary?.totalBooksSold }}</div>
         </div>
         <div class="card-icon">
@@ -80,7 +80,7 @@
         </div>
       </div>
       <div class="card-footer">
-        <span>ove godine</span>
+        <span>{{ 'STATISTICS.CARDS.THIS_YEAR' | translate }}</span>
         <span class="trend up">
           <mat-icon>trending_up</mat-icon>
           {{ (summary?.booksSoldChangePercent ?? 0) >= 0 ? '+' : ''
@@ -94,7 +94,7 @@
   <div class="charts-grid">
     <div class="chart-card">
       <div class="chart-header">
-        <h3>Mjesečni prihod (KM)</h3>
+        <h3>{{ 'STATISTICS.CHARTS.MONTHLY_REVENUE_HEADER' | translate }}</h3>
         <div class="chart-actions"><mat-icon>bar_chart</mat-icon></div>
       </div>
       <canvas id="revenueChart"></canvas>
@@ -102,7 +102,7 @@
 
     <div class="chart-card">
       <div class="chart-header">
-        <h3>Broj narudžbi po mjesecima</h3>
+        <h3>{{ 'STATISTICS.CHARTS.MONTHLY_ORDERS_HEADER' | translate }}</h3>
         <div class="chart-actions"><mat-icon>show_chart</mat-icon></div>
       </div>
       <canvas id="ordersChart"></canvas>
@@ -110,7 +110,7 @@
 
     <div class="chart-card">
       <div class="chart-header">
-        <h3>Top 5 najprodavanijih knjiga</h3>
+        <h3>{{ 'STATISTICS.CHARTS.TOP5_BOOKS_HEADER' | translate }}</h3>
         <div class="chart-actions"><mat-icon>star</mat-icon></div>
       </div>
       <canvas id="topBooksChart"></canvas>
@@ -118,7 +118,7 @@
 
     <div class="chart-card">
       <div class="chart-header">
-        <h3>Narudžbe po dostavljačima</h3>
+        <h3>{{ 'STATISTICS.CHARTS.SHIPPERS_HEADER' | translate }}</h3>
         <div class="chart-actions"><mat-icon>local_shipping</mat-icon></div>
       </div>
       <canvas id="shippersChart"></canvas>
@@ -126,7 +126,7 @@
 
     <div class="chart-card">
       <div class="chart-header">
-        <h3>Popularnost kategorija</h3>
+        <h3>{{ 'STATISTICS.CHARTS.CATEGORIES_HEADER' | translate }}</h3>
         <div class="chart-actions"><mat-icon>category</mat-icon></div>
       </div>
       <canvas id="categoriesChart"></canvas>
@@ -134,7 +134,7 @@
 
     <div class="chart-card">
       <div class="chart-header">
-        <h3>Prihod po kategorijama (mjesečno)</h3>
+        <h3>{{ 'STATISTICS.CHARTS.MONTHLY_CATEGORY_HEADER' | translate }}</h3>
         <div class="chart-actions"><mat-icon>stacked_bar_chart</mat-icon></div>
       </div>
       <canvas id="monthlyCategoryRevenueChart"></canvas>
@@ -143,28 +143,28 @@
 
   <!-- PDF IZVJEŠTAJ ZA NARUDŽBE -->
   <div class="report-section" *ngIf="!isLoading">
-    <h3><mat-icon>picture_as_pdf</mat-icon> Generiši izvještaj narudžbi</h3>
+    <h3><mat-icon>picture_as_pdf</mat-icon> {{ 'STATISTICS.REPORTS.ORDERS_TITLE' | translate }}</h3>
 
     <div class="report-filters">
       <mat-form-field appearance="outline" class="filter-item" subscriptSizing="dynamic">
-        <mat-label>Datum od</mat-label>
+        <mat-label>{{ 'STATISTICS.REPORTS.DATE_FROM' | translate }}</mat-label>
         <input matInput [matDatepicker]="pickerOd" [(ngModel)]="dateFrom" required />
         <mat-datepicker-toggle matIconSuffix [for]="pickerOd"></mat-datepicker-toggle>
         <mat-datepicker #pickerOd></mat-datepicker>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="filter-item" subscriptSizing="dynamic">
-        <mat-label>Datum do</mat-label>
+        <mat-label>{{ 'STATISTICS.REPORTS.DATE_TO' | translate }}</mat-label>
         <input matInput [matDatepicker]="pickerDo" [(ngModel)]="dateTo" required />
         <mat-datepicker-toggle matIconSuffix [for]="pickerDo"></mat-datepicker-toggle>
         <mat-datepicker #pickerDo></mat-datepicker>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="filter-item" subscriptSizing="dynamic">
-        <mat-label>Korisnik</mat-label>
+        <mat-label>{{ 'STATISTICS.REPORTS.USER' | translate }}</mat-label>
         <input
           type="text"
-          placeholder="Odaberite korisnika"
+          [placeholder]="'STATISTICS.REPORTS.USER_PLACEHOLDER' | translate"
           matInput
           [formControl]="usersAutocompleteInput"
           [matAutocomplete]="autoUsers"
@@ -178,7 +178,7 @@
       </mat-form-field>
 
       <button mat-raised-button (click)="downloadOrdersReport()" [disabled]="!dateFrom || !dateTo">
-        Preuzmi PDF
+        {{ 'STATISTICS.REPORTS.DOWNLOAD_PDF' | translate }}
       </button>
     </div>
   </div>
@@ -187,28 +187,28 @@
 
   <!-- PDF IZVJEŠTAJ O PRODAJI KNJIGA -->
   <div class="report-section" *ngIf="!isLoading">
-    <h3><mat-icon>picture_as_pdf</mat-icon> Generiši izvještaj o prodaji knjiga</h3>
+    <h3><mat-icon>picture_as_pdf</mat-icon> {{ 'STATISTICS.REPORTS.BOOKS_TITLE' | translate }}</h3>
 
     <div class="report-filters">
       <mat-form-field appearance="outline" class="filter-item" subscriptSizing="dynamic">
-        <mat-label>Datum od</mat-label>
+        <mat-label>{{ 'STATISTICS.REPORTS.DATE_FROM' | translate }}</mat-label>
         <input matInput [matDatepicker]="pickerOd" [(ngModel)]="dateFrom" />
         <mat-datepicker-toggle matIconSuffix [for]="pickerOd"></mat-datepicker-toggle>
         <mat-datepicker #pickerOd></mat-datepicker>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="filter-item" subscriptSizing="dynamic">
-        <mat-label>Datum do</mat-label>
+        <mat-label>{{ 'STATISTICS.REPORTS.DATE_TO' | translate }}</mat-label>
         <input matInput [matDatepicker]="pickerDo" [(ngModel)]="dateTo" />
         <mat-datepicker-toggle matIconSuffix [for]="pickerDo"></mat-datepicker-toggle>
         <mat-datepicker #pickerDo></mat-datepicker>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="filter-item" subscriptSizing="dynamic">
-        <mat-label>Knjiga</mat-label>
+        <mat-label>{{ 'STATISTICS.REPORTS.BOOK' | translate }}</mat-label>
         <input
           type="text"
-          placeholder="Odaberite knjigu"
+          [placeholder]="'STATISTICS.REPORTS.BOOK_PLACEHOLDER' | translate"
           matInput
           [formControl]="booksAutocompleteInput"
           [matAutocomplete]="autoBooks"
@@ -222,7 +222,7 @@
       </mat-form-field>
 
       <button mat-raised-button (click)="downloadBooksReport()" [disabled]="!dateFrom || !dateTo">
-        Preuzmi PDF
+        {{ 'STATISTICS.REPORTS.DOWNLOAD_PDF' | translate }}
       </button>
     </div>
   </div>

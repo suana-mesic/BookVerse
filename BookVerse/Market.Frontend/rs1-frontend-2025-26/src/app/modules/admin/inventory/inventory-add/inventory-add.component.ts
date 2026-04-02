@@ -26,6 +26,7 @@ import {
 import { StoresApiService } from '../../../../api-services/stores/stores-api.service';
 import { map, Observable, startWith } from 'rxjs';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-products-edit',
   standalone: false,
@@ -40,6 +41,7 @@ export class InventoryAddComponent extends BaseComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private toaster = inject(ToasterService);
+  private translate = inject(TranslateService);
   private bookId: number = 0;
   private storeId: number = 0;
   private formBuilder = inject(FormBuilder);
@@ -191,7 +193,7 @@ export class InventoryAddComponent extends BaseComponent implements OnInit {
   loadStoreBookPairs() {
     this.inventoryApi.getStoreBookPairs().subscribe({
       next: (response) => (this.storeBookPairs = response),
-      error: (err) => this.toaster.error('Greška prilikom dohvatanja parova prodavnica i knjiga.'),
+      error: (err) => this.toaster.error(this.translate.instant('INVENTORY.DIALOGS.ERROR_LOAD_STORE_BOOK_PAIRS')),
     });
   }
 
@@ -217,7 +219,7 @@ export class InventoryAddComponent extends BaseComponent implements OnInit {
   private loadBooks() {
     this.booksApi.listBooksForAutocomplete().subscribe({
       next: (response) => (this.books = response),
-      error: (err) => this.toaster.error('Greška prilikom dohvatanja knjiga.'),
+      error: (err) => this.toaster.error(this.translate.instant('INVENTORY.DIALOGS.ERROR_LOAD_BOOKS')),
     });
   }
 
@@ -226,7 +228,7 @@ export class InventoryAddComponent extends BaseComponent implements OnInit {
     request.paging.pageSize = 10000000;
     this.storesApi.list(request).subscribe({
       next: (response) => (this.stores = response.items),
-      error: (err) => this.toaster.error('Greška prilikom dohvatanja knjiga.'),
+      error: (err) => this.toaster.error(this.translate.instant('INVENTORY.DIALOGS.ERROR_LOAD_BOOKS')),
     });
   }
 
@@ -255,10 +257,10 @@ export class InventoryAddComponent extends BaseComponent implements OnInit {
   onSubmit() {
     this.inventoryApi.create(this.form.getRawValue()).subscribe({
       next: (response) => {
-        this.toaster.success('Uspješno ste pohranili novi inventar.');
+        this.toaster.success(this.translate.instant('INVENTORY.DIALOGS.SUCCESS_CREATE'));
         this.router.navigate(['/admin/inventory']);
       },
-      error: (err) => this.toaster.error('Greška prilikom pohranjivanja novog inventara.'),
+      error: (err) => this.toaster.error(this.translate.instant('INVENTORY.DIALOGS.ERROR_CREATE')),
     });
   }
 }

@@ -28,13 +28,13 @@
           </mat-select>
           <mat-icon matSuffix>store</mat-icon>
           @if(formGr.get('storeId')?.hasError){
-            <mat-error>Obavezno polje</mat-error>
+            <mat-error>{{ 'INVENTORY.REQUIRED_FIELD' | translate }}</mat-error>
           }
         </mat-form-field> -->
 
             <!-- Novi kod/pokušaj autocomplete-a STORES -->
             <mat-form-field appearance="outline" class="half-width">
-              <mat-label>Prodavnica</mat-label>
+              <mat-label>{{ 'INVENTORY.TABLE.STORE' | translate }}</mat-label>
               <input
                 type="text"
                 aria-label="store"
@@ -52,7 +52,7 @@
               </mat-autocomplete>
               <mat-icon matSuffix>search</mat-icon>
               @if (storesAutocompleteInputs.at(i).hasError('required')) {
-                <mat-error>Obavezno polje</mat-error>
+                <mat-error>{{ 'INVENTORY.REQUIRED_FIELD' | translate }}</mat-error>
               }
             </mat-form-field>
 
@@ -72,7 +72,7 @@
           </mat-select>
           <mat-icon matSuffix>book</mat-icon>
         @if(formGr.get('bookId')?.hasError){
-            <mat-error>Obavezno polje</mat-error>
+            <mat-error>{{ 'INVENTORY.REQUIRED_FIELD' | translate }}</mat-error>
           }
         </mat-form-field> -->
 
@@ -98,7 +98,7 @@
               </mat-autocomplete>
               <mat-icon matSuffix>search</mat-icon>
               @if (booksAutocompleteInputs.at(i).hasError('required')) {
-                <mat-error>Obavezno polje</mat-error>
+                <mat-error>{{ 'INVENTORY.REQUIRED_FIELD' | translate }}</mat-error>
               }
             </mat-form-field>
 
@@ -108,7 +108,7 @@
               <input matInput formControlName="quantityInStock" />
               <mat-icon matSuffix>production_quantity_limits</mat-icon>
               @if (formGr.get('quantityInStock')?.hasError) {
-                <mat-error>Obavezno polje</mat-error>
+                <mat-error>{{ 'INVENTORY.REQUIRED_FIELD' | translate }}</mat-error>
               }
             </mat-form-field>
 
@@ -118,7 +118,7 @@
               <input matInput formControlName="reorderTreshold" />
               <mat-icon matSuffix>low_priority</mat-icon>
               @if (formGr.get('reorderTreshold')?.hasError) {
-                <mat-error>Obavezno polje</mat-error>
+                <mat-error>{{ 'INVENTORY.REQUIRED_FIELD' | translate }}</mat-error>
               }
             </mat-form-field>
 
@@ -128,7 +128,7 @@
               <input matInput formControlName="location" />
               <mat-icon matSuffix>location_on</mat-icon>
               @if (formGr.get('location')?.hasError('required')) {
-                <mat-error>Obavezno polje</mat-error>
+                <mat-error>{{ 'INVENTORY.REQUIRED_FIELD' | translate }}</mat-error>
               }
               @if (formGr.get('location')?.hasError('nevalidnaLokacija')) {
                 <mat-error>Lokacija mora biti u formatu "Polica Slovo-broj"</mat-error>

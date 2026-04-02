@@ -5,6 +5,7 @@ import { UsersApiService } from '../../../../api-services/users/users-api.servic
 import { ToasterService } from '../../../core/services/toaster.service';
 import { GetUserByIdQueryDto } from '../../../../api-services/users/users-api.model';
 import { BaseComponent } from '../../../core/components/base-classes/base-component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-users-edit',
@@ -18,6 +19,7 @@ export class UsersEditComponent extends BaseComponent implements OnInit {
   private router = inject(Router);
   private fb = inject(FormBuilder);
   private toaster = inject(ToasterService);
+  private translate = inject(TranslateService);
 
   userId!: number;
   user: GetUserByIdQueryDto | null = null;
@@ -49,7 +51,7 @@ export class UsersEditComponent extends BaseComponent implements OnInit {
         this.stopLoading();
       },
       error: () => {
-        this.stopLoading('Korisnik nije pronađen');
+        this.stopLoading(this.translate.instant('USERS.DIALOGS.NOT_FOUND'));
         this.router.navigate(['/admin/users']);
       },
     });
@@ -69,10 +71,10 @@ export class UsersEditComponent extends BaseComponent implements OnInit {
       .subscribe({
         next: () => {
           this.stopLoading();
-          this.toaster.success('Korisnik uspješno ažuriran');
+          this.toaster.success(this.translate.instant('USERS.DIALOGS.SUCCESS_UPDATE'));
           this.router.navigate(['/admin/users']);
         },
-        error: () => this.stopLoading('Greška pri ažuriranju korisnika'),
+        error: () => this.stopLoading(this.translate.instant('USERS.DIALOGS.ERROR_UPDATE')),
       });
   }
 

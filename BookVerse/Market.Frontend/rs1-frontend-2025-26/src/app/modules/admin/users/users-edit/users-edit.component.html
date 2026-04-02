@@ -1,7 +1,7 @@
 <div class="container">
   <!-- Header -->
   <div class="header-card mat-elevation-z2">
-    <h1>Uredi korisnika</h1>
+    <h1>{{ 'USERS.EDIT.TITLE' | translate }}</h1>
   </div>
 
   <!-- Info o korisniku -->
@@ -27,7 +27,7 @@
       <!-- Role sekcija -->
       <h3 class="section-title">
         <mat-icon>admin_panel_settings</mat-icon>
-        Role korisnika
+        {{ 'USERS.EDIT.ROLES_SECTION' | translate }}
       </h3>
 
       <div class="toggles-grid">
@@ -35,30 +35,30 @@
           <mat-slide-toggle formControlName="isAdmin" color="warn">
             <span class="toggle-label">
               <mat-icon>security</mat-icon>
-              Admin
+              {{ 'ADMIN_PANEL.ROLES.ADMIN' | translate }}
             </span>
           </mat-slide-toggle>
-          <p class="toggle-description">Pun pristup svim funkcionalnostima</p>
+          <p class="toggle-description">{{ 'USERS.EDIT.ADMIN_DESCRIPTION' | translate }}</p>
         </div>
 
         <div class="toggle-item">
           <mat-slide-toggle formControlName="isManager" color="accent">
             <span class="toggle-label">
               <mat-icon>manage_accounts</mat-icon>
-              Manager
+              {{ 'ADMIN_PANEL.ROLES.MANAGER' | translate }}
             </span>
           </mat-slide-toggle>
-          <p class="toggle-description">Upravljanje katalogom i narudžbama</p>
+          <p class="toggle-description">{{ 'USERS.EDIT.MANAGER_DESCRIPTION' | translate }}</p>
         </div>
 
         <div class="toggle-item">
           <mat-slide-toggle formControlName="isEmployee" color="primary">
             <span class="toggle-label">
               <mat-icon>badge</mat-icon>
-              Employee
+              {{ 'ADMIN_PANEL.ROLES.EMPLOYEE' | translate }}
             </span>
           </mat-slide-toggle>
-          <p class="toggle-description">Pregled narudžbi i inventara</p>
+          <p class="toggle-description">{{ 'USERS.EDIT.EMPLOYEE_DESCRIPTION' | translate }}</p>
         </div>
       </div>
 
@@ -67,7 +67,7 @@
       <!-- Status sekcija -->
       <h3 class="section-title">
         <mat-icon>toggle_on</mat-icon>
-        Status korisnika
+        {{ 'USERS.EDIT.STATUS_SECTION' | translate }}
       </h3>
 
       <div class="toggles-grid">
@@ -75,10 +75,10 @@
           <mat-slide-toggle formControlName="isEnabled" color="primary">
             <span class="toggle-label">
               <mat-icon>check_circle</mat-icon>
-              Aktivan
+              {{ 'COMMON.ACTIVE' | translate }}
             </span>
           </mat-slide-toggle>
-          <p class="toggle-description">Korisnik se može prijaviti u sistem</p>
+          <p class="toggle-description">{{ 'USERS.EDIT.ACTIVE_DESCRIPTION' | translate }}</p>
         </div>
       </div>
 
@@ -86,11 +86,11 @@
       <div class="form-actions">
         <button type="button" mat-stroked-button (click)="onCancel()" [disabled]="isLoading">
           <mat-icon>close</mat-icon>
-          Odustani
+          {{ 'USERS.EDIT.CANCEL' | translate }}
         </button>
         <button type="submit" mat-raised-button color="primary" [disabled]="isLoading">
           <mat-icon>save</mat-icon>
-          Sačuvaj
+          {{ 'USERS.EDIT.SAVE' | translate }}
         </button>
       </div>
     </form>
@@ -98,7 +98,7 @@
     <!-- Loading State -->
     <div *ngIf="isLoading && !form" class="loading-overlay">
       <mat-spinner diameter="50"></mat-spinner>
-      <p>Učitavanje...</p>
+      <p>{{ 'USERS.EDIT.LOADING' | translate }}</p>
     </div>
   </div>
 </div>

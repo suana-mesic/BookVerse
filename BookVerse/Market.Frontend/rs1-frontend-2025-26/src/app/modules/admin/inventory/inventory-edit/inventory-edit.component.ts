@@ -5,6 +5,7 @@ import { ToasterService } from '../../../../core/services/toaster.service';
 import { BooksApiService } from '../../../../api-services/books/books-api.service';
 import { BaseComponent } from '../../../core/components/base-classes/base-component';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 import { InventoryApiService } from '../../../../api-services/inventory/inventory-api.service';
 import { GetInventoryByIdQueryDto } from '../../../../api-services/inventory/inventory-api.model';
 import { ListStoresQueryDto, ListStoresRequest } from '../../../../api-services/stores/stores-api.model';
@@ -28,6 +29,7 @@ export class InventoryEditComponent
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private toaster = inject(ToasterService);
+  private translate = inject(TranslateService);
   private bookId: number = 0;
   private storeId: number = 0;
   private formBuilder = inject(FormBuilder);
@@ -57,7 +59,7 @@ export class InventoryEditComponent
       },
       error:(err)=>
         {
-        this.toaster.error("Greška prilikom dohvatanja podataka o inventaru.");
+        this.toaster.error(this.translate.instant('INVENTORY.DIALOGS.ERROR_LOAD'));
         this.stopLoading();
         }
     });
@@ -82,7 +84,7 @@ export class InventoryEditComponent
     request.paging.pageSize=10000000;
     this.booksApi.list(request).subscribe({
       next:(response)=>this.books=response.items,
-      error:(err)=>this.toaster.error("Greška prilikom dohvatanja knjiga.")
+      error:(err)=>this.toaster.error(this.translate.instant('INVENTORY.DIALOGS.ERROR_LOAD_BOOKS'))
     });
   }
 
@@ -91,7 +93,7 @@ export class InventoryEditComponent
     request.paging.pageSize=10000000;
     this.storesApi.list(request).subscribe({
       next:(response)=>this.stores=response.items,
-      error:(err)=>this.toaster.error("Greška prilikom dohvatanja knjiga.")
+      error:(err)=>this.toaster.error(this.translate.instant('INVENTORY.DIALOGS.ERROR_LOAD_BOOKS'))
     });
   }
 
@@ -109,10 +111,10 @@ export class InventoryEditComponent
     const {storeName, title, isbn, lastRestocked, ...comamnd} = this.form.value;
     this.inventoryApi.update(this.storeId, this.bookId,comamnd).subscribe({
       next:(response)=>{
-        this.toaster.success("Uspješno ste ažurirali podatke o inventaru");
+        this.toaster.success(this.translate.instant('INVENTORY.DIALOGS.SUCCESS_UPDATE'));
         this.router.navigate(["/admin/inventory"]);
       },
-      error:(err)=>this.toaster.error("Greška prilikom ažuriranja podataka o inventaru")
+      error:(err)=>this.toaster.error(this.translate.instant('INVENTORY.DIALOGS.ERROR_UPDATE'))
     })
   }
   }

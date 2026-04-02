@@ -4,17 +4,22 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { DialogConfig, DialogType, DialogButton, DialogResult } from '../models/dialog-config.model';
+import {
+  DialogConfig,
+  DialogType,
+  DialogButton,
+  DialogResult,
+} from '../models/dialog-config.model';
 import { FitConfirmDialogComponent } from '../components/fit-confirm-dialog/fit-confirm-dialog.component';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DialogHelperService {
   constructor(
     private dialog: MatDialog,
-    private translate: TranslateService
-  ) { }
+    private translate: TranslateService,
+  ) {}
 
   /**
    * Opens a custom dialog with full configuration
@@ -24,7 +29,7 @@ export class DialogHelperService {
       width: config.width || '450px',
       disableClose: config.disableClose || false,
       data: config,
-      panelClass: 'custom-dialog-container'
+      panelClass: 'custom-dialog-container',
     });
 
     return dialogRef.afterClosed();
@@ -33,7 +38,12 @@ export class DialogHelperService {
   /**
    * Shows a simple info dialog with OK button
    */
-  showInfo(titleKey: string, messageKey: string, params?: any, icon?: string): Observable<DialogResult | undefined> {
+  showInfo(
+    titleKey: string,
+    messageKey: string,
+    params?: any,
+    icon?: string,
+  ): Observable<DialogResult | undefined> {
     return this.open({
       type: DialogType.INFO,
       titleKey,
@@ -41,16 +51,19 @@ export class DialogHelperService {
       titleParams: params,
       messageParams: params,
       icon,
-      buttons: [
-        { type: DialogButton.OK, color: 'primary' }
-      ]
+      buttons: [{ type: DialogButton.OK, color: 'primary' }],
     });
   }
 
   /**
    * Shows a success dialog with OK button
    */
-  showSuccess(titleKey: string, messageKey: string, params?: any, icon?: string): Observable<DialogResult | undefined> {
+  showSuccess(
+    titleKey: string,
+    messageKey: string,
+    params?: any,
+    icon?: string,
+  ): Observable<DialogResult | undefined> {
     return this.open({
       type: DialogType.SUCCESS,
       titleKey,
@@ -58,16 +71,19 @@ export class DialogHelperService {
       titleParams: params,
       messageParams: params,
       icon,
-      buttons: [
-        { type: DialogButton.OK, color: 'primary' }
-      ]
+      buttons: [{ type: DialogButton.OK, color: 'primary' }],
     });
   }
 
   /**
    * Shows an error dialog with OK button
    */
-  showError(titleKey: string, messageKey: string, params?: any, icon?: string): Observable<DialogResult | undefined> {
+  showError(
+    titleKey: string,
+    messageKey: string,
+    params?: any,
+    icon?: string,
+  ): Observable<DialogResult | undefined> {
     return this.open({
       type: DialogType.ERROR,
       titleKey,
@@ -75,16 +91,19 @@ export class DialogHelperService {
       titleParams: params,
       messageParams: params,
       icon,
-      buttons: [
-        { type: DialogButton.OK, color: 'warn' }
-      ]
+      buttons: [{ type: DialogButton.OK, color: 'warn' }],
     });
   }
 
   /**
    * Shows a warning dialog with OK button
    */
-  showWarning(titleKey: string, messageKey: string, params?: any, icon?: string): Observable<DialogResult | undefined> {
+  showWarning(
+    titleKey: string,
+    messageKey: string,
+    params?: any,
+    icon?: string,
+  ): Observable<DialogResult | undefined> {
     return this.open({
       type: DialogType.WARNING,
       titleKey,
@@ -92,16 +111,19 @@ export class DialogHelperService {
       titleParams: params,
       messageParams: params,
       icon,
-      buttons: [
-        { type: DialogButton.OK, color: 'primary' }
-      ]
+      buttons: [{ type: DialogButton.OK, color: 'primary' }],
     });
   }
 
   /**
    * Shows a confirmation dialog with Yes/No buttons
    */
-  confirm(titleKey: string, messageKey: string, params?: any, icon?: string): Observable<DialogResult | undefined> {
+  confirm(
+    titleKey: string,
+    messageKey: string,
+    params?: any,
+    icon?: string,
+  ): Observable<DialogResult | undefined> {
     return this.open({
       type: DialogType.QUESTION,
       titleKey,
@@ -109,17 +131,19 @@ export class DialogHelperService {
       titleParams: params,
       messageParams: params,
       icon,
-      buttons: [
-        { type: DialogButton.NO },
-        { type: DialogButton.YES, color: 'primary' }
-      ]
+      buttons: [{ type: DialogButton.NO }, { type: DialogButton.YES, color: 'primary' }],
     });
   }
 
   /**
    * Shows a confirmation dialog with OK/Cancel buttons
    */
-  confirmOkCancel(titleKey: string, messageKey: string, params?: any, icon?: string): Observable<DialogResult | undefined> {
+  confirmOkCancel(
+    titleKey: string,
+    messageKey: string,
+    params?: any,
+    icon?: string,
+  ): Observable<DialogResult | undefined> {
     return this.open({
       type: DialogType.QUESTION,
       titleKey,
@@ -127,10 +151,7 @@ export class DialogHelperService {
       titleParams: params,
       messageParams: params,
       icon,
-      buttons: [
-        { type: DialogButton.CANCEL },
-        { type: DialogButton.OK, color: 'primary' }
-      ]
+      buttons: [{ type: DialogButton.CANCEL }, { type: DialogButton.OK, color: 'primary' }],
     });
   }
 
@@ -144,10 +165,7 @@ export class DialogHelperService {
       messageKey: messageKey || 'DIALOGS.MESSAGES.DELETE_CONFIRM',
       messageParams: { name: itemName },
       icon: 'delete_forever',
-      buttons: [
-        { type: DialogButton.CANCEL },
-        { type: DialogButton.DELETE, color: 'warn' }
-      ]
+      buttons: [{ type: DialogButton.CANCEL }, { type: DialogButton.DELETE, color: 'warn' }],
     });
   }
 
@@ -160,10 +178,7 @@ export class DialogHelperService {
       titleKey: 'DIALOGS.TITLES.UNSAVED_CHANGES',
       messageKey: 'DIALOGS.MESSAGES.UNSAVED_CHANGES',
       icon: 'warning',
-      buttons: [
-        { type: DialogButton.NO },
-        { type: DialogButton.YES, color: 'primary' }
-      ]
+      buttons: [{ type: DialogButton.NO }, { type: DialogButton.YES, color: 'primary' }],
     });
   }
 
@@ -181,53 +196,32 @@ export class DialogHelperService {
    */
   productCategory = {
     confirmDelete: (categoryName: string) => {
-      return this.confirmDelete(
-        categoryName,
-        'BOOKS_CATEGORIES.DIALOGS.DELETE_MESSAGE'
-      );
+      return this.confirmDelete(categoryName, 'GENRES.DIALOGS.DELETE_MESSAGE');
     },
 
     showCreateSuccess: () => {
-      return this.showSuccess(
-        'DIALOGS.TITLES.SUCCESS',
-        'BOOKS_CATEGORIES.DIALOGS.SUCCESS_CREATE'
-      );
+      return this.showSuccess('DIALOGS.TITLES.SUCCESS', 'GENRES.DIALOGS.SUCCESS_CREATE');
     },
 
     showUpdateSuccess: () => {
-      return this.showSuccess(
-        'DIALOGS.TITLES.SUCCESS',
-        'BOOKS_CATEGORIES.DIALOGS.SUCCESS_UPDATE'
-      );
+      return this.showSuccess('DIALOGS.TITLES.SUCCESS', 'GENRES.DIALOGS.SUCCESS_UPDATE');
     },
 
     showDeleteSuccess: () => {
-      return this.showSuccess(
-        'DIALOGS.TITLES.SUCCESS',
-        'BOOKS_CATEGORIES.DIALOGS.SUCCESS_DELETE'
-      );
+      return this.showSuccess('DIALOGS.TITLES.SUCCESS', 'GENRES.DIALOGS.SUCCESS_DELETE');
     },
 
     showCreateError: () => {
-      return this.showError(
-        'DIALOGS.TITLES.ERROR',
-        'BOOKS_CATEGORIES.DIALOGS.ERROR_CREATE'
-      );
+      return this.showError('DIALOGS.TITLES.ERROR', 'GENRES.DIALOGS.ERROR_CREATE');
     },
 
     showUpdateError: () => {
-      return this.showError(
-        'DIALOGS.TITLES.ERROR',
-        'BOOKS_CATEGORIES.DIALOGS.ERROR_UPDATE'
-      );
+      return this.showError('DIALOGS.TITLES.ERROR', 'GENRES.DIALOGS.ERROR_UPDATE');
     },
 
     showDeleteError: () => {
-      return this.showError(
-        'DIALOGS.TITLES.ERROR',
-        'BOOKS_CATEGORIES.DIALOGS.ERROR_DELETE'
-      );
-    }
+      return this.showError('DIALOGS.TITLES.ERROR', 'GENRES.DIALOGS.ERROR_DELETE');
+    },
   };
 
   /**
@@ -235,74 +229,44 @@ export class DialogHelperService {
    */
   product = {
     confirmDelete: (productName: string) => {
-      return this.confirmDelete(
-        productName,
-        'BOOKS.DIALOGS.DELETE_MESSAGE'
-      );
+      return this.confirmDelete(productName, 'BOOKS.DIALOGS.DELETE_MESSAGE');
     },
 
     confirmCancel: () => {
-      return this.confirm(
-        'BOOKS.DIALOGS.UNSAVED_CHANGES',
-        'BOOKS.DIALOGS.CONFIRM_CANCEL'
-      );
+      return this.confirm('BOOKS.DIALOGS.UNSAVED_CHANGES', 'BOOKS.DIALOGS.CONFIRM_CANCEL');
     },
 
     showCreateSuccess: () => {
-      return this.showSuccess(
-        'DIALOGS.TITLES.SUCCESS',
-        'BOOKS.DIALOGS.SUCCESS_CREATE'
-      );
+      return this.showSuccess('DIALOGS.TITLES.SUCCESS', 'BOOKS.DIALOGS.SUCCESS_CREATE');
     },
 
     showUpdateSuccess: () => {
-      return this.showSuccess(
-        'DIALOGS.TITLES.SUCCESS',
-        'BOOKS.DIALOGS.SUCCESS_UPDATE'
-      );
+      return this.showSuccess('DIALOGS.TITLES.SUCCESS', 'BOOKS.DIALOGS.SUCCESS_UPDATE');
     },
 
     showDeleteSuccess: () => {
-      return this.showSuccess(
-        'DIALOGS.TITLES.SUCCESS',
-        'BOOKS.DIALOGS.SUCCESS_DELETE'
-      );
+      return this.showSuccess('DIALOGS.TITLES.SUCCESS', 'BOOKS.DIALOGS.SUCCESS_DELETE');
     },
 
     showCreateError: () => {
-      return this.showError(
-        'DIALOGS.TITLES.ERROR',
-        'BOOKS.DIALOGS.ERROR_CREATE'
-      );
+      return this.showError('DIALOGS.TITLES.ERROR', 'BOOKS.DIALOGS.ERROR_CREATE');
     },
 
     showUpdateError: () => {
-      return this.showError(
-        'DIALOGS.TITLES.ERROR',
-        'BOOKS.DIALOGS.ERROR_UPDATE'
-      );
+      return this.showError('DIALOGS.TITLES.ERROR', 'BOOKS.DIALOGS.ERROR_UPDATE');
     },
 
     showDeleteError: () => {
-      return this.showError(
-        'DIALOGS.TITLES.ERROR',
-        'BOOKS.DIALOGS.ERROR_DELETE'
-      );
-    }
+      return this.showError('DIALOGS.TITLES.ERROR', 'BOOKS.DIALOGS.ERROR_DELETE');
+    },
   };
 
   inventory = {
     confirmDelete: (storeName: string) => {
-      return this.confirmDelete(
-        storeName,
-        'INVENTORY.DIALOGS.DELETE_MESSAGE'
-      );
+      return this.confirmDelete(storeName, 'INVENTORY.DIALOGS.DELETE_MESSAGE');
     },
     showDeleteSuccess: () => {
-      return this.showSuccess(
-        'DIALOGS.TITLES.SUCCESS',
-        'INVENTORY.DIALOGS.SUCCESS_DELETE'
-      );
-    }
-}
+      return this.showSuccess('DIALOGS.TITLES.SUCCESS', 'INVENTORY.DIALOGS.SUCCESS_DELETE');
+    },
+  };
 }
