@@ -4,9 +4,14 @@
   <form [formGroup]="form" *ngIf="!isLoading && form">
     <!-- Category Name -->
     <mat-form-field appearance="outline" class="full-width">
-      <mat-label>{{ 'BOOKS_CATEGORIES.FORM.NAME' | translate }}</mat-label>
-      <input matInput formControlName="name" [placeholder]="'BOOKS_CATEGORIES.FORM.NAME_PLACEHOLDER' | translate"
-        maxlength="100" autocomplete="off" />
+      <mat-label>{{ 'GENRES.FORM.NAME' | translate }}</mat-label>
+      <input
+        matInput
+        formControlName="name"
+        [placeholder]="'GENRES.FORM.NAME_PLACEHOLDER' | translate"
+        maxlength="100"
+        autocomplete="off"
+      />
       <mat-icon matSuffix>label</mat-icon>
       <mat-error *ngIf="form.get('name')?.invalid">
         {{ getErrorMessage('name') }}
@@ -18,24 +23,25 @@
   <!-- Loading State -->
   <div *ngIf="isLoading && !form" class="loading-container">
     <mat-spinner diameter="40"></mat-spinner>
-    <p>{{ 'BOOKS_CATEGORIES.FORM.LOADING' | translate }}</p>
+    <p>{{ 'GENRES.FORM.LOADING' | translate }}</p>
   </div>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
   <button mat-button type="button" (click)="onCancel()" [disabled]="isLoading">
     <mat-icon>close</mat-icon>
-    {{ 'BOOKS_CATEGORIES.FORM.CANCEL' | translate }}
+    {{ 'GENRES.FORM.CANCEL' | translate }}
   </button>
 
-  <button mat-raised-button color="primary" type="button" (click)="onSubmit()"
-    [disabled]="!form || form.invalid || isLoading">
+  <button
+    mat-raised-button
+    color="primary"
+    type="button"
+    (click)="onSubmit()"
+    [disabled]="!form || form.invalid || isLoading"
+  >
     <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
     <mat-icon *ngIf="!isLoading">{{ isEditMode ? 'edit' : 'save' }}</mat-icon>
-    {{
-    isEditMode
-    ? ('BOOKS_CATEGORIES.FORM.UPDATE' | translate)
-    : ('BOOKS_CATEGORIES.FORM.SAVE' | translate)
-    }}
+    {{ isEditMode ? ('GENRES.FORM.UPDATE' | translate) : ('GENRES.FORM.SAVE' | translate) }}
   </button>
 </mat-dialog-actions>

@@ -44,50 +44,53 @@
       "USERS": "Korisnici"
     }
   },
-  "BOOKS_CATEGORIES": {
+  "GENRES": {
     "TITLE": "Žanrovi",
-    "SUBTITLE": "Upravljanje kategorijama proizvoda",
-    "SEARCH_PLACEHOLDER": "Pretraži Žanrove",
-    "SEARCH_INPUT_PLACEHOLDER": "Unesite naziv kategorije...",
-    "ONLY_ENABLED": "Samo Aktivne",
-    "NEW_CATEGORY": "Novi Žanr",
-    "ADD_NEW": "Dodaj Kategoriju",
-    "LOADING": "Učitavanje kategorija...",
-    "NO_DATA": "Nema kategorija za prikaz",
+    "SUBTITLE": "Upravljanje žanrovima knjiga",
+    "SEARCH_PLACEHOLDER": "Pretraži žanrove",
+    "SEARCH_INPUT_PLACEHOLDER": "Unesite naziv žanra...",
+    "ONLY_ENABLED": "Samo Aktivni",
+    "NEW_GENRE": "Novi Žanr",
+    "ADD_NEW": "Dodaj Žanr",
+    "LOADING": "Učitavanje žanrova...",
+    "NO_DATA": "Nema žanrova za prikaz",
     "NO_DATA_FILTER": "Nema rezultata za pretragu",
     "TABLE": {
       "NAME": "Naziv",
       "STATUS": "Status",
-      "ENABLED": "Aktivna",
-      "DISABLED": "Neaktivna",
+      "ENABLED": "Aktivan",
+      "DISABLED": "Neaktivan",
       "ACTIONS": "Akcije"
     },
     "ACTIONS": {
-      "EDIT_TOOLTIP": "Uredi kategoriju",
-      "DELETE_TOOLTIP": "Obriši kategoriju"
+      "EDIT_TOOLTIP": "Uredi žanr",
+      "DELETE_TOOLTIP": "Obriši žanr"
     },
     "FORM": {
-      "NAME": "Naziv Kategorije",
-      "NAME_PLACEHOLDER": "Unesite naziv kategorije",
+      "NAME": "Naziv Žanra",
+      "NAME_PLACEHOLDER": "Unesite naziv žanra",
       "LOADING": "Učitavanje...",
       "CANCEL": "Otkaži",
       "SAVE": "Sačuvaj",
-      "UPDATE": "Ažuriraj"
+      "UPDATE": "Ažuriraj",
+      "EDIT_TITLE": "Uredi Žanr"
     },
     "DIALOGS": {
-      "DELETE_TITLE": "Brisanje Kategorije",
-      "DELETE_MESSAGE": "Da li ste sigurni da želite obrisati kategoriju \"{{name}}\"? Ovo će također obrisati sve proizvode u ovoj kategoriji.",
-      "CONFIRM_ENABLE": "Da li ste sigurni da želite aktivirati kategoriju \"{{name}}\"?",
-      "CONFIRM_DISABLE": "Da li ste sigurni da želite deaktivirati kategoriju \"{{name}}\"?",
-      "SUCCESS_CREATE": "Kategorija uspješno kreirana.",
-      "SUCCESS_UPDATE": "Kategorija uspješno ažurirana.",
-      "SUCCESS_DELETE": "Kategorija uspješno obrisana.",
-      "SUCCESS_ENABLE": "Kategorija \"{{name}}\" je uspješno aktivirana.",
-      "SUCCESS_DISABLE": "Kategorija \"{{name}}\" je uspješno deaktivirana.",
-      "ERROR_CREATE": "Greška pri kreiranju kategorije.",
-      "ERROR_UPDATE": "Greška pri ažuriranju kategorije.",
-      "ERROR_DELETE": "Greška pri brisanju kategorije.",
-      "ERROR_TOGGLE": "Greška pri promjeni statusa kategorije \"{{name}}\"."
+      "DELETE_TITLE": "Brisanje Žanra",
+      "DELETE_MESSAGE": "Da li ste sigurni da želite obrisati žanr \"{{name}}\"? Ovo će također obrisati sve knjige u ovom žanru.",
+      "CONFIRM_ENABLE": "Da li ste sigurni da želite aktivirati žanr \"{{name}}\"?",
+      "CONFIRM_DISABLE": "Da li ste sigurni da želite deaktivirati žanr \"{{name}}\"?",
+      "SUCCESS_CREATE": "Žanr uspješno kreiran.",
+      "SUCCESS_UPDATE": "Žanr uspješno ažuriran.",
+      "SUCCESS_DELETE": "Žanr uspješno obrisan.",
+      "SUCCESS_ENABLE": "Žanr \"{{name}}\" je uspješno aktiviran.",
+      "SUCCESS_DISABLE": "Žanr \"{{name}}\" je uspješno deaktiviran.",
+      "ERROR_CREATE": "Greška pri kreiranju žanra.",
+      "ERROR_UPDATE": "Greška pri ažuriranju žanra.",
+      "ERROR_DELETE": "Greška pri brisanju žanra.",
+      "ERROR_TOGGLE": "Greška pri promjeni statusa žanra \"{{name}}\".",
+      "ERROR_LOAD": "Greška pri učitavanju žanrova.",
+      "ERROR_LOAD_SINGLE": "Greška pri učitavanju žanra."
     }
   },
   "BOOKS": {
@@ -103,10 +106,10 @@
     "TABLE": {
       "NAME": "Naziv",
       "TITLE": "Naslov",
-      "CATEGORY": "Kategorija",
+      "CATEGORY": "Žanr",
       "PRICE": "Cijena (KM)",
       "AUTHORS": "Autori",
-      "FORMAT": "Fromat",
+      "FORMAT": "Format",
       "NOT_DELETED": "U prodaji",
       "PUBLISHER": "Izdavač",
       "STOCK": "Zaliha",
@@ -119,11 +122,11 @@
     },
     "ADD": {
       "TITLE": "Dodaj Novu Knjigu",
-      "SAVING": "Čuvanje proizvoda..."
+      "SAVING": "Čuvanje knjige..."
     },
     "EDIT": {
       "TITLE": "Uredi Knjigu",
-      "LOADING": "Učitavanje knjiga..."
+      "LOADING": "Učitavanje knjige..."
     },
     "FORM": {
       "ISBN": "ISBN",
@@ -139,13 +142,13 @@
       "LANGUAGE_PLACEHOLDER": "Unesite jezik na kojem je napisana knjiga",
       "PAGE_COUNT": "Broj stranica",
       "PAGE_COUNT_PLACEHOLDER": "Unesite broj stranica knjige",
-      "NAME": "Naziv Proizvoda",
-      "NAME_PLACEHOLDER": "Unesite naziv proizvoda",
+      "NAME": "Naziv Knjige",
+      "NAME_PLACEHOLDER": "Unesite naziv knjige",
       "DESCRIPTION": "Opis",
-      "DESCRIPTION_PLACEHOLDER": "Unesite opis proizvoda",
+      "DESCRIPTION_PLACEHOLDER": "Unesite opis knjige",
       "PRICE": "Cijena",
       "PRICE_PLACEHOLDER": "0.00",
-      "CATEGORY": "Kategorija",
+      "CATEGORY": "Žanr",
       "STOCK": "Zaliha",
       "STOCK_PLACEHOLDER": "0",
       "CANCEL": "Otkaži",
@@ -153,14 +156,19 @@
       "UPDATE": "Ažuriraj"
     },
     "DIALOGS": {
-      "DELETE_TITLE": "Brisanje Proizvoda",
-      "DELETE_MESSAGE": "Da li ste sigurni da želite obrisati proizvod \"{{name}}\"?",
-      "SUCCESS_CREATE": "Proizvod uspješno kreiran.",
-      "SUCCESS_UPDATE": "Proizvod uspješno ažuriran.",
-      "SUCCESS_DELETE": "Proizvod uspješno obrisan.",
-      "ERROR_CREATE": "Greška pri kreiranju proizvoda.",
-      "ERROR_UPDATE": "Greška pri ažuriranju proizvoda.",
-      "ERROR_DELETE": "Greška pri brisanju proizvoda.",
+      "DELETE_TITLE": "Brisanje Knjige",
+      "DELETE_MESSAGE": "Da li ste sigurni da želite obrisati knjigu \"{{name}}\"?",
+      "SUCCESS_CREATE": "Knjiga uspješno kreirana.",
+      "SUCCESS_UPDATE": "Knjiga uspješno ažurirana.",
+      "SUCCESS_DELETE": "Knjiga uspješno obrisana.",
+      "ERROR_CREATE": "Greška pri kreiranju knjige.",
+      "ERROR_UPDATE": "Greška pri ažuriranju knjige.",
+      "ERROR_DELETE": "Greška pri brisanju knjige.",
+      "ERROR_LOAD": "Greška pri učitavanju knjige.",
+      "ERROR_LOAD_CATEGORIES": "Greška pri učitavanju žanrova.",
+      "ERROR_LOAD_PUBLISHERS": "Greška pri učitavanju izdavača.",
+      "ERROR_LOAD_FORMATS": "Greška pri učitavanju formata knjiga.",
+      "ERROR_LOAD_AUTHORS": "Greška pri učitavanju autora.",
       "UNSAVED_CHANGES": "Imate nesačuvane izmjene u formi.",
       "CONFIRM_CANCEL": "Da li želite otkazati izmjene i vratiti se nazad?"
     }
@@ -178,6 +186,7 @@
     "ERROR_TITLE": "Greška pri Učitavanju Inventara",
     "NO_DATA": "Nema inventara",
     "NO_DATA_FILTER": "Nema inventara koji odgovara filterima",
+    "REQUIRED_FIELD": "Obavezno polje",
     "FORM": {
       "LOADING": "Učitavanje...",
       "CANCEL": "Otkaži",
@@ -212,7 +221,8 @@
       "REORDERTRESHOLD": "Prag za naručivanje",
       "LOCATION": "Lokacija",
       "QUANTITYINSTOCKFORONLINEORDERS": "Količina za online narudžbe",
-      "ACTIONS": "Akcije"
+      "ACTIONS": "Akcije",
+      "STORE": "Prodavnica"
     },
     "ACTIONS": {
       "VIEW_DETAILS": "Pogledaj Detalje",
@@ -229,12 +239,16 @@
       "CONFIRM_ENABLE": "Da li ste sigurni da želite aktivirati inventar za prodavnicu \"{{name}}\"?",
       "CONFIRM_DISABLE": "Da li ste sigurni da želite deaktivirati inventar za prodavnicu \"{{name}}\"?",
       "SUCCESS_CREATE": "Popis inventara uspješno kreiran.",
-      "SUCCESS_UPDATE": "Inventar uspješno ažurirana.",
+      "SUCCESS_UPDATE": "Inventar uspješno ažuriran.",
       "SUCCESS_DELETE": "Inventar uspješno obrisan.",
       "ERROR_CREATE": "Greška pri kreiranju inventara.",
       "ERROR_UPDATE": "Greška pri ažuriranju inventara.",
       "ERROR_DELETE": "Greška pri brisanju inventara.",
-      "ERROR_TOGGLE": "Greška pri promjeni statusa inventara"
+      "ERROR_TOGGLE": "Greška pri promjeni statusa inventara.",
+      "ERROR_LOAD": "Greška pri učitavanju inventara.",
+      "ERROR_LOAD_BOOKS": "Greška pri učitavanju knjiga.",
+      "ERROR_LOAD_STORE_BOOK_PAIRS": "Greška pri učitavanju parova prodavnica i knjiga.",
+      "LOCATION_FORMAT": "Lokacija mora biti u formatu \"Polica Slovo-broj\""
     }
   },
   "ORDERS": {
@@ -306,7 +320,9 @@
     },
     "MESSAGES": {
       "STATUS_UPDATED": "Status narudžbe uspješno ažuriran",
-      "CANNOT_CHANGE_STATUS": "Status ove narudžbe ne može se promijeniti"
+      "CANNOT_CHANGE_STATUS": "Status ove narudžbe ne može se promijeniti",
+      "ERROR_LOAD": "Greška pri učitavanju narudžbi.",
+      "ERROR_UPDATE_STATUS": "Greška pri ažuriranju statusa narudžbe."
     }
   },
   "COMMON": {
@@ -424,8 +440,8 @@
     "ITEMS_PER_PAGE": "Stavki po stranici",
     "FIRST_PAGE": "Prva stranica",
     "LAST_PAGE": "Posljednja stranica",
-    "NEXT_PAGE": "Sljedeća stranica",
-    "PREVIOUS_PAGE": "Prethodna stranica",
+    "NEXT_PAGE": "Sljedeća",
+    "PREVIOUS_PAGE": "Prethodna",
     "PAGE": "Stranica",
     "OF": "od",
     "SHOWING": "Prikazano",
@@ -466,5 +482,113 @@
     "CONFLICT": "Ova akcija je u konfliktu sa postojećim podacima.",
     "VALIDATION": "Provjerite formu za greške.",
     "UNKNOWN": "Nepoznata greška."
+  },
+  "USERS": {
+    "TITLE": "Upravljanje korisnicima",
+    "SEARCH_PLACEHOLDER": "Pretraži korisnike",
+    "SEARCH_INPUT_PLACEHOLDER": "Ime, email...",
+    "LOADING": "Učitavanje...",
+    "NO_DATA": "Nema korisnika",
+    "TABLE": {
+      "FULL_NAME": "Ime i prezime",
+      "EMAIL": "Email",
+      "ROLES": "Role",
+      "ACTIVE": "Aktivan",
+      "ACTIONS": "Akcije"
+    },
+    "ROLES": {
+      "CUSTOMER": "Korisnik"
+    },
+    "EDIT": {
+      "TITLE": "Uredi korisnika",
+      "ROLES_SECTION": "Role korisnika",
+      "STATUS_SECTION": "Status korisnika",
+      "ADMIN_DESCRIPTION": "Pun pristup svim funkcionalnostima",
+      "MANAGER_DESCRIPTION": "Upravljanje katalogom i narudžbama",
+      "EMPLOYEE_DESCRIPTION": "Pregled narudžbi i inventara",
+      "ACTIVE_DESCRIPTION": "Korisnik se može prijaviti u sistem",
+      "CANCEL": "Odustani",
+      "SAVE": "Sačuvaj",
+      "LOADING": "Učitavanje..."
+    },
+    "TOOLTIPS": {
+      "EDIT_ROLES": "Uredi role"
+    },
+    "DIALOGS": {
+      "ERROR_LOAD": "Greška pri učitavanju korisnika",
+      "NOT_FOUND": "Korisnik nije pronađen",
+      "SUCCESS_UPDATE": "Korisnik uspješno ažuriran",
+      "ERROR_UPDATE": "Greška pri ažuriranju korisnika"
+    }
+  },
+  "STATISTICS": {
+    "TITLE": "Admin Dashboard",
+    "CARDS": {
+      "TOTAL_REVENUE": "Ukupni prihod",
+      "SINCE_YEAR_START": "od početka godine",
+      "TOTAL_ORDERS": "Ukupno narudžbi",
+      "TOTAL": "ukupno",
+      "TOTAL_USERS": "Ukupno korisnika",
+      "ACTIVE": "aktivnih",
+      "BOOKS_SOLD": "Prodanih knjiga",
+      "THIS_YEAR": "ove godine"
+    },
+    "CHARTS": {
+      "MONTHLY_REVENUE_LABEL": "Prihod po mjesecima (KM)",
+      "MONTHLY_REVENUE_TITLE": "Mjesečni prihod",
+      "MONTHLY_ORDERS_LABEL": "Broj narudžbi po mjesecima",
+      "TOP5_BOOKS_LABEL": "Broj prodanih knjiga",
+      "TOP5_BOOKS_TITLE": "Top 5 najprodavanijih knjiga",
+      "ORDERS_COUNT_LABEL": "Broj narudžbi",
+      "SHIPPERS_TITLE": "Narudžbe po dostavljačima",
+      "CATEGORIES_LABEL": "Prodaja po žanrovima",
+      "CATEGORIES_TITLE": "Popularnost žanrova knjiga",
+      "MONTHLY_CATEGORY_TITLE": "Prihod po mjesecima i žanrovima",
+      "MONTHLY_REVENUE_HEADER": "Mjesečni prihod (KM)",
+      "MONTHLY_ORDERS_HEADER": "Broj narudžbi po mjesecima",
+      "TOP5_BOOKS_HEADER": "Top 5 najprodavanijih knjiga",
+      "SHIPPERS_HEADER": "Narudžbe po dostavljačima",
+      "CATEGORIES_HEADER": "Popularnost žanrova",
+      "MONTHLY_CATEGORY_HEADER": "Prihod po žanrovima (mjesečno)"
+    },
+    "REPORTS": {
+      "ORDERS_TITLE": "Generiši izvještaj narudžbi",
+      "BOOKS_TITLE": "Generiši izvještaj o prodaji knjiga",
+      "DATE_FROM": "Datum od",
+      "DATE_TO": "Datum do",
+      "USER": "Korisnik",
+      "USER_PLACEHOLDER": "Odaberite korisnika",
+      "BOOK": "Knjiga",
+      "BOOK_PLACEHOLDER": "Odaberite knjigu",
+      "DOWNLOAD_PDF": "Preuzmi PDF",
+      "ORDERS_FILENAME": "narudzbe-report.pdf",
+      "BOOKS_FILENAME": "knjige-report.pdf"
+    },
+    "DIALOGS": {
+      "ERROR_LOAD_USERS": "Greška prilikom dohvatanja korisnika",
+      "ERROR_LOAD_BOOKS": "Greška prilikom dohvatanja knjiga",
+      "ERROR_MONTHLY_REVENUE": "Greška prilikom dohvatanja podataka o mjesečnoj zaradi",
+      "ERROR_MONTHLY_ORDERS": "Greška prilikom dohvatanja podataka o broju narudžbi",
+      "ERROR_TOP5_BOOKS": "Greška prilikom dohvatanja top 5 knjiga",
+      "ERROR_SHIPPERS": "Greška prilikom dohvatanja podataka o dostavljačima",
+      "ERROR_CATEGORIES": "Greška prilikom dohvatanja statistike žanrova",
+      "ERROR_CATEGORY_REVENUE": "Greška prilikom dohvatanja prihoda po žanrovima",
+      "ERROR_SUMMARY": "Greška pri učitavanju sumarnih podataka",
+      "ERROR_ORDERS_REPORT": "Greška pri generisanju izvještaja o narudžbama",
+      "ERROR_BOOKS_REPORT": "Greška pri generisanju izvještaja o prodaji knjiga"
+    }
+  },
+  "COUPONS": {
+    "TITLE": "Kreiraj kupon",
+    "TYPE_PERCENT": "Procentualni popust",
+    "TYPE_AMOUNT": "Fiksni iznos",
+    "SAVE_BUTTON": "Sačuvaj kupon",
+    "DIALOGS": {
+      "SUCCESS_CREATE": "Kupon uspješno kreiran",
+      "ERROR_CREATE": "Greška prilikom kreiranja kupona"
+    },
+    "PROMOTION_CODE": "Promocijski kod",
+    "START_DATE": "Datum početka",
+    "END_DATE": "Datum isteka"
   }
 }

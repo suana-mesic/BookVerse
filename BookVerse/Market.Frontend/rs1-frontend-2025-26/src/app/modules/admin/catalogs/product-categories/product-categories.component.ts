@@ -5,6 +5,7 @@ import { ProductCategoriesApiService } from '../../../../api-services/product-ca
 import { ToasterService } from '../../../../core/services/toaster.service';
 import { DialogHelperService } from '../../../shared/services/dialog-helper.service';
 import { DialogButton } from '../../../shared/models/dialog-config.model';
+import { TranslateService } from '@ngx-translate/core';
 import {
   ListProductCategoriesRequest,
   ListProductCategoriesQueryDto,
@@ -25,6 +26,7 @@ export class ProductCategoriesComponent
   private dialog = inject(MatDialog);
   private toaster = inject(ToasterService);
   private dialogHelper = inject(DialogHelperService);
+  private translate = inject(TranslateService);
 
   displayedColumns: string[] = ['name', 'isEnabled', 'actions'];
   showOnlyEnabled = false;
@@ -52,8 +54,8 @@ export class ProductCategoriesComponent
         this.stopLoading();
       },
       error: (err) => {
-        this.stopLoading('Failed to load categories');
-        console.error('Load categories error:', err);
+        this.stopLoading(this.translate.instant('GENRES.DIALOGS.ERROR_LOAD'));
+        console.error('Load genres error:', err);
       },
     });
   }
@@ -134,15 +136,11 @@ export class ProductCategoriesComponent
       },
       error: (err) => {
         this.stopLoading();
-
         const errorMessage = this.extractErrorMessage(err);
-
-        // Show error dialog instead of toast
         this.dialogHelper
-          .showError('DIALOGS.TITLES.ERROR', 'BOOKS_CATEGORIES.DIALOGS.ERROR_DELETE')
+          .showError('DIALOGS.TITLES.ERROR', 'GENRES.DIALOGS.ERROR_DELETE')
           .subscribe();
-
-        console.error('Delete category error:', err);
+        console.error('Delete genre error:', err);
       },
     });
   }
@@ -154,71 +152,47 @@ export class ProductCategoriesComponent
       ? this.api.disable(category.id)
       : this.api.enable(category.id);
 
-    console.log(category.isEnabled);
     apiAction.subscribe({
       next: () => {
-        const status = category.isEnabled ? 'disabled' : 'enabled';
-        this.toaster.success(`Category ${status} successfully`);
+        const key = category.isEnabled
+          ? 'GENRES.DIALOGS.SUCCESS_DISABLE'
+          : 'GENRES.DIALOGS.SUCCESS_ENABLE';
+        this.toaster.success(this.translate.instant(key, { name: category.name }));
         this.loadPagedData();
       },
       error: (err) => {
         this.stopLoading();
-
         const errorMessage = this.extractErrorMessage(err);
-
         if (err.status === 409) {
-          // Business rule conflict - show dialog for important errors
           this.dialogHelper
-            .showWarning(
-              'DIALOGS.TITLES.WARNING',
-              errorMessage || 'BOOKS_CATEGORIES.DIALOGS.ERROR_TOGGLE',
-              { name: category.name },
-            )
+            .showWarning('DIALOGS.TITLES.WARNING', errorMessage || 'GENRES.DIALOGS.ERROR_TOGGLE', {
+              name: category.name,
+            })
             .subscribe();
         } else {
-          // Generic error - just toast
-          this.toaster.error(errorMessage || 'Failed to change category status');
+          this.toaster.error(
+            errorMessage ||
+              this.translate.instant('GENRES.DIALOGS.ERROR_TOGGLE', { name: category.name }),
+          );
         }
-
         console.error('Toggle status error:', err);
         this.loadPagedData();
       },
     });
   }
 
-  /**
-   * Extract user-friendly error message from HTTP error response
-   */
   private extractErrorMessage(err: any): string | null {
     if (err?.error) {
-      if (typeof err.error === 'string') {
-        return err.error;
-      }
-
-      if (err.error.message) {
-        return err.error.message;
-      }
-
-      if (err.error.title) {
-        return err.error.title;
-      }
-
+      if (typeof err.error === 'string') return err.error;
+      if (err.error.message) return err.error.message;
+      if (err.error.title) return err.error.title;
       if (err.error.errors && typeof err.error.errors === 'object') {
         const errors = Object.values(err.error.errors).flat();
-        if (errors.length > 0) {
-          return errors.join(', ');
-        }
+        if (errors.length > 0) return errors.join(', ');
       }
     }
-
-    if (err?.message) {
-      return err.message;
-    }
-
-    if (err?.statusText && err.statusText !== 'Unknown Error') {
-      return err.statusText;
-    }
-
+    if (err?.message) return err.message;
+    if (err?.statusText && err.statusText !== 'Unknown Error') return err.statusText;
     return null;
   }
 
@@ -226,10 +200,12 @@ export class ProductCategoriesComponent
     this.editingCategoryId = category.id;
     this.editingName = category.name;
   }
+
   cancelEdit(): void {
     this.editingCategoryId = null;
     this.editingName = '';
   }
+
   saveEdit(category: ListProductCategoriesQueryDto) {
     if (!this.editingName.trim() || this.editingName == category.name) {
       this.cancelEdit();
@@ -237,12 +213,12 @@ export class ProductCategoriesComponent
     }
     this.api.update(category.id, { name: this.editingName }).subscribe({
       next: () => {
-        this.toaster.success('Category updated successfully');
+        this.toaster.success(this.translate.instant('GENRES.DIALOGS.SUCCESS_UPDATE'));
         this.cancelEdit();
         this.loadPagedData();
       },
       error: (err) => {
-        this.toaster.error('Failed to update category');
+        this.toaster.error(this.translate.instant('GENRES.DIALOGS.ERROR_UPDATE'));
         console.error(err);
       },
     });

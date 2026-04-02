@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {GetProductCategoryByIdQueryDto} from '../../../../../api-services/product-categories/product-categories-api.model';
+import { TranslateService } from '@ngx-translate/core';
 
 /**
  * Service for creating and managing product category forms.
@@ -9,6 +10,7 @@ import {GetProductCategoryByIdQueryDto} from '../../../../../api-services/produc
 @Injectable()
 export class ProductCategoryFormService {
   private fb = inject(FormBuilder);
+  private translate = inject(TranslateService);
 
   /**
    * Create a product category form with validation.
@@ -39,15 +41,15 @@ export class ProductCategoryFormService {
     const errors = control.errors;
 
     if (errors['required']) {
-      return 'This field is required';
+      return this.translate.instant('VALIDATION.REQUIRED');
     }
     if (errors['minlength']) {
-      return `Minimum ${errors['minlength'].requiredLength} characters required`;
+      return this.translate.instant('VALIDATION.MIN_LENGTH', { min: errors['minlength'].requiredLength });
     }
     if (errors['maxlength']) {
-      return `Maximum ${errors['maxlength'].requiredLength} characters allowed`;
+      return this.translate.instant('VALIDATION.MAX_LENGTH', { max: errors['maxlength'].requiredLength });
     }
 
-    return 'Invalid value';
+    return this.translate.instant('VALIDATION.CUSTOM');
   }
 }

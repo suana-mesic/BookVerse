@@ -1,7 +1,7 @@
 <div class="paginator-bar" *ngIf="vm.totalItems > 0">
   <div class="paginator-container">
     <div class="page-size-selector">
-      <span class="selector-label">Po stranici:</span>
+      <span class="selector-label">{{ 'PAGINATION.ITEMS_PER_PAGE' | translate }}:</span>
       <mat-form-field appearance="fill" class="page-size-field">
         <mat-select
           [value]="vm.request.paging.pageSize"
@@ -24,7 +24,7 @@
         [disabled]="vm.request.paging.page <= 1 || vm.isLoading"
       >
         <mat-icon>chevron_left</mat-icon>
-        <span>Prethodna</span>
+        <span>{{ 'PAGINATION.PREVIOUS_PAGE' | translate }}</span>
       </button>
 
       <ng-container *ngFor="let p of getPageNumbers()">
@@ -45,15 +45,19 @@
         (click)="vm.nextPage()"
         [disabled]="(vm.totalPages && vm.request.paging.page >= vm.totalPages) || vm.isLoading"
       >
-        <span>Naredna</span>
+        <span>{{ 'PAGINATION.NEXT_PAGE' | translate }}</span>
         <mat-icon>chevron_right</mat-icon>
       </button>
     </div>
 
     <div class="paginator-info">
       <span class="info-text">
-        {{ vm.totalItems }} zapisa &nbsp;·&nbsp; stranica
-        <strong>{{ vm.request.paging.page }}</strong> od <strong>{{ vm.totalPages || 1 }}</strong>
+        {{ vm.totalItems }} {{ 'PAGINATION.RESULTS' | translate }}
+        &nbsp;·&nbsp;
+        {{ 'PAGINATION.PAGE' | translate }}
+        <strong>{{ vm.request.paging.page }}</strong>
+        {{ 'PAGINATION.OF' | translate }}
+        <strong>{{ vm.totalPages || 1 }}</strong>
       </span>
     </div>
   </div>

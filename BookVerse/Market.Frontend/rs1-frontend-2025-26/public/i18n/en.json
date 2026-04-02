@@ -29,8 +29,8 @@
     },
     "MENU": {
       "CATALOG": "CATALOG",
-      "CATEGORIES": "Product Categories",
-      "BOOKS": "Products",
+      "CATEGORIES": "Genres",
+      "BOOKS": "Books",
       "ORDERS_SECTION": "ORDERS",
       "ORDERS": "Orders Overview",
       "SYSTEM": "SYSTEM",
@@ -44,16 +44,16 @@
       "USERS": "Users"
     }
   },
-  "BOOKS_CATEGORIES": {
-    "TITLE": "Product Categories",
-    "SUBTITLE": "Manage product categories",
-    "SEARCH_PLACEHOLDER": "Search categories",
-    "SEARCH_INPUT_PLACEHOLDER": "Enter category name...",
+  "GENRES": {
+    "TITLE": "Genres",
+    "SUBTITLE": "Manage book genres",
+    "SEARCH_PLACEHOLDER": "Search genres",
+    "SEARCH_INPUT_PLACEHOLDER": "Enter genre name...",
     "ONLY_ENABLED": "Only Active",
-    "NEW_CATEGORY": "New Category",
-    "ADD_NEW": "Add Category",
-    "LOADING": "Loading categories...",
-    "NO_DATA": "No categories to display",
+    "NEW_GENRE": "New Genre",
+    "ADD_NEW": "Add Genre",
+    "LOADING": "Loading genres...",
+    "NO_DATA": "No genres to display",
     "NO_DATA_FILTER": "No results found for search",
     "TABLE": {
       "NAME": "Name",
@@ -63,71 +63,92 @@
       "ACTIONS": "Actions"
     },
     "ACTIONS": {
-      "EDIT_TOOLTIP": "Edit category",
-      "DELETE_TOOLTIP": "Delete category"
+      "EDIT_TOOLTIP": "Edit genre",
+      "DELETE_TOOLTIP": "Delete genre"
     },
     "FORM": {
-      "NAME": "Category Name",
-      "NAME_PLACEHOLDER": "Enter category name",
+      "NAME": "Genre Name",
+      "NAME_PLACEHOLDER": "Enter genre name",
       "LOADING": "Loading...",
       "CANCEL": "Cancel",
       "SAVE": "Save",
-      "UPDATE": "Update"
+      "UPDATE": "Update",
+      "EDIT_TITLE": "Edit Genre"
     },
     "DIALOGS": {
-      "DELETE_TITLE": "Delete Category",
-      "DELETE_MESSAGE": "Are you sure you want to delete category \"{{name}}\"? This will also delete all products in this category.",
-      "CONFIRM_ENABLE": "Are you sure you want to enable category \"{{name}}\"?",
-      "CONFIRM_DISABLE": "Are you sure you want to disable category \"{{name}}\"?",
-      "SUCCESS_CREATE": "Category created successfully.",
-      "SUCCESS_UPDATE": "Category updated successfully.",
-      "SUCCESS_DELETE": "Category deleted successfully.",
-      "SUCCESS_ENABLE": "Category \"{{name}}\" has been enabled successfully.",
-      "SUCCESS_DISABLE": "Category \"{{name}}\" has been disabled successfully.",
-      "ERROR_CREATE": "Error creating category.",
-      "ERROR_UPDATE": "Error updating category.",
-      "ERROR_DELETE": "Error deleting category.",
-      "ERROR_TOGGLE": "Error changing status of category \"{{name}}\"."
+      "DELETE_TITLE": "Delete Genre",
+      "DELETE_MESSAGE": "Are you sure you want to delete genre \"{{name}}\"? This will also delete all books in this genre.",
+      "CONFIRM_ENABLE": "Are you sure you want to enable genre \"{{name}}\"?",
+      "CONFIRM_DISABLE": "Are you sure you want to disable genre \"{{name}}\"?",
+      "SUCCESS_CREATE": "Genre created successfully.",
+      "SUCCESS_UPDATE": "Genre updated successfully.",
+      "SUCCESS_DELETE": "Genre deleted successfully.",
+      "SUCCESS_ENABLE": "Genre \"{{name}}\" has been enabled successfully.",
+      "SUCCESS_DISABLE": "Genre \"{{name}}\" has been disabled successfully.",
+      "ERROR_CREATE": "Error creating genre.",
+      "ERROR_UPDATE": "Error updating genre.",
+      "ERROR_DELETE": "Error deleting genre.",
+      "ERROR_TOGGLE": "Error changing status of genre \"{{name}}\".",
+      "ERROR_LOAD": "Error loading genres.",
+      "ERROR_LOAD_SINGLE": "Error loading genre."
     }
   },
   "BOOKS": {
-    "TITLE": "Products",
-    "SUBTITLE": "Manage products",
-    "SEARCH_PLACEHOLDER": "Search products",
-    "SEARCH_INPUT_PLACEHOLDER": "Enter product name...",
-    "NEW_BOOKS": "New Product",
-    "ADD_NEW": "Add Product",
-    "LOADING": "Loading products...",
-    "NO_DATA": "No products to display",
+    "TITLE": "Books",
+    "SUBTITLE": "Manage books",
+    "SEARCH_PLACEHOLDER": "Search books",
+    "SEARCH_INPUT_PLACEHOLDER": "Enter book name...",
+    "NEW_BOOKS": "New Book",
+    "ADD_NEW": "Add Book",
+    "LOADING": "Loading books...",
+    "NO_DATA": "No books to display",
     "NO_DATA_FILTER": "No results found for search",
     "TABLE": {
       "NAME": "Name",
-      "CATEGORY": "Category",
+      "TITLE": "Title",
+      "CATEGORY": "Genre",
       "PRICE": "Price (KM)",
+      "AUTHORS": "Authors",
+      "FORMAT": "Format",
+      "NOT_DELETED": "On sale",
+      "PUBLISHER": "Publisher",
       "STOCK": "Stock",
       "ACTIVE": "Active",
       "ACTIONS": "Actions"
     },
     "ACTIONS": {
-      "EDIT_TOOLTIP": "Edit product",
-      "DELETE_TOOLTIP": "Delete product"
+      "EDIT_TOOLTIP": "Edit book",
+      "DELETE_TOOLTIP": "Delete book"
     },
     "ADD": {
-      "TITLE": "Add New Product",
-      "SAVING": "Saving product..."
+      "TITLE": "Add New Book",
+      "SAVING": "Saving book..."
     },
     "EDIT": {
-      "TITLE": "Edit Product",
-      "LOADING": "Loading product..."
+      "TITLE": "Edit Book",
+      "LOADING": "Loading book..."
     },
     "FORM": {
-      "NAME": "Product Name",
-      "NAME_PLACEHOLDER": "Enter product name",
+      "ISBN": "ISBN",
+      "PUBLISHER": "Publisher",
+      "FORMAT": "Format",
+      "PUBLISHED_DATE": "Publication date",
+      "ISBN_PLACEHOLDER": "Enter book ISBN",
+      "TITLE": "Title",
+      "TITLE_PLACEHOLDER": "Enter book title",
+      "AUTHOR": "Author",
+      "AUTHOR_PLACEHOLDER": "Select author",
+      "LANGUAGE": "Language",
+      "LANGUAGE_PLACEHOLDER": "Enter the language the book is written in",
+      "PAGE_COUNT": "Number of pages",
+      "PAGE_COUNT_PLACEHOLDER": "Enter number of pages",
+      "NAME": "Book Name",
+      "NAME_PLACEHOLDER": "Enter book name",
       "DESCRIPTION": "Description",
-      "DESCRIPTION_PLACEHOLDER": "Enter product description",
+      "DESCRIPTION_PLACEHOLDER": "Enter book description",
       "PRICE": "Price",
       "PRICE_PLACEHOLDER": "0.00",
-      "CATEGORY": "Category",
+      "CATEGORY": "Genre",
       "STOCK": "Stock",
       "STOCK_PLACEHOLDER": "0",
       "CANCEL": "Cancel",
@@ -135,14 +156,19 @@
       "UPDATE": "Update"
     },
     "DIALOGS": {
-      "DELETE_TITLE": "Delete Product",
-      "DELETE_MESSAGE": "Are you sure you want to delete product \"{{name}}\"?",
-      "SUCCESS_CREATE": "Product created successfully.",
-      "SUCCESS_UPDATE": "Product updated successfully.",
-      "SUCCESS_DELETE": "Product deleted successfully.",
-      "ERROR_CREATE": "Error creating product.",
-      "ERROR_UPDATE": "Error updating product.",
-      "ERROR_DELETE": "Error deleting product.",
+      "DELETE_TITLE": "Delete Book",
+      "DELETE_MESSAGE": "Are you sure you want to delete book \"{{name}}\"?",
+      "SUCCESS_CREATE": "Book created successfully.",
+      "SUCCESS_UPDATE": "Book updated successfully.",
+      "SUCCESS_DELETE": "Book deleted successfully.",
+      "ERROR_CREATE": "Error creating book.",
+      "ERROR_UPDATE": "Error updating book.",
+      "ERROR_DELETE": "Error deleting book.",
+      "ERROR_LOAD": "Error loading book.",
+      "ERROR_LOAD_CATEGORIES": "Error loading genres.",
+      "ERROR_LOAD_PUBLISHERS": "Error loading publishers.",
+      "ERROR_LOAD_FORMATS": "Error loading book formats.",
+      "ERROR_LOAD_AUTHORS": "Error loading authors.",
       "UNSAVED_CHANGES": "You have unsaved changes in the form.",
       "CONFIRM_CANCEL": "Do you want to cancel changes and go back?"
     }
@@ -160,6 +186,7 @@
     "ERROR_TITLE": "Error Loading Inventory",
     "NO_DATA": "No inventory data",
     "NO_DATA_FILTER": "No inventory matching the filters",
+    "REQUIRED_FIELD": "Required field",
     "TABLE": {
       "STORE_ID": "Store ID",
       "STORE_NAME": "Store Name",
@@ -171,7 +198,8 @@
       "REORDERTRESHOLD": "Reorder Threshold",
       "LOCATION": "Location",
       "QUANTITYINSTOCKFORONLINEORDERS": "Quantity for Online Orders",
-      "ACTIONS": "Actions"
+      "ACTIONS": "Actions",
+      "STORE": "Store"
     },
     "FORM": {
       "LOADING": "Loading...",
@@ -201,7 +229,11 @@
       "ERROR_CREATE": "Error creating inventory.",
       "ERROR_UPDATE": "Error updating inventory.",
       "ERROR_DELETE": "Error deleting inventory.",
-      "ERROR_TOGGLE": "Error changing inventory status."
+      "ERROR_TOGGLE": "Error changing inventory status.",
+      "ERROR_LOAD": "Error loading inventory.",
+      "ERROR_LOAD_BOOKS": "Error loading books.",
+      "ERROR_LOAD_STORE_BOOK_PAIRS": "Error loading store-book pairs.",
+      "LOCATION_FORMAT": "Location must be in format \"Shelf Letter-number\""
     }
   },
   "ORDERS": {
@@ -273,7 +305,9 @@
     },
     "MESSAGES": {
       "STATUS_UPDATED": "Order status updated successfully",
-      "CANNOT_CHANGE_STATUS": "This order status cannot be changed"
+      "CANNOT_CHANGE_STATUS": "This order status cannot be changed",
+      "ERROR_LOAD": "Error loading orders.",
+      "ERROR_UPDATE_STATUS": "Error updating order status."
     }
   },
   "COMMON": {
@@ -391,8 +425,8 @@
     "ITEMS_PER_PAGE": "Items per page",
     "FIRST_PAGE": "First page",
     "LAST_PAGE": "Last page",
-    "NEXT_PAGE": "Next page",
-    "PREVIOUS_PAGE": "Previous page",
+    "NEXT_PAGE": "Next",
+    "PREVIOUS_PAGE": "Previous",
     "PAGE": "Page",
     "OF": "of",
     "SHOWING": "Showing",
@@ -433,5 +467,113 @@
     "CONFLICT": "This action conflicts with existing data.",
     "VALIDATION": "Please check the form for errors.",
     "UNKNOWN": "Unknown error occurred."
+  },
+  "USERS": {
+    "TITLE": "User Management",
+    "SEARCH_PLACEHOLDER": "Search users",
+    "SEARCH_INPUT_PLACEHOLDER": "Name, email...",
+    "LOADING": "Loading...",
+    "NO_DATA": "No users found",
+    "TABLE": {
+      "FULL_NAME": "Full name",
+      "EMAIL": "Email",
+      "ROLES": "Role",
+      "ACTIVE": "Active",
+      "ACTIONS": "Actions"
+    },
+    "ROLES": {
+      "CUSTOMER": "Customer"
+    },
+    "EDIT": {
+      "TITLE": "Edit User",
+      "ROLES_SECTION": "User roles",
+      "STATUS_SECTION": "User status",
+      "ADMIN_DESCRIPTION": "Full access to all functionalities",
+      "MANAGER_DESCRIPTION": "Catalog and orders management",
+      "EMPLOYEE_DESCRIPTION": "View orders and inventory",
+      "ACTIVE_DESCRIPTION": "User can log into the system",
+      "CANCEL": "Cancel",
+      "SAVE": "Save",
+      "LOADING": "Loading..."
+    },
+    "TOOLTIPS": {
+      "EDIT_ROLES": "Edit roles"
+    },
+    "DIALOGS": {
+      "ERROR_LOAD": "Error loading users",
+      "NOT_FOUND": "User not found",
+      "SUCCESS_UPDATE": "User updated successfully",
+      "ERROR_UPDATE": "Error updating user"
+    }
+  },
+  "STATISTICS": {
+    "TITLE": "Admin Dashboard",
+    "CARDS": {
+      "TOTAL_REVENUE": "Total Revenue",
+      "SINCE_YEAR_START": "since the beginning of the year",
+      "TOTAL_ORDERS": "Total Orders",
+      "TOTAL": "total",
+      "TOTAL_USERS": "Total Users",
+      "ACTIVE": "active",
+      "BOOKS_SOLD": "Books Sold",
+      "THIS_YEAR": "this year"
+    },
+    "CHARTS": {
+      "MONTHLY_REVENUE_LABEL": "Monthly Revenue (KM)",
+      "MONTHLY_REVENUE_TITLE": "Monthly Revenue",
+      "MONTHLY_ORDERS_LABEL": "Monthly Orders by Month",
+      "TOP5_BOOKS_LABEL": "Number of Books Sold",
+      "TOP5_BOOKS_TITLE": "Top 5 Best-Selling Books",
+      "ORDERS_COUNT_LABEL": "Number of Orders",
+      "SHIPPERS_TITLE": "Orders by Shippers",
+      "CATEGORIES_LABEL": "Sales by Genre",
+      "CATEGORIES_TITLE": "Genre Popularity",
+      "MONTHLY_CATEGORY_TITLE": "Revenue by Month and Genre",
+      "MONTHLY_REVENUE_HEADER": "Monthly Revenue (KM)",
+      "MONTHLY_ORDERS_HEADER": "Monthly Orders by Month",
+      "TOP5_BOOKS_HEADER": "Top 5 Best-Selling Books",
+      "SHIPPERS_HEADER": "Orders by Shippers",
+      "CATEGORIES_HEADER": "Genre Popularity",
+      "MONTHLY_CATEGORY_HEADER": "Revenue by Genre (monthly)"
+    },
+    "REPORTS": {
+      "ORDERS_TITLE": "Generate Orders Report",
+      "BOOKS_TITLE": "Generate Books Sales Report",
+      "DATE_FROM": "Date From",
+      "DATE_TO": "Date To",
+      "USER": "User",
+      "USER_PLACEHOLDER": "Select user",
+      "BOOK": "Book",
+      "BOOK_PLACEHOLDER": "Select book",
+      "DOWNLOAD_PDF": "Download PDF",
+      "ORDERS_FILENAME": "orders-report.pdf",
+      "BOOKS_FILENAME": "books-report.pdf"
+    },
+    "DIALOGS": {
+      "ERROR_LOAD_USERS": "Error loading users",
+      "ERROR_LOAD_BOOKS": "Error loading books",
+      "ERROR_MONTHLY_REVENUE": "Error loading monthly revenue data",
+      "ERROR_MONTHLY_ORDERS": "Error loading monthly orders data",
+      "ERROR_TOP5_BOOKS": "Error loading top 5 books",
+      "ERROR_SHIPPERS": "Error loading shippers data",
+      "ERROR_CATEGORIES": "Error loading genre statistics",
+      "ERROR_CATEGORY_REVENUE": "Error loading genre revenue data",
+      "ERROR_SUMMARY": "Error loading summary data",
+      "ERROR_ORDERS_REPORT": "Error generating orders report",
+      "ERROR_BOOKS_REPORT": "Error generating books sales report"
+    }
+  },
+  "COUPONS": {
+    "TITLE": "Create Coupon",
+    "TYPE_PERCENT": "Percentage Discount",
+    "TYPE_AMOUNT": "Fixed Amount",
+    "SAVE_BUTTON": "Save Coupon",
+    "DIALOGS": {
+      "SUCCESS_CREATE": "Coupon created successfully",
+      "ERROR_CREATE": "Error creating coupon"
+    },
+    "PROMOTION_CODE": "Promotion code",
+    "START_DATE": "Start date",
+    "END_DATE": "End date"
   }
 }

@@ -27,6 +27,7 @@ import { InventoryApiService } from '../../../api-services/inventory/inventory-a
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogHelperService } from '../../shared/services/dialog-helper.service';
 import { DialogButton } from '../../shared/models/dialog-config.model';
+import { TranslateService } from '@ngx-translate/core';
 import { BooksApiService } from '../../../api-services/books/books-api.service';
 import { StoresApiService } from '../../../api-services/stores/stores-api.service';
 import {
@@ -60,6 +61,7 @@ export class InventoryComponent
   private dialogHelper = inject(DialogHelperService);
   private booksApi = inject(BooksApiService);
   private storesApi = inject(StoresApiService);
+  private translate = inject(TranslateService);
 
   // Table columns
   displayedColumns: string[] = [
@@ -205,7 +207,7 @@ export class InventoryComponent
         this.stopLoading();
       },
       error: (err) => {
-        this.stopLoading('Failed to load orders');
+        this.stopLoading(this.translate.instant('INVENTORY.DIALOGS.ERROR_LOAD'));
         console.error('Load orders error:', err);
       },
     });
@@ -240,7 +242,7 @@ export class InventoryComponent
   private loadBooks() {
     this.booksApi.listBooksForAutocomplete().subscribe({
       next: (response) => (this.books = response),
-      error: (err) => this.toaster.error('Greška prilikom dohvatanja knjiga.'),
+      error: (err) => this.toaster.error(this.translate.instant('INVENTORY.DIALOGS.ERROR_LOAD_BOOKS')),
     });
   }
 
@@ -249,7 +251,7 @@ export class InventoryComponent
     request.paging.pageSize = 10000000;
     this.storesApi.list(request).subscribe({
       next: (response) => (this.stores = response.items),
-      error: (err) => this.toaster.error('Greška prilikom dohvatanja knjiga.'),
+      error: (err) => this.toaster.error(this.translate.instant('INVENTORY.DIALOGS.ERROR_LOAD_BOOKS')),
     });
   }
 
@@ -292,7 +294,7 @@ export class InventoryComponent
         this.loadPagedData();
       },
       error: (err) => {
-        this.toaster.error('Greška prilikom brisanja inventara');
+        this.toaster.error(this.translate.instant('INVENTORY.DIALOGS.ERROR_DELETE'));
       },
     });
   }
