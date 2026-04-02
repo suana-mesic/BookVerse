@@ -18,6 +18,7 @@ import { ListPublishersQueryDto } from '../../../../../api-services/publishers/p
 import { PublishersService } from '../../../../../api-services/publishers/publishers-api.service';
 import { AuthorsApiService } from '../../../../../api-services/authors/authors-api.service';
 import { BooksApiService } from '../../../../../api-services/books/books-api.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-products-edit',
@@ -36,6 +37,7 @@ export class BooksEditComponent extends BaseFormComponent<GetBookByIdQueryDto> i
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private toaster = inject(ToasterService);
+  private translate = inject(TranslateService);
 
   productId!: number;
   categories: ListProductCategoriesQueryDto[] = [];
@@ -69,8 +71,8 @@ export class BooksEditComponent extends BaseFormComponent<GetBookByIdQueryDto> i
         this.stopLoading();
       },
       error: (err) => {
-        this.stopLoading('Failed to load product');
-        this.toaster.error('Product not found');
+        this.stopLoading(this.translate.instant('BOOKS.DIALOGS.ERROR_LOAD'));
+        this.toaster.error(this.translate.instant('ERRORS.NOT_FOUND'));
         console.error('Load product error:', err);
         this.router.navigate(['/admin/products']);
       },
@@ -111,11 +113,11 @@ export class BooksEditComponent extends BaseFormComponent<GetBookByIdQueryDto> i
     this.api.update(this.productId, command).subscribe({
       next: () => {
         this.stopLoading();
-        this.toaster.success('Product updated successfully');
+        this.toaster.success(this.translate.instant('BOOKS.DIALOGS.SUCCESS_UPDATE'));
         this.router.navigate(['/admin/products']);
       },
       error: (err) => {
-        this.stopLoading('Failed to update product');
+        this.stopLoading(this.translate.instant('BOOKS.DIALOGS.ERROR_UPDATE'));
         console.error('Update product error:', err);
       },
     });

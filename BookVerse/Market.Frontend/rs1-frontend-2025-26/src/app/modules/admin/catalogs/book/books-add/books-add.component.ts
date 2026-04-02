@@ -17,6 +17,7 @@ import { BookFormatApiService } from '../../../../../api-services/book-formats/b
 import { ListAuthorsQueryDto } from '../../../../../api-services/authors/authors-api.model';
 import { AuthorsApiService } from '../../../../../api-services/authors/authors-api.service';
 import { BooksApiService } from '../../../../../api-services/books/books-api.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-products-add',
@@ -34,6 +35,7 @@ export class BooksAddComponent extends BaseFormComponent<GetBookByIdQueryDto> im
   private formService = inject(BooksFormService);
   private router = inject(Router);
   private toaster = inject(ToasterService);
+  private translate = inject(TranslateService);
 
   categories: ListProductCategoriesQueryDto[] = [];
   publishers: ListPublishersQueryDto[] = [];
@@ -81,11 +83,11 @@ export class BooksAddComponent extends BaseFormComponent<GetBookByIdQueryDto> im
     this.api.create(command).subscribe({
       next: (productId) => {
         this.stopLoading();
-        this.toaster.success('Product created successfully');
+        this.toaster.success(this.translate.instant('BOOKS.DIALOGS.SUCCESS_CREATE'));
         this.router.navigate(['/admin/products']);
       },
       error: (err) => {
-        this.stopLoading('Failed to create product');
+        this.stopLoading(this.translate.instant('BOOKS.DIALOGS.ERROR_CREATE'));
         console.error('Create product error:', err);
       },
     });
@@ -97,7 +99,7 @@ export class BooksAddComponent extends BaseFormComponent<GetBookByIdQueryDto> im
         this.categories = response;
       },
       error: (err) => {
-        this.toaster.error('Failed to load categories');
+        this.toaster.error(this.translate.instant('BOOKS.DIALOGS.ERROR_LOAD_CATEGORIES'));
         console.error('Load categories error:', err);
       },
     });
@@ -108,7 +110,7 @@ export class BooksAddComponent extends BaseFormComponent<GetBookByIdQueryDto> im
         this.publishers = response.items;
       },
       error: (err) => {
-        this.toaster.error('Failed to load publishers');
+        this.toaster.error(this.translate.instant('BOOKS.DIALOGS.ERROR_LOAD_PUBLISHERS'));
         console.error('Load publishers error:', err);
       },
     });
@@ -120,7 +122,7 @@ export class BooksAddComponent extends BaseFormComponent<GetBookByIdQueryDto> im
         this.bookFormats = response.items;
       },
       error: (err) => {
-        this.toaster.error('Failed to load book formats');
+        this.toaster.error(this.translate.instant('BOOKS.DIALOGS.ERROR_LOAD_FORMATS'));
         console.error('Load book formats error:', err);
       },
     });
@@ -132,7 +134,7 @@ export class BooksAddComponent extends BaseFormComponent<GetBookByIdQueryDto> im
         this.authors = response.items;
       },
       error: (err) => {
-        this.toaster.error('Failed to load authors');
+        this.toaster.error(this.translate.instant('BOOKS.DIALOGS.ERROR_LOAD_AUTHORS'));
         console.error('Load authors error:', err);
       },
     });

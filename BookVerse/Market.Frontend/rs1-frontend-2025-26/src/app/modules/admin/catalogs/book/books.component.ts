@@ -11,6 +11,7 @@ import { ToasterService } from '../../../../core/services/toaster.service';
 import { DialogHelperService } from '../../../shared/services/dialog-helper.service';
 import { DialogButton } from '../../../shared/models/dialog-config.model';
 import { BooksApiService } from '../../../../api-services/books/books-api.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-products',
@@ -26,6 +27,7 @@ export class BooksComponent
   private router = inject(Router);
   private toaster = inject(ToasterService);
   private dialogHelper = inject(DialogHelperService);
+  private translate = inject(TranslateService);
 
   displayedColumns: string[] = [
     'title',
@@ -58,7 +60,7 @@ export class BooksComponent
         this.stopLoading();
       },
       error: (err) => {
-        this.stopLoading('Failed to load products');
+        this.stopLoading(this.translate.instant('BOOKS.DIALOGS.ERROR_LOAD'));
         console.error('Load products error:', err);
       },
     });

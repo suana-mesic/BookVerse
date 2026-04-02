@@ -11,6 +11,7 @@ import { ListUsersQueryDto } from '../../../api-services/users/users-api.model';
 import { BaseComponent } from '../../core/components/base-classes/base-component';
 import { BooksApiService } from '../../../api-services/books/books-api.service';
 import { ListBooksForAutocompleteQueryDto } from '../../../api-services/books/books-api.models';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-admin-settings',
@@ -24,6 +25,7 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
   private booksApi = inject(BooksApiService);
   private reportsApi = inject(ReportsApiServices);
   private toaster = inject(ToasterService);
+  private translate = inject(TranslateService);
 
   summary: GetDashboardCardSummaryDto | null = null;
   dateFrom: Date = new Date(new Date().getFullYear(), 0, 1); //1.1. trenutne godine
@@ -97,7 +99,7 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
       next: (response) => {
         this.allUsers = response;
       },
-      error: (err) => this.toaster.error('Greška prilikom dohvatanja svih korisnika'),
+      error: (err) => this.toaster.error(this.translate.instant('STATISTICS.DIALOGS.ERROR_LOAD_USERS')),
     });
   }
 
@@ -108,7 +110,7 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
         this.stopLoading();
         this.stopLoading();
       },
-      error: (err) => this.toaster.error('Greška prilikom dohvatanja svih korisnika'),
+      error: (err) => this.toaster.error(this.translate.instant('STATISTICS.DIALOGS.ERROR_LOAD_BOOKS')),
     });
   }
 
@@ -167,12 +169,12 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
       next: (data) => {
         const labels = data.map((x) => x.monthName);
         const values = data.map((x) => x.totalRevenue);
-        const label1 = 'Prihod po mjesecima (KM)';
-        const label2 = 'Mjesečni prihod';
+        const label1 = this.translate.instant('STATISTICS.CHARTS.MONTHLY_REVENUE_LABEL');
+        const label2 = this.translate.instant('STATISTICS.CHARTS.MONTHLY_REVENUE_TITLE');
         this.makeChart(labels, values, 'revenueChart', label1, label2, 'bar', 'x');
       },
       error: (err) => {
-        this.toaster.error('Greška prilikom dohvatanja podataka o mjesečnoj zaradi');
+        this.toaster.error(this.translate.instant('STATISTICS.DIALOGS.ERROR_MONTHLY_REVENUE'));
       },
     });
   }
@@ -182,11 +184,11 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
       next: (data) => {
         const labels = data.map((x) => x.monthName);
         const values = data.map((x) => x.ordersCount);
-        const label1 = 'Broj narudžbi po mjesecima';
+        const label1 = this.translate.instant('STATISTICS.CHARTS.MONTHLY_ORDERS_LABEL');
         this.makeChart(labels, values, 'ordersChart', label1, label1, 'line', 'x');
       },
       error: (err) => {
-        this.toaster.error('Greška prilikom dohvatanja podataka o mjesečnoj zaradi');
+        this.toaster.error(this.translate.instant('STATISTICS.DIALOGS.ERROR_MONTHLY_ORDERS'));
       },
     });
   }
@@ -196,12 +198,12 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
       next: (data) => {
         const labels = data.map((x) => x.bookTitle);
         const values = data.map((x) => x.totalSold);
-        const label1 = 'Broj prodanih knjiga';
-        const label2 = 'Top 5 najprodavanijih knjiga';
+        const label1 = this.translate.instant('STATISTICS.CHARTS.TOP5_BOOKS_LABEL');
+        const label2 = this.translate.instant('STATISTICS.CHARTS.TOP5_BOOKS_TITLE');
         this.makeChart(labels, values, 'topBooksChart', label1, label2, 'bar', 'y');
       },
       error: () => {
-        this.toaster.error('Greška prilikom dohvatanja top 5 knjiga');
+        this.toaster.error(this.translate.instant('STATISTICS.DIALOGS.ERROR_TOP5_BOOKS'));
       },
     });
   }
@@ -218,7 +220,7 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
             labels: labels,
             datasets: [
               {
-                label: 'Broj narudžbi',
+                label: this.translate.instant('STATISTICS.CHARTS.ORDERS_COUNT_LABEL'),
                 data: values,
                 backgroundColor: [
                   'rgba(54, 162, 235, 0.6)',
@@ -236,13 +238,13 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
             aspectRatio: 5 / 3,
             plugins: {
               legend: { position: 'top' },
-              title: { display: true, text: 'Narudžbe po dostavljačima' },
+              title: { display: true, text: this.translate.instant('STATISTICS.CHARTS.SHIPPERS_TITLE') },
             },
           },
         });
       },
       error: () => {
-        this.toaster.error('Greška prilikom dohvatanja podataka o dostavljačima');
+        this.toaster.error(this.translate.instant('STATISTICS.DIALOGS.ERROR_SHIPPERS'));
       },
     });
   }
@@ -258,7 +260,7 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
             labels: labels,
             datasets: [
               {
-                label: 'Prodaja po kategorijama',
+                label: this.translate.instant('STATISTICS.CHARTS.CATEGORIES_LABEL'),
                 data: values,
                 backgroundColor: 'rgba(54, 162, 235, 0.6)',
                 borderColor: 'rgba(54, 162, 235, 1)',
@@ -275,7 +277,7 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
               legend: { position: 'top' },
               title: {
                 display: true,
-                text: 'Popularnost kategorija knjiga',
+                text: this.translate.instant('STATISTICS.CHARTS.CATEGORIES_TITLE'),
               },
             },
             scales: {
@@ -291,7 +293,7 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
         });
       },
       error: () => {
-        this.toaster.error('Greška prilikom dohvatanja statistike kategorija');
+        this.toaster.error(this.translate.instant('STATISTICS.DIALOGS.ERROR_CATEGORIES'));
       },
     });
   }
@@ -331,7 +333,7 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
             plugins: {
               title: {
                 display: true,
-                text: 'Prihod po mjesecima i kategorijama',
+                text: this.translate.instant('STATISTICS.CHARTS.MONTHLY_CATEGORY_TITLE'),
               },
             },
             scales: {
@@ -346,7 +348,7 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
         });
       },
       error: () => {
-        this.toaster.error('Greška prilikom dohvatanja prihoda po kategorijama');
+        this.toaster.error(this.translate.instant('STATISTICS.DIALOGS.ERROR_CATEGORY_REVENUE'));
       },
     });
   }
@@ -354,7 +356,7 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
   getDashboardCardSummary() {
     this.statisticsApi.getDashboardCardSummary().subscribe({
       next: (data) => (this.summary = data),
-      error: () => this.toaster.error('Greška pri učitavanju sumarnih podataka'),
+      error: () => this.toaster.error(this.translate.instant('STATISTICS.DIALOGS.ERROR_SUMMARY')),
     });
   }
 
@@ -366,11 +368,11 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
           const url = window.URL.createObjectURL(blob);
           const a = document.createElement('a');
           a.href = url;
-          a.download = `narudzbe-report.pdf`;
+          a.download = this.translate.instant('STATISTICS.REPORTS.ORDERS_FILENAME');
           a.click();
           window.URL.revokeObjectURL(url);
         },
-        error: () => this.toaster.error('Greška pri generisanju izvještaja o narudžbama'),
+        error: () => this.toaster.error(this.translate.instant('STATISTICS.DIALOGS.ERROR_ORDERS_REPORT')),
       });
   }
 
@@ -380,11 +382,11 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `knjige-report.pdf`;
+        a.download = this.translate.instant('STATISTICS.REPORTS.BOOKS_FILENAME');
         a.click();
         window.URL.revokeObjectURL(url);
       },
-      error: () => this.toaster.error('Greška pri generisanju izvještaja o prodaji knjiga'),
+      error: () => this.toaster.error(this.translate.instant('STATISTICS.DIALOGS.ERROR_BOOKS_REPORT')),
     });
   }
 }

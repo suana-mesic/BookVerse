@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { GetBookByIdQueryDto } from '../../../../../api-services/books/books-api.models';
+import { TranslateService } from '@ngx-translate/core';
 
 /**
  * Service for creating and managing product forms.
@@ -9,6 +10,7 @@ import { GetBookByIdQueryDto } from '../../../../../api-services/books/books-api
 @Injectable()
 export class BooksFormService {
   private fb = inject(FormBuilder);
+  private translate = inject(TranslateService);
 
   /**
    * Create a product form with validation.
@@ -84,24 +86,24 @@ export class BooksFormService {
     const errors = control.errors;
 
     if (errors['required']) {
-      return 'This field is required';
+      return this.translate.instant('VALIDATION.REQUIRED');
     }
     if (errors['minlength']) {
-      return `Minimum ${errors['minlength'].requiredLength} characters required`;
+      return this.translate.instant('VALIDATION.MIN_LENGTH', { min: errors['minlength'].requiredLength });
     }
     if (errors['maxlength']) {
-      return `Maximum ${errors['maxlength'].requiredLength} characters allowed`;
+      return this.translate.instant('VALIDATION.MAX_LENGTH', { max: errors['maxlength'].requiredLength });
     }
     if (errors['min']) {
-      return `Minimum value is ${errors['min'].min}`;
+      return this.translate.instant('VALIDATION.MIN_VALUE', { min: errors['min'].min });
     }
     if (errors['max']) {
-      return `Maximum value is ${errors['max'].max}`;
+      return this.translate.instant('VALIDATION.MAX_VALUE', { max: errors['max'].max });
     }
     if (errors['email']) {
-      return 'Invalid email format';
+      return this.translate.instant('VALIDATION.EMAIL');
     }
 
-    return 'Invalid value';
+    return this.translate.instant('VALIDATION.CUSTOM');
   }
 }

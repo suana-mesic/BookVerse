@@ -4,6 +4,7 @@ import { ListUsersQueryDto, ListUsersRequest } from '../../../api-services/users
 import { BaseListPagedComponent } from '../../core/components/base-classes/base-list-paged-component';
 import { UsersApiService } from '../../../api-services/users/users-api.service';
 import { ToasterService } from '../../core/services/toaster.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-users',
@@ -19,6 +20,7 @@ export class UsersComponent
   private router = inject(Router);
   private toaster = inject(ToasterService);
   private route = inject(ActivatedRoute);
+  private translate = inject(TranslateService);
 
   displayedColumns = ['fullName', 'email', 'roles', 'isEnabled', 'actions'];
 
@@ -39,7 +41,7 @@ export class UsersComponent
         this.handlePageResult(response);
         this.stopLoading();
       },
-      error: () => this.stopLoading('Greška pri učitavanju korisnika'),
+      error: () => this.stopLoading(this.translate.instant('USERS.DIALOGS.ERROR_LOAD')),
     });
   }
 

@@ -14,6 +14,7 @@ import { ToasterService } from '../../../core/services/toaster.service';
 import { OrderStatusHelper } from '../../../api-services/orders/order-status.helper';
 import { ChangeStatusDialogComponent } from './change-status-dialog/change-status-dialog.component';
 import { OrderDetailsDialogComponent } from './admin-orders-details-dialog/order-details-dialog.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-admin-orders',
@@ -28,6 +29,7 @@ export class AdminOrdersComponent
   private ordersApi = inject(OrdersApiService);
   private dialog = inject(MatDialog);
   private toaster = inject(ToasterService);
+  private translate = inject(TranslateService);
   private destroy$ = new Subject<void>();
   private globalCounter: number = 0;
 
@@ -108,7 +110,7 @@ export class AdminOrdersComponent
         this.stopLoading();
       },
       error: (err) => {
-        this.stopLoading('Failed to load orders');
+        this.stopLoading(this.translate.instant('ORDERS.MESSAGES.ERROR_LOAD'));
         console.error('Load orders error:', err);
       },
     });
@@ -208,7 +210,7 @@ export class AdminOrdersComponent
 
     this.ordersApi.changeStatus(orderId, newStatus).subscribe({
       next: () => {
-        this.toaster.success('Order status updated successfully');
+        this.toaster.success(this.translate.instant('ORDERS.MESSAGES.STATUS_UPDATED'));
         this.loadPagedData(); // Reload list
       },
       error: (err) => {
@@ -216,7 +218,7 @@ export class AdminOrdersComponent
 
         // Extract error message
         const errorMessage = this.extractErrorMessage(err);
-        this.toaster.error(errorMessage || 'Failed to update order status');
+        this.toaster.error(errorMessage || this.translate.instant('ORDERS.MESSAGES.ERROR_UPDATE_STATUS'));
 
         console.error('Change status error:', err);
       },

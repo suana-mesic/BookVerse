@@ -6,10 +6,11 @@ import { ToasterService } from '../../../../../core/services/toaster.service';
 import {
   GetProductCategoryByIdQueryDto,
   CreateProductCategoryCommand,
-  UpdateProductCategoryCommand
+  UpdateProductCategoryCommand,
 } from '../../../../../api-services/product-categories/product-categories-api.model';
-import {ProductCategoryFormService} from "../services/product-category-form.service";
+import { ProductCategoryFormService } from '../services/product-category-form.service';
 import { DialogHelperService } from '../../../../shared/services/dialog-helper.service';
+import { TranslateService } from '@ngx-translate/core';
 
 export interface ProductCategoryDialogData {
   mode: 'create' | 'edit';
@@ -21,7 +22,7 @@ export interface ProductCategoryDialogData {
   standalone: false,
   templateUrl: './product-category-upsert.component.html',
   styleUrl: './product-category-upsert.component.scss',
-  providers: [ProductCategoryFormService]
+  providers: [ProductCategoryFormService],
 })
 export class ProductCategoryUpsertComponent implements OnInit {
   private dialogRef = inject(MatDialogRef<ProductCategoryUpsertComponent>);
@@ -29,7 +30,8 @@ export class ProductCategoryUpsertComponent implements OnInit {
   private api = inject(ProductCategoriesApiService);
   private formService = inject(ProductCategoryFormService);
   private toaster = inject(ToasterService);
-  
+  private translate = inject(TranslateService);
+
   form!: FormGroup;
   isLoading = false;
   isEditMode = false;
@@ -37,7 +39,9 @@ export class ProductCategoryUpsertComponent implements OnInit {
 
   ngOnInit(): void {
     this.isEditMode = this.data.mode === 'edit';
-    this.title = this.isEditMode ? 'Edit Category' : 'New Category';
+    this.title = this.isEditMode
+      ? this.translate.instant('GENRES.FORM.EDIT_TITLE')
+      : this.translate.instant('GENRES.NEW_CATEGORY');
 
     if (this.isEditMode && this.data.categoryId) {
       this.loadCategory(this.data.categoryId);
@@ -55,10 +59,10 @@ export class ProductCategoryUpsertComponent implements OnInit {
         this.isLoading = false;
       },
       error: (err) => {
-        this.toaster.error('Failed to load category');
+        this.toaster.error(this.translate.instant('GENRES.DIALOGS.ERROR_LOAD_SINGLE'));
         console.error('Load category error:', err);
         this.dialogRef.close(false);
-      }
+      },
     });
   }
 
@@ -79,34 +83,34 @@ export class ProductCategoryUpsertComponent implements OnInit {
 
   private createCategory(): void {
     const command: CreateProductCategoryCommand = {
-      name: this.form.value.name.trim()
+      name: this.form.value.name.trim(),
     };
 
     this.api.create(command).subscribe({
       next: () => {
-        this.toaster.success('Category created successfully');
+        this.toaster.success(this.translate.instant('GENRES.DIALOGS.SUCCESS_CREATE'));
       },
       error: (err) => {
         this.isLoading = false;
         console.error('Create category error:', err);
-      }
+      },
     });
   }
 
   private updateCategory(): void {
     const command: UpdateProductCategoryCommand = {
-      name: this.form.value.name.trim()
+      name: this.form.value.name.trim(),
     };
 
     this.api.update(this.data.categoryId!, command).subscribe({
       next: () => {
-        this.toaster.success('Category updated successfully');
+        this.toaster.success(this.translate.instant('GENRES.DIALOGS.SUCCESS_UPDATE'));
         this.dialogRef.close(true); // Signal success
       },
       error: (err) => {
         this.isLoading = false;
         console.error('Update category error:', err);
-      }
+      },
     });
   }
 

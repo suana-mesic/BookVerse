@@ -49,11 +49,11 @@ export class OrderDetailsDialogComponent {
   }
 
   get orderedAtLocal(): Date {
-    return new Date(this.order!.orderedAtUtc + 'Z');
+    return new Date(this.order!.orderedAtUtc);
   }
 
   get paidAtLocal(): Date | null {
-    return this.order?.paidAtUtc ? new Date(this.order.paidAtUtc + 'Z') : null;
+    return this.order?.paidAtUtc ? new Date(this.order.paidAtUtc) : null;
   }
   // === Status Helpers ===
 
