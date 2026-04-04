@@ -44,10 +44,10 @@ export class BooksComponent
   constructor() {
     super();
     this.request = new ListBooksRequest();
-    this.request.paging.pageSize = 20;
   }
 
   ngOnInit(): void {
+    this.getPaginationSettings();
     this.initList();
   }
 
@@ -64,6 +64,16 @@ export class BooksComponent
         console.error('Load products error:', err);
       },
     });
+  }
+
+  private getPaginationSettings() {
+    const saved = localStorage.getItem('adminSettings');
+    if (saved) {
+      const order = JSON.parse(saved);
+      this.request.paging.pageSize = Number(order['defaultPageSize']);
+    } else {
+      this.request.paging.pageSize = 20;
+    }
   }
 
   // === UI Actions ===

@@ -5,6 +5,7 @@ namespace Market.Application.Modules.Shopping.Coupons.Commands
     {
         public async Task<int> Handle(CreateCouponCommand request, CancellationToken ct)
         {
+            Console.WriteLine(request.StartDate);
             var exists = await context.Coupons
                 .AnyAsync(c => c.PromotionCode == request.PromotionCode && !c.IsDeleted, ct);
 

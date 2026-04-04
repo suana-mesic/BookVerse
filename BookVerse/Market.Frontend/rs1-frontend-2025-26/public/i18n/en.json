@@ -3,6 +3,30 @@
     "TITLE": "Welcome to our app",
     "DESCRIPTION": "This is an example of localization."
   },
+  "SETTINGS": {
+    "TITLE": "Settings",
+    "APPEARANCE": "Appearance",
+    "THEME": "Theme",
+    "LIGHT": "Light",
+    "DARK": "Dark",
+    "PAGINATION": "Pagination",
+    "DEFAULT_PAGE_SIZE": "Default items per page",
+    "DATE_TIME": "Date and time",
+    "DATE_FORMAT": "Date format",
+    "TIME_FORMAT": "Time format",
+    "NOTIFICATIONS": "Notifications",
+    "ENABLE_PAID_ORDER_NOTIFICATIONS": "Enable notifications for paid orders",
+    "PLAY_SOUND_ON_NEW_ORDER": "Play sound for new order",
+    "DIALOGS": {
+      "SUCCESS_SAVED": "Settings saved successfully."
+    }
+  },
+  "NOTIFICATIONS": {
+    "TITLE": "Notifications",
+    "CLEAR_ALL": "Clear all",
+    "EMPTY": "No new notifications",
+    "ORDER_PAID": "Order paid"
+  },
   "AUTH": {
     "LOGIN": {
       "TITLE": "Login",
@@ -27,6 +51,7 @@
       "MANAGER": "Manager",
       "EMPLOYEE": "Employee"
     },
+    "SETTINGS": "Settings",
     "MENU": {
       "CATALOG": "CATALOG",
       "CATEGORIES": "Genres",

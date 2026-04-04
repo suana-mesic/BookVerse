@@ -6,7 +6,8 @@ namespace Market.Application.Modules.Shopping.OrdersOrderItems.Commands.StripeWe
 {
     public class StripeWebhookCommandHandler
         (IAppDbContext context,
-        IStripeSettings stripeSettings) : IRequestHandler<StripeWebhookCommand>
+        IStripeSettings stripeSettings,
+        IOrderNotificationService notificationService) : IRequestHandler<StripeWebhookCommand>
     {
         public async Task Handle(StripeWebhookCommand request, CancellationToken ct)
         {
@@ -101,6 +102,7 @@ namespace Market.Application.Modules.Shopping.OrdersOrderItems.Commands.StripeWe
                     }
                 }
                 await context.SaveChangesAsync(ct);
+                await notificationService.NotifyNewPaidOrderAsync(order.Id, order.TrackingNumber, ct);
             }
 
             // Plaćanje nije bilo uspješno (pogrešan broj kartice, nema sredstava...)

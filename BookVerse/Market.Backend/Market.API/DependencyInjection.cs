@@ -66,6 +66,27 @@ public static class DependencyInjection
                 ValidateLifetime = true,
                 ClockSkew = TimeSpan.Zero
             };
+
+            // SignalR cannot set custom headers on WebSocket connections, so it sends
+            // the token as a query string parameter (?access_token=...) instead.
+            // By default, the JWT middleware only looks for the token in the Authorization header,
+            // so we use OnMessageReceived (which fires before validation) to manually
+            // extract the token from the query string and place it where the middleware expects it.
+
+            o.Events = new JwtBearerEvents
+            {
+                OnMessageReceived = context =>
+                {
+                    var accessToken = context.Request.Query["access_token"];
+                    var path = context.HttpContext.Request.Path;
+
+                    if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/hubs"))
+                    {
+                        context.Token = accessToken;
+                    }
+                    return Task.CompletedTask;
+                }
+            };
         });
 
         services.AddAuthorization(o =>

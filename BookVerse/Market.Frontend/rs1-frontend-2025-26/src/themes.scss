@@ -1,0 +1,49 @@
+body {
+  --primary-color: #4976b5;
+  --primary-light: #6b92c9;
+  --primary-dark: #365a8f;
+  --primary-lighter: #e8f0f9;
+  --accent-color: #5b9bd5;
+  --text-primary: #212121;
+  --text-secondary: #757575;
+  --text-muted: #9e9e9e;
+  --card-bg: #ffffff;
+  --page-bg: linear-gradient(135deg, #f0f5fb 0%, #e3ecf7 100%);
+  --sidebar-bg: #ffffff;
+  --border-color: #e3e8ef;
+  --border-color-light: #f0f4f8;
+  --hover-color: rgba(73, 118, 181, 0.04);
+  --shadow-color: rgba(73, 118, 181, 0.08);
+  --error-bg: #ffebee;
+  --error-border: #ef9a9a;
+  --error-text: #c62828;
+  --table-header-bg: linear-gradient(135deg, #e8f0f9 0%, #f5f9fd 100%);
+  --table-header-text: #365a8f;
+  --table-row-text: #212121;
+}
+
+body.dark-theme {
+  color-scheme: dark;
+  --primary-color: #6b92c9;
+  --primary-light: #89aad6;
+  --primary-dark: #4976b5;
+  --primary-lighter: #1e2d42;
+  --accent-color: #7aafe0;
+  --text-primary: #d8d8d8;
+  --text-secondary: #a0aab8;
+  --text-muted: #6b7585;
+  --card-bg: #1e2530;
+  --page-bg: linear-gradient(135deg, #1a1f2e 0%, #242b3d 100%);
+  --sidebar-bg: #1e2530;
+  --border-color: #3a4255;
+  --border-color-light: #2d3548;
+  --hover-color: rgba(107, 146, 201, 0.08);
+  --shadow-color: rgba(0, 0, 0, 0.25);
+  --error-bg: #2d1515;
+  --error-border: #7a2020;
+  --error-text: #f28b82;
+  --table-header-bg: #1e2d42;
+  --table-header-text: #b0b8c8;
+  --table-row-text: #a8b0c1;
+  --badge-color: #3770ba;
+}

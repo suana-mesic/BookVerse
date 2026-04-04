@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FitPaginatorBarComponent } from './components/fit-paginator-bar/fit-paginator-bar.component';
 import { materialModules } from './material-modules';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -11,7 +11,10 @@ import { FitTableSkeletonComponent } from './components/fit-table-skeleton/fit-t
 import { MatIconModule } from '@angular/material/icon';
 import { ImageUploadComponent } from './components/image-upload/image-upload.component';
 import { RouterModule } from '@angular/router';
-
+import { AppDatePipe } from './pipes/date-pipe';
+import { DynamicDateAdapter } from './adapters/dynamic-date.adapter';
+import { DateFormatService } from './services/date-format.service';
+import { DateAdapter } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -19,7 +22,8 @@ import { RouterModule } from '@angular/router';
     FitConfirmDialogComponent,
     FitLoadingBarComponent,
     FitTableSkeletonComponent,
-    ImageUploadComponent
+    ImageUploadComponent,
+    AppDatePipe,
   ],
   imports: [
     CommonModule,
@@ -28,10 +32,12 @@ import { RouterModule } from '@angular/router';
     FormsModule,
     TranslatePipe,
     RouterModule,
-    ...materialModules
+    ...materialModules,
   ],
   providers: [
-    DialogHelperService
+    DialogHelperService,
+    DatePipe,
+    { provide: DateAdapter, useClass: DynamicDateAdapter, deps: [DateFormatService] },
   ],
   exports: [
     FitPaginatorBarComponent,
@@ -43,7 +49,8 @@ import { RouterModule } from '@angular/router';
     FitTableSkeletonComponent,
     ImageUploadComponent,
     RouterModule,
+    AppDatePipe,
     materialModules,
-  ]
+  ],
 })
-export class SharedModule { }
+export class SharedModule {}
