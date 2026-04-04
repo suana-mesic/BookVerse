@@ -99,7 +99,8 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
       next: (response) => {
         this.allUsers = response;
       },
-      error: (err) => this.toaster.error(this.translate.instant('STATISTICS.DIALOGS.ERROR_LOAD_USERS')),
+      error: (err) =>
+        this.toaster.error(this.translate.instant('STATISTICS.DIALOGS.ERROR_LOAD_USERS')),
     });
   }
 
@@ -110,8 +111,13 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
         this.stopLoading();
         this.stopLoading();
       },
-      error: (err) => this.toaster.error(this.translate.instant('STATISTICS.DIALOGS.ERROR_LOAD_BOOKS')),
+      error: (err) =>
+        this.toaster.error(this.translate.instant('STATISTICS.DIALOGS.ERROR_LOAD_BOOKS')),
     });
+  }
+
+  get darkMode(): boolean {
+    return document.body.classList.contains('dark-theme');
   }
 
   makeChart(
@@ -123,6 +129,7 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
     type: 'bar' | 'line' = 'bar',
     axis: 'x' | 'y' = 'x',
   ) {
+    const labelColor = this.darkMode ? '#D8D8D8' : undefined;
     new Chart(chartName, {
       type: type,
       data: {
@@ -141,22 +148,24 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
         indexAxis: axis,
         responsive: true,
         plugins: {
-          legend: { position: 'top' },
+          legend: { position: 'top', labels: { color: labelColor } },
           title: {
             display: true,
             text: label2,
+            color: labelColor,
           },
         },
         scales: {
           y: {
             ticks: {
               stepSize: 1,
+              color: labelColor,
             },
           },
           x: {
             ticks: {
               stepSize: 1,
-              //callback: (value) => (Number.isInteger(value) ? value : null),
+              color: labelColor,
             },
           },
         },
@@ -238,7 +247,10 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
             aspectRatio: 5 / 3,
             plugins: {
               legend: { position: 'top' },
-              title: { display: true, text: this.translate.instant('STATISTICS.CHARTS.SHIPPERS_TITLE') },
+              title: {
+                display: true,
+                text: this.translate.instant('STATISTICS.CHARTS.SHIPPERS_TITLE'),
+              },
             },
           },
         });
@@ -254,6 +266,7 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
         const labels = data.map((x) => x.genreName);
         const values = data.map((x) => x.totalSold);
 
+        const catLabelColor = this.darkMode ? '#D8D8D8' : undefined;
         new Chart('categoriesChart', {
           type: 'radar',
           data: {
@@ -274,10 +287,11 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
             maintainAspectRatio: true,
             aspectRatio: 5 / 3,
             plugins: {
-              legend: { position: 'top' },
+              legend: { position: 'top', labels: { color: catLabelColor } },
               title: {
                 display: true,
                 text: this.translate.instant('STATISTICS.CHARTS.CATEGORIES_TITLE'),
+                color: catLabelColor,
               },
             },
             scales: {
@@ -285,8 +299,10 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
                 beginAtZero: true,
                 ticks: {
                   stepSize: 1,
-                  callback: (value) => (Number.isInteger(value) ? value : null), // isto kao u makeChart()
+                  color: catLabelColor,
+                  callback: (value) => (Number.isInteger(value) ? value : null),
                 },
+                pointLabels: { color: catLabelColor },
               },
             },
           },
@@ -320,6 +336,7 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
           backgroundColor: colors[index % colors.length],
         }));
 
+        const revLabelColor = this.darkMode ? '#D8D8D8' : undefined;
         new Chart('monthlyCategoryRevenueChart', {
           type: 'bar',
           data: {
@@ -331,17 +348,21 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
             maintainAspectRatio: true,
             aspectRatio: 5 / 3,
             plugins: {
+              legend: { position: 'top', labels: { color: revLabelColor } },
               title: {
                 display: true,
                 text: this.translate.instant('STATISTICS.CHARTS.MONTHLY_CATEGORY_TITLE'),
+                color: revLabelColor,
               },
             },
             scales: {
               x: {
                 stacked: true,
+                ticks: { color: revLabelColor },
               },
               y: {
                 stacked: true,
+                ticks: { color: revLabelColor },
               },
             },
           },
@@ -372,7 +393,8 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
           a.click();
           window.URL.revokeObjectURL(url);
         },
-        error: () => this.toaster.error(this.translate.instant('STATISTICS.DIALOGS.ERROR_ORDERS_REPORT')),
+        error: () =>
+          this.toaster.error(this.translate.instant('STATISTICS.DIALOGS.ERROR_ORDERS_REPORT')),
       });
   }
 
@@ -386,7 +408,8 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
         a.click();
         window.URL.revokeObjectURL(url);
       },
-      error: () => this.toaster.error(this.translate.instant('STATISTICS.DIALOGS.ERROR_BOOKS_REPORT')),
+      error: () =>
+        this.toaster.error(this.translate.instant('STATISTICS.DIALOGS.ERROR_BOOKS_REPORT')),
     });
   }
 }

@@ -3,6 +3,30 @@
     "TITLE": "Dobrodošli u našu aplikaciju",
     "DESCRIPTION": "Ovo je primjer lokalizacije."
   },
+  "SETTINGS": {
+    "TITLE": "Postavke",
+    "APPEARANCE": "Izgled",
+    "THEME": "Tema",
+    "LIGHT": "Svijetla",
+    "DARK": "Tamna",
+    "PAGINATION": "Paginacija",
+    "DEFAULT_PAGE_SIZE": "Podrazumijevani broj stavki po stranici",
+    "DATE_TIME": "Datum i vrijeme",
+    "DATE_FORMAT": "Format datuma",
+    "TIME_FORMAT": "Format vremena",
+    "NOTIFICATIONS": "Notifikacije",
+    "ENABLE_PAID_ORDER_NOTIFICATIONS": "Omogući notifikacije za plaćene narudžbe",
+    "PLAY_SOUND_ON_NEW_ORDER": "Pusti zvuk za novu narudžbu",
+    "DIALOGS": {
+      "SUCCESS_SAVED": "Uspješno ste sačuvali postavke."
+    }
+  },
+  "NOTIFICATIONS": {
+    "TITLE": "Obavijesti",
+    "CLEAR_ALL": "Obriši sve",
+    "EMPTY": "Nema novih obavijesti",
+    "ORDER_PAID": "Plaćena narudžba"
+  },
   "AUTH": {
     "LOGIN": {
       "TITLE": "Prijava",
@@ -27,6 +51,7 @@
       "MANAGER": "Menadžer",
       "EMPLOYEE": "Zaposlenik"
     },
+    "SETTINGS": "Postavke",
     "MENU": {
       "CATALOG": "KATALOG",
       "CATEGORIES": "Žanrovi",

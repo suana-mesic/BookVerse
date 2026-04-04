@@ -14,6 +14,7 @@ import { InventoryAddComponent } from './inventory/inventory-add/inventory-add.c
 import { InventoryEditComponent } from './inventory/inventory-edit/inventory-edit.component';
 import { UsersComponent } from './users/users.component';
 import { UsersEditComponent } from './users/users-edit/users-edit.component';
+import { AdminSettingsComponent } from './admin-settings/admin-settings.component';
 
 const routes: Routes = [
   {
@@ -77,6 +78,12 @@ const routes: Routes = [
       {
         path: 'users/edit/:userId',
         component: UsersEditComponent,
+      },
+
+      //settings
+      {
+        path: 'settings',
+        component: AdminSettingsComponent,
       },
 
       // default admin route → /admin/products

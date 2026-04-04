@@ -73,8 +73,8 @@ export class CouponsDynamicFormAddComponent {
       name: formData.name,
       promotionCode: formData.promotionCode,
       description: formData.description ?? null,
-      startDate: formData.startDate,
-      endDate: formData.endDate,
+      startDate: this.toDateOnly(formData.startDate),
+      endDate: this.toDateOnly(formData.endDate),
       amountOff: this.selectedType == 'amount' ? formData.amountOff : null,
       percentOff: this.selectedType == 'percent' ? formData.percentOff : null,
     };
@@ -96,5 +96,14 @@ export class CouponsDynamicFormAddComponent {
     this.selectedType = null;
     this.submitted = false;
     this.formValues = null;
+  }
+
+  private toDateOnly(date: Date): string {
+    const d = new Date(date);
+
+    const month = ('0' + (d.getMonth() + 1)).slice(-2);
+    const day = ('0' + d.getDate()).slice(-2);
+
+    return `${d.getFullYear()}-${month}-${day}`;
   }
 }

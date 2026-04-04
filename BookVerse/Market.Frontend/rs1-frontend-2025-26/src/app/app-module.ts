@@ -1,4 +1,8 @@
-import { NgModule, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
+import {
+  NgModule,
+  provideBrowserGlobalErrorListeners,
+  provideZoneChangeDetection,
+} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
@@ -14,9 +18,7 @@ import { materialModules } from './modules/shared/material-modules';
 import { SharedModule } from './modules/shared/shared-module';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -24,8 +26,8 @@ import { SharedModule } from './modules/shared/shared-module';
       loader: {
         provide: TranslateLoader,
         useFactory: (http: HttpClient) => new CustomTranslateLoader(http),
-        deps: [HttpClient]
-      }
+        deps: [HttpClient],
+      },
     }),
     SharedModule,
     materialModules,
@@ -35,15 +37,10 @@ import { SharedModule } from './modules/shared/shared-module';
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection(),
     provideHttpClient(
-      withInterceptors([
-        loadingBarInterceptor,
-        authInterceptor,
-        errorLoggingInterceptor
-      ])
-    )
+      withInterceptors([loadingBarInterceptor, authInterceptor, errorLoggingInterceptor]),
+    ),
   ],
-  exports: [
-  ],
-  bootstrap: [AppComponent]
+  exports: [],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

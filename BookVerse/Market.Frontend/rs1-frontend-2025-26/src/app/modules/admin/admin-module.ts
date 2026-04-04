@@ -20,6 +20,7 @@ import { InventoryAddComponent } from './inventory/inventory-add/inventory-add.c
 import { MatTabsModule } from '@angular/material/tabs';
 import { UsersComponent } from './users/users.component';
 import { UsersEditComponent } from './users/users-edit/users-edit.component';
+import { AdminSettingsComponent } from './admin-settings/admin-settings.component';
 @NgModule({
   declarations: [
     BooksComponent,
@@ -38,6 +39,7 @@ import { UsersEditComponent } from './users/users-edit/users-edit.component';
     InventoryAddComponent,
     UsersComponent,
     UsersEditComponent,
+    AdminSettingsComponent,
   ],
   imports: [AdminRoutingModule, SharedModule, DragDropModule, MatTabsModule],
 })

@@ -38,10 +38,10 @@ export class ProductCategoriesComponent
     super();
     this.request = new ListProductCategoriesRequest();
     this.request.onlyEnabled = false;
-    this.request.paging.pageSize = 20;
   }
 
   ngOnInit(): void {
+    this.getPaginationSettings();
     this.initList();
   }
 
@@ -58,6 +58,16 @@ export class ProductCategoriesComponent
         console.error('Load genres error:', err);
       },
     });
+  }
+
+  private getPaginationSettings() {
+    const saved = localStorage.getItem('adminSettings');
+    if (saved) {
+      const order = JSON.parse(saved);
+      this.request.paging.pageSize = Number(order['defaultPageSize']);
+    } else {
+      this.request.paging.pageSize = 20;
+    }
   }
 
   // === Filters ===

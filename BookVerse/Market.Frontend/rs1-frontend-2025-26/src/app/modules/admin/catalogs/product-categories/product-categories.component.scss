@@ -90,18 +90,18 @@ $hover-bg: rgba(73, 118, 181, 0.04);
 
       .search-field {
         width: 280px;
-        background-color: white !important;
+        background-color: var(--card-bg) !important;
 
         ::ng-deep {
           .mat-form-field-fill {
-            background-color: white !important;
+            background-color: var(--primary-lighter) !important;
           }
           .mdc-text-field--filled:not(.mdc-text-field--disabled) {
-            background-color: white !important;
+            background-color: var(--primary-lighter) !important;
           }
 
           .mat-form-field-flex {
-            background-color: white !important;
+            background-color: var(--primary-lighter) !important;
             border-radius: 8px 8px 0 0;
             padding: 8px 12px;
           }
@@ -123,8 +123,17 @@ $hover-bg: rgba(73, 118, 181, 0.04);
           }
 
           input {
-            color: $text-primary;
+            color: var(--text-primary);
             background-color: transparent;
+
+            &::placeholder {
+              color: var(--text-secondary);
+            }
+          }
+
+          .mdc-floating-label,
+          .mat-mdc-floating-label {
+            color: var(--text-secondary) !important;
           }
 
           .mat-icon {
