@@ -105,6 +105,7 @@ export class InventoryComponent
     console.log(this.globalCounter, '. Pozvan je ngOnInit:');
     this.globalCounter += this.globalCounter;
 
+    this.getPaginationSettings();
     this.initList();
     this.loadBooks();
     this.loadStores();
@@ -116,6 +117,16 @@ export class InventoryComponent
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  private getPaginationSettings() {
+    const saved = localStorage.getItem('adminSettings');
+    if (saved) {
+      const order = JSON.parse(saved);
+      this.request.paging.pageSize = Number(order['defaultPageSize']);
+    } else {
+      this.request.paging.pageSize = 20;
+    }
   }
 
   setFilteredBookOptions() {
@@ -242,7 +253,8 @@ export class InventoryComponent
   private loadBooks() {
     this.booksApi.listBooksForAutocomplete().subscribe({
       next: (response) => (this.books = response),
-      error: (err) => this.toaster.error(this.translate.instant('INVENTORY.DIALOGS.ERROR_LOAD_BOOKS')),
+      error: (err) =>
+        this.toaster.error(this.translate.instant('INVENTORY.DIALOGS.ERROR_LOAD_BOOKS')),
     });
   }
 
@@ -251,7 +263,8 @@ export class InventoryComponent
     request.paging.pageSize = 10000000;
     this.storesApi.list(request).subscribe({
       next: (response) => (this.stores = response.items),
-      error: (err) => this.toaster.error(this.translate.instant('INVENTORY.DIALOGS.ERROR_LOAD_BOOKS')),
+      error: (err) =>
+        this.toaster.error(this.translate.instant('INVENTORY.DIALOGS.ERROR_LOAD_BOOKS')),
     });
   }
 

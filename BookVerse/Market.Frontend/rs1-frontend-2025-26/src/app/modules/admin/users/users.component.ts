@@ -31,6 +31,7 @@ export class UsersComponent
   }
 
   ngOnInit(): void {
+    this.getPaginationSettings();
     this.initList();
   }
 
@@ -43,6 +44,16 @@ export class UsersComponent
       },
       error: () => this.stopLoading(this.translate.instant('USERS.DIALOGS.ERROR_LOAD')),
     });
+  }
+
+  private getPaginationSettings() {
+    const saved = localStorage.getItem('adminSettings');
+    if (saved) {
+      const order = JSON.parse(saved);
+      this.request.paging.pageSize = Number(order['defaultPageSize']);
+    } else {
+      this.request.paging.pageSize = 20;
+    }
   }
 
   onEdit(user: ListUsersQueryDto): void {

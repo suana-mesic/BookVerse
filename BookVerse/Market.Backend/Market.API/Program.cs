@@ -1,5 +1,6 @@
 ﻿using Market.API;
 using Market.API.Converters;
+using Market.API.Hubs;
 using Market.API.Middleware;
 using Market.Application;
 using Market.Application.Common.Interfaces;
@@ -73,6 +74,9 @@ public partial class Program
                     options.JsonSerializerOptions.Converters.Add(new UtcDateTimeConverter());
                 });
 
+            builder.Services.AddSignalR();
+            builder.Services.AddScoped<IOrderNotificationService, OrderNotificationService>();
+
             var app = builder.Build();
 
             // ---------------------------------------------------------
@@ -95,6 +99,7 @@ public partial class Program
             app.UseAuthorization();
 
             app.MapControllers();
+            app.MapHub<OrderNotificationHub>("/hubs/orders");
 
             // Database migrations + seeding
             await app.Services.InitializeDatabaseAsync(app.Environment);

@@ -477,48 +477,125 @@ $sidebar-width: 280px;
   animation: slideIn 0.3s ease-out;
 }
 
-// Dark Mode Support (optional)
-@media (prefers-color-scheme: dark) {
+:host-context(body.dark-theme) {
   .sidenav-container {
-    background: linear-gradient(135deg, #1a1f2e 0%, #242b3d 100%);
+    background: var(--page-bg);
 
     .sidenav {
-      background: #1e2530;
-      border-right-color: #3a4255;
-
-      .sidebar-header {
-        background: linear-gradient(
-          135deg,
-          darken($primary-color, 15%) 0%,
-          darken($primary-dark, 15%) 100%
-        );
-      }
+      background: var(--sidebar-bg);
+      border-right-color: var(--border-color);
+      box-shadow: 4px 0 16px rgba(0, 0, 0, 0.3);
 
       mat-nav-list {
         a[mat-list-item] {
-          color: #e4e7eb;
+          color: var(--text-primary);
 
           &:hover:not(.active) {
-            background-color: #2d3548;
+            background-color: var(--hover-color);
           }
 
           &.active {
             background: linear-gradient(
               135deg,
-              rgba($primary-color, 0.25) 0%,
-              rgba($accent-color, 0.15) 100%
+              rgba(107, 146, 201, 0.25) 0%,
+              rgba(122, 175, 224, 0.15) 100%
             );
           }
         }
 
         .nav-section-title {
-          color: #8891a0;
+          color: var(--text-secondary);
+        }
+
+        mat-divider {
+          background-color: var(--border-color);
         }
       }
     }
 
     .main-content {
-      background: linear-gradient(135deg, #1a1f2e 0%, #242b3d 100%);
+      background: var(--page-bg);
+
+      &::-webkit-scrollbar-track {
+        background: #1a1f2e;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: rgba(107, 146, 201, 0.3);
+
+        &:hover {
+          background: rgba(107, 146, 201, 0.5);
+        }
+      }
     }
   }
+}
+
+.content-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--mat-sys-surface);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  padding: 0 16px;
+}
+
+.toolbar-spacer {
+  flex: 1;
+}
+
+// Notifikacijski dropdown — override mat-menu širine
+::ng-deep .notif-menu .mat-mdc-menu-panel {
+  max-width: 360px;
+  min-width: 320px;
+}
+
+.notif-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  font-weight: 600;
+}
+
+.notif-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 16px;
+  color: gray;
+  gap: 8px;
+}
+
+.notif-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+  cursor: default;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.04);
+  }
+}
+
+.notif-icon {
+  color: green;
+  margin-top: 2px;
+}
+
+.notif-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.notif-title {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.notif-time {
+  font-size: 12px;
+  color: gray;
 }

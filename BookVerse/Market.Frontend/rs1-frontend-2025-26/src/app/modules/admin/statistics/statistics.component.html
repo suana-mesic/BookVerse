@@ -4,7 +4,7 @@
     <h1>{{ 'STATISTICS.TITLE' | translate }}</h1>
     <div class="refresh-timestamp" *ngIf="summary">
       <mat-icon>schedule</mat-icon>
-      {{ summary.generatedAt | date: 'dd.MM.yyyy HH:mm' }}
+      {{ summary.generatedAt | appDate }}
     </div>
   </div>
 

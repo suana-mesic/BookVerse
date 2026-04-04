@@ -1,7 +1,12 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthFacadeService } from '../../../core/services/auth/auth-facade.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import {
+  OrderNotification,
+  SignalRService,
+} from '../../../core/services/signal-r/signal-r.service';
+import { audit, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-admin-layout',
@@ -9,7 +14,12 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
   templateUrl: './admin-layout.component.html',
   styleUrl: './admin-layout.component.scss',
 })
-export class AdminLayoutComponent implements OnInit {
+export class AdminLayoutComponent implements OnInit, OnDestroy {
+  notifications: OrderNotification[] = [];
+  unreadCount = 0;
+  private signalR = inject(SignalRService);
+  private notificationSubscription: Subscription | null = null;
+
   navSections = [
     {
       id: 'system',
@@ -40,9 +50,46 @@ export class AdminLayoutComponent implements OnInit {
         { route: '/admin/users', icon: 'account_circle', label: 'ADMIN_PANEL.MENU.USERS' },
       ],
     },
+    {
+      id: 'settings',
+      label: 'ADMIN_PANEL.MENU.SETTINGS',
+      items: [{ route: '/admin/settings', icon: 'settings', label: 'ADMIN_PANEL.SETTINGS' }],
+    },
   ];
 
   ngOnInit(): void {
+    const adminSettings = localStorage.getItem('adminSettings');
+    const settings = adminSettings ? JSON.parse(adminSettings) : null;
+    if (adminSettings) {
+      if (settings.theme === 'dark') {
+        document.body.classList.add('dark-theme');
+      } else {
+        document.body.classList.remove('dark-theme');
+      }
+    }
+
+    const notificationsEnabled = settings?.notificationsEnabled ?? true;
+    const soundEnabled = settings?.soundEnabled ?? true;
+
+    if (notificationsEnabled) {
+      const token = this.auth.getAccessToken();
+
+      if (token) {
+        this.signalR.startConnection(token);
+        this.notificationSubscription = this.signalR.newPaidOrder$.subscribe(
+          (notification: OrderNotification) => {
+            this.notifications.unshift(notification);
+            this.unreadCount++;
+
+            if (soundEnabled) {
+              const audio = new Audio('sounds/pixel_notification.mp3');
+              audio.play().catch((err) => console.warn('Audio play failed: ', err));
+            }
+          },
+        );
+      }
+    }
+
     const saved = localStorage.getItem('navSectionsOrder');
     if (saved) {
       const order = JSON.parse(saved);
@@ -79,6 +126,12 @@ export class AdminLayoutComponent implements OnInit {
     this.currentLang = this.translate.currentLang || 'bs';
   }
 
+  ngOnDestroy(): void {
+    document.body.classList.remove('dark-theme');
+    this.signalR.stopConnection();
+    this.notificationSubscription?.unsubscribe();
+  }
+
   switchLanguage(langCode: string): void {
     this.currentLang = langCode;
     this.translate.use(langCode);
@@ -92,5 +145,14 @@ export class AdminLayoutComponent implements OnInit {
   onSectionDrop(event: CdkDragDrop<any[]>) {
     moveItemInArray(this.navSections, event.previousIndex, event.currentIndex);
     localStorage.setItem('navSectionsOrder', JSON.stringify(this.navSections.map((s) => s.id)));
+  }
+
+  clearNotifications(): void {
+    this.notifications = [];
+    this.unreadCount = 0;
+  }
+
+  markAllAsRead(): void {
+    this.unreadCount = 0;
   }
 }

@@ -1,9 +1,5 @@
-// Include theming for Angular Material with `mat.theme()`.
-// This Sass mixin will define CSS variables that are used for styling Angular Material
-// components according to the Material 3 design spec.
-// Learn more about theming and how to use it for your application's
-// custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
+@use './themes';
 
 html {
   @include mat.theme(
@@ -19,96 +15,523 @@ html {
 }
 
 body {
-  // Default the application to a light color theme. This can be changed to
-  // `dark` to enable the dark color theme, or to `light dark` to defer to the
-  // user's system settings.
   color-scheme: light;
-
-  // Set a default background, font and text colors for the application using
-  // Angular Material's system-level CSS variables. Learn more about these
-  // variables at https://material.angular.dev/guide/system-variables
   background-color: var(--mat-sys-surface);
   color: var(--mat-sys-on-surface);
   font: var(--mat-sys-body-medium);
-
-  // Reset the user agent margin.
   margin: 0;
 }
 
-// html,
-// body {
-//   height: 100%;
-// }
+body.dark-theme {
+  // === FORM FIELDS ===
+  .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    background-color: var(--primary-lighter) !important;
+  }
 
-// body {
-//   margin: 0;
-//   font-family: Roboto, "Helvetica Neue", sans-serif;
-// }
+  .mdc-text-field--filled:not(.mdc-text-field--disabled):hover {
+    background-color: var(--primary-lighter) !important;
+  }
 
-// html,
-// body {
-//   height: 100%;
-// }
+  span.category-badge {
+    background-color: var(--badge-color) !important;
+  }
 
-// body {
-//   margin: 0;
-//   font-family: Roboto, "Helvetica Neue", sans-serif;
-// }
+  .mat-focused .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    background-color: var(--card-bg) !important;
+  }
 
-// // Add this to your global styles.scss
+  .mat-mdc-text-field-wrapper {
+    background-color: var(--primary-lighter);
 
-// // ===========================
-// // TOASTER / SNACKBAR STYLES
-// // ===========================
+    &.mdc-text-field--focused {
+      background-color: var(--card-bg);
+    }
+  }
 
-// .snackbar-success {
-//   background-color: #4caf50 !important;
-//   color: white !important;
+  // === SEARCH FIELDS (with !important overrides in component) ===
+  .search-field {
+    background-color: var(--card-bg) !important;
 
-//   .mat-mdc-snack-bar-label {
-//     color: white !important;
-//   }
+    .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+      background-color: var(--primary-lighter) !important;
+    }
 
-//   .mat-mdc-button {
-//     color: white !important;
-//   }
-// }
+    .mat-form-field-flex,
+    .mat-form-field-fill {
+      background-color: var(--primary-lighter) !important;
+    }
 
-// .snackbar-error {
-//   background-color: #f44336 !important;
-//   color: white !important;
+    .mat-mdc-text-field-wrapper {
+      background-color: var(--primary-lighter);
+    }
 
-//   .mat-mdc-snack-bar-label {
-//     color: white !important;
-//   }
+    input {
+      color: var(--text-primary) !important;
 
-//   .mat-mdc-button {
-//     color: white !important;
-//   }
-// }
+      &::placeholder {
+        color: var(--text-secondary) !important;
+      }
+    }
 
-// .snackbar-warning {
-//   background-color: #ff9800 !important;
-//   color: white !important;
+    .mdc-floating-label,
+    .mat-mdc-floating-label,
+    .mdc-text-field__input::placeholder {
+      color: var(--text-secondary) !important;
+    }
+  }
 
-//   .mat-mdc-snack-bar-label {
-//     color: white !important;
-//   }
+  // === ANGULAR MATERIAL DIALOG ===
+  .mat-mdc-dialog-surface {
+    background-color: var(--card-bg) !important;
+  }
 
-//   .mat-mdc-button {
-//     color: white !important;
-//   }
-// }
+  mat-dialog-content {
+    background-color: var(--card-bg);
+  }
 
-// .snackbar-info {
-//   background-color: #2196f3 !important;
-//   color: white !important;
+  mat-dialog-actions {
+    background-color: var(--card-bg);
+    border-top-color: var(--border-color);
+  }
 
-//   .mat-mdc-snack-bar-label {
-//     color: white !important;
-//   }
+  // === SELECT PANEL ===
+  .mat-mdc-select-panel {
+    background: var(--card-bg) !important;
 
-//   .mat-mdc-button {
-//     color: white !important;
-//   }
-// }
+    .mat-mdc-option {
+      color: var(--text-primary);
+
+      &:hover {
+        background-color: var(--hover-color) !important;
+      }
+
+      &.mat-mdc-option-active,
+      &.mdc-list-item--selected {
+        background-color: var(--primary-lighter) !important;
+        color: var(--primary-color);
+      }
+    }
+  }
+
+  // === LANGUAGE MENU ===
+  .mat-mdc-menu-panel {
+    background: var(--card-bg) !important;
+
+    .mat-mdc-menu-content button.mat-mdc-menu-item {
+      color: var(--text-primary);
+
+      &:hover {
+        background-color: var(--hover-color);
+      }
+    }
+  }
+
+  // === PAGE CONTAINER ===
+  .container {
+    background: var(--page-bg);
+    color: var(--text-primary);
+  }
+
+  // === HEADER CARD ===
+  .header-card {
+    background: var(--card-bg);
+    border-color: var(--border-color);
+
+    h1,
+    .header-card-content h1,
+    .title-section h1,
+    .header-content h1,
+    .page-title {
+      color: #8d8d8d !important;
+    }
+  }
+
+  // === FORM CARD ===
+  .form-card {
+    background: var(--card-bg);
+    border-color: var(--border-color);
+
+    .section-title {
+      color: var(--primary-light);
+    }
+
+    .error-banner {
+      background: var(--error-bg);
+      border-color: var(--error-border);
+      color: var(--error-text);
+    }
+
+    .form-actions {
+      border-top-color: var(--border-color);
+    }
+
+    .loading-overlay {
+      background: rgba(18, 22, 32, 0.95);
+
+      p {
+        color: var(--text-secondary);
+      }
+    }
+
+    .toggle-item {
+      background: var(--primary-lighter);
+      border-color: var(--border-color);
+
+      &:hover {
+        background: var(--hover-color);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      .toggle-label {
+        color: var(--text-primary);
+      }
+
+      .toggle-description {
+        color: var(--text-secondary);
+      }
+    }
+  }
+
+  // === USER INFO CARD ===
+  .user-info-card {
+    background: var(--card-bg);
+    border-color: var(--border-color);
+
+    .user-details {
+      h3 {
+        color: var(--text-primary);
+      }
+
+      p {
+        color: var(--text-secondary);
+      }
+    }
+  }
+
+  // === TABLE CARDS ===
+  .table-card {
+    background: var(--card-bg) !important;
+    border-color: var(--border-color) !important;
+
+    table th,
+    .orders-table th {
+      background: var(--table-header-bg) !important;
+      border-bottom-color: var(--primary-color) !important;
+      color: var(--table-header-text) !important;
+    }
+
+    table td,
+    .orders-table td {
+      border-bottom-color: var(--border-color);
+      color: var(--table-row-text) !important;
+    }
+
+    .category-name {
+      color: var(--table-row-text) !important;
+    }
+
+    .data-row:hover {
+      background-color: var(--hover-color);
+    }
+
+    .paginator-wrapper {
+      background: var(--primary-lighter) !important;
+      border-top-color: var(--border-color) !important;
+    }
+  }
+
+  // === BOOKS TABLE (mat-elevation-z8) ===
+  .mat-elevation-z8 {
+    background: var(--card-bg) !important;
+    border-color: var(--border-color) !important;
+
+    table th {
+      background: var(--table-header-bg) !important;
+      border-bottom-color: var(--primary-color) !important;
+      color: var(--table-header-text) !important;
+    }
+
+    table td {
+      border-bottom-color: var(--border-color);
+      color: var(--table-row-text) !important;
+    }
+
+    table tr[mat-row]:hover {
+      background-color: var(--hover-color);
+    }
+
+    app-fit-paginator-bar {
+      background: var(--primary-lighter) !important;
+      border-top-color: var(--border-color) !important;
+    }
+  }
+
+  // === PAGINATOR COMPONENT ===
+  .paginator-container {
+    background: var(--primary-lighter) !important;
+    border-top-color: var(--border-color) !important;
+
+    .nav-arrow {
+      color: var(--text-secondary);
+
+      &:not(:disabled):hover {
+        background: var(--primary-lighter);
+        color: var(--primary-color);
+      }
+    }
+
+    .page-btn {
+      color: var(--text-secondary);
+
+      &:not(:disabled):not(.active):hover {
+        background: var(--primary-lighter);
+        color: var(--primary-color);
+      }
+    }
+
+    .selector-label {
+      color: var(--text-muted);
+    }
+
+    .info-text {
+      color: var(--text-muted);
+
+      strong {
+        color: var(--text-primary);
+      }
+    }
+
+    .page-ellipsis {
+      color: var(--text-muted);
+    }
+  }
+
+  .page-size-field {
+    .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+      background-color: var(--primary-lighter) !important;
+    }
+
+    .mat-mdc-select-value {
+      color: var(--primary-color) !important;
+    }
+
+    .mat-mdc-select-arrow {
+      color: var(--primary-color) !important;
+    }
+  }
+
+  // === BOOKS TABLE LOADING / ERROR STATES ===
+  .loading {
+    background: var(--card-bg);
+    border-color: var(--border-color);
+    color: var(--text-secondary);
+  }
+
+  .error {
+    background: var(--error-bg);
+    border-color: var(--error-border);
+    color: var(--error-text);
+  }
+
+  // === LOADING CONTAINER ===
+  .loading-container {
+    background: var(--card-bg);
+    border-color: var(--border-color);
+
+    p {
+      color: var(--text-secondary);
+    }
+  }
+
+  // === ERROR CONTAINER ===
+  .error-container {
+    background: var(--error-bg);
+    border-color: var(--error-border);
+
+    mat-icon {
+      color: var(--error-text);
+    }
+
+    .error-title,
+    .error-message {
+      color: var(--error-text);
+    }
+
+    button {
+      border-color: var(--error-text);
+      color: var(--error-text);
+    }
+  }
+
+  // === ORDER DETAILS DIALOG ===
+  .dialog-container {
+    background: var(--card-bg);
+  }
+
+  .dialog-header {
+    background: linear-gradient(135deg, var(--primary-lighter) 0%, #1a2438 100%);
+    border-bottom-color: var(--border-color);
+
+    h2 {
+      color: var(--text-primary);
+    }
+
+    .order-ref {
+      background: var(--card-bg);
+      border-color: var(--primary-color);
+      color: var(--primary-color);
+    }
+
+    .close-btn {
+      color: var(--text-secondary);
+    }
+  }
+
+  .dialog-content {
+    background: var(--card-bg);
+  }
+
+  .status-section {
+    background: linear-gradient(135deg, var(--primary-lighter) 0%, #1a2438 100%);
+    border-color: var(--border-color);
+
+    .label {
+      color: var(--text-muted);
+    }
+
+    .value {
+      color: var(--text-primary);
+    }
+
+    .date-item mat-icon {
+      color: var(--primary-color);
+    }
+  }
+
+  .info-card {
+    border-color: var(--border-color);
+
+    mat-card-header {
+      background: var(--primary-lighter) !important;
+      border-bottom-color: var(--border-color) !important;
+
+      mat-card-title {
+        color: var(--text-primary) !important;
+      }
+    }
+
+    mat-card-content {
+      background: var(--card-bg) !important;
+    }
+
+    .info-label {
+      color: var(--text-muted) !important;
+    }
+
+    .info-value {
+      color: var(--table-row-text) !important;
+    }
+
+    .note-text {
+      background: var(--primary-lighter) !important;
+      color: var(--table-row-text) !important;
+      border-left-color: var(--primary-color) !important;
+    }
+  }
+
+  .items-card {
+    .items-table {
+      thead {
+        background: var(--table-header-bg) !important;
+
+        th {
+          color: var(--table-header-text) !important;
+          border-bottom-color: var(--primary-color) !important;
+        }
+      }
+
+      tbody tr {
+        border-bottom-color: var(--border-color);
+
+        &:hover {
+          background-color: var(--hover-color);
+        }
+
+        td {
+          color: var(--table-row-text) !important;
+
+          .product-name {
+            color: #717d8d !important;
+          }
+        }
+      }
+
+      tfoot {
+        background: linear-gradient(135deg, var(--primary-lighter) 0%, #1a2438 100%) !important;
+
+        .subtotal-row td,
+        .shipping-row td {
+          color: var(--text-secondary) !important;
+        }
+
+        .total-row {
+          border-top-color: var(--primary-color) !important;
+        }
+      }
+    }
+  }
+
+  .dialog-actions {
+    background: var(--primary-lighter);
+    border-top-color: var(--border-color);
+  }
+
+  // === COUPONS FORM ===
+  .dynamic-form-container {
+    background: var(--card-bg) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-primary);
+
+    .result {
+      background: var(--primary-lighter);
+      color: var(--text-primary);
+
+      h3 {
+        color: var(--primary-light);
+      }
+    }
+  }
+
+  // === STATISTICS / CHARTS ===
+  .statistics-page {
+    .dashboard-header {
+      h1 {
+        color: var(--text-primary) !important;
+      }
+
+      .refresh-timestamp {
+        background: var(--primary-lighter) !important;
+        border-color: var(--border-color) !important;
+        color: var(--text-secondary) !important;
+      }
+    }
+
+    .chart-card {
+      background: var(--card-bg) !important;
+      border-color: var(--border-color) !important;
+
+      .chart-header h3 {
+        color: var(--text-primary) !important;
+      }
+    }
+
+    .report-section {
+      background: var(--card-bg) !important;
+      border-color: var(--border-color) !important;
+
+      h3 {
+        color: var(--text-primary) !important;
+      }
+    }
+  }
+}

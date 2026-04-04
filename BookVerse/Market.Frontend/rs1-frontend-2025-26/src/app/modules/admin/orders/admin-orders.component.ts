@@ -60,13 +60,13 @@ export class AdminOrdersComponent
 
     this.request = new ListOrdersRequest();
     this.request.paging.page = 1;
-    this.request.paging.pageSize = 20;
   }
 
   ngOnInit(): void {
     console.log(this.globalCounter, '. Pozvan je ngOnInit:');
     this.globalCounter += this.globalCounter;
 
+    this.getPaginationSettings();
     this.initList();
     this.setupSearchDebounce();
   }
@@ -74,6 +74,16 @@ export class AdminOrdersComponent
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  private getPaginationSettings() {
+    const saved = localStorage.getItem('adminSettings');
+    if (saved) {
+      const order = JSON.parse(saved);
+      this.request.paging.pageSize = Number(order['defaultPageSize']);
+    } else {
+      this.request.paging.pageSize = 20;
+    }
   }
 
   /**
@@ -218,7 +228,9 @@ export class AdminOrdersComponent
 
         // Extract error message
         const errorMessage = this.extractErrorMessage(err);
-        this.toaster.error(errorMessage || this.translate.instant('ORDERS.MESSAGES.ERROR_UPDATE_STATUS'));
+        this.toaster.error(
+          errorMessage || this.translate.instant('ORDERS.MESSAGES.ERROR_UPDATE_STATUS'),
+        );
 
         console.error('Change status error:', err);
       },
