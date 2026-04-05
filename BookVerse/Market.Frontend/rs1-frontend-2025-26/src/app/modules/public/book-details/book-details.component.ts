@@ -15,6 +15,7 @@ import {
   ListReviewsForBookQueryDto,
   ListReviewsResponse,
 } from '../../../api-services/reviews/reviews-api.model';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 
@@ -29,7 +30,7 @@ L.Icon.Default.mergeOptions({
   selector: 'app-book-details',
   templateUrl: './book-details.component.html',
   styleUrl: './book-details.component.scss',
-  imports: [HeaderComponent, RouterLink, MapComponent],
+  imports: [HeaderComponent, RouterLink, MapComponent, TranslateModule],
 })
 export class BookDetailsComponent {
   book = signal<Book | null>(null);
@@ -51,6 +52,7 @@ export class BookDetailsComponent {
   toaster = inject(ToasterService);
   authFacadeService = inject(AuthFacadeService);
   router = inject(Router);
+  private translate = inject(TranslateService);
 
   constructor(private route: ActivatedRoute) {}
 
@@ -145,10 +147,10 @@ export class BookDetailsComponent {
 
     this.cartService.addToCart({ bookId: bookId, quantity: 1 }).subscribe({
       next: (response) => {
-        this.toaster.success('Uspješno ste dodali knjigu u korpu');
+        this.toaster.success(this.translate.instant('CLIENT.BOOK_DETAILS.ADDED_TO_CART'));
       },
       error: (err) => {
-        this.toaster.error('Greška prilikom dodavanje knjige u korpu');
+        this.toaster.error(this.translate.instant('CLIENT.BOOK_DETAILS.ERROR_ADD_TO_CART'));
       },
     });
   }

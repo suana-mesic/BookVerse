@@ -3,30 +3,30 @@
 <div class="page-wrapper">
   <a class="back-nav" (click)="goBack()" style="cursor: pointer">
     <mat-icon>arrow_back</mat-icon>
-    <span>Nazad</span>
+    <span>{{ 'CLIENT.PAYMENT.BACK' | translate }}</span>
   </a>
 
   <div class="payment-container">
     <div class="order-summary">
-      <strong>Ukupno za plaćanje</strong>
+      <strong>{{ 'CLIENT.PAYMENT.TOTAL_TO_PAY' | translate }}</strong>
       <strong>{{ totalPrice | number: '1.2-2' : 'en' }} KM</strong>
     </div>
 
     <div id="payment-element"></div>
 
     <div class="captcha-section">
-      <p class="captcha-label">Sigurnosna provjera</p>
+      <p class="captcha-label">{{ 'CLIENT.PAYMENT.CAPTCHA_TITLE' | translate }}</p>
 
       <div class="captcha-image-row">
         <img [src]="captchaImage" alt="Captcha" />
         <button mat-stroked-button (click)="loadCaptcha()">
           <mat-icon>cached</mat-icon>
-          Nova slika
+          {{ 'CLIENT.PAYMENT.NEW_IMAGE' | translate }}
         </button>
       </div>
 
       <mat-form-field appearance="outline">
-        <mat-label>Unesite tekst sa slike</mat-label>
+        <mat-label>{{ 'CLIENT.PAYMENT.CAPTCHA_LABEL' | translate }}</mat-label>
         <input matInput [(ngModel)]="captchaAnswer" />
       </mat-form-field>
 
@@ -37,7 +37,7 @@
         [disabled]="captchaVerified"
       >
         <mat-icon *ngIf="captchaVerified">check_circle</mat-icon>
-        {{ captchaVerified ? 'Verificirano' : 'Potvrdi' }}
+        {{ captchaVerified ? ('CLIENT.PAYMENT.VERIFIED' | translate) : ('CLIENT.PAYMENT.CONFIRM' | translate) }}
       </button>
     </div>
 
@@ -48,7 +48,7 @@
         (click)="submitPayment()"
         [disabled]="isLoading || !captchaVerified"
       >
-        {{ isLoading ? 'Obrada...' : 'Plati ' + (totalPrice | number: '1.2-2' : 'en') + ' KM' }}
+        {{ isLoading ? ('CLIENT.PAYMENT.PROCESSING' | translate) : ('CLIENT.PAYMENT.PAY_AMOUNT' | translate: { amount: (totalPrice | number: '1.2-2' : 'en') }) }}
       </button>
     </div>
   </div>

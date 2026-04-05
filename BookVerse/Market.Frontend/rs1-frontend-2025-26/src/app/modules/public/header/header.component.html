@@ -1,29 +1,44 @@
 <header>
   <ul #dropMenu class="drop-menu">
     <li>
-      <a>Lista želja <img src="icons/arrow_white.png" alt="icon" /></a>
+      <a>{{ 'CLIENT.HEADER.WISHLIST' | translate }} <img src="icons/arrow_white.png" alt="icon" /></a>
     </li>
     <li routerLink="/client/user-books">
-      <a>Moje knjige <img src="icons/arrow_white.png" alt="icon" /></a>
+      <a>{{ 'CLIENT.HEADER.MY_BOOKS' | translate }} <img src="icons/arrow_white.png" alt="icon" /></a>
     </li>
     <li>
-      <a>Povrati <img src="icons/arrow_white.png" alt="icon" /></a>
+      <a>{{ 'CLIENT.HEADER.RETURNS' | translate }} <img src="icons/arrow_white.png" alt="icon" /></a>
     </li>
     <li routerLink="/client/user-orders">
-      <a>Narudžbe <img src="icons/arrow_white.png" alt="icon" /></a>
+      <a>{{ 'CLIENT.HEADER.ORDERS' | translate }} <img src="icons/arrow_white.png" alt="icon" /></a>
     </li>
     <li routerLink="/client/profile">
-      <a>Profil <img src="icons/arrow_white.png" alt="icon" /></a>
+      <a>{{ 'CLIENT.HEADER.PROFILE' | translate }} <img src="icons/arrow_white.png" alt="icon" /></a>
     </li>
     <li routerLink="/auth/logout">
-      <a>Odjava <img src="icons/arrow_white.png" alt="icon" /></a>
+      <a>{{ 'CLIENT.HEADER.LOGOUT' | translate }} <img src="icons/arrow_white.png" alt="icon" /></a>
     </li>
   </ul>
-  <h2 class="header__about-us">O nama</h2>
+  <h2 class="header__about-us">{{ 'CLIENT.HEADER.ABOUT_US' | translate }}</h2>
   <h1 style="font-family: 'Meow Script'" class="header__title">BookVerse</h1>
   <div class="header__right-side">
+    <div class="header__lang" (click)="toggleLangMenu($event)">
+      <button class="header__lang-btn">
+        <span class="lang-flag">{{ currentLang === 'bs' ? '🇧🇦' : '🇬🇧' }}</span>
+        <span class="lang-name">{{ currentLang === 'bs' ? 'Bosanski' : 'English' }}</span>
+        <span class="lang-arrow">▾</span>
+      </button>
+      <ul class="lang-dropdown" [class.open]="langMenuOpen">
+        <li (click)="selectLang('bs', $event)" [class.active]="currentLang === 'bs'">
+          <span>🇧🇦</span> Bosanski
+        </li>
+        <li (click)="selectLang('en', $event)" [class.active]="currentLang === 'en'">
+          <span>🇬🇧</span> English
+        </li>
+      </ul>
+    </div>
     <button class="header__cart" routerLink="/client/cart">
-      <h2>Korpa</h2>
+      <h2>{{ 'CLIENT.HEADER.CART' | translate }}</h2>
       <img src="icons/cart_white.png" class="header__cart-icon" alt="ikona" />
     </button>
     <!-- Ovo se treba prikazati tek kad je prijavljen korisnik -->
@@ -34,7 +49,7 @@
           {{ authFacadeService.currentUser()?.fullName }}
         </h2>
       } @else {
-        <h2 #userName class="header__profile-name">Prijavi se</h2>
+        <h2 #userName class="header__profile-name">{{ 'CLIENT.HEADER.LOGIN' | translate }}</h2>
       }
       <img src="icons/default_profile_white.png" class="header__cart-icon" alt="ikona" />
     </button>

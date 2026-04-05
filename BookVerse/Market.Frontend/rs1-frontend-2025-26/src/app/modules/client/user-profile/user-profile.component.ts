@@ -5,6 +5,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { BaseComponent } from '../../core/components/base-classes/base-component';
 import { ToasterService } from '../../core/services/toaster.service';
 import { Location } from '@angular/common';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user-profile',
@@ -18,6 +19,7 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
   private fb = inject(FormBuilder);
   private toaster = inject(ToasterService);
   private location = inject(Location);
+  private translate = inject(TranslateService);
 
   profileForm = this.fb.group({
     firstName: ['', Validators.required],
@@ -41,7 +43,7 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
         this.stopLoading();
       },
       error: (err) => {
-        this.stopLoading('Greška pri učitavanju profila.');
+        this.stopLoading(this.translate.instant('CLIENT.USER_PROFILE.ERROR_LOAD'));
         console.error(err);
       },
     });
@@ -64,10 +66,10 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
     this.api.updateMyProfile(payload).subscribe({
       next: () => {
         this.stopLoading();
-        this.toaster.success('Uspješno ste ažurirali profil');
+        this.toaster.success(this.translate.instant('CLIENT.USER_PROFILE.SUCCESS_UPDATE'));
       },
       error: (err) => {
-        this.stopLoading('Greška pri snimanju profila.');
+        this.stopLoading(this.translate.instant('CLIENT.USER_PROFILE.ERROR_SAVE'));
         console.error(err);
       },
     });

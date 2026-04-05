@@ -4,10 +4,11 @@ import { CategoriesService } from '../Petar/categories.service';
 import { Book } from '../Petar/book/Book';
 import { BooksService } from '../Petar/books.service';
 import { RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-body',
-  imports: [BookComponent, RouterModule],
+  imports: [BookComponent, RouterModule, TranslateModule],
   templateUrl: 'body.component.html',
   styleUrl: 'body.component.css',
 })

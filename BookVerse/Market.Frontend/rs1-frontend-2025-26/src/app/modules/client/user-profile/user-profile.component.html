@@ -4,11 +4,11 @@
   <div class="profile-header">
     <a class="back-nav" (click)="goBack()">
       <mat-icon>arrow_back</mat-icon>
-      Nazad
+      {{ 'CLIENT.USER_PROFILE.BACK' | translate }}
     </a>
-    <h1>Informacije o korisniku</h1>
+    <h1>{{ 'CLIENT.USER_PROFILE.TITLE' | translate }}</h1>
     <button class="save-btn" (click)="onSave()" [disabled]="profileForm.invalid || isLoading">
-      Sačuvaj
+      {{ 'CLIENT.USER_PROFILE.SAVE' | translate }}
     </button>
   </div>
 
@@ -17,45 +17,45 @@
       <div class="avatar">
         <mat-icon>account_circle</mat-icon>
       </div>
-      <button class="avatar-action">Promijeni sliku →</button>
-      <button class="avatar-action">Ukloni sliku →</button>
+      <button class="avatar-action">{{ 'CLIENT.USER_PROFILE.CHANGE_AVATAR' | translate }}</button>
+      <button class="avatar-action">{{ 'CLIENT.USER_PROFILE.REMOVE_AVATAR' | translate }}</button>
     </div>
 
     <div class="form-section">
       <form [formGroup]="profileForm">
         <div class="form-grid">
           <div class="form-field">
-            <label>Ime</label>
+            <label>{{ 'CLIENT.USER_PROFILE.FIRST_NAME' | translate }}</label>
             <input formControlName="firstName" />
           </div>
 
           <div class="form-field">
-            <label>Prezime</label>
+            <label>{{ 'CLIENT.USER_PROFILE.LAST_NAME' | translate }}</label>
             <input formControlName="lastName" />
           </div>
 
           <div class="form-field">
-            <label>Email</label>
+            <label>{{ 'CLIENT.USER_PROFILE.EMAIL' | translate }}</label>
             <input formControlName="email" class="disabled-field" />
           </div>
 
           <div class="form-field">
-            <label>Adresa 1</label>
+            <label>{{ 'CLIENT.USER_PROFILE.ADDRESS1' | translate }}</label>
             <input formControlName="line1" />
           </div>
 
           <div class="form-field">
-            <label>Adresa 2</label>
+            <label>{{ 'CLIENT.USER_PROFILE.ADDRESS2' | translate }}</label>
             <input formControlName="line2" />
           </div>
 
           <div class="form-field">
-            <label>Grad</label>
+            <label>{{ 'CLIENT.USER_PROFILE.CITY' | translate }}</label>
             <input formControlName="city" />
           </div>
 
           <div class="form-field">
-            <label>Zemlja</label>
+            <label>{{ 'CLIENT.USER_PROFILE.COUNTRY' | translate }}</label>
             <input formControlName="country" />
           </div>
         </div>
@@ -64,17 +64,17 @@
   </div>
 
   <div class="security-section">
-    <h2>Sigurnost</h2>
+    <h2>{{ 'CLIENT.USER_PROFILE.SECURITY' | translate }}</h2>
     <mat-divider></mat-divider>
 
     <div class="security-links">
-      <a routerLink="/auth/change-email">Promjena mejla →</a>
-      <a routerLink="/auth/change-password">Promjena lozinke →</a>
+      <a routerLink="/auth/change-email">{{ 'CLIENT.USER_PROFILE.CHANGE_EMAIL' | translate }}</a>
+      <a routerLink="/auth/change-password">{{ 'CLIENT.USER_PROFILE.CHANGE_PASSWORD' | translate }}</a>
     </div>
 
     <div class="two-factor-toggle">
       <mat-slide-toggle [formControl]="$any(profileForm.get('twoFactorEnabled'))">
-        Dvofaktorska autentifikacija
+        {{ 'CLIENT.USER_PROFILE.TWO_FACTOR' | translate }}
       </mat-slide-toggle>
     </div>
   </div>

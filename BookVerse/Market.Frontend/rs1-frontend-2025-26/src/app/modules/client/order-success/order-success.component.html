@@ -3,11 +3,11 @@
 <div class="success-container">
   <div class="success-card">
     <div class="success-icon">✓</div>
-    <h1>Plaćanje uspješno!</h1>
-    <p>Vaša narudžba je primljena i u obradi je.</p>
-    <p class="payment-id">Referenca plaćanja: <strong>{{ paymentIntentId }}</strong></p>
+    <h1>{{ 'CLIENT.ORDER_SUCCESS.TITLE' | translate }}</h1>
+    <p>{{ 'CLIENT.ORDER_SUCCESS.MESSAGE' | translate }}</p>
+    <p class="payment-id">{{ 'CLIENT.ORDER_SUCCESS.PAYMENT_REF' | translate }} <strong>{{ paymentIntentId }}</strong></p>
     <button mat-raised-button color="primary" (click)="goToHome()">
-      Nazad na početnu
+      {{ 'CLIENT.ORDER_SUCCESS.BACK_HOME' | translate }}
     </button>
   </div>
 </div>

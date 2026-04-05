@@ -51,8 +51,7 @@ body h1 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 2rem 0;
-  margin-bottom: 1rem;
+  margin: 0 0 1rem 0;
   padding-bottom: 1rem;
   border-bottom: 1px solid #555;
 }

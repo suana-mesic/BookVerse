@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import { DialogHelperService } from '../../shared/services/dialog-helper.service';
 import { DialogButton } from '../../shared/models/dialog-config.model';
 import { Location } from '@angular/common';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-user-orders',
   standalone: false,
@@ -29,6 +30,7 @@ export class UserOrdersComponent
   private router = inject(Router);
   private dialogHelper = inject(DialogHelperService);
   private location = inject(Location);
+  private translate = inject(TranslateService);
 
   searchControl = new FormControl('');
   statusFilter: OrderStatusType | null = null;
@@ -75,7 +77,7 @@ export class UserOrdersComponent
         this.stopLoading();
       },
       error: () => {
-        this.stopLoading('Greška pri učitavanju narudžbi.');
+        this.stopLoading(this.translate.instant('CLIENT.USER_ORDERS.ERROR_LOAD'));
       },
     });
   }
@@ -98,16 +100,19 @@ export class UserOrdersComponent
 
   cancelOrder(id: number): void {
     this.dialogHelper
-      .confirm('Otkazivanje narudžbe', 'Da li ste sigurni da želite otkazati narudžbu?')
+      .confirm(
+        this.translate.instant('CLIENT.USER_ORDERS.CANCEL_TITLE'),
+        this.translate.instant('CLIENT.USER_ORDERS.CANCEL_CONFIRM'),
+      )
       .subscribe((response) => {
         if (response?.button == DialogButton.YES) {
           this.ordersService.cancelOrder(id).subscribe({
             next: () => {
-              this.toaster.success('Narudžba uspješno otkazana.');
+              this.toaster.success(this.translate.instant('CLIENT.USER_ORDERS.ORDER_CANCELLED'));
               this.loadPagedData();
             },
             error: () => {
-              this.toaster.error('Greška pri otkazivanju narudžbe.');
+              this.toaster.error(this.translate.instant('CLIENT.USER_ORDERS.ERROR_CANCEL'));
             },
           });
         }
@@ -119,13 +124,13 @@ export class UserOrdersComponent
   }
   getStatusLabel(status: OrderStatusType): string {
     const labels: Record<OrderStatusType, string> = {
-      [OrderStatusType.Draft]: 'Bilješka',
-      [OrderStatusType.Paid]: 'Plaćeno',
-      [OrderStatusType.Packed]: 'Zapakovano',
-      [OrderStatusType.Shipped]: 'Poslano',
-      [OrderStatusType.Cancelled]: 'Otkazano',
+      [OrderStatusType.Draft]: this.translate.instant('CLIENT.USER_ORDERS.STATUS_DRAFT'),
+      [OrderStatusType.Paid]: this.translate.instant('CLIENT.USER_ORDERS.STATUS_PAID'),
+      [OrderStatusType.Packed]: this.translate.instant('CLIENT.USER_ORDERS.STATUS_PACKED'),
+      [OrderStatusType.Shipped]: this.translate.instant('CLIENT.USER_ORDERS.STATUS_SHIPPED'),
+      [OrderStatusType.Cancelled]: this.translate.instant('CLIENT.USER_ORDERS.STATUS_CANCELLED'),
     };
-    return labels[status] ?? 'Nepoznato';
+    return labels[status] ?? this.translate.instant('CLIENT.USER_ORDERS.STATUS_UNKNOWN');
   }
 
   getStatusClass(status: OrderStatusType): string {
@@ -175,7 +180,7 @@ export class UserOrdersComponent
         });
       },
       error: () => {
-        this.toaster.error('Greška pri dohvatanju podataka za plaćanje.');
+        this.toaster.error(this.translate.instant('CLIENT.USER_ORDERS.ERROR_PAY'));
       },
     });
   }
