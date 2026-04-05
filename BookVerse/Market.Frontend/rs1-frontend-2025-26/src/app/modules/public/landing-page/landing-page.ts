@@ -5,9 +5,9 @@ import { BodyComponent } from '../body/body.component';
 
 @Component({
   selector: 'app-landing-page',
-  imports: [HeaderComponent, SearchAndFiltersComponent, BodyComponent],
+  imports: [HeaderComponent, BodyComponent, SearchAndFiltersComponent],
   templateUrl: './landing-page.html',
   styleUrl: './landing-page.scss',
-  encapsulation: ViewEncapsulation.None // Ovo će učiniti da stilovi budu globalni
+  encapsulation: ViewEncapsulation.None, // Ovo će učiniti da stilovi budu globalni
 })
-export class LandingPage { }
+export class LandingPage {}

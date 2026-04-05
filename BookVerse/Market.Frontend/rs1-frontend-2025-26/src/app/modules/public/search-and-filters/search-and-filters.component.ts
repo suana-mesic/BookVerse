@@ -1,11 +1,12 @@
 import { Component, ElementRef, inject, OnInit, Renderer2, signal, ViewChild } from '@angular/core';
 import { CategoriesService } from '../Petar/categories.service';
 import { Categories } from '../Petar/book/Categories';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-search-and-filters',
-  //imports: [],
+  standalone: true,
+  imports: [TranslateModule],
   templateUrl: './search-and-filters.html',
   styleUrl: './search-and-filters.component.css',
 })
@@ -31,10 +32,13 @@ export class SearchAndFiltersComponent implements OnInit {
   showFilters() {
     if (!this.filtersOpened) {
       this.searchAndFilters.nativeElement.classList.add('show-filters');
-      this.filterButtonText.nativeElement.textContent = this.translate.instant('CLIENT.SEARCH.CLOSE_FILTERS');
+      this.filterButtonText.nativeElement.textContent = this.translate.instant(
+        'CLIENT.SEARCH.CLOSE_FILTERS',
+      );
     } else {
       this.searchAndFilters.nativeElement.classList.remove('show-filters');
-      this.filterButtonText.nativeElement.textContent = this.translate.instant('CLIENT.SEARCH.FILTERS');
+      this.filterButtonText.nativeElement.textContent =
+        this.translate.instant('CLIENT.SEARCH.FILTERS');
     }
     this.filtersOpened = !this.filtersOpened;
   }

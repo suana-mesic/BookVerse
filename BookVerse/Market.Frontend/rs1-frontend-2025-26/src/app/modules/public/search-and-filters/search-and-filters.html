@@ -22,7 +22,9 @@
 
       <div class="category-and-price-range__book">
         <div (click)="showCategories()" class="category-and-price-range__book-category">
-          <h2 class="category-and-price-range__book__select">{{ 'CLIENT.SEARCH.CATEGORIES' | translate }}</h2>
+          <h2 class="category-and-price-range__book__select">
+            {{ 'CLIENT.SEARCH.CATEGORIES' | translate }}
+          </h2>
           <img src="icons/drop_menu_arrow.png" alt="icon" />
         </div>
 
@@ -30,11 +32,11 @@
           <div class="category-and-price-range__book__search">
             <input type="text" [placeholder]="'CLIENT.SEARCH.SEARCH_CATEGORIES' | translate" />
           </div>
-          @for(category of categories(); let i = $index; track category.id){
-          <div class="search-and-filters__select">
-            <div class="search-and-filters__select__checkbox"></div>
-            <h2>{{ category.name }}</h2>
-          </div>
+          @for (category of categories(); let i = $index; track category.id) {
+            <div class="search-and-filters__select">
+              <div class="search-and-filters__select__checkbox"></div>
+              <h2>{{ category.name }}</h2>
+            </div>
           }
 
           <!-- <div class="search-and-filters__select">
@@ -60,7 +62,9 @@
 
     <div class="author-and-submit-button">
       <div (click)="showAuthors()" class="author-and-submit-button__author">
-        <h2 class="author-and-submit-button__select">{{ 'CLIENT.SEARCH.SELECT_AUTHORS' | translate }}</h2>
+        <h2 class="author-and-submit-button__select">
+          {{ 'CLIENT.SEARCH.SELECT_AUTHORS' | translate }}
+        </h2>
         <img src="icons/drop_menu_arrow.png" alt="icon" />
       </div>
 
@@ -84,7 +88,9 @@
         </div>
       </div>
 
-      <button class="author-and-submit-button__submit-button">{{ 'CLIENT.SEARCH.APPLY' | translate }}</button>
+      <button class="author-and-submit-button__submit-button">
+        {{ 'CLIENT.SEARCH.APPLY' | translate }}
+      </button>
     </div>
   </div>
 </div>

@@ -1,4 +1,12 @@
-import { Component, ElementRef, HostListener, inject, OnInit, viewChild, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  inject,
+  OnInit,
+  viewChild,
+  ViewChild,
+} from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CurrentUserService } from '../../core/services/auth/current-user.service';
 import { AuthFacadeService } from '../../core/services/auth/auth-facade.service';
@@ -12,7 +20,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 })
 export class HeaderComponent implements OnInit {
   @ViewChild('dropMenu') dropMenu!: ElementRef;
-  @ViewChild('userName') userName!:ElementRef;
+  @ViewChild('userName') userName!: ElementRef;
 
   router = inject(Router);
   dropMenuOpened = false;
@@ -64,14 +72,11 @@ export class HeaderComponent implements OnInit {
   //   }
   // }
 
-  prijavaIliDropDown(){
-    
+  prijavaIliDropDown() {
     console.log(this.authFacadeService.isAuthenticated());
-    if(!this.authFacadeService.isAuthenticated())
-      this.router.navigate(["/auth/login"]);
+    if (!this.authFacadeService.isAuthenticated()) this.router.navigate(['/auth/login']);
     else {
       this.showDropMenu();
     }
   }
-
 }
