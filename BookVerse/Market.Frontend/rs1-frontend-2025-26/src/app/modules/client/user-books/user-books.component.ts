@@ -16,6 +16,7 @@ import { CategoriesService } from '../../public/Petar/categories.service';
 import { DialogButton } from '../../shared/models/dialog-config.model';
 import { Categories } from '../../public/Petar/book/Categories';
 import { Location } from '@angular/common';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-my-books',
   standalone: false,
@@ -32,6 +33,7 @@ export class UserBooksComponent
   private toaster = inject(ToasterService);
   private destroy$ = new Subject<void>();
   private dialogHelper = inject(DialogHelperService);
+  private translate = inject(TranslateService);
   public userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   private location = inject(Location);
 
@@ -118,7 +120,7 @@ export class UserBooksComponent
         this.filteredCategories = response;
       },
       error: (err) => {
-        this.toaster.error('Greška prilikom učitavanja kategorija.');
+        this.toaster.error(this.translate.instant('CLIENT.USER_BOOKS.ERROR_LOAD_CATEGORIES'));
       },
     });
   }
@@ -131,7 +133,7 @@ export class UserBooksComponent
         this.stopLoading();
       },
       error: () => {
-        this.stopLoading('Greška pri učitavanju knjiga.');
+        this.stopLoading(this.translate.instant('CLIENT.USER_BOOKS.ERROR_LOAD_BOOKS'));
       },
     });
   }
@@ -197,11 +199,11 @@ export class UserBooksComponent
           this.isSavingReview = false;
           this.closeReviewModal();
           this.loadPagedData();
-          this.toaster.success('Recenzija uspješno ažurirana!');
+          this.toaster.success(this.translate.instant('CLIENT.USER_BOOKS.REVIEW_UPDATED'));
         },
         error: () => {
           this.isSavingReview = false;
-          this.toaster.error('Greška pri ažuriranju recenzije.');
+          this.toaster.error(this.translate.instant('CLIENT.USER_BOOKS.ERROR_UPDATE_REVIEW'));
         },
       });
     } else {
@@ -217,11 +219,11 @@ export class UserBooksComponent
           this.isSavingReview = false;
           this.closeReviewModal();
           this.loadPagedData();
-          this.toaster.success('Recenzija uspješno kreirana!');
+          this.toaster.success(this.translate.instant('CLIENT.USER_BOOKS.REVIEW_CREATED'));
         },
         error: () => {
           this.isSavingReview = false;
-          this.toaster.error('Greška pri kreiranju recenzije.');
+          this.toaster.error(this.translate.instant('CLIENT.USER_BOOKS.ERROR_CREATE_REVIEW'));
         },
       });
     }
@@ -231,16 +233,19 @@ export class UserBooksComponent
     if (!book.userReview) return;
 
     this.dialogHelper
-      .confirm('Brisanje recenzije', 'Da li ste sigurni da želite obrisati recenziju?')
+      .confirm(
+        this.translate.instant('CLIENT.USER_BOOKS.DELETE_TITLE'),
+        this.translate.instant('CLIENT.USER_BOOKS.DELETE_CONFIRM'),
+      )
       .subscribe((response) => {
         if (response?.button === DialogButton.YES) {
           this.reviewService.deleteReview(book.bookId).subscribe({
             next: () => {
               this.loadPagedData();
-              this.toaster.success('Recenzija uspješno obrisana!');
+              this.toaster.success(this.translate.instant('CLIENT.USER_BOOKS.REVIEW_DELETED'));
             },
             error: () => {
-              this.toaster.error('Greška pri brisanju recenzije.');
+              this.toaster.error(this.translate.instant('CLIENT.USER_BOOKS.ERROR_DELETE_REVIEW'));
             },
           });
         }

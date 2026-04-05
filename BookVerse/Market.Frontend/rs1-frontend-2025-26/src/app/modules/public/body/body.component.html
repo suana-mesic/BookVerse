@@ -1,8 +1,8 @@
 <body>
   <div class="body__header">
-    <h1>Preporučeno za Vas</h1>
+    <h1>{{ 'CLIENT.BODY.RECOMMENDED' | translate }}</h1>
     <div class="body__page-size">
-      <h2>Veličina:</h2>
+      <h2>{{ 'CLIENT.BODY.PAGE_SIZE' | translate }}</h2>
       <select (change)="setPageSize($event)" id="page-size" name="page-size">
         <option value="1">1</option>
         <option value="2">2</option>

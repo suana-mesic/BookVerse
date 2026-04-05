@@ -4,7 +4,7 @@
   <div class="header-card">
     <a class="back-nav" (click)="goBack()">
       <mat-icon>arrow_back</mat-icon>
-      <span>Nazad</span>
+      <span>{{ 'CLIENT.USER_ORDERS.BACK' | translate }}</span>
     </a>
 
     <div class="header-card-content">
@@ -12,28 +12,28 @@
         <div class="title-icon">
           <mat-icon>shopping_bag</mat-icon>
         </div>
-        <h1>Moje narudžbe</h1>
+        <h1>{{ 'CLIENT.USER_ORDERS.TITLE' | translate }}</h1>
       </div>
 
       <div class="actions-container">
         <mat-form-field class="filter-field" appearance="outline">
-          <mat-label>Status</mat-label>
+          <mat-label>{{ 'CLIENT.USER_ORDERS.STATUS' | translate }}</mat-label>
           <mat-select
             [(ngModel)]="statusFilter"
             (selectionChange)="onStatusFilterChange($event.value)"
           >
-            <mat-option [value]="null">Svi statusi</mat-option>
-            <mat-option [value]="OrderStatusType.Draft">Na čekanju</mat-option>
-            <mat-option [value]="OrderStatusType.Paid">Plaćeno</mat-option>
-            <mat-option [value]="OrderStatusType.Packed">Zapakovano</mat-option>
-            <mat-option [value]="OrderStatusType.Shipped">Poslano</mat-option>
-            <mat-option [value]="OrderStatusType.Cancelled">Otkazano</mat-option>
+            <mat-option [value]="null">{{ 'CLIENT.USER_ORDERS.ALL_STATUSES' | translate }}</mat-option>
+            <mat-option [value]="OrderStatusType.Draft">{{ 'CLIENT.USER_ORDERS.STATUS_DRAFT' | translate }}</mat-option>
+            <mat-option [value]="OrderStatusType.Paid">{{ 'CLIENT.USER_ORDERS.STATUS_PAID' | translate }}</mat-option>
+            <mat-option [value]="OrderStatusType.Packed">{{ 'CLIENT.USER_ORDERS.STATUS_PACKED' | translate }}</mat-option>
+            <mat-option [value]="OrderStatusType.Shipped">{{ 'CLIENT.USER_ORDERS.STATUS_SHIPPED' | translate }}</mat-option>
+            <mat-option [value]="OrderStatusType.Cancelled">{{ 'CLIENT.USER_ORDERS.STATUS_CANCELLED' | translate }}</mat-option>
           </mat-select>
         </mat-form-field>
 
         <mat-form-field class="search-field" appearance="outline">
-          <mat-label>Pretraži</mat-label>
-          <input matInput [formControl]="searchControl" placeholder="Tracking broj..." />
+          <mat-label>{{ 'CLIENT.USER_ORDERS.SEARCH' | translate }}</mat-label>
+          <input matInput [formControl]="searchControl" [placeholder]="'CLIENT.USER_ORDERS.SEARCH_PLACEHOLDER' | translate" />
           <mat-icon matSuffix>search</mat-icon>
         </mat-form-field>
 
@@ -60,7 +60,7 @@
   <div *ngIf="!isLoading && errorMessage" class="error-container">
     <mat-icon>error_outline</mat-icon>
     <p>{{ errorMessage }}</p>
-    <button mat-stroked-button (click)="loadPagedData()">Pokušaj ponovo</button>
+    <button mat-stroked-button (click)="loadPagedData()">{{ 'CLIENT.USER_ORDERS.RETRY' | translate }}</button>
   </div>
 
   <!-- Timeline + Detalji -->
@@ -68,7 +68,7 @@
     <div class="timeline">
       <div *ngIf="items.length === 0" class="no-data-content">
         <mat-icon>shopping_bag</mat-icon>
-        <p>Nemate narudžbi.</p>
+        <p>{{ 'CLIENT.USER_ORDERS.NO_ORDERS' | translate }}</p>
       </div>
 
       <div *ngFor="let order of items; let last = last" class="timeline-item">
@@ -114,7 +114,7 @@
                 (click)="cancelOrder(order.id)"
               >
                 <mat-icon>cancel</mat-icon>
-                Otkaži
+                {{ 'CLIENT.USER_ORDERS.CANCEL_ORDER' | translate }}
               </button>
               <button
                 *ngIf="order.status === OrderStatusType.Draft"
@@ -123,11 +123,11 @@
                 (click)="payOrder(order)"
               >
                 <mat-icon>payment</mat-icon>
-                Plati
+                {{ 'CLIENT.USER_ORDERS.PAY' | translate }}
               </button>
               <button mat-stroked-button class="details-btn" (click)="selectOrder(order)">
                 <mat-icon>{{ selectedOrder?.id === order.id ? 'chevron_right' : 'info' }}</mat-icon>
-                Detalji
+                {{ 'CLIENT.USER_ORDERS.DETAILS' | translate }}
               </button>
             </div>
           </div>
@@ -143,7 +143,7 @@
     <div class="order-details-panel" [class.empty]="!selectedOrder">
       <ng-container *ngIf="!selectedOrder">
         <mat-icon>info_outline</mat-icon>
-        <p>Odaberite narudžbu za pregled detalja</p>
+        <p>{{ 'CLIENT.USER_ORDERS.SELECT_ORDER' | translate }}</p>
       </ng-container>
 
       <ng-container *ngIf="selectedOrder">
@@ -155,7 +155,7 @@
         </div>
 
         <div class="details-section">
-          <h4>Knjige ({{ selectedOrder.items.length }})</h4>
+          <h4>{{ 'CLIENT.USER_ORDERS.BOOKS' | translate }} ({{ selectedOrder.items.length }})</h4>
 
           <div class="carousel">
             <button class="carousel-btn prev" (click)="prevSlide()" [disabled]="currentSlide === 0">
@@ -205,24 +205,24 @@
         </div>
 
         <div class="details-section">
-          <h4>Cijena</h4>
+          <h4>{{ 'CLIENT.USER_ORDERS.PRICE' | translate }}</h4>
           <div class="price-row">
-            <span>Subtotal</span>
+            <span>{{ 'CLIENT.USER_ORDERS.SUBTOTAL' | translate }}</span>
             <span>{{ selectedOrder.subtotal | number: '1.2-2' : 'en' }} KM</span>
           </div>
           <div class="price-row" *ngIf="selectedOrder.shippingPriceAtTheTime > 0">
-            <span>Dostava</span>
+            <span>{{ 'CLIENT.USER_ORDERS.SHIPPING' | translate }}</span>
             <span>{{ selectedOrder.shippingPriceAtTheTime | number: '1.2-2' : 'en' }} KM</span>
           </div>
           <div
             class="price-row discount"
             *ngIf="selectedOrder.discountAmount && selectedOrder.discountAmount > 0"
           >
-            <span>Popust</span>
+            <span>{{ 'CLIENT.USER_ORDERS.DISCOUNT' | translate }}</span>
             <span>- {{ selectedOrder.discountAmount | number: '1.2-2' : 'en' }} KM</span>
           </div>
           <div class="price-row total-row">
-            <strong>Ukupno</strong>
+            <strong>{{ 'CLIENT.USER_ORDERS.TOTAL' | translate }}</strong>
             <strong>{{ selectedOrder.totalAmount | number: '1.2-2' : 'en' }} KM</strong>
           </div>
         </div>
@@ -230,7 +230,7 @@
         <div class="details-section" *ngIf="selectedOrder.paidAtUtc">
           <div class="detail-meta-row">
             <mat-icon>payment</mat-icon>
-            <span>Plaćeno: {{ selectedOrder.paidAtUtc | date: 'dd.MM.yyyy HH:mm' }}</span>
+            <span>{{ 'CLIENT.USER_ORDERS.PAID_AT' | translate }} {{ selectedOrder.paidAtUtc | date: 'dd.MM.yyyy HH:mm' }}</span>
           </div>
         </div>
       </ng-container>

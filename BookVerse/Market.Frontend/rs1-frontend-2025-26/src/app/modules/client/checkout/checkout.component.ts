@@ -24,6 +24,7 @@ import { OrdersApiService } from '../../../api-services/orders/orders-api.servic
 import { catchError, map, Observable, of, switchMap, timer } from 'rxjs';
 import { CountriesApiService } from '../../../api-services/CountriesNow/countires-api.service';
 import { Location } from '@angular/common';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-checkout',
   standalone: false,
@@ -40,6 +41,7 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
   private ordersService = inject(OrdersApiService);
   private toaster = inject(ToasterService);
   private location = inject(Location);
+  private translate = inject(TranslateService);
 
   countriesService = inject(CountriesApiService);
 
@@ -106,7 +108,7 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
         this.stopLoading();
       },
       error: () => {
-        this.stopLoading('Greška pri učitavanju adrese.');
+        this.stopLoading(this.translate.instant('CLIENT.CHECKOUT.ERROR_LOAD_ADDRESS'));
       },
     });
 
@@ -200,14 +202,14 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
       next: (response) => {
         this.saveCheckoutState();
         this.stopLoading();
-        this.toaster.success('Narudžba potvrđena! Preusmjeravamo na plaćanje...');
+        this.toaster.success(this.translate.instant('CLIENT.CHECKOUT.ORDER_CONFIRMED'));
         this.router.navigate(['/client/payment'], {
           state: { orderData: response },
         });
       },
       error: (err) => {
         this.stopLoading();
-        this.toaster.error('Greška prilikom kreiranje narudžbe');
+        this.toaster.error(this.translate.instant('CLIENT.CHECKOUT.ERROR_CREATE_ORDER'));
       },
     });
   }
@@ -217,7 +219,7 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
     this.couponError = '';
 
     if (this.appliedCoupons.some((c) => c.promotionCode === this.uneseniKupon.value)) {
-      this.couponError = 'Ovaj kupon je već primijenjen.';
+      this.couponError = this.translate.instant('CLIENT.CHECKOUT.COUPON_ALREADY_APPLIED');
       return;
     }
 
@@ -225,10 +227,10 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
       next: (coupon) => {
         this.appliedCoupons.push(coupon);
         this.uneseniKupon.setValue('');
-        this.toaster.success(`Kupon "${coupon.name}" uspješno primijenjen!`);
+        this.toaster.success(this.translate.instant('CLIENT.CHECKOUT.COUPON_APPLIED', { name: coupon.name }));
       },
       error: () => {
-        this.couponError = 'Kupon nije pronađen ili je istekao.';
+        this.couponError = this.translate.instant('CLIENT.CHECKOUT.COUPON_NOT_FOUND');
       },
     });
   }

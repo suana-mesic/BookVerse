@@ -6,6 +6,7 @@ import { BaseComponent } from '../../core/components/base-classes/base-component
 import { CaptchaApiService } from '../../../api-services/captcha/captcha-api.service';
 import { CartApiService } from '../../../api-services/cart/cart-api.service';
 import { Location } from '@angular/common';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-payment',
   standalone: false,
@@ -18,6 +19,7 @@ export class PaymentComponent extends BaseComponent implements OnInit {
   private captchaService = inject(CaptchaApiService);
   private cartService = inject(CartApiService);
   private location = inject(Location);
+  private translate = inject(TranslateService);
 
   captchaImage: string = '';
   captchaToken: string = '';
@@ -39,7 +41,7 @@ export class PaymentComponent extends BaseComponent implements OnInit {
 
     //Ako nema order data onda preusmjeri na korpu
     if (!this.orderData) {
-      this.toaster.error('Nema podataka o narudžbi.');
+      this.toaster.error(this.translate.instant('CLIENT.PAYMENT.NO_ORDER_DATA'));
       this.router.navigate(['/client/cart']);
       return;
     }
@@ -62,17 +64,17 @@ export class PaymentComponent extends BaseComponent implements OnInit {
 
   verifyCaptcha(): void {
     if (!this.captchaAnswer.trim()) {
-      this.toaster.error('Unesite odgovor sa slike.');
+      this.toaster.error(this.translate.instant('CLIENT.PAYMENT.ENTER_CAPTCHA'));
       return;
     }
 
     this.captchaService.verify(this.captchaToken, this.captchaAnswer).subscribe({
       next: () => {
         this.captchaVerified = true;
-        this.toaster.success('Captcha uspješno verificirana!');
+        this.toaster.success(this.translate.instant('CLIENT.PAYMENT.CAPTCHA_SUCCESS'));
       },
       error: () => {
-        this.toaster.error('Pogrešan odgovor. Pokušajte ponovo.');
+        this.toaster.error(this.translate.instant('CLIENT.PAYMENT.CAPTCHA_WRONG'));
         this.loadCaptcha();
       },
     });
@@ -90,7 +92,7 @@ export class PaymentComponent extends BaseComponent implements OnInit {
     // clientSecret je tajni ključ koji smo dobili od backenda
     // appearance definira vizuelni stil Stripe forme
     if (!this.stripe) {
-      this.toaster.error('Greška pri učitavanju Stripe-a.');
+      this.toaster.error(this.translate.instant('CLIENT.PAYMENT.STRIPE_ERROR'));
       return;
     }
 
@@ -127,7 +129,7 @@ export class PaymentComponent extends BaseComponent implements OnInit {
     // Stripe NE preusmjerava na return_url — ostajemo na stranici i prikazujemo grešku
     if (error) {
       this.stopLoading();
-      this.toaster.error(error.message ?? 'Greška pri plaćanju.');
+      this.toaster.error(error.message ?? this.translate.instant('CLIENT.PAYMENT.PAYMENT_ERROR'));
     }
   }
 
