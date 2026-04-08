@@ -123,12 +123,12 @@ $font: 'DM Sans', system-ui, sans-serif;
 
     ::ng-deep {
       .mdc-text-field--filled:not(.mdc-text-field--disabled) {
-        background-color: $primary-lighter !important;
+        background-color: $primary-lighter;
         border-radius: 8px !important;
       }
 
       .mdc-text-field--filled:not(.mdc-text-field--disabled):hover {
-        background-color: darken($primary-lighter, 3%) !important;
+        background-color: darken($primary-lighter, 3%);
       }
 
       .mdc-line-ripple {

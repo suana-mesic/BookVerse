@@ -3,6 +3,7 @@ import {
   ElementRef,
   HostListener,
   inject,
+  OnDestroy,
   OnInit,
   viewChild,
   ViewChild,
@@ -11,6 +12,7 @@ import { Router, RouterLink } from '@angular/router';
 import { CurrentUserService } from '../../core/services/auth/current-user.service';
 import { AuthFacadeService } from '../../core/services/auth/auth-facade.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -18,7 +20,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
   templateUrl: './header.component.html',
   styleUrl: 'header.component.css',
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   @ViewChild('dropMenu') dropMenu!: ElementRef;
   @ViewChild('userName') userName!: ElementRef;
 
@@ -26,6 +28,7 @@ export class HeaderComponent implements OnInit {
   dropMenuOpened = false;
   authFacadeService = inject(AuthFacadeService);
   private translate = inject(TranslateService);
+  private langChangeSub!: Subscription;
 
   currentLang: 'bs' | 'en' = 'bs';
   langMenuOpen = false;
@@ -36,6 +39,15 @@ export class HeaderComponent implements OnInit {
       this.currentLang = saved;
       this.translate.use(saved);
     }
+
+    //If we change language in settings section it will be reflected in main navigation
+    this.langChangeSub = this.translate.onLangChange.subscribe((event) => {
+      this.currentLang = event.lang as 'bs' | 'en';
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.langChangeSub?.unsubscribe();
   }
 
   toggleLangMenu(event: Event): void {
@@ -49,6 +61,10 @@ export class HeaderComponent implements OnInit {
     this.langMenuOpen = false;
     this.translate.use(lang);
     localStorage.setItem('lang', lang);
+    const savedSettings = localStorage.getItem('userSettings');
+    const settings = savedSettings ? JSON.parse(savedSettings) : {};
+    settings.language = lang;
+    localStorage.setItem('userSettings', JSON.stringify(settings));
   }
 
   @HostListener('document:click')

@@ -2,7 +2,8 @@
 
 namespace Market.API.Hubs
 {
-    public class OrderNotificationHub : Hub
+    [Authorize(Policy ="AdminOnly")]
+    public class AdminOrderHub : Hub
     {
         public override async Task OnConnectedAsync()
         {
@@ -10,5 +11,6 @@ namespace Market.API.Hubs
             await Groups.AddToGroupAsync(Context.ConnectionId, "admins");
             await base.OnConnectedAsync();
         }
+
     }
 }

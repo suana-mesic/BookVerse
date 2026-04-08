@@ -244,34 +244,6 @@ $success: #56d39c;
   }
 }
 
-.two-factor-toggle {
-  padding: 8px 0;
-
-  ::ng-deep {
-    .mat-slide-toggle-thumb {
-      background-color: white;
-    }
-    .mat-slide-toggle-bar {
-      background-color: $border;
-    }
-
-    &.mat-checked {
-      .mat-slide-toggle-bar {
-        background-color: $primary;
-      }
-      .mat-slide-toggle-thumb {
-        background-color: white;
-      }
-    }
-
-    .mat-slide-toggle-content {
-      font-size: 14px;
-      font-weight: 500;
-      color: $text-primary;
-    }
-  }
-}
-
 @media (max-width: 768px) {
   .profile-container {
     padding: 24px 16px;

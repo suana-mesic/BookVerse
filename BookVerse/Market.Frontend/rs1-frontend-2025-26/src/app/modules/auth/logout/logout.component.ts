@@ -24,11 +24,19 @@ export class LogoutComponent implements OnInit {
   countdownSeconds = 2;
 
   ngOnInit(): void {
-    // Call logout (handles API call + clears state)
+    this.resetThemeToLight();
     this.auth.logout().subscribe({
       next: () => this.startCountdown(),
-      error: () => this.startCountdown()// Even if API fails, clear local state
+      error: () => this.startCountdown()
     });
+  }
+
+  private resetThemeToLight(): void {
+    document.body.classList.remove('dark-theme');
+    const saved = localStorage.getItem('userSettings');
+    const settings = saved ? JSON.parse(saved) : {};
+    settings.theme = 'light';
+    localStorage.setItem('userSettings', JSON.stringify(settings));
   }
 
   private startCountdown(): void {

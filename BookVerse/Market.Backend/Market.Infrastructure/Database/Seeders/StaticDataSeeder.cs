@@ -136,49 +136,65 @@ public partial class StaticDataSeeder
             {
             Id = 1,
             FirstName = "admin",
-            LastName = "user",
-            Email = "admin@gmail.com",
+            LastName = "admin",
+            Email = "admin@bookverse.com",
             PasswordHash = hasher.HashPassword(null!, "string"),
             IsAdmin = true,
-            IsManager=false,
-            IsEmployee=true,
+            IsManager = false,
+            IsEmployee = true,
             IsEnabled = true,
             IsDeleted=false,
             AddressId =1,
             TwoFactorEnabled=false,
             CreatedAtUtc = DateTime.Now
             },
-                new MarketUserEntity
+               new MarketUserEntity
             {
             Id = 2,
-            FirstName = "string",
-            LastName = "string",
-            Email = "string",
-            PasswordHash = hasher.HashPassword(null!, "string"),
-            IsAdmin = false,
-            IsManager=false,
-            IsEmployee=true,
-            IsEnabled = true,
-            IsDeleted=false,
-            TwoFactorEnabled=false,
-            AddressId =2,
-            CreatedAtUtc = DateTime.Now
-            },
-
-                new MarketUserEntity
-            {
-            Id = 3,
             FirstName = "manager",
-            LastName = "user",
-            Email = "manager@gmail.com",
+            LastName = "manager",
+            Email = "manager@bookverse.com",
             PasswordHash = hasher.HashPassword(null!, "string"),
             IsAdmin = false,
             IsManager = true,
             IsEmployee = true,
             IsEnabled = true,
             IsDeleted = false,
-            TwoFactorEnabled=false,
             AddressId = 2,
+            TwoFactorEnabled=false,
+            CreatedAtUtc = DateTime.Now
+            },
+                new MarketUserEntity
+            {
+            Id = 3,
+            FirstName = "korisnik",
+            LastName = "korisnik",
+            Email = "korisnik@bookverse.com",
+            PasswordHash = hasher.HashPassword(null!, "string"),
+            IsAdmin = false,
+            IsManager=false,
+            IsEmployee=false,
+            IsEnabled = true,
+            IsDeleted=false,
+            TwoFactorEnabled=false,
+            AddressId = 3,
+            CreatedAtUtc = DateTime.Now
+            },
+
+                new MarketUserEntity
+            {
+            Id = 4,
+            FirstName = "uposlenik",
+            LastName = "uposlenik",
+            Email = "uposlenik@bookverse.com",
+            PasswordHash = hasher.HashPassword(null!, "string"),
+            IsAdmin = false,
+            IsManager = false,
+            IsEmployee = true,
+            IsEnabled = true,
+            IsDeleted = false,
+            TwoFactorEnabled=false,
+            AddressId = 1,
             CreatedAtUtc = DateTime.Now
             }
         });

@@ -1,99 +1,90 @@
 <app-header></app-header>
 <div class="parent">
   <div class="signup-container">
-    <!--@if uslov - prikazuje login formu samo kada 2FA nije aktivan -->
     @if (!requiresTwoFactor) {
       <form id="signup-form" class="signup-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         @if (showLoginError) {
           <div class="login-error-banner">
             <mat-icon class="error-icon">error_outline</mat-icon>
             <span class="error_message">
-              <!-- 403 = korisnik postoji ali je deaktiviran -->
               @if (loginErrorStatus === 404) {
-                Vaš nalog je deaktiviran. Kontaktirajte administratora.
+                {{ 'AUTH.LOGIN.ACCOUNT_DISABLED' | translate }}
               } @else {
-                <!-- za sve ostale greške (404, 401) uvijek ista poruka iz sigurnosnih razloga -->
-                Pogrešni kredencijali. Molimo pokušajte ponovo.
+                {{ 'AUTH.LOGIN.INVALID_CREDENTIALS' | translate }}
               }
             </span>
           </div>
         }
-        <h1>Prijava</h1>
+        <h1>{{ 'AUTH.LOGIN.TITLE' | translate }}</h1>
         <mat-form-field class="form-control">
-          <mat-label>Email</mat-label>
+          <mat-label>{{ 'AUTH.LOGIN.EMAIL_LABEL' | translate }}</mat-label>
           <input
             type="text"
             formControlName="email"
             id="email"
             name="email"
-            placeholder="Email"
+            [placeholder]="'AUTH.LOGIN.EMAIL_LABEL' | translate"
             matInput
             required
           />
-          <mat-error>Unesite važeću email adresu.</mat-error>
+          <mat-error>{{ 'AUTH.LOGIN.EMAIL_ERROR' | translate }}</mat-error>
         </mat-form-field>
 
         <mat-form-field class="form-control">
-          <mat-label>Password</mat-label>
+          <mat-label>{{ 'AUTH.LOGIN.PASSWORD_LABEL' | translate }}</mat-label>
           <input
             type="password"
             formControlName="password"
             id="password"
             name="password"
-            placeholder="Lozinka"
+            [placeholder]="'AUTH.LOGIN.PASSWORD_LABEL' | translate"
             matInput
             required
           />
-          <mat-error>Lozinka mora imati najmanje 6 karaktera.</mat-error>
+          <mat-error>{{ 'AUTH.LOGIN.PASSWORD_ERROR' | translate }}</mat-error>
         </mat-form-field>
         <button type="submit" class="login-button" [disabled]="loginForm.invalid || isLoading">
-          Prijavi se
+          {{ 'AUTH.LOGIN.BUTTON' | translate }}
         </button>
 
         <div class="login-link">
-          <p class="sign-up">Novi ste ovdje? <a routerLink="/auth/register">Registrujte se</a></p>
+          <p class="sign-up">{{ 'AUTH.LOGIN.NEW_HERE' | translate }} <a routerLink="/auth/register">{{ 'AUTH.LOGIN.REGISTER_LINK' | translate }}</a></p>
         </div>
       </form>
     }
     @if (requiresTwoFactor) {
       <div class="signup-form">
-        <h1>Dvofaktorska autentifikacija</h1>
+        <h1>{{ 'AUTH.LOGIN.TWO_FACTOR_TITLE' | translate }}</h1>
 
-        <!-- prikazuje email na koji je kod poslan -->
         <p class="two-factor-info">
-          Poslali smo kod na <strong>{{ twoFactorEmail }}</strong
-          >. Unesite ga ispod.
+          {{ 'AUTH.LOGIN.TWO_FACTOR_INFO_BEFORE' | translate }} <strong>{{ twoFactorEmail }}</strong>. {{ 'AUTH.LOGIN.TWO_FACTOR_INFO_AFTER' | translate }}
         </p>
 
-        <!-- greška ako je kod neispravan -->
         @if (showTwoFactorError) {
           <div class="login-error-banner">
             <mat-icon class="error-icon">error_outline</mat-icon>
-            <span class="error_message">Neispravan ili istekao kod. Pokušajte ponovo.</span>
+            <span class="error_message">{{ 'AUTH.LOGIN.TWO_FACTOR_ERROR' | translate }}</span>
           </div>
         }
 
-        <!-- input za unos koda -->
         <mat-form-field class="form-control two-factor-field">
           <input
             matInput
             [(ngModel)]="twoFactorCode"
-            placeholder="Verifikacijski kod"
+            [placeholder]="'AUTH.LOGIN.TWO_FACTOR_CODE_PLACEHOLDER' | translate"
             maxlength="6"
           />
         </mat-form-field>
 
-        <!-- dugme za potvrdu koda -->
         <button
           class="login-button"
           (click)="onVerifyTwoFactor()"
           [disabled]="!twoFactorCode || isLoading"
         >
-          Potvrdi
+          {{ 'AUTH.LOGIN.TWO_FACTOR_CONFIRM' | translate }}
         </button>
 
-        <!-- dugme za povratak na login formu -->
-        <button class="back-button" (click)="requiresTwoFactor = false">← Nazad</button>
+        <button class="back-button" (click)="requiresTwoFactor = false">{{ 'AUTH.LOGIN.TWO_FACTOR_BACK' | translate }}</button>
       </div>
     }
   </div>

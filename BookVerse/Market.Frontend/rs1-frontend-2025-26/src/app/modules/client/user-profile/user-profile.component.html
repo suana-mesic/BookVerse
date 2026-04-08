@@ -4,7 +4,7 @@
   <div class="profile-header">
     <a class="back-nav" (click)="goBack()">
       <mat-icon>arrow_back</mat-icon>
-      {{ 'CLIENT.USER_PROFILE.BACK' | translate }}
+      <span>{{ 'CLIENT.USER_PROFILE.BACK' | translate }}</span>
     </a>
     <h1>{{ 'CLIENT.USER_PROFILE.TITLE' | translate }}</h1>
     <button class="save-btn" (click)="onSave()" [disabled]="profileForm.invalid || isLoading">
@@ -70,12 +70,6 @@
     <div class="security-links">
       <a routerLink="/auth/change-email">{{ 'CLIENT.USER_PROFILE.CHANGE_EMAIL' | translate }}</a>
       <a routerLink="/auth/change-password">{{ 'CLIENT.USER_PROFILE.CHANGE_PASSWORD' | translate }}</a>
-    </div>
-
-    <div class="two-factor-toggle">
-      <mat-slide-toggle [formControl]="$any(profileForm.get('twoFactorEnabled'))">
-        {{ 'CLIENT.USER_PROFILE.TWO_FACTOR' | translate }}
-      </mat-slide-toggle>
     </div>
   </div>
 </div>

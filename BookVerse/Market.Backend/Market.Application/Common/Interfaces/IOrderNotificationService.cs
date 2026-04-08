@@ -1,7 +1,10 @@
-﻿namespace Market.Application.Common.Interfaces
+﻿using Market.Domain.Entities.Shopping;
+
+namespace Market.Application.Common.Interfaces
 {
     public interface IOrderNotificationService
     {
-        Task NotifyNewPaidOrderAsync(int orderId, string orderNumber, CancellationToken ct);
+        Task NotifyNewPaidOrderAsync(int orderId, string orderNumber, CancellationToken ct); //for admins
+        Task NotifyOrderStatusChangedAsync(int orderId, string orderNumber, string userId, OrderStatusType newStatus, CancellationToken ct); //for users
     }
 }
