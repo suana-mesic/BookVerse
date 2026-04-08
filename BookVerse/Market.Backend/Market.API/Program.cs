@@ -99,7 +99,9 @@ public partial class Program
             app.UseAuthorization();
 
             app.MapControllers();
-            app.MapHub<OrderNotificationHub>("/hubs/orders");
+            app.MapHub<AdminOrderHub>("/hubs/orders");
+            app.MapHub<UserOrderHub>("/hubs/user-orders");
+
 
             // Database migrations + seeding
             await app.Services.InitializeDatabaseAsync(app.Environment);

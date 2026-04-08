@@ -14,21 +14,33 @@ h3 {
   height: 2rem;
   //   width: 60px;
 }
-.book__return {
-  display: flex;
+.back-nav {
+  display: inline-flex;
   align-items: center;
-  justify-content: start;
-  gap: 0.5rem;
-  font-size: 18px;
-}
-
-.book__return img {
-  width: 24px;
-  height: auto;
-}
-
-.book__return:hover {
+  align-self: flex-start;
+  gap: 6px;
+  color: #546e7a;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  transition: all 0.18s ease;
   cursor: pointer;
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+
+  &:hover {
+    background: #e8f0f9;
+    color: #4976b5;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
 }
 
 .book__title-and-authors {
@@ -40,7 +52,7 @@ h3 {
 
 .book__title-and-authors label {
   font-size: 20px;
-  color: #555;
+  color: #1e2d42;
 }
 
 .book__authors {
@@ -95,7 +107,7 @@ h3 {
   gap: 1rem;
   font-size: 1.5rem;
   padding: 0.8rem 1.6rem;
-  background: #131c2b;
+  background: #3E649A;
   color: #fff;
   border-radius: 9px;
   border: none;
@@ -262,7 +274,7 @@ button:hover {
 }
 
 .dark-star {
-  filter: invert(0) !important;
+  filter: brightness(0) saturate(100%) invert(64%) sepia(81%) saturate(720%) hue-rotate(341deg) brightness(103%) !important;
 }
 
 .book__review-profile-picture {

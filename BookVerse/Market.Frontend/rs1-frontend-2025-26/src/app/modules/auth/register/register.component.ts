@@ -23,6 +23,7 @@ export class RegisterComponent implements OnInit {
   showPassError: boolean = false;
   floatLabelAttribute: FloatLabelType = 'auto';
   invisible: boolean = true;
+  confirmInvisible: boolean = true;
   countriesService = inject(CountriesApiService);
   dialogHelper = inject(DialogHelperService);
   router = inject(Router);
@@ -35,6 +36,7 @@ export class RegisterComponent implements OnInit {
   @ViewChild('visibilityIcon') visibilityIcon!: ElementRef;
   @ViewChild('strengthBar') strengthBar!: ElementRef;
   @ViewChild('strengthMessage') strengthMessage!: ElementRef;
+  @ViewChild('confirmedPasswordInput') confirmedPasswordInput!: ElementRef;
 
   parameters = {
     count: false,
@@ -159,6 +161,14 @@ export class RegisterComponent implements OnInit {
     if (passwordElement) {
       passwordElement.type = this.showPassword ? 'text' : 'password';
       visibilityIcon.style.color = this.showPassword ? '#3498db' : '#808080';
+    }
+  }
+
+  toggleConfirmedPasswordVisibility() {
+    this.confirmInvisible = !this.confirmInvisible;
+    const input = this.confirmedPasswordInput?.nativeElement;
+    if (input) {
+      input.type = this.confirmInvisible ? 'password' : 'text';
     }
   }
   strengthChecker() {

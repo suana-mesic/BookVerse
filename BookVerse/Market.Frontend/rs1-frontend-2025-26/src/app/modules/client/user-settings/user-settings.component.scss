@@ -1,0 +1,241 @@
+$primary: #4976b5;
+$primary-light: #6b96d1;
+$primary-lighter: #e8f0f9;
+$primary-dark: #3a5e91;
+$text-primary: #1e2d42;
+$text-secondary: #546e7a;
+$text-muted: #90a4ae;
+$border: rgba(73, 118, 181, 0.15);
+
+:host {
+  display: block;
+  background-color: #faf9fd;
+  min-height: calc(100vh - 70px);
+}
+
+.settings-container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.back-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: $text-secondary;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  transition: all 0.18s ease;
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+
+  &:hover {
+    background: $primary-lighter;
+    color: $primary;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+
+.settings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+
+  h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: $text-primary;
+    margin: 0;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 12px;
+  }
+}
+
+.save-btn {
+  background: linear-gradient(135deg, $primary, $primary-dark);
+  color: white;
+  border: none;
+  border-radius: 9px;
+  padding: 10px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 3px 10px rgba($primary, 0.28);
+
+  &:hover {
+    box-shadow: 0 5px 16px rgba($primary, 0.38);
+    transform: translateY(-1px);
+  }
+}
+
+.reset-btn {
+  background: transparent;
+  color: $text-secondary;
+  border: 1.5px solid $border;
+  border-radius: 9px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: $primary-lighter;
+    color: $primary;
+    border-color: $primary-light;
+  }
+}
+
+.settings-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.settings-card {
+  background: white;
+  border-radius: 14px;
+  padding: 24px;
+  border: 1px solid $border;
+  box-shadow: 0 2px 8px rgba(73, 118, 181, 0.08);
+
+  &__title {
+    font-size: 15px;
+    font-weight: 700;
+    color: $text-primary;
+    margin: 0 0 14px;
+  }
+
+  mat-divider {
+    border-top-color: $border;
+    margin-bottom: 20px;
+  }
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+
+  & + .settings-row {
+    border-top: 1px solid $border;
+  }
+
+  &__label {
+    font-size: 14px;
+    font-weight: 500;
+    color: $text-primary;
+    flex: 1;
+    padding-right: 16px;
+  }
+}
+
+.theme-toggle {
+  ::ng-deep {
+    .mat-button-toggle {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .mat-button-toggle-checked {
+      background-color: $primary;
+      color: white;
+
+      mat-icon {
+        color: white;
+      }
+    }
+  }
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    margin-right: 4px;
+    vertical-align: middle;
+  }
+}
+
+.lang-options {
+  display: flex;
+  gap: 12px;
+}
+
+.lang-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: 1.5px solid $border;
+  font-size: 14px;
+  font-weight: 500;
+  color: $text-secondary;
+  cursor: pointer;
+  transition: all 0.18s ease;
+
+  .lang-flag {
+    font-size: 20px;
+    line-height: 1;
+  }
+
+  &:hover {
+    border-color: $primary-light;
+    background: $primary-lighter;
+    color: $primary;
+  }
+
+  &.active {
+    border-color: $primary;
+    background: $primary-lighter;
+    color: $primary;
+    font-weight: 700;
+  }
+}
+
+@media (max-width: 640px) {
+  .settings-container {
+    padding: 24px 16px;
+  }
+
+  .settings-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+
+    h1 {
+      font-size: 20px;
+    }
+  }
+
+  .settings-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+
+    &__label {
+      padding-right: 0;
+    }
+  }
+
+  .lang-options {
+    flex-direction: column;
+    width: 100%;
+  }
+}

@@ -67,6 +67,11 @@ input {
   outline: none;
   background-color: #d9d9d9;
   font-size: 1.2rem;
+  color: #000;
+}
+
+input::placeholder {
+  color: #000;
 }
 
 .search-and-filters__filter-button {
@@ -103,6 +108,11 @@ select:hover {
   border-radius: 9px;
 }
 
+.category-and-price-range__price-range input::-webkit-inner-spin-button,
+.category-and-price-range__price-range input::-webkit-outer-spin-button {
+  background-color: #d9d9d9;
+}
+
 .author-and-submit-button,
 .category-and-price-range__book {
   position: relative;
@@ -115,6 +125,7 @@ select:hover {
 .category-and-price-range__book img {
   height: 1.2rem;
   width: 1.2rem;
+  mix-blend-mode: multiply;
 }
 
 .category-and-price-range {
@@ -226,6 +237,7 @@ select:hover {
 .author-and-submit-button__author img {
   height: 1.2rem;
   width: 1.2rem;
+  mix-blend-mode: multiply;
 }
 
 .author-and-submit-button__submit-button {

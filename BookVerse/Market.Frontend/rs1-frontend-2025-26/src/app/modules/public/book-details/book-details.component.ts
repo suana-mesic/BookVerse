@@ -1,4 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
+import { Location } from '@angular/common';
 import { HeaderComponent } from '../header/header.component';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { BooksService } from '../Petar/books.service';
@@ -16,6 +17,7 @@ import {
   ListReviewsResponse,
 } from '../../../api-services/reviews/reviews-api.model';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { MatIconModule } from '@angular/material/icon';
 
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 
@@ -30,7 +32,7 @@ L.Icon.Default.mergeOptions({
   selector: 'app-book-details',
   templateUrl: './book-details.component.html',
   styleUrl: './book-details.component.scss',
-  imports: [HeaderComponent, RouterLink, MapComponent, TranslateModule],
+  imports: [HeaderComponent, RouterLink, MapComponent, TranslateModule, MatIconModule],
 })
 export class BookDetailsComponent {
   book = signal<Book | null>(null);
@@ -52,9 +54,14 @@ export class BookDetailsComponent {
   toaster = inject(ToasterService);
   authFacadeService = inject(AuthFacadeService);
   router = inject(Router);
+  private location = inject(Location);
   private translate = inject(TranslateService);
 
   constructor(private route: ActivatedRoute) {}
+
+  goBack(): void {
+    this.location.back();
+  }
 
   // Stores info
   storeName = signal('');
