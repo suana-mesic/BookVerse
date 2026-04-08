@@ -1,9 +1,9 @@
 <app-header />
 <div class="book">
-  <div class="book__return" [routerLink]="['/']">
-    <img src="icons/arrow_black.png" alt="arr" />
-    <h2>{{ 'CLIENT.BOOK_DETAILS.BACK' | translate }}</h2>
-  </div>
+  <a class="back-nav" (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+    <span>{{ 'CLIENT.BOOK_DETAILS.BACK' | translate }}</span>
+  </a>
   <div class="book__container">
     <img src="{{ book()?.imageUrl }}" alt="slika knjige" />
     <aside>

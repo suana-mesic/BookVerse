@@ -1,4 +1,5 @@
-﻿using Market.Application.Modules.Shopping.OrdersOrderItems.Commands.Update.ChangeStatus;
+﻿using Market.Application.Common.Interfaces;
+using Market.Application.Modules.Shopping.OrdersOrderItems.Commands.Update.ChangeStatus;
 using Market.Domain.Entities.Shopping;
 
 namespace Market.Application.Modules.Sales.Orders.Commands.ChangeStatus;
@@ -8,7 +9,7 @@ namespace Market.Application.Modules.Sales.Orders.Commands.ChangeStatus;
 /// <summary>
 /// Handler for changing order status
 /// </summary>
-public class ChangeOrderStatusCommandHandler(IAppDbContext db) : IRequestHandler<ChangeOrderStatusCommand>
+public class ChangeOrderStatusCommandHandler(IAppDbContext db, IOrderNotificationService notificationService) : IRequestHandler<ChangeOrderStatusCommand>
 {
     public async Task Handle(ChangeOrderStatusCommand request, CancellationToken ct)
     {
@@ -23,6 +24,7 @@ public class ChangeOrderStatusCommandHandler(IAppDbContext db) : IRequestHandler
         //// Update status
         order.OrderStatusId = (int)request.NewStatus;
 
+
         //// If marking as paid, set paid date
         //if (request.NewStatus == OrderStatusType.Paid && !order.PaidAtUtc.HasValue)
         //{
@@ -30,6 +32,9 @@ public class ChangeOrderStatusCommandHandler(IAppDbContext db) : IRequestHandler
         //}
 
         await db.SaveChangesAsync(ct);
+
+        //Sending notification to user
+        await notificationService.NotifyOrderStatusChangedAsync(order.Id, order.TrackingNumber, order.UserId.ToString(), request.NewStatus, ct);
     }
 
     private static void ValidateStatusTransition(OrderStatusType current, OrderStatusType next)

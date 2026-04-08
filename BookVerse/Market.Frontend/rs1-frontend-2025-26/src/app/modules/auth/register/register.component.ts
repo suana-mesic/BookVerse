@@ -7,6 +7,7 @@ import { CountriesApiService } from '../../../api-services/CountriesNow/countire
 import { DialogHelperService } from '../../shared/services/dialog-helper.service';
 import { DialogButton } from '../../shared/models/dialog-config.model';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-register',
@@ -23,9 +24,11 @@ export class RegisterComponent implements OnInit {
   showPassError: boolean = false;
   floatLabelAttribute: FloatLabelType = 'auto';
   invisible: boolean = true;
+  confirmInvisible: boolean = true;
   countriesService = inject(CountriesApiService);
   dialogHelper = inject(DialogHelperService);
   router = inject(Router);
+  translate = inject(TranslateService);
 
   countries: string[] = [];
   cities: string[] = [];
@@ -35,6 +38,7 @@ export class RegisterComponent implements OnInit {
   @ViewChild('visibilityIcon') visibilityIcon!: ElementRef;
   @ViewChild('strengthBar') strengthBar!: ElementRef;
   @ViewChild('strengthMessage') strengthMessage!: ElementRef;
+  @ViewChild('confirmedPasswordInput') confirmedPasswordInput!: ElementRef;
 
   parameters = {
     count: false,
@@ -161,10 +165,17 @@ export class RegisterComponent implements OnInit {
       visibilityIcon.style.color = this.showPassword ? '#3498db' : '#808080';
     }
   }
+
+  toggleConfirmedPasswordVisibility() {
+    this.confirmInvisible = !this.confirmInvisible;
+    const input = this.confirmedPasswordInput?.nativeElement;
+    if (input) {
+      input.type = this.confirmInvisible ? 'password' : 'text';
+    }
+  }
   strengthChecker() {
-    let baseMessage = 'Jačina lozinke: ';
+    let baseMessage = this.translate.instant('AUTH.REGISTER.STRENGTH_PREFIX');
     let strengthBar = this.strengthBar?.nativeElement;
-    let strengthLevel = 'Prekratka';
 
     let password = this.password?.nativeElement.value;
     let rule1 = /[A-Z]/;
@@ -179,11 +190,11 @@ export class RegisterComponent implements OnInit {
     let barLength = Object.values(this.parameters).filter((value) => value);
 
     const levels = {
-      0: { width: '10%', color: '#d32f2f', message: 'prekratka' },
-      1: { width: '25%', color: '#ff6666', message: 'veoma slaba' },
-      2: { width: '50%', color: '#ff691f', message: 'slaba' },
-      3: { width: '75%', color: '#ffda36', message: 'dovoljna' },
-      4: { width: 'auto', color: '#0be881', message: 'jaka' },
+      0: { width: '10%', color: '#d32f2f', message: this.translate.instant('AUTH.REGISTER.STRENGTH_TOO_SHORT') },
+      1: { width: '25%', color: '#ff6666', message: this.translate.instant('AUTH.REGISTER.STRENGTH_VERY_WEAK') },
+      2: { width: '50%', color: '#ff691f', message: this.translate.instant('AUTH.REGISTER.STRENGTH_WEAK') },
+      3: { width: '75%', color: '#ffda36', message: this.translate.instant('AUTH.REGISTER.STRENGTH_FAIR') },
+      4: { width: 'auto', color: '#0be881', message: this.translate.instant('AUTH.REGISTER.STRENGTH_STRONG') },
     };
 
     const config = levels[barLength.length as keyof typeof levels];

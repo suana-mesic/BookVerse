@@ -7,6 +7,7 @@ import { PaymentComponent } from './payment/payment.component';
 import { OrderSuccessComponent } from './order-success/order-success.component';
 import { UserOrdersComponent } from './user-orders/user-orders.component';
 import { UserBooksComponent } from './user-books/user-books.component';
+import { UserSettingsComponent } from './user-settings/user-settings.component';
 
 const routes: Routes = [
   {
@@ -36,6 +37,10 @@ const routes: Routes = [
   {
     path: 'user-books',
     component: UserBooksComponent,
+  },
+  {
+    path: 'user-settings',
+    component: UserSettingsComponent,
   },
 ];
 

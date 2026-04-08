@@ -10,11 +10,6 @@
         >{{ 'CLIENT.HEADER.MY_BOOKS' | translate }} <img src="icons/arrow_white.png" alt="icon"
       /></a>
     </li>
-    <li>
-      <a
-        >{{ 'CLIENT.HEADER.RETURNS' | translate }} <img src="icons/arrow_white.png" alt="icon"
-      /></a>
-    </li>
     <li routerLink="/client/user-orders">
       <a>{{ 'CLIENT.HEADER.ORDERS' | translate }} <img src="icons/arrow_white.png" alt="icon" /></a>
     </li>
@@ -23,12 +18,18 @@
         >{{ 'CLIENT.HEADER.PROFILE' | translate }} <img src="icons/arrow_white.png" alt="icon"
       /></a>
     </li>
+    <li routerLink="/client/user-settings">
+      <a
+        >{{ 'CLIENT.HEADER.USER_SETTINGS' | translate }}
+        <img src="icons/arrow_white.png" alt="icon"
+      /></a>
+    </li>
     <li routerLink="/auth/logout">
       <a>{{ 'CLIENT.HEADER.LOGOUT' | translate }} <img src="icons/arrow_white.png" alt="icon" /></a>
     </li>
   </ul>
   <h2 class="header__about-us">{{ 'CLIENT.HEADER.ABOUT_US' | translate }}</h2>
-  <h1 style="font-family: 'Meow Script'" class="header__title">BookVerse</h1>
+  <h1 style="font-family: 'Meow Script'" class="header__title" routerLink="/">BookVerse</h1>
   <div class="header__right-side">
     <div class="header__lang" (click)="toggleLangMenu($event)">
       <button class="header__lang-btn">

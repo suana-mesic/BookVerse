@@ -8,32 +8,32 @@
       <mat-step class="step">
         <div class="steps-container">
           <div class="step">
-            <h3>Lični podaci</h3>
+            <h3>{{ 'AUTH.REGISTER.STEP1_TITLE' | translate }}</h3>
             <mat-form-field class="form-control" floatLabel="always">
-              <mat-label>Ime</mat-label>
+              <mat-label>{{ 'AUTH.REGISTER.FIRST_NAME' | translate }}</mat-label>
               <input
                 formControlName="firstName"
                 type="text"
                 id="firstName"
                 name="firstName"
-                placeholder="Ime"
+                [placeholder]="'AUTH.REGISTER.FIRST_NAME_PLACEHOLDER' | translate"
                 matInput
                 required
               />
-              <mat-error>Ime mora imati najmanje 2 karaktera.</mat-error>
+              <mat-error>{{ 'AUTH.REGISTER.FIRST_NAME_ERROR' | translate }}</mat-error>
             </mat-form-field>
             <mat-form-field class="form-control" floatLabel="always">
-              <mat-label>Prezime</mat-label>
+              <mat-label>{{ 'AUTH.REGISTER.LAST_NAME' | translate }}</mat-label>
               <input
                 formControlName="lastName"
                 type="text"
                 id="lastName"
                 name="lastName"
-                placeholder="Prezime"
+                [placeholder]="'AUTH.REGISTER.LAST_NAME_PLACEHOLDER' | translate"
                 matInput
                 required
               />
-              <mat-error>Prezime mora imati najmanje 2 karaktera.</mat-error>
+              <mat-error>{{ 'AUTH.REGISTER.LAST_NAME_ERROR' | translate }}</mat-error>
             </mat-form-field>
           </div>
         </div>
@@ -44,7 +44,7 @@
             [disabled]="!isFirstStepValid"
             matStepperNext
           >
-            Sljedeći korak
+            {{ 'AUTH.REGISTER.NEXT' | translate }}
           </button>
         </div>
       </mat-step>
@@ -52,24 +52,24 @@
       <mat-step>
         <div class="steps-container">
           <div class="step">
-            <h3>Podaci za prijavu</h3>
+            <h3>{{ 'AUTH.REGISTER.STEP2_TITLE' | translate }}</h3>
             <mat-form-field class="form-control" floatLabel="always">
-              <mat-label>Email</mat-label>
+              <mat-label>{{ 'AUTH.REGISTER.EMAIL' | translate }}</mat-label>
               <input
                 formControlName="email"
                 type="text"
                 id="email"
                 name="email"
-                placeholder="Email"
+                [placeholder]="'AUTH.REGISTER.EMAIL_PLACEHOLDER' | translate"
                 matInput
                 required
               />
-              <mat-error>Unesite važeću email adresu.</mat-error>
+              <mat-error>{{ 'AUTH.REGISTER.EMAIL_ERROR' | translate }}</mat-error>
             </mat-form-field>
 
             <!-- Password -->
             <mat-form-field class="form-control fc-password" floatLabel="always">
-              <mat-label>Lozinka</mat-label>
+              <mat-label>{{ 'AUTH.REGISTER.PASSWORD' | translate }}</mat-label>
               <div id="password-container">
                 <input
                   #password
@@ -77,7 +77,7 @@
                   type="password"
                   id="password"
                   name="password"
-                  placeholder="Lozinka"
+                  [placeholder]="'AUTH.REGISTER.PASSWORD_PLACEHOLDER' | translate"
                   matInput
                   (input)="strengthChecker()"
                   required
@@ -97,31 +97,45 @@
                 <div id="strength-bar" #strengthBar></div>
               </div>
               <mat-hint #strengthMessage>{{ messageStrength }}</mat-hint>
-              <mat-error>Lozinka mora imati najmanje 6 karaktera.</mat-error>
+              <mat-error>{{ 'AUTH.REGISTER.PASSWORD_ERROR' | translate }}</mat-error>
             </mat-form-field>
 
-            <mat-form-field class="form-control" floatLabel="always">
-              <mat-label>Ponovo unesite lozinku</mat-label>
-              <input
-                formControlName="confirmedPassword"
-                type="password"
-                id="confirmedPassword"
-                name="confirmedPassword"
-                placeholder="Ponovo unesite lozinku"
-                matInput
-                required
-              />
-              <mat-error>Lozinke se ne podudaraju.</mat-error>
+            <mat-form-field class="form-control fc-password" floatLabel="always">
+              <mat-label>{{ 'AUTH.REGISTER.CONFIRM_PASSWORD' | translate }}</mat-label>
+              <div id="confirm-password-container">
+                <input
+                  #confirmedPasswordInput
+                  formControlName="confirmedPassword"
+                  type="password"
+                  id="confirmedPassword"
+                  name="confirmedPassword"
+                  [placeholder]="'AUTH.REGISTER.CONFIRM_PASSWORD_PLACEHOLDER' | translate"
+                  matInput
+                  required
+                />
+                <button
+                  mat-icon-button
+                  (click)="toggleConfirmedPasswordVisibility()"
+                  class="visibility-button-2"
+                >
+                  @if (confirmInvisible) {
+                    <mat-icon>visibility_off</mat-icon>
+                  } @else {
+                    <mat-icon>visibility</mat-icon>
+                  }
+                </button>
+              </div>
+              <mat-error>{{ 'AUTH.REGISTER.CONFIRM_PASSWORD_ERROR' | translate }}</mat-error>
             </mat-form-field>
           </div>
         </div>
 
         <div class="prev-next">
           <button type="button" class="next-btn prev-btn" matStepperPrevious>
-            Prethodni korak
+            {{ 'AUTH.REGISTER.PREV' | translate }}
           </button>
           <button type="button" class="next-btn" matStepperNext [disabled]="!isSecondStepValid">
-            Sljedeći korak
+            {{ 'AUTH.REGISTER.NEXT' | translate }}
           </button>
         </div>
       </mat-step>
@@ -129,54 +143,34 @@
       <mat-step>
         <div class="steps-container">
           <div class="step">
-            <h3>Adresa</h3>
+            <h3>{{ 'AUTH.REGISTER.STEP3_TITLE' | translate }}</h3>
             <mat-form-field class="form-control" floatLabel="always">
-              <mat-label>Ulica i broj</mat-label>
+              <mat-label>{{ 'AUTH.REGISTER.LINE1' | translate }}</mat-label>
               <input
                 formControlName="line1"
                 type="text"
                 id="line1"
                 name="line1"
-                placeholder="Ulica i broj"
+                [placeholder]="'AUTH.REGISTER.LINE1_PLACEHOLDER' | translate"
                 matInput
                 required
               />
-              <mat-error>Ulica i broj su obavezni.</mat-error>
+              <mat-error>{{ 'AUTH.REGISTER.LINE1_ERROR' | translate }}</mat-error>
             </mat-form-field>
             <mat-form-field class="form-control" floatLabel="always">
-              <mat-label>Dodatne informacije o adresi</mat-label>
+              <mat-label>{{ 'AUTH.REGISTER.LINE2' | translate }}</mat-label>
               <input
                 formControlName="line2"
                 type="text"
                 id="line2"
                 name="line2"
-                placeholder="Dodatne informacije (npr. sprat, stan)"
+                [placeholder]="'AUTH.REGISTER.LINE2_PLACEHOLDER' | translate"
                 matInput
               />
             </mat-form-field>
-            <!-- <mat-form-field class="form-control" floatLabel="always">
-            <mat-label>Grad</mat-label>
-            <input
-              formControlName="city"
-              type="text"
-              id="city"
-              name="city"
-              placeholder="Grad"
-              matInput
-              required
-            />
-            <mat-error>Grad je obavezan.</mat-error>
-          </mat-form-field> -->
-
-            <!-- <mat-form-field class="form-control" floatLabel="always">
-                        <mat-label>Država</mat-label>
-                        <input formControlName="country" type="text" id="country" name="country" placeholder="Država"
-                            matInput required />
-                        <mat-error>Država je obavezna.</mat-error>
-                    </mat-form-field> -->
 
             <mat-form-field class="form-control" floatLabel="always">
-              <mat-label>Država</mat-label>
+              <mat-label>{{ 'AUTH.REGISTER.COUNTRY' | translate }}</mat-label>
               <mat-select
                 formControlName="country"
                 (selectionChange)="onCountryChange($event.value)"
@@ -185,23 +179,23 @@
                   {{ country }}
                 </mat-option>
               </mat-select>
-              <mat-error>Država je obavezna.</mat-error>
+              <mat-error>{{ 'AUTH.REGISTER.COUNTRY_ERROR' | translate }}</mat-error>
             </mat-form-field>
             <mat-form-field class="form-control" floatLabel="always">
-              <mat-label>Grad</mat-label>
+              <mat-label>{{ 'AUTH.REGISTER.CITY' | translate }}</mat-label>
               <mat-select formControlName="city">
-                <mat-option *ngIf="loadingCities" disabled>Učitavanje...</mat-option>
+                <mat-option *ngIf="loadingCities" disabled>{{ 'AUTH.REGISTER.CITY_LOADING' | translate }}</mat-option>
                 <mat-option *ngFor="let city of cities" [value]="city">
                   {{ city }}
                 </mat-option>
               </mat-select>
-              <mat-error>Grad je obavezan.</mat-error>
+              <mat-error>{{ 'AUTH.REGISTER.CITY_ERROR' | translate }}</mat-error>
             </mat-form-field>
           </div>
         </div>
         <div class="prev-next">
           <button type="button" class="next-btn prev-btn" matStepperPrevious>
-            Prethodni korak
+            {{ 'AUTH.REGISTER.PREV' | translate }}
           </button>
           <button
             type="button"
@@ -209,14 +203,14 @@
             (click)="onRegister()"
             [disabled]="!isThirdStepValid"
           >
-            Potvrdi
+            {{ 'AUTH.REGISTER.SUBMIT' | translate }}
           </button>
         </div>
       </mat-step>
     </mat-horizontal-stepper>
-    <p routerLink="/">Odustani</p>
+    <p routerLink="/">{{ 'AUTH.REGISTER.CANCEL' | translate }}</p>
     <div class="login-link">
-      <p class="sign-up">Već imate nalog? <a routerLink="/auth/login">Logirajte se</a></p>
+      <p class="sign-up">{{ 'AUTH.REGISTER.HAVE_ACCOUNT' | translate }} <a routerLink="/auth/login">{{ 'AUTH.REGISTER.LOGIN_LINK' | translate }}</a></p>
     </div>
   </form>
 </div>

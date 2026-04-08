@@ -96,9 +96,22 @@ export class PaymentComponent extends BaseComponent implements OnInit {
       return;
     }
 
+    const isDark = document.body.classList.contains('dark-theme');
+
     this.elements = this.stripe.elements({
       clientSecret: this.orderData.clientSecret,
-      appearance: { theme: 'stripe' },
+      appearance: isDark
+        ? {
+            theme: 'night',
+            variables: {
+              colorBackground: '#1e2d42',
+              colorText: '#d8d8d8',
+              colorPrimary: '#4976b5',
+              colorDanger: '#ef5350',
+              borderRadius: '8px',
+            },
+          }
+        : { theme: 'stripe' },
     });
 
     // Kreiramo 'payment' element — Stripe automatski prikazuje odgovarajuće polje

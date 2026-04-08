@@ -1,5 +1,10 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, effect, inject, signal, untracked } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
+import { SignalRService, OrderStatusNotification } from './core/services/signal-r/signal-r.service';
+import { AuthFacadeService } from './modules/core/services/auth/auth-facade.service';
+import { ToasterService } from './modules/core/services/toaster.service';
+import { OrderStatusHelper } from './api-services/orders/order-status.helper';
 
 @Component({
   selector: 'app-root',
@@ -7,19 +12,20 @@ import { TranslateService } from '@ngx-translate/core';
   standalone: false,
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   protected readonly title = signal('rs1-frontend-2025-26');
   currentLang: string = 'bs';
 
-  constructor(private translate: TranslateService) {
-    console.log('AppComponent constructor - initializing TranslateService');
+  private signalR = inject(SignalRService);
+  private auth = inject(AuthFacadeService);
+  private toaster = inject(ToasterService);
+  private orderStatusSub: Subscription | null = null;
 
-    // Inicijalizacija translate servisa
+  constructor(private translate: TranslateService) {
     this.translate.addLangs(['en', 'bs']);
     this.translate.setDefaultLang('bs');
 
-    // Učitaj jezik iz localStorage ili koristi default
-    const savedLang = localStorage.getItem('language') || 'bs';
+    const savedLang = localStorage.getItem('lang') || 'bs';
     this.currentLang = savedLang;
 
     this.translate.use(savedLang).subscribe({
@@ -32,10 +38,36 @@ export class AppComponent implements OnInit {
         console.error('Check if files exist at: /i18n/' + savedLang + '.json');
       }
     });
+
+    effect(() => {
+      const isAuth = this.auth.isAuthenticated();
+      if (isAuth) {
+        untracked(() => {
+          if (!this.orderStatusSub) {
+            const token = this.auth.getAccessToken();
+            if (token) {
+              this.signalR.startUserConnection(token);
+              this.subscribeToOrderStatusNotifications();
+            }
+          }
+        });
+      } else {
+        untracked(() => {
+          this.cleanupOrderStatusNotifications();
+        });
+      }
+    });
   }
 
   ngOnInit(): void {
-    // Test translation
+    const savedSettings = localStorage.getItem('userSettings');
+    if (savedSettings) {
+      const settings = JSON.parse(savedSettings);
+      if (settings.theme === 'dark') {
+        document.body.classList.add('dark-theme');
+      }
+    }
+
     this.translate.get('BOOKS.TITLE').subscribe((res: string) => {
       console.log('Translation for BOOKS.TITLE:', res);
       if (res === 'BOOKS.TITLE') {
@@ -48,9 +80,29 @@ export class AppComponent implements OnInit {
     });
   }
 
+  private subscribeToOrderStatusNotifications(): void {
+    this.orderStatusSub = this.signalR.orderStatusChanged$.subscribe(
+      (notification: OrderStatusNotification) => {
+        const settings = JSON.parse(localStorage.getItem('userSettings') || '{}');
+        if (settings.orderStatusNotifications === false) return;
+
+        const statusKey = OrderStatusHelper.getLabel(notification.newStatus);
+        const statusLabel = this.translate.instant(statusKey);
+        const message = this.translate.instant('NOTIFICATIONS.ORDER_STATUS_CHANGED', { status: statusLabel });
+        this.toaster.info(message);
+      }
+    );
+  }
+
+  private cleanupOrderStatusNotifications(): void {
+    this.signalR.stopUserConnection();
+    this.orderStatusSub?.unsubscribe();
+    this.orderStatusSub = null;
+  }
+
   switchLanguage(lang: string): void {
     this.currentLang = lang;
-    localStorage.setItem('language', lang);
+    localStorage.setItem('lang', lang);
     this.translate.use(lang).subscribe({
       next: () => {
         console.log('Language switched to:', lang);
@@ -59,5 +111,9 @@ export class AppComponent implements OnInit {
         console.error('Error switching language:', error);
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.cleanupOrderStatusNotifications();
   }
 }
