@@ -29,9 +29,9 @@ public class BooksController(ISender sender) : ControllerBase
 
     [HttpGet("{id:int}")]
     [AllowAnonymous]
-    public async Task<GetBookByIdQueryDto> GetById(int id, CancellationToken ct)
+    public async Task<GetBookByIdQueryDto> GetById(int id, [FromQuery] string? language, CancellationToken ct)
     {
-        var category = await sender.Send(new GetBookByIdQuery { Id = id }, ct);
+        var category = await sender.Send(new GetBookByIdQuery { Id = id, Language = language }, ct);
         return category; // if NotFoundException -> 404 via middleware
     }
 

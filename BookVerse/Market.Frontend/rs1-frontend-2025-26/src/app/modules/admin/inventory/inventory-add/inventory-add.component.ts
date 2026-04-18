@@ -52,7 +52,7 @@ export class InventoryAddComponent extends BaseComponent implements OnInit {
   inventory!: GetInventoryByIdQueryDto;
   storeBookPairs!: StoreBookPairs;
 
-  filteredBookOptions: Observable<[number, string][]>[] = []; //Observable koji "emituje" niz tuple-ova
+  filteredBookOptions: Observable<ListBooksForAutocompleteQueryDto[]>[] = [];
   filteredStoreOptions: Observable<ListStoresQueryDto[]>[] = [];
 
   storesAutocompleteInputs = new FormArray<FormControl>([]);
@@ -103,63 +103,17 @@ export class InventoryAddComponent extends BaseComponent implements OnInit {
 
   private setFilteredBookOptions(): void {
     this.filteredBookOptions = this.booksAutocompleteInputs.controls.map(
-      //index daje informaciju o tome koja se kontrola promijenila (koji input prodavnice)
-      (control: FormControl, index: number) =>
+      (control: FormControl) =>
         control.valueChanges.pipe(
           startWith(''),
-          map((value) => this._filterBooks(value || '', index)),
+          map((value) => this._filterBooks(typeof value === 'string' ? value : '')),
         ),
     );
   }
 
-  private _filterBooks(enteredValue: string, index: number): [number, string][] {
-    //ima 3 filtera
-    //1. filter je predodređen -> na osnovu onog kakva je prodavnica odabrana u stores
-    //2. filter ispiši samo one knjige koje nisu prethodno selektovane ZA TU PRODAVNICU *
-    //3. filter definiše korisnik -> npr. unese slovo "a" u book autocomplete polju za unos
-
+  private _filterBooks(enteredValue: string): ListBooksForAutocompleteQueryDto[] {
     const filterValue = enteredValue.toLowerCase();
-    const storeId = this.inventoryArray.at(index).get('storeId')?.value;
-
-    //filter2 se radi samo ako je za trenutni storeId pronađeno više od 2 knjige u storesAutocompleteInputs
-    let applyFilter2: boolean = false;
-    const allEnteredStoreIds = this.storesAutocompleteInputs.controls.map(
-      (control) => control.value,
-    );
-    const x = allEnteredStoreIds.filter((storeId) => storeId == storeId).length;
-
-    if (x >= 2) applyFilter2 = true;
-
-    //ako je storeId = 5, onda this.storeBookPairs[5] će dohvatiti values za ključ storeId = 5, values je [string, int][] -> array tuple-ova
-    const filter1 = this.storeBookPairs?.[storeId];
-    if (!filter1) return [];
-
-    //iz cijele forme gledamo koji su to odabrani parovi storeId i bookId (šta je to popunjeno na formi)
-    const prethodnoOdabraniNaslovi: string[] = this.inventoryArray.controls
-      .map((control) => `${control.get('storeId')?.value} ${control.get('bookId')?.value}`)
-      .filter((v) => v !== null && v !== undefined);
-
-    if (applyFilter2) {
-      const filter2 = Object.entries(filter1).filter(
-        ([bookId, title]) => !prethodnoOdabraniNaslovi.includes(`${storeId} ${bookId}`),
-      );
-
-      const filter3 = this.applyFilter3(filter2, filterValue);
-      console.log(`filter1_2_3 za storeId: ${storeId}`);
-      console.log(filter3);
-      return filter3;
-    }
-
-    const filter3 = this.applyFilter3(Object.entries(filter1), filterValue);
-    console.log(`filter1_2 za storeId: ${storeId}`);
-    console.log(filter3);
-    return filter3;
-  }
-
-  applyFilter3(filter: [string, string][], filterValue: string) {
-    return filter
-      .filter(([bookId, bookName]) => bookName.toLowerCase().includes(filterValue))
-      .map(([bookId, bookName]) => [Number(bookId), bookName] as [number, string]);
+    return this.books.filter((x) => x.title.toLowerCase().includes(filterValue));
   }
 
   addStoreAutocompleteInput() {
@@ -185,9 +139,15 @@ export class InventoryAddComponent extends BaseComponent implements OnInit {
     if (storeId) this.inventoryArray.at(index).get('storeId')?.setValue(storeId);
   }
 
+  displayBookTitle = (book: ListBooksForAutocompleteQueryDto | string): string => {
+    if (!book) return '';
+    if (typeof book === 'string') return book;
+    return book.title;
+  };
+
   onBookSelected(event: MatAutocompleteSelectedEvent, index: number) {
-    const bookId = this.books.filter((x) => x.title == event.option.value).at(0)?.id;
-    if (bookId) this.inventoryArray.at(index).get('bookId')?.setValue(bookId);
+    const book: ListBooksForAutocompleteQueryDto = event.option.value;
+    this.inventoryArray.at(index).get('bookId')?.setValue(book.id);
   }
 
   loadStoreBookPairs() {

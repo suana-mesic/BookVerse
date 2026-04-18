@@ -1,14 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { BaseComponent } from '../../core/components/base-classes/base-component';
-import { AuthFacadeService } from '../../core/services/auth/auth-facade.service';
 import { Router } from '@angular/router';
-import { CurrentUserService } from '../../core/services/auth/current-user.service';
+import { CurrentUserService } from '../../../core/services/auth/current-user.service';
 import {
   LoginCommand,
   LoginCommandDto,
   VerifyTwoFactorCommand,
 } from '../../../api-services/auth/auth-api.model';
+import { AuthFacadeService } from '../../core/services/auth/auth-facade.service';
 
 @Component({
   selector: 'app-login-bookverse',
@@ -33,8 +33,10 @@ export class LoginBookverseComponent extends BaseComponent {
   loginErrorStatus: number = 0;
 
   loginForm = this.fb.group({
-    email: ['admin@gmail.com', [Validators.required, Validators.email]],
-    password: ['string', [Validators.required]],
+    // email: ['admin@bookverse.com', [Validators.required, Validators.email]],
+    // password: ['string', [Validators.required]],
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required]],
   });
 
   onSubmit(): void {

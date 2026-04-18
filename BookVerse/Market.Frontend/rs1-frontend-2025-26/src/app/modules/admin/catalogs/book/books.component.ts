@@ -12,6 +12,7 @@ import { DialogHelperService } from '../../../shared/services/dialog-helper.serv
 import { DialogButton } from '../../../shared/models/dialog-config.model';
 import { BooksApiService } from '../../../../api-services/books/books-api.service';
 import { TranslateService } from '@ngx-translate/core';
+import { AuthFacadeService } from '../../../core/services/auth/auth-facade.service';
 
 @Component({
   selector: 'app-products',
@@ -28,6 +29,7 @@ export class BooksComponent
   private toaster = inject(ToasterService);
   private dialogHelper = inject(DialogHelperService);
   private translate = inject(TranslateService);
+  auth = inject(AuthFacadeService);
 
   displayedColumns: string[] = [
     'title',

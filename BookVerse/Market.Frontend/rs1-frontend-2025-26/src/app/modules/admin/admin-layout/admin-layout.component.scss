@@ -535,13 +535,18 @@ $sidebar-width: 280px;
   position: sticky;
   top: 0;
   z-index: 100;
-  background: var(--mat-sys-surface);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  background: transparent !important;
+  box-shadow: none;
   padding: 0 16px;
 }
 
 .toolbar-spacer {
   flex: 1;
+}
+
+.notif-button {
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
 // Notifikacijski dropdown — override mat-menu širine

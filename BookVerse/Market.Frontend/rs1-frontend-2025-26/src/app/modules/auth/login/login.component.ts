@@ -2,9 +2,9 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BaseComponent } from '../../../core/components/base-classes/base-component';
-import { AuthFacadeService } from '../../../core/services/auth/auth-facade.service';
 import { LoginCommand } from '../../../api-services/auth/auth-api.model';
 import { CurrentUserService } from '../../../core/services/auth/current-user.service';
+import { AuthFacadeService } from '../../core/services/auth/auth-facade.service';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +20,7 @@ export class LoginComponent extends BaseComponent {
   hidePassword = true;
 
   form = this.fb.group({
-    email: ['admin@gmail.com', [Validators.required, Validators.email]],
+    email: ['admin@bookverse.com', [Validators.required, Validators.email]],
     password: ['string', [Validators.required]],
     rememberMe: [false],
   });

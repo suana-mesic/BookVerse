@@ -1,6 +1,6 @@
 // src/app/core/services/auth/current-user.service.ts
 import { Injectable, inject, computed } from '@angular/core';
-import { AuthFacadeService } from './auth-facade.service';
+import { AuthFacadeService } from '../../../modules/core/services/auth/auth-facade.service';
 
 @Injectable({ providedIn: 'root' })
 export class CurrentUserService {
@@ -18,12 +18,11 @@ export class CurrentUserService {
     return this.auth.currentUser();
   }
 
-  /** Pravilo: admin > ostali → client */
   getDefaultRoute(): string {
     const user = this.snapshot;
-    if (!user) return '/login';
+    if (!user) return '/auth/login';
 
-    if (user.isAdmin) return '/admin';
-    return '/client';
+    if (user.isAdmin || user.isManager || user.isEmployee) return '/admin';
+    return '/';
   }
 }

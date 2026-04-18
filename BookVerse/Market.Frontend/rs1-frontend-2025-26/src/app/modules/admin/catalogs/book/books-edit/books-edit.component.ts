@@ -86,6 +86,10 @@ export class BooksEditComponent extends BaseFormComponent<GetBookByIdQueryDto> i
 
     this.startLoading();
 
+    const publishedDate = this.form.value.publishedDate
+      ? new Date(this.form.value.publishedDate)
+      : null;
+
     const command: UpdateBookCommand = {
       isbn: this.form.value.isbn,
       title: this.form.value.title,
@@ -99,12 +103,12 @@ export class BooksEditComponent extends BaseFormComponent<GetBookByIdQueryDto> i
       pageCount: this.form.value.pageCount,
       quantityInStockForOnlineOrders: this.form.value.quantityInStockForOnlineOrders,
       imageUrl: this.form.value.imageUrl,
-      publishedDate: this.form.value.publishedDate
+      publishedDate: publishedDate
         ? new Date(
             Date.UTC(
-              this.form.value.publishedDate.getFullYear(),
-              this.form.value.publishedDate.getMonth(),
-              this.form.value.publishedDate.getDate(),
+              publishedDate.getFullYear(),
+              publishedDate.getMonth(),
+              publishedDate.getDate(),
             ),
           )
         : null,

@@ -172,9 +172,9 @@
         </th>
         <td mat-cell *matCellDef="let order">
           <div class="date-info">
-          <span class="customer-name date">{{ order.lastRestocked | date: 'dd.MM.yyyy' }} </span>
-          <span class="customer-name time">{{ order.lastRestocked | date: 'HH:mm' }}</span>
-        </div>
+            <span class="customer-name date">{{ order.lastRestocked | date: 'dd.MM.yyyy' }} </span>
+            <span class="customer-name time">{{ order.lastRestocked | date: 'HH:mm' }}</span>
+          </div>
         </td>
       </ng-container>
 
@@ -236,14 +236,16 @@
             >
               <mat-icon>edit</mat-icon>
             </button>
-            <button
-              mat-icon-button
-              (click)="deleteInventory(order.storeId, order.storeName, order.bookId)"
-              [matTooltip]="'ORDERS.ACTIONS.VIEW_DETAILS' | translate"
-              class="action-btn view-btn delete-btn"
-            >
-              <mat-icon>delete</mat-icon>
-            </button>
+            @if (!auth.isEmployee() && !auth.isManager()) {
+              <button
+                mat-icon-button
+                (click)="deleteInventory(order.storeId, order.storeName, order.bookId)"
+                [matTooltip]="'ORDERS.ACTIONS.VIEW_DETAILS' | translate"
+                class="action-btn view-btn delete-btn"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            }
           </div>
         </td>
       </ng-container>

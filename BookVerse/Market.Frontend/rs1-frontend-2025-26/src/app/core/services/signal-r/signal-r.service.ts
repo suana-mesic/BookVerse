@@ -6,6 +6,7 @@ import { OrderStatusType } from '../../../api-services/orders/orders-api.models'
 export interface OrderNotification {
   orderId: number;
   orderNumber: string;
+  customerName: string;
   paidAt: string;
 }
 

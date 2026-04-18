@@ -16,6 +16,7 @@ public sealed class PageResult<T>
         IQueryable<T> query,
         PageRequest paging,
         CancellationToken ct = default,
+        Func<List<T>, Task>? postProcess = null,
         bool includeTotal = true)
     {
         int total = 0;
@@ -26,6 +27,10 @@ public sealed class PageResult<T>
             .Skip(paging.SkipCount)
             .Take(paging.PageSize)
             .ToListAsync(ct);
+
+        //SQL query → filter → order → skip/take -> translation
+        if (postProcess != null)
+            await postProcess(items);
 
         return new PageResult<T>
         {

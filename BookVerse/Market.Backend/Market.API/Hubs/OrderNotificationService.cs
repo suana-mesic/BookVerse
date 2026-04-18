@@ -8,12 +8,13 @@ namespace Market.API.Hubs
         IHubContext<AdminOrderHub> adminOrderHub,
         IHubContext<UserOrderHub> userOrderHub) : IOrderNotificationService
     {
-        public async Task NotifyNewPaidOrderAsync(int orderId, string orderNumber, CancellationToken ct)
+        public async Task NotifyNewPaidOrderAsync(int orderId, string orderNumber, string customerName, CancellationToken ct)
         {
             await adminOrderHub.Clients.Group("admins").SendAsync("NewPaidOrder", new
             {
                 orderId,
                 orderNumber,
+                customerName,
                 paidAt = DateTime.UtcNow
             }, ct);
         }

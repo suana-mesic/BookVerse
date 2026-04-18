@@ -1,12 +1,12 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { AuthFacadeService } from '../../../core/services/auth/auth-facade.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import {
   OrderNotification,
   SignalRService,
 } from '../../../core/services/signal-r/signal-r.service';
-import { audit, Subscription } from 'rxjs';
+import { filter, Subscription } from 'rxjs';
+import { AuthFacadeService } from '../../core/services/auth/auth-facade.service';
 
 @Component({
   selector: 'app-admin-layout',
@@ -20,12 +20,20 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   private signalR = inject(SignalRService);
   private notificationSubscription: Subscription | null = null;
 
-  navSections = [
+  private translate = inject(TranslateService);
+  auth = inject(AuthFacadeService);
+
+  private readonly allNavSections = [
     {
       id: 'system',
       label: 'ADMIN_PANEL.MENU.DATA_VISUALIZATION',
       items: [
-        { route: '/admin/statistics', icon: 'bar_chart', label: 'ADMIN_PANEL.MENU.DASHBOARD' },
+        {
+          route: '/admin/statistics',
+          icon: 'bar_chart',
+          label: 'ADMIN_PANEL.MENU.DASHBOARD',
+          roles: ['admin', 'manager'],
+        },
       ],
     },
     {
@@ -36,26 +44,103 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
           route: '/admin/product-categories',
           icon: 'category',
           label: 'ADMIN_PANEL.MENU.CATEGORIES',
+          roles: ['admin', 'manager', 'employee'],
         },
-        { route: '/admin/products', icon: 'book', label: 'ADMIN_PANEL.MENU.BOOKS' },
-        { route: '/admin/coupons', icon: 'local_activity', label: 'ADMIN_PANEL.MENU.COUPONS' },
+        {
+          route: '/admin/products',
+          icon: 'book',
+          label: 'ADMIN_PANEL.MENU.BOOKS',
+          roles: ['admin', 'manager', 'employee'],
+        },
+        {
+          route: '/admin/coupons',
+          icon: 'local_activity',
+          label: 'ADMIN_PANEL.MENU.COUPONS',
+          roles: ['admin', 'manager', 'employee'],
+        },
       ],
     },
     {
       id: 'orders',
       label: 'ADMIN_PANEL.MENU.RESOURCE_MANAGEMENT',
       items: [
-        { route: '/admin/orders', icon: 'shopping_cart', label: 'ADMIN_PANEL.MENU.ORDERS' },
-        { route: '/admin/inventory', icon: 'inventory', label: 'ADMIN_PANEL.MENU.INVENTORY' },
-        { route: '/admin/users', icon: 'account_circle', label: 'ADMIN_PANEL.MENU.USERS' },
+        {
+          route: '/admin/orders',
+          icon: 'shopping_cart',
+          label: 'ADMIN_PANEL.MENU.ORDERS',
+          roles: ['admin', 'manager', 'employee'],
+        },
+        {
+          route: '/admin/inventory',
+          icon: 'inventory',
+          label: 'ADMIN_PANEL.MENU.INVENTORY',
+          roles: ['admin', 'manager', 'employee'],
+        },
+        {
+          route: '/admin/users',
+          icon: 'account_circle',
+          label: 'ADMIN_PANEL.MENU.USERS',
+          roles: ['admin'],
+        },
       ],
     },
     {
       id: 'settings',
       label: 'ADMIN_PANEL.MENU.SETTINGS',
-      items: [{ route: '/admin/settings', icon: 'settings', label: 'ADMIN_PANEL.SETTINGS' }],
+      items: [
+        {
+          route: '/admin/settings',
+          icon: 'settings',
+          label: 'ADMIN_PANEL.SETTINGS',
+          roles: ['admin', 'manager', 'employee'],
+        },
+      ],
     },
   ];
+
+  private sectionOrder = signal<string[]>([]);
+
+  navSections = computed(() => {
+    const user = this.auth.currentUser();
+    const order = this.sectionOrder();
+
+    const activeRoles: string[] = [];
+    if (user?.isAdmin) activeRoles.push('admin');
+    if (user?.isManager) activeRoles.push('manager');
+    if (user?.isEmployee) activeRoles.push('employee');
+
+    const filtered = this.allNavSections
+      .map((section) => ({
+        ...section,
+        items: section.items.filter((item) =>
+          item.roles.some((role) => activeRoles.includes(role)),
+        ),
+      }))
+      .filter((section) => section.items.length > 0);
+
+    if (order.length > 0) {
+      filtered.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
+    }
+
+    console.log('isAdmin' + user?.isAdmin);
+    console.log('isManager' + user?.isManager);
+    console.log('isEmployee' + user?.isEmployee);
+    console.log('Filtered');
+    console.log(filtered);
+
+    return filtered;
+  });
+
+  currentLang: string;
+
+  languages = [
+    { code: 'bs', name: 'Bosanski', flag: '🇧🇦' },
+    { code: 'en', name: 'English', flag: '🇬🇧' },
+  ];
+
+  constructor() {
+    this.currentLang = this.translate.currentLang || 'bs';
+  }
 
   ngOnInit(): void {
     const adminSettings = localStorage.getItem('adminSettings');
@@ -92,38 +177,8 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
 
     const saved = localStorage.getItem('navSectionsOrder');
     if (saved) {
-      const order = JSON.parse(saved);
-      this.navSections.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
-      //npr. ako je u localStorage bilo sačuvano
-      //['orders', 'catalog', 'system']
-      //a redoslijed u ovom fajlu je
-      //['catalog', 'orders', 'system']
-
-      //1. poziv
-      //order.indexOf('catalog') = 1 - order.indexOf('orders') = 0 => rezultat=1, orders ide prije catalog
-
-      //2. poziv
-      //order.indexOf('catalog') = 1 - order.indexOf('system') = 2 => rezultat=-1, catalog ide prije system
-
-      //3. poziv
-      //order.indexOf('orders') = 0 - order.indexOf('system') = 2 => rezultat=-2, orders ide prije system
-
-      //Zaključak: orders catalog system
+      this.sectionOrder.set(JSON.parse(saved));
     }
-  }
-
-  private translate = inject(TranslateService);
-  auth = inject(AuthFacadeService);
-
-  currentLang: string;
-
-  languages = [
-    { code: 'bs', name: 'Bosanski', flag: '🇧🇦' },
-    { code: 'en', name: 'English', flag: '🇬🇧' },
-  ];
-
-  constructor() {
-    this.currentLang = this.translate.currentLang || 'bs';
   }
 
   ngOnDestroy(): void {
@@ -143,8 +198,11 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   }
 
   onSectionDrop(event: CdkDragDrop<any[]>) {
-    moveItemInArray(this.navSections, event.previousIndex, event.currentIndex);
-    localStorage.setItem('navSectionsOrder', JSON.stringify(this.navSections.map((s) => s.id)));
+    const sections = [...this.navSections()];
+    moveItemInArray(sections, event.previousIndex, event.currentIndex);
+    const newOrder = sections.map((s) => s.id);
+    this.sectionOrder.set(newOrder);
+    localStorage.setItem('navSectionsOrder', JSON.stringify(newOrder));
   }
 
   clearNotifications(): void {

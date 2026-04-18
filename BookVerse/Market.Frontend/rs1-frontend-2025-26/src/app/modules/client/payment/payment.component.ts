@@ -1,4 +1,5 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { ToasterService } from '../../core/services/toaster.service';
 import { loadStripe, Stripe, StripeElements, StripePaymentElement } from '@stripe/stripe-js';
@@ -13,13 +14,15 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './payment.component.html',
   styleUrl: './payment.component.scss',
 })
-export class PaymentComponent extends BaseComponent implements OnInit {
+export class PaymentComponent extends BaseComponent implements OnInit, OnDestroy {
   private router = inject(Router);
   private toaster = inject(ToasterService);
   private captchaService = inject(CaptchaApiService);
   private cartService = inject(CartApiService);
   private location = inject(Location);
   private translate = inject(TranslateService);
+
+  private langSub: Subscription | null = null;
 
   captchaImage: string = '';
   captchaToken: string = '';
@@ -48,7 +51,11 @@ export class PaymentComponent extends BaseComponent implements OnInit {
 
     this.totalPrice = this.orderData.totalPrice;
     this.loadCaptcha();
-    await this.initStripe(); // Inicijalizujemo Stripe i prikazujemo formu za unos kartice
+    await this.initStripe();
+
+    this.langSub = this.translate.onLangChange.subscribe(() => {
+      this.initStripe();
+    }); // Inicijalizujemo Stripe i prikazujemo formu za unos kartice
   }
 
   loadCaptcha(): void {
@@ -80,13 +87,18 @@ export class PaymentComponent extends BaseComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this.langSub?.unsubscribe();
+  }
+
   prevStep() {
     this.router.navigate(['/client/checkout'], { state: { fromPayment: true } });
   }
 
   async initStripe(): Promise<void> {
-    // loadStripe učitava Stripe.js sa Stripe servera koristeći naš publishableKey
-    // publishableKey je javni ključ — bezbjedno ga koristiti na frontendu
+    const paymentContainer = document.getElementById('payment-element');
+    if (paymentContainer) paymentContainer.innerHTML = '';
+
     this.stripe = await loadStripe(this.orderData.publishableKey);
 
     // clientSecret je tajni ključ koji smo dobili od backenda
@@ -97,9 +109,12 @@ export class PaymentComponent extends BaseComponent implements OnInit {
     }
 
     const isDark = document.body.classList.contains('dark-theme');
+    const lang = this.translate.currentLang || this.translate.defaultLang || 'bs';
+    const stripeLocale = lang === 'en' ? 'en' : 'hr';
 
     this.elements = this.stripe.elements({
       clientSecret: this.orderData.clientSecret,
+      locale: stripeLocale as any,
       appearance: isDark
         ? {
             theme: 'night',

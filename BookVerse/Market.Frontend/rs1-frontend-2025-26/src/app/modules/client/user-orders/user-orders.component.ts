@@ -146,7 +146,7 @@ export class UserOrdersComponent
 
   selectOrder(order: ListOrdersForUserQueryDto): void {
     this.selectedOrder = this.selectedOrder?.id === order.id ? null : order;
-    this.currentSlide = 0; // reset na prvu knjgu
+    this.currentSlide = 0; // reset to the first book
   }
 
   nextSlide(): void {

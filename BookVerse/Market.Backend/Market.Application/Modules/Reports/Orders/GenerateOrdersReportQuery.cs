@@ -5,6 +5,6 @@
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
         public int? UserId { get; set; }
-        public int? OrderId { get; set; }
+        public string Language { get; set; } = "bs";
     }
 }

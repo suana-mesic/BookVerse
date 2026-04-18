@@ -18,7 +18,7 @@ public class CouponsController(ISender sender) : ControllerBase
     }
 
     [HttpGet]
-    [Authorize(Policy = "Staff")]
+    [Authorize(Policy = "Management")]
 
     public async Task<List<ListCouponsQueryDto>> List(CancellationToken ct)
     {
@@ -27,7 +27,7 @@ public class CouponsController(ISender sender) : ControllerBase
     }
 
     [HttpPost]
-    [Authorize(Policy = "Staff")]
+    [Authorize(Policy = "Management")]
 
     public async Task<ActionResult<int>> Create([FromBody] CreateCouponCommand request, CancellationToken ct)
     {
@@ -36,7 +36,7 @@ public class CouponsController(ISender sender) : ControllerBase
     }
 
     [HttpGet("form-config/{couponType}")]
-    [Authorize(Policy = "Staff")]
+    [Authorize(Policy = "Management")]
     public IActionResult GetFormConfig(string couponType)
     {
         var commonFields = new[]

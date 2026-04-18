@@ -23,26 +23,26 @@
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>{{ field.label }}</mat-label>
 
-        <!-- Dinamički datepicker: svako polje dobija svoju referencu -->
+        <!-- Dynamic datepicker: each field gets its own reference -->
         <ng-container *ngIf="field.type === 'date'; else otherInput">
           <input matInput [formControlName]="field.name" [matDatepicker]="picker" />
           <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </ng-container>
 
-        <!-- Za sve ostale tipove -->
+        <!-- For all other types -->
         <ng-template #otherInput>
           <input matInput [type]="field.type" [formControlName]="field.name" />
         </ng-template>
 
         <mat-error *ngIf="dynamicForm.get(field.name)?.invalid">
-          {{ field.label }} je obavezno polje
+          {{ 'INVENTORY.REQUIRED_FIELD' | translate }}
         </mat-error>
       </mat-form-field>
     </div>
 
     <button mat-raised-button color="primary" type="submit" [disabled]="dynamicForm.invalid">
-      Sačuvaj kupon
+      {{ 'COUPONS.SAVE_BUTTON' | translate }}
     </button>
   </form>
 

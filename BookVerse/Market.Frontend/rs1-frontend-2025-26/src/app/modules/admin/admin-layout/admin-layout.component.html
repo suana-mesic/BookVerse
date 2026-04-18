@@ -9,7 +9,7 @@
           <mat-icon>account_circle</mat-icon>
         </div>
         <div class="user-details">
-          <div class="user-email">{{ auth.currentUser()?.email }}</div>
+          <!-- <div class="user-email">{{ auth.currentUser()?.email }}</div> -->
           <div class="user-role">
             @if (auth.isAdmin()) {
               <mat-chip class="role-chip admin">
@@ -55,7 +55,7 @@
 
     <!-- NAVIGATION MENU -->
     <mat-nav-list cdkDropList (cdkDropListDropped)="onSectionDrop($any($event))">
-      @for (section of navSections; track section.id) {
+      @for (section of navSections(); track section.id) {
         <div cdkDrag class="drag-section">
           <!-- cdkDrag ovdje -->
           <div class="drag-handle" cdkDragHandle>
@@ -156,7 +156,7 @@
               <mat-icon class="notif-icon">paid</mat-icon>
               <div class="notif-content">
                 <div class="notif-title">
-                  {{ 'NOTIFICATIONS.ORDER_PAID' | translate }} #{{ notif.orderNumber }}
+                  {{ 'NOTIFICATIONS.ORDER_PAID' | translate: { name: notif.customerName } }}
                 </div>
                 <div class="notif-time">
                   {{ notif.paidAt | date: 'dd.MM.yyyy HH:mm' }}

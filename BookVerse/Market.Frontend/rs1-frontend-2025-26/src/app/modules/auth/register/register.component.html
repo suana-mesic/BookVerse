@@ -67,7 +67,6 @@
               <mat-error>{{ 'AUTH.REGISTER.EMAIL_ERROR' | translate }}</mat-error>
             </mat-form-field>
 
-            <!-- Password -->
             <mat-form-field class="form-control fc-password" floatLabel="always">
               <mat-label>{{ 'AUTH.REGISTER.PASSWORD' | translate }}</mat-label>
               <div id="password-container">
@@ -175,16 +174,20 @@
                 formControlName="country"
                 (selectionChange)="onCountryChange($event.value)"
               >
+                <!-- ✅ [value] je cijeli objekat, prikazuje se samo .name -->
                 <mat-option *ngFor="let country of countries" [value]="country">
-                  {{ country }}
+                  {{ country.name }}
                 </mat-option>
               </mat-select>
               <mat-error>{{ 'AUTH.REGISTER.COUNTRY_ERROR' | translate }}</mat-error>
             </mat-form-field>
+
             <mat-form-field class="form-control" floatLabel="always">
               <mat-label>{{ 'AUTH.REGISTER.CITY' | translate }}</mat-label>
               <mat-select formControlName="city">
-                <mat-option *ngIf="loadingCities" disabled>{{ 'AUTH.REGISTER.CITY_LOADING' | translate }}</mat-option>
+                <mat-option *ngIf="loadingCities" disabled>
+                  {{ 'AUTH.REGISTER.CITY_LOADING' | translate }}
+                </mat-option>
                 <mat-option *ngFor="let city of cities" [value]="city">
                   {{ city }}
                 </mat-option>
@@ -210,7 +213,10 @@
     </mat-horizontal-stepper>
     <p routerLink="/">{{ 'AUTH.REGISTER.CANCEL' | translate }}</p>
     <div class="login-link">
-      <p class="sign-up">{{ 'AUTH.REGISTER.HAVE_ACCOUNT' | translate }} <a routerLink="/auth/login">{{ 'AUTH.REGISTER.LOGIN_LINK' | translate }}</a></p>
+      <p class="sign-up">
+        {{ 'AUTH.REGISTER.HAVE_ACCOUNT' | translate }}
+        <a routerLink="/auth/login">{{ 'AUTH.REGISTER.LOGIN_LINK' | translate }}</a>
+      </p>
     </div>
   </form>
 </div>

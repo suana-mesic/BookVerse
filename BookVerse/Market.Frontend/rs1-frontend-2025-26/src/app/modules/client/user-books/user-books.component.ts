@@ -115,6 +115,7 @@ export class UserBooksComponent
   private loadCategories() {
     this.categoriesService.getCategoriesFromApi().subscribe({
       next: (response) => {
+        console.log('Dostupne kategorije:');
         console.log(response);
         this.availableCategories = response;
         this.filteredCategories = response;

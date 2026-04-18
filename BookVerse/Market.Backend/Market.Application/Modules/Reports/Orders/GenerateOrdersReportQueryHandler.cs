@@ -8,9 +8,53 @@ namespace Market.Application.Modules.Reports.Orders
     public class GenerateOrdersReportQueryHandler(IAppDbContext context)
     : IRequestHandler<GenerateOrdersReportQuery, byte[]>
     {
+        private static readonly Dictionary<string, Dictionary<string, string>> _translations = new()
+        {
+            ["bs"] = new()
+            {
+                ["reportTitle"] = "Izvještaj narudžbi",
+                ["id"] = "ID",
+                ["customer"] = "Kupac",
+                ["date"] = "Datum",
+                ["amount"] = "Iznos (KM)",
+                ["status"] = "Status",
+                ["totalOrders"] = "Ukupno narudžbi",
+                ["totalRevenue"] = "Ukupni prihod",
+                ["page"] = "Stranica",
+                ["of"] = "od",
+                ["Paid"] = "Plaćeno",
+                ["Packed"] = "Spakovano",
+                ["Shipped"] = "Isporučeno",
+            },
+            ["en"] = new()
+            {
+                ["reportTitle"] = "Orders Report",
+                ["id"] = "ID",
+                ["customer"] = "Customer",
+                ["date"] = "Date",
+                ["amount"] = "Amount (BAM)",
+                ["status"] = "Status",
+                ["totalOrders"] = "Total orders",
+                ["totalRevenue"] = "Total revenue",
+                ["page"] = "Page",
+                ["of"] = "of",
+                ["Paid"] = "Paid",
+                ["Packed"] = "Packed",
+                ["Shipped"] = "Shipped",
+            },
+        };
+
+        private string translatePdf(string lang, string key)
+        {
+            var l = _translations.ContainsKey(lang) ? lang : "bs";
+            return _translations[l].TryGetValue(key, out var val) ? val : key;
+        }
+
         public async Task<byte[]> Handle(GenerateOrdersReportQuery request, CancellationToken ct)
         {
             QuestPDF.Settings.License = LicenseType.Community;
+
+            var lang = string.IsNullOrWhiteSpace(request.Language) ? "bs" : request.Language;
 
             var timeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
             var dateFromLocal = TimeZoneInfo.ConvertTimeFromUtc(request.DateFrom, timeZone);
@@ -28,9 +72,6 @@ namespace Market.Application.Modules.Reports.Orders
 
             if (request.UserId.HasValue)
                 query = query.Where(x => x.UserId == request.UserId);
-
-            if (request.OrderId.HasValue)
-                query = query.Where(x => x.Id == request.OrderId);
 
             var orders = await query.Select(x => new
             {
@@ -52,7 +93,7 @@ namespace Market.Application.Modules.Reports.Orders
                     page.Margin(2, QuestPDF.Infrastructure.Unit.Centimetre);
                     page.DefaultTextStyle(x => x.FontSize(11));
 
-                    page.Header().Text($"Izvještaj narudžbi: {dateFromLocal:dd.MM.yyyy} - {dateToLocal:dd.MM.yyyy}")
+                    page.Header().Text($"{translatePdf(lang, "reportTitle")}: {dateFromLocal:dd.MM.yyyy} - {dateToLocal:dd.MM.yyyy}")
                       .SemiBold().FontSize(16).FontColor(Colors.Blue.Medium);
 
                     page.Content().Column(col =>
@@ -61,52 +102,42 @@ namespace Market.Application.Modules.Reports.Orders
                         {
                             table.ColumnsDefinition(c =>
                             {
-                                c.ConstantColumn(50); // ID
-                                c.RelativeColumn(2); // Kupac
-                                c.RelativeColumn(2); // Datum
-                                c.RelativeColumn(1); // Iznos
-                                c.RelativeColumn(1); // Status
+                                c.ConstantColumn(50);
+                                c.RelativeColumn(2);
+                                c.RelativeColumn(2);
+                                c.RelativeColumn(1);
+                                c.RelativeColumn(1);
                             });
 
-                            // Header
                             table.Header(header =>
                             {
-                                header.Cell().Background(Colors.Blue.Medium).Padding(5)
-                                    .Text("ID").FontColor(Colors.White).SemiBold();
-                                header.Cell().Background(Colors.Blue.Medium).Padding(5)
-                                    .Text("Kupac").FontColor(Colors.White).SemiBold();
-                                header.Cell().Background(Colors.Blue.Medium).Padding(5)
-                                    .Text("Datum").FontColor(Colors.White).SemiBold();
-                                header.Cell().Background(Colors.Blue.Medium).Padding(5)
-                                    .Text("Iznos (KM)").FontColor(Colors.White).SemiBold();
-                                header.Cell().Background(Colors.Blue.Medium).Padding(5)
-                                    .Text("Status").FontColor(Colors.White).SemiBold();
+                                foreach (var col in new[] { translatePdf(lang,"id"), translatePdf(lang,"customer"), translatePdf(lang,"date"), translatePdf(lang,"amount"), translatePdf(lang,"status") })
+                                    header.Cell().Background(Colors.Blue.Medium).Padding(5)
+                                        .Text(col).FontColor(Colors.White).SemiBold();
                             });
 
-                            // Redovi
                             foreach (var order in orders)
                             {
                                 table.Cell().Padding(5).Text(order.Id.ToString());
                                 table.Cell().Padding(5).Text(order.Kupac);
                                 table.Cell().Padding(5).Text(order.CreatedAtUtc.ToString("dd.MM.yyyy"));
                                 table.Cell().Padding(5).Text(order.TotalPrice.ToString("F2"));
-                                table.Cell().Padding(5).Text(order.Status);
+                                table.Cell().Padding(5).Text(translatePdf(lang, order.Status.ToString()));
                             }
-
                         });
-                        // Summary na kraju
+
                         col.Item().PaddingTop(20).BorderTop(1).PaddingTop(10).Row(row =>
                         {
-                            row.RelativeItem().Text($"Ukupno narudžbi: {ukupanBroj}").SemiBold();
-                            row.RelativeItem().AlignRight().Text($"Ukupni prihod: {ukupanPrihod:F2} KM").SemiBold();
+                            row.RelativeItem().Text($"{translatePdf(lang, "totalOrders")}: {ukupanBroj}").SemiBold();
+                            row.RelativeItem().AlignRight().Text($"{translatePdf(lang, "totalRevenue")}: {ukupanPrihod:F2} KM").SemiBold();
                         });
-
                     });
+
                     page.Footer().AlignCenter().Text(x =>
                     {
-                        x.Span("Stranica ");
+                        x.Span($"{translatePdf(lang, "page")} ");
                         x.CurrentPageNumber();
-                        x.Span(" od ");
+                        x.Span($" {translatePdf(lang, "of")} ");
                         x.TotalPages();
                     });
                 });

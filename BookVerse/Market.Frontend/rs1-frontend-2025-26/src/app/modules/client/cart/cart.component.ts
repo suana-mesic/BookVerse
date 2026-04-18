@@ -1,8 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CartApiService } from '../../../api-services/cart/cart-api.service';
 import { ListCartDto } from '../../../api-services/cart/cart-api.model';
-import { AuthFacadeService } from '../../../core/services/auth/auth-facade.service';
 import { Location } from '@angular/common';
+import { AuthFacadeService } from '../../core/services/auth/auth-facade.service';
 
 @Component({
   selector: 'app-cart',

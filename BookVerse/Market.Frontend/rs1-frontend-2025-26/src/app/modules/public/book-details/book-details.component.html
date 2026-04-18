@@ -18,17 +18,21 @@
           }
         </div>
       </div>
-      <div class="book__rating">
-        <img src="icons/star.png" alt="star" [class.dark-star]="reviewRating >= 1" />
-        <img src="icons/star.png" alt="star" [class.dark-star]="reviewRating >= 2" />
-        <img src="icons/star.png" alt="star" [class.dark-star]="reviewRating >= 3" />
-        <img src="icons/star.png" alt="star" [class.dark-star]="reviewRating >= 4" />
-        <img src="icons/star.png" alt="star" [class.dark-star]="reviewRating >= 5" />
-        <h2>{{ reviewRating.toFixed(1) }}</h2>
-      </div>
+      @if (reviews().length > 0) {
+        <div class="book__rating">
+          <img src="icons/star.png" alt="star" [class.dark-star]="reviewRating >= 1" />
+          <img src="icons/star.png" alt="star" [class.dark-star]="reviewRating >= 2" />
+          <img src="icons/star.png" alt="star" [class.dark-star]="reviewRating >= 3" />
+          <img src="icons/star.png" alt="star" [class.dark-star]="reviewRating >= 4" />
+          <img src="icons/star.png" alt="star" [class.dark-star]="reviewRating >= 5" />
+          <h2>{{ reviewRating.toFixed(1) }}</h2>
+        </div>
+      } @else {
+        <p class="book__no-reviews-inline">{{ 'CLIENT.BOOK_DETAILS.NO_REVIEWS' | translate }}</p>
+      }
       <div class="book__info">
         <h2>{{ 'CLIENT.BOOK_DETAILS.PUBLISHER' | translate }} {{ book()?.publisherName }}</h2>
-        <h2>Broj kupaca: 12</h2>
+        <h2>{{ 'CLIENT.BOOK_DETAILS.BUYERS' | translate }}: 12</h2>
         <h2>{{ 'CLIENT.BOOK_DETAILS.ISBN' | translate }} {{ book()?.isbn }}</h2>
         <h2>{{ 'CLIENT.BOOK_DETAILS.PAGE_COUNT' | translate }} {{ book()?.pageCount }}</h2>
         <h2>{{ 'CLIENT.BOOK_DETAILS.LANGUAGE' | translate }} {{ book()?.language }}</h2>
@@ -37,7 +41,7 @@
     </aside>
   </div>
   <div class="book__buy">
-    <h1>{{ 'CLIENT.BOOK_DETAILS.PRICE' | translate }} {{ book()?.price }} KM</h1>
+    <h1>{{ 'CLIENT.BOOK_DETAILS.PRICE' | translate }} {{ book()?.price }} {{ 'CURRENCY' | translate }}</h1>
     <div>
       <button (click)="dodajUkorpu(book()?.id)">
         {{ 'CLIENT.BOOK_DETAILS.ADD_TO_CART' | translate }} <img src="icons/cart.png" alt="cart" />
@@ -63,13 +67,13 @@
     <span>
       <h2>{{ 'CLIENT.BOOK_DETAILS.AVAILABLE_IN_STORES' | translate }}</h2>
       <h3 title="Prikaži informacije" (click)="setCentralBookstore()">
-        Central bookstore (Mostar): 12 knjiga
+        Central bookstore (Mostar): 12 {{ 'CLIENT.BOOK_DETAILS.BOOKS_WORD' | translate }}
       </h3>
       <h3 title="Prikaži informacije" (click)="setForticaBooks()">
-        Fortica books (Mostar): 14 knjiga
+        Fortica books (Mostar): 14 {{ 'CLIENT.BOOK_DETAILS.BOOKS_WORD' | translate }}
       </h3>
       <h3 title="Prikaži informacije" (click)="setSpaceBookstore()">
-        Space bookstore (Sarajevo): 19 knjiga
+        Space bookstore (Sarajevo): 19 {{ 'CLIENT.BOOK_DETAILS.BOOKS_WORD' | translate }}
       </h3>
     </span>
     <app-map class="book__stores-map"></app-map>
@@ -78,6 +82,7 @@
   <h1 style="font-size: 3rem; margin: 1rem 0">{{ 'CLIENT.BOOK_DETAILS.REVIEWS' | translate }}</h1>
   <div class="book__reviews">
     <span>
+      @if (reviews().length > 0) {
       <div class="book__reviews-header">
         <h1>{{ 'CLIENT.BOOK_DETAILS.RATING' | translate }}</h1>
         <div class="book__rating">
@@ -141,6 +146,9 @@
           <h1>({{ this.reviewRatingsCount[0] }})</h1>
         </div>
       </div>
+      } @else {
+        <p class="book__no-reviews-inline">{{ 'CLIENT.BOOK_DETAILS.NO_REVIEWS' | translate }}</p>
+      }
     </span>
     <aside class="book__review-section">
       @for (review of reviews(); let i = $index; track review.bookId) {

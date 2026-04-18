@@ -3,11 +3,11 @@ import { Component, ElementRef, inject, OnInit, ViewChild, ViewEncapsulation } f
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
 import { RegisterCommandDto } from '../../../api-services/auth/auth-api.model';
-import { CountriesApiService } from '../../../api-services/CountriesNow/countires-api.service';
 import { DialogHelperService } from '../../shared/services/dialog-helper.service';
 import { DialogButton } from '../../shared/models/dialog-config.model';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { CountriesApiService } from '../../../api-services/CountriesNow/countires-api.service';
 
 @Component({
   selector: 'app-register',
@@ -30,7 +30,7 @@ export class RegisterComponent implements OnInit {
   router = inject(Router);
   translate = inject(TranslateService);
 
-  countries: string[] = [];
+  countries: { name: string; countryCode: string; nameBs: string }[] = [];
   cities: string[] = [];
   loadingCities = false;
 
@@ -55,35 +55,44 @@ export class RegisterComponent implements OnInit {
     line1: ['', [Validators.required]],
     line2: [''],
     city: [{ value: '', disabled: true }, [Validators.required]],
-    country: ['', [Validators.required]],
+    country: [
+      null as { name: string; countryCode: string; nameBs: string } | null,
+      [Validators.required],
+    ],
     confirmedPassword: ['', [Validators.required, this.matchValuesCustom('password')]],
     fingerPrint: [''],
   });
 
   ngOnInit(): void {
-    this.fetchCitiesFromApi();
+    this.fetchCountriesFromApi();
+    this.translate.onLangChange.subscribe(() => {
+      this.fetchCountriesFromApi();
+      this.registerForm.get('city')?.reset();
+      this.registerForm.get('country')?.reset();
+      this.cities = [];
+    });
   }
 
-  private fetchCitiesFromApi() {
+  private fetchCountriesFromApi() {
     this.countriesService.getCountries().subscribe((countries) => {
       this.countries = countries;
     });
   }
 
-  public onCountryChange(country: string) {
+  public onCountryChange(country: { name: string; countryCode: string }) {
     this.registerForm.get('city')?.reset();
     this.registerForm.get('city')?.disable();
     this.cities = [];
 
     if (country) {
       this.loadingCities = true;
-      this.countriesService.getCitiesByCountry(country).subscribe({
+      this.countriesService.getCitiesByCountry(country.countryCode).subscribe({
         next: (cities) => {
           this.cities = cities;
           this.loadingCities = false;
           this.registerForm.get('city')?.enable();
         },
-        error: (err) => (this.loadingCities = false),
+        error: () => (this.loadingCities = false),
       });
     }
   }
@@ -92,14 +101,15 @@ export class RegisterComponent implements OnInit {
     return (control: AbstractControl) => {
       const formGroup = control.parent as FormGroup;
       if (!formGroup) return null;
-
       const matchingValue = formGroup.get(matchTo)?.value;
-      return control.value === matchingValue ? null : { passwordMismatch: true }; //there can be written anything that describes error (not just passwordMismatch)
+      return control.value === matchingValue ? null : { passwordMismatch: true };
     };
   }
+
   get isFirstStepValid() {
     return this.registerForm.get('firstName')?.valid && this.registerForm.get('lastName')?.valid;
   }
+
   get isSecondStepValid() {
     return (
       this.registerForm.get('email')?.valid &&
@@ -107,6 +117,7 @@ export class RegisterComponent implements OnInit {
       this.registerForm.get('confirmedPassword')?.valid
     );
   }
+
   get isThirdStepValid() {
     return (
       this.registerForm.get('line1')?.valid &&
@@ -118,11 +129,16 @@ export class RegisterComponent implements OnInit {
   onRegister() {
     console.log('Submit button clicked');
     const formData = this.registerForm.value;
-    delete formData.confirmedPassword;
-    console.log(formData);
+
+    const payload = {
+      ...formData,
+      country: formData.country?.nameBs ?? '',
+    };
+    delete payload.confirmedPassword;
+    console.log(payload);
 
     this.http
-      .post<RegisterCommandDto>('https://localhost:7260/api/auth/register', formData, {
+      .post<RegisterCommandDto>('https://localhost:7260/api/auth/register', payload, {
         headers: { Accept: 'text/plain' },
       })
       .subscribe({
@@ -153,6 +169,7 @@ export class RegisterComponent implements OnInit {
     sessionStorage.setItem('expiresAt', result.expiresAtUtc?.toString() || '');
     sessionStorage.setItem('userId', result.userId.toString());
   }
+
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
     this.invisible = !this.invisible;
@@ -173,6 +190,7 @@ export class RegisterComponent implements OnInit {
       input.type = this.confirmInvisible ? 'password' : 'text';
     }
   }
+
   strengthChecker() {
     let baseMessage = this.translate.instant('AUTH.REGISTER.STRENGTH_PREFIX');
     let strengthBar = this.strengthBar?.nativeElement;
@@ -185,34 +203,49 @@ export class RegisterComponent implements OnInit {
     this.parameters.uppercase = rule1.test(password);
     this.parameters.numbers = rule2.test(password);
     this.parameters.special = rule3.test(password);
-    this.parameters.count = password.length >= 6 ? true : false;
+    this.parameters.count = password.length >= 6;
 
     let barLength = Object.values(this.parameters).filter((value) => value);
 
     const levels = {
-      0: { width: '10%', color: '#d32f2f', message: this.translate.instant('AUTH.REGISTER.STRENGTH_TOO_SHORT') },
-      1: { width: '25%', color: '#ff6666', message: this.translate.instant('AUTH.REGISTER.STRENGTH_VERY_WEAK') },
-      2: { width: '50%', color: '#ff691f', message: this.translate.instant('AUTH.REGISTER.STRENGTH_WEAK') },
-      3: { width: '75%', color: '#ffda36', message: this.translate.instant('AUTH.REGISTER.STRENGTH_FAIR') },
-      4: { width: 'auto', color: '#0be881', message: this.translate.instant('AUTH.REGISTER.STRENGTH_STRONG') },
+      0: {
+        width: '10%',
+        color: '#d32f2f',
+        message: this.translate.instant('AUTH.REGISTER.STRENGTH_TOO_SHORT'),
+      },
+      1: {
+        width: '25%',
+        color: '#ff6666',
+        message: this.translate.instant('AUTH.REGISTER.STRENGTH_VERY_WEAK'),
+      },
+      2: {
+        width: '50%',
+        color: '#ff691f',
+        message: this.translate.instant('AUTH.REGISTER.STRENGTH_WEAK'),
+      },
+      3: {
+        width: '75%',
+        color: '#ffda36',
+        message: this.translate.instant('AUTH.REGISTER.STRENGTH_FAIR'),
+      },
+      4: {
+        width: 'auto',
+        color: '#0be881',
+        message: this.translate.instant('AUTH.REGISTER.STRENGTH_STRONG'),
+      },
     };
 
     const config = levels[barLength.length as keyof typeof levels];
 
-    if (barLength.length == 0) {
-      this.floatLabelAttribute = 'auto';
-    } else {
-      this.floatLabelAttribute = 'always';
-    }
-    this.messageStrength = baseMessage;
-    this.messageStrength += config.message;
+    this.floatLabelAttribute = barLength.length == 0 ? 'auto' : 'always';
+    this.messageStrength = baseMessage + config.message;
 
     strengthBar.style.setProperty('width', config.width, 'important');
     strengthBar.style.setProperty('background-color', config.color, 'important');
-    if (barLength.length < 4)
-      strengthBar.style.setProperty('border-radius', '0 0 0px 4px', 'important');
-    else {
-      strengthBar.style.setProperty('border-radius', '0 0 4px 4px', 'important');
-    }
+    strengthBar.style.setProperty(
+      'border-radius',
+      barLength.length < 4 ? '0 0 0px 4px' : '0 0 4px 4px',
+      'important',
+    );
   }
 }
