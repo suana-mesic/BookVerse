@@ -6,7 +6,6 @@ import { AuthFacadeService } from './auth-facade.service';
 export class CurrentUserService {
   private auth = inject(AuthFacadeService);
 
-  /** Signal koji UI može čitati (readonly) */
   currentUser = computed(() => this.auth.currentUser());
 
   isAuthenticated = computed(() => this.auth.isAuthenticated());
@@ -18,17 +17,11 @@ export class CurrentUserService {
     return this.auth.currentUser();
   }
 
-  /** Pravilo: admin > ostali → client */
   getDefaultRoute(): string {
     const user = this.snapshot;
-    if (!user) return '/login';
+    if (!user) return '/auth/login';
 
-    if (user.isAdmin) return '/admin';
-
-    //email trenutnog korisnika
-    console.log(this.currentUser()?.email);
-    
-    // Ovde je stajalo client, ali ce nam trebati samo da vrati landing page
+    if (user.isAdmin || user.isManager || user.isEmployee) return '/admin';
     return '/';
   }
 }

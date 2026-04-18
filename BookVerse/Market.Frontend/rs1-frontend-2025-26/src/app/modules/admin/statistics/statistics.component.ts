@@ -40,8 +40,8 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
   filteredUsersOptions!: Observable<ListUsersQueryDto[]>;
   filteredBooksOptions!: Observable<ListBooksForAutocompleteQueryDto[]>;
 
-  allUsers!: ListUsersQueryDto[];
-  allBooks!: ListBooksForAutocompleteQueryDto[];
+  allUsers: ListUsersQueryDto[] = [];
+  allBooks: ListBooksForAutocompleteQueryDto[] = [];
 
   constructor() {
     super();
@@ -382,8 +382,9 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
   }
 
   downloadOrdersReport(): void {
+    const lang = this.translate.currentLang || this.translate.defaultLang || 'bs';
     this.reportsApi
-      .generateOrdersReport(this.dateFrom, this.dateTo, this.selectedUserId, undefined)
+      .generateOrdersReport(this.dateFrom, this.dateTo, this.selectedUserId, lang)
       .subscribe({
         next: (blob) => {
           const url = window.URL.createObjectURL(blob);
@@ -399,7 +400,8 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
   }
 
   downloadBooksReport(): void {
-    this.reportsApi.generateBooksReport(this.dateFrom, this.dateTo, this.selectedBookId).subscribe({
+    const lang = this.translate.currentLang || this.translate.defaultLang || 'bs';
+    this.reportsApi.generateBooksReport(this.dateFrom, this.dateTo, this.selectedBookId, lang).subscribe({
       next: (blob) => {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');

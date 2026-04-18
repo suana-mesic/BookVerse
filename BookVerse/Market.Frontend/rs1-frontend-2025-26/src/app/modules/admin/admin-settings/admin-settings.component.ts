@@ -72,7 +72,5 @@ export class AdminSettingsComponent implements OnDestroy {
   onNotificationsChange() {}
   onSoundChange() {}
 
-  ngOnDestroy(): void {
-    document.body.classList.remove('dark-theme');
-  }
+  ngOnDestroy(): void {}
 }

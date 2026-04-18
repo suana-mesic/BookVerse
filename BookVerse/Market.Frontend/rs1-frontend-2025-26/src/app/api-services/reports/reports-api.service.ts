@@ -13,16 +13,16 @@ export class ReportsApiServices {
     dateFrom: Date,
     dateTo: Date,
     userId?: number,
-    orderId?: number,
+    language: string = 'bs',
   ): Observable<Blob> {
     const params: any = {
       dateFrom: dateFrom.toISOString(),
       dateTo: dateTo.toISOString(),
+      language,
       _t: new Date().getTime(),
     };
 
     if (userId) params.userId = userId;
-    if (orderId) params.orderId = orderId;
 
     return this.http.get(`${this.baseUrl}/orders-report`, {
       params,
@@ -30,10 +30,16 @@ export class ReportsApiServices {
     });
   }
 
-  generateBooksReport(dateFrom: Date, dateTo: Date, bookId?: number): Observable<Blob> {
+  generateBooksReport(
+    dateFrom: Date,
+    dateTo: Date,
+    bookId?: number,
+    language: string = 'bs',
+  ): Observable<Blob> {
     const params: any = {
       dateFrom: dateFrom.toISOString(),
       dateTo: dateTo.toISOString(),
+      language,
       _t: new Date().getTime(),
     };
 

@@ -125,14 +125,16 @@
           >
             <mat-icon>edit</mat-icon>
           </button>
-          <button
-            mat-icon-button
-            color="warn"
-            (click)="onDelete(product)"
-            [matTooltip]="'BOOKS.ACTIONS.DELETE_TOOLTIP' | translate"
-          >
-            <mat-icon>delete</mat-icon>
-          </button>
+          @if (!auth.isEmployee() && !auth.isManager()) {
+            <button
+              mat-icon-button
+              color="warn"
+              (click)="onDelete(product)"
+              [matTooltip]="'BOOKS.ACTIONS.DELETE_TOOLTIP' | translate"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          }
         </td>
       </ng-container>
 

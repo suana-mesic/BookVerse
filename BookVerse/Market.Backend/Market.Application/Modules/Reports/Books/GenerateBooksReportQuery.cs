@@ -4,6 +4,7 @@
     {
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
-        public int ? BookId { get; set; }
+        public int? BookId { get; set; }
+        public string Language { get; set; } = "bs";
     }
 }

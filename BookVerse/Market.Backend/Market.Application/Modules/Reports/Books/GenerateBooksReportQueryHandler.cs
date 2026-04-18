@@ -8,10 +8,51 @@ namespace Market.Application.Modules.Reports.Books
     public class GenerateBooksReportQueryHandler(IAppDbContext context)
         : IRequestHandler<GenerateBooksReportQuery, byte[]>
     {
+        private static readonly Dictionary<string, Dictionary<string, string>> _translations = new()
+        {
+            ["bs"] = new()
+            {
+                ["reportTitle"] = "Izvještaj o prodaji knjiga",
+                ["book"] = "Knjiga",
+                ["author"] = "Autor",
+                ["date"] = "Datum",
+                ["qty"] = "Kol.",
+                ["price"] = "Cijena",
+                ["total"] = "Ukupno",
+                ["totalQty"] = "Ukupno prodano",
+                ["totalRevenue"] = "Ukupni prihod",
+                ["unit"] = "kom",
+                ["page"] = "Stranica",
+                ["of"] = "od",
+            },
+            ["en"] = new()
+            {
+                ["reportTitle"] = "Book Sales Report",
+                ["book"] = "Book",
+                ["author"] = "Author",
+                ["date"] = "Date",
+                ["qty"] = "Qty.",
+                ["price"] = "Price",
+                ["total"] = "Total",
+                ["totalQty"] = "Total sold",
+                ["totalRevenue"] = "Total revenue",
+                ["unit"] = "pcs",
+                ["page"] = "Page",
+                ["of"] = "of",
+            },
+        };
+
+        private string translatePdf(string lang, string key)
+        {
+            var l = _translations.ContainsKey(lang) ? lang : "bs";
+            return _translations[l].TryGetValue(key, out var val) ? val : key;
+        }
+
         public async Task<byte[]> Handle(GenerateBooksReportQuery request, CancellationToken ct)
         {
-
             QuestPDF.Settings.License = LicenseType.Community;
+
+            var lang = string.IsNullOrWhiteSpace(request.Language) ? "bs" : request.Language;
 
             var timeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
             var dateFromLocal = TimeZoneInfo.ConvertTimeFromUtc(request.DateFrom, timeZone);
@@ -56,7 +97,7 @@ namespace Market.Application.Modules.Reports.Books
                     page.Margin(2, QuestPDF.Infrastructure.Unit.Centimetre);
                     page.DefaultTextStyle(x => x.FontSize(11));
 
-                    page.Header().Text($"Izvještaj o prodaji knjiga: {dateFromLocal:dd.MM.yyyy} - {dateToLocal:dd.MM.yyyy}")
+                    page.Header().Text($"{translatePdf(lang, "reportTitle")}: {dateFromLocal:dd.MM.yyyy} - {dateToLocal:dd.MM.yyyy}")
                           .SemiBold().FontSize(16).FontColor(Colors.Green.Medium);
 
                     page.Content().Column(col =>
@@ -65,21 +106,19 @@ namespace Market.Application.Modules.Reports.Books
                         {
                             table.ColumnsDefinition(c =>
                             {
-                                c.RelativeColumn(3); // Knjiga
-                                c.RelativeColumn(2); // Autor
-                                c.RelativeColumn(2); // Datum
-                                c.ConstantColumn(40); // Kolicina
-                                c.RelativeColumn(2); // Cijena
-                                c.RelativeColumn(2); // Ukupno
+                                c.RelativeColumn(3);
+                                c.RelativeColumn(2);
+                                c.RelativeColumn(2);
+                                c.ConstantColumn(40);
+                                c.RelativeColumn(2);
+                                c.RelativeColumn(2);
                             });
 
                             table.Header(header =>
                             {
-                                foreach (var naziv in new[] { "Knjiga", "Autor", "Datum", "Kol.", "Cijena", "Ukupno" })
-                                {
+                                foreach (var naziv in new[] { translatePdf(lang,"book"), translatePdf(lang,"author"), translatePdf(lang,"date"), translatePdf(lang,"qty"), translatePdf(lang,"price"), translatePdf(lang,"total") })
                                     header.Cell().Background(Colors.Green.Medium).Padding(5)
                                         .Text(naziv).FontColor(Colors.White).SemiBold();
-                                }
                             });
 
                             foreach (var item in items)
@@ -95,15 +134,16 @@ namespace Market.Application.Modules.Reports.Books
 
                         col.Item().PaddingTop(20).BorderTop(1).PaddingTop(10).Row(row =>
                         {
-                            row.RelativeItem().Text($"Ukupno prodano: {ukupnoKolicina} kom").SemiBold();
-                            row.RelativeItem().AlignRight().Text($"Ukupni prihod: {ukupanPrihod:F2} KM").SemiBold();
+                            row.RelativeItem().Text($"{translatePdf(lang, "totalQty")}: {ukupnoKolicina} {translatePdf(lang, "unit")}").SemiBold();
+                            row.RelativeItem().AlignRight().Text($"{translatePdf(lang, "totalRevenue")}: {ukupanPrihod:F2} KM").SemiBold();
                         });
                     });
+
                     page.Footer().AlignCenter().Text(x =>
                     {
-                        x.Span("Stranica ");
+                        x.Span($"{translatePdf(lang, "page")} ");
                         x.CurrentPageNumber();
-                        x.Span(" od ");
+                        x.Span($" {translatePdf(lang, "of")} ");
                         x.TotalPages();
                     });
                 });

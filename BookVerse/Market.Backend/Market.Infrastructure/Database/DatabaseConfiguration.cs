@@ -55,7 +55,24 @@ public partial class DatabaseContext
             new { BooksId = 1, AuthorsId = 1 },
             new { BooksId = 2, AuthorsId = 2 },
             new { BooksId = 2, AuthorsId = 3 },
-            new { BooksId = 3, AuthorsId = 3 }
+            new { BooksId = 3, AuthorsId = 3 },
+            new { BooksId = 4, AuthorsId = 4 },
+            new { BooksId = 5, AuthorsId = 5 },
+            new { BooksId = 6, AuthorsId = 6 },
+            new { BooksId = 7, AuthorsId = 7 },
+            new { BooksId = 8, AuthorsId = 2 },
+            new { BooksId = 9, AuthorsId = 1 },
+            new { BooksId = 10, AuthorsId = 4 },
+            new { BooksId = 11, AuthorsId = 5 },
+            new { BooksId = 12, AuthorsId = 10 },
+            new { BooksId = 13, AuthorsId = 11 },
+            new { BooksId = 14, AuthorsId = 12 },
+            new { BooksId = 15, AuthorsId = 13 },
+            new { BooksId = 16, AuthorsId = 14},
+            new { BooksId = 17, AuthorsId = 15},
+            new { BooksId = 18, AuthorsId = 16 },
+            new { BooksId = 19, AuthorsId = 4 },
+            new { BooksId = 20, AuthorsId = 17 }
         ));
 
         modelBuilder.Entity<Books>().HasMany(c => c.Categories).WithMany(b => b.Books)
@@ -63,7 +80,26 @@ public partial class DatabaseContext
                 new { BooksId = 1, CategoriesId = 1 },
                 new { BooksId = 1, CategoriesId = 2 },
                 new { BooksId = 2, CategoriesId = 1 },
-                new { BooksId = 3, CategoriesId = 3 }
+                new { BooksId = 3, CategoriesId = 3 },
+                new { BooksId = 4, CategoriesId = 2 },
+                new { BooksId = 4, CategoriesId = 1 },
+                new { BooksId = 5, CategoriesId = 1 },
+                new { BooksId = 6, CategoriesId = 1 },
+                new { BooksId = 7, CategoriesId = 2 },
+                new { BooksId = 8, CategoriesId = 1 },
+                new { BooksId = 8, CategoriesId = 3 },
+                new { BooksId = 9, CategoriesId = 1 },
+                new { BooksId = 10, CategoriesId = 1 },
+                new { BooksId = 11, CategoriesId = 4 },
+                new { BooksId = 12, CategoriesId = 2 },
+                new { BooksId = 13, CategoriesId = 7 },
+                new { BooksId = 14, CategoriesId = 8 },
+                new { BooksId = 15, CategoriesId = 5 },
+                new { BooksId = 16, CategoriesId = 9 },
+                new { BooksId = 17, CategoriesId = 1 },
+                new { BooksId = 18, CategoriesId = 2 },
+                new { BooksId = 19, CategoriesId = 1 },
+                new { BooksId = 20, CategoriesId = 1 }
             ));
 
         modelBuilder.Entity<Review>().HasKey(x => new { x.BookId, x.UserId });

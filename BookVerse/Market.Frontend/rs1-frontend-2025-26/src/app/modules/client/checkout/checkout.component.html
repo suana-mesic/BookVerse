@@ -2,7 +2,6 @@
 
 <div class="checkout-page">
   <div class="checkout-wrapper">
-
     <a class="back-nav" (click)="goBack()">
       <mat-icon>arrow_back</mat-icon>
       <span>{{ 'CLIENT.CHECKOUT.BACK' | translate }}</span>
@@ -16,397 +15,485 @@
     </div>
 
     <div class="checkout-layout">
-    <div class="checkout-main">
-
-    <div class="stepper">
-      <div class="step" [class.active]="currentStep === 1" [class.completed]="currentStep > 1">
-        <div class="step-circle">
-          <mat-icon *ngIf="currentStep > 1">check</mat-icon>
-          <span *ngIf="currentStep <= 1">1</span>
-        </div>
-        <div class="step-label">
-          <span class="step-num">{{ 'CLIENT.CHECKOUT.STEP_1' | translate }}</span>
-          <span class="step-name">{{ 'CLIENT.CHECKOUT.ADDRESS_TITLE' | translate }}</span>
-        </div>
-      </div>
-      <div class="step-line" [class.completed]="currentStep > 1"></div>
-      <div class="step" [class.active]="currentStep === 2" [class.completed]="currentStep > 2">
-        <div class="step-circle">
-          <mat-icon *ngIf="currentStep > 2">check</mat-icon>
-          <span *ngIf="currentStep <= 2">2</span>
-        </div>
-        <div class="step-label">
-          <span class="step-num">{{ 'CLIENT.CHECKOUT.STEP_2' | translate }}</span>
-          <span class="step-name">{{ 'CLIENT.CHECKOUT.DELIVERY_TITLE' | translate }}</span>
-        </div>
-      </div>
-      <div class="step-line" [class.completed]="currentStep > 2"></div>
-      <div class="step" [class.active]="currentStep === 3">
-        <div class="step-circle">
-          <span>3</span>
-        </div>
-        <div class="step-label">
-          <span class="step-num">{{ 'CLIENT.CHECKOUT.STEP_3' | translate }}</span>
-          <span class="step-name">{{ 'CLIENT.CHECKOUT.REVIEW_TITLE' | translate }}</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- KORAK 1 — ADRESA -->
-    <div *ngIf="currentStep === 1" class="step-card">
-      <div class="step-card-header">
-        <div class="step-header-icon">
-          <mat-icon>location_on</mat-icon>
-        </div>
-        <div>
-          <h2>{{ 'CLIENT.CHECKOUT.ADDRESS_TITLE' | translate }}</h2>
-          <p>{{ 'CLIENT.CHECKOUT.ADDRESS_SUBTITLE' | translate }}</p>
-        </div>
-      </div>
-
-      <div class="step-card-body">
-        <div *ngIf="userAddress?.line1" class="radio-group">
-          <label class="radio-card" [class.selected]="useExistingAddress">
-            <input type="radio" [(ngModel)]="useExistingAddress" [value]="true" />
-            <div class="radio-card-content">
-              <div class="radio-card-icon"><mat-icon>home</mat-icon></div>
-              <div class="radio-card-info">
-                <strong>{{ 'CLIENT.CHECKOUT.MY_SAVED_ADDRESS' | translate }}</strong>
-                <p>{{ userAddress?.line1 }}</p>
-                <p *ngIf="userAddress?.line2">{{ userAddress?.line2 }}</p>
-                <p>{{ userAddress?.city }}, {{ userAddress?.country }}</p>
-              </div>
-              <div class="radio-check"><mat-icon>check_circle</mat-icon></div>
+      <div class="checkout-main">
+        <div class="stepper">
+          <div class="step" [class.active]="currentStep === 1" [class.completed]="currentStep > 1">
+            <div class="step-circle">
+              <mat-icon *ngIf="currentStep > 1">check</mat-icon>
+              <span *ngIf="currentStep <= 1">1</span>
             </div>
-          </label>
-
-          <label class="radio-card" [class.selected]="!useExistingAddress">
-            <input type="radio" [(ngModel)]="useExistingAddress" [value]="false" />
-            <div class="radio-card-content">
-              <div class="radio-card-icon"><mat-icon>add_location</mat-icon></div>
-              <div class="radio-card-info">
-                <strong>{{ 'CLIENT.CHECKOUT.NEW_ADDRESS' | translate }}</strong>
-                <p>{{ 'CLIENT.CHECKOUT.NEW_ADDRESS_SUBTITLE' | translate }}</p>
-              </div>
-              <div class="radio-check"><mat-icon>check_circle</mat-icon></div>
+            <div class="step-label">
+              <span class="step-num">{{ 'CLIENT.CHECKOUT.STEP_1' | translate }}</span>
+              <span class="step-name">{{ 'CLIENT.CHECKOUT.ADDRESS_TITLE' | translate }}</span>
             </div>
-          </label>
-        </div>
-
-        <form [formGroup]="addressForm" *ngIf="!useExistingAddress || !userAddress?.line1" class="address-form">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>{{ 'CLIENT.CHECKOUT.STREET' | translate }}</mat-label>
-            <mat-icon matPrefix>place</mat-icon>
-            <input matInput formControlName="line1" [placeholder]="'CLIENT.CHECKOUT.STREET_PLACEHOLDER' | translate" />
-            <mat-error *ngIf="addressForm.get('line1')?.hasError('required')">{{ 'CLIENT.CHECKOUT.STREET_REQUIRED' | translate }}</mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>{{ 'CLIENT.CHECKOUT.APARTMENT' | translate }}</mat-label>
-            <mat-icon matPrefix>apartment</mat-icon>
-            <input matInput formControlName="line2" />
-          </mat-form-field>
-
-          <div class="form-row">
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>{{ 'CLIENT.CHECKOUT.COUNTRY' | translate }}</mat-label>
-              <mat-icon matPrefix>flag</mat-icon>
-              <mat-select formControlName="country" (selectionChange)="onCountryChange($event.value)">
-                <mat-option *ngFor="let country of countries" [value]="country">{{ country }}</mat-option>
-              </mat-select>
-              <mat-error>{{ 'CLIENT.CHECKOUT.COUNTRY_REQUIRED' | translate }}</mat-error>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>{{ 'CLIENT.CHECKOUT.CITY' | translate }}</mat-label>
-              <mat-icon matPrefix>location_city</mat-icon>
-              <mat-select formControlName="city">
-                <mat-option *ngIf="loadingCities" disabled>{{ 'CLIENT.CHECKOUT.LOADING_CITIES' | translate }}</mat-option>
-                <mat-option *ngFor="let city of cities" [value]="city">{{ city }}</mat-option>
-              </mat-select>
-              <mat-error>{{ 'CLIENT.CHECKOUT.CITY_REQUIRED' | translate }}</mat-error>
-            </mat-form-field>
           </div>
-        </form>
-      </div>
-
-      <div class="step-card-footer">
-        <div></div>
-        <button mat-raised-button color="primary" class="btn-action" (click)="nextStep()" [disabled]="!isStep1Valid()">
-          {{ 'CLIENT.CHECKOUT.CONTINUE' | translate }}
-          <mat-icon>arrow_forward</mat-icon>
-        </button>
-      </div>
-    </div>
-
-    <!-- KORAK 2 — NAČIN DOSTAVE -->
-    <div *ngIf="currentStep === 2" class="step-card">
-      <div class="step-card-header">
-        <div class="step-header-icon">
-          <mat-icon>local_shipping</mat-icon>
-        </div>
-        <div>
-          <h2>{{ 'CLIENT.CHECKOUT.DELIVERY_TITLE' | translate }}</h2>
-          <p>{{ 'CLIENT.CHECKOUT.DELIVERY_SUBTITLE' | translate }}</p>
-        </div>
-      </div>
-
-      <div class="step-card-body">
-        <div class="radio-group">
-          <label class="radio-card" [class.selected]="deliveryType === 'shipping'" [class.unavailable]="!isBookAvailableForShipping()">
-            <input type="radio" [(ngModel)]="deliveryType" value="shipping" [disabled]="!isBookAvailableForShipping()" />
-            <div class="radio-card-content">
-              <div class="radio-card-icon"><mat-icon>local_shipping</mat-icon></div>
-              <div class="radio-card-info">
-                <strong>{{ 'CLIENT.CHECKOUT.SHIPPING' | translate }}</strong>
-                <p>{{ 'CLIENT.CHECKOUT.SHIPPING_SUBTITLE' | translate }}</p>
-                <p *ngIf="!isBookAvailableForShipping()" class="unavailable-text">
-                  ⚠️ {{ 'CLIENT.CHECKOUT.UNAVAILABLE_BOOKS' | translate }} {{ getUnavailableBooksForShipping().join(', ') }}
-                </p>
-              </div>
-              <div class="radio-check"><mat-icon>check_circle</mat-icon></div>
+          <div class="step-line" [class.completed]="currentStep > 1"></div>
+          <div class="step" [class.active]="currentStep === 2" [class.completed]="currentStep > 2">
+            <div class="step-circle">
+              <mat-icon *ngIf="currentStep > 2">check</mat-icon>
+              <span *ngIf="currentStep <= 2">2</span>
             </div>
-          </label>
-
-          <label class="radio-card" [class.selected]="deliveryType === 'pickup'">
-            <input type="radio" [(ngModel)]="deliveryType" value="pickup" />
-            <div class="radio-card-content">
-              <div class="radio-card-icon"><mat-icon>store</mat-icon></div>
-              <div class="radio-card-info">
-                <strong>{{ 'CLIENT.CHECKOUT.PICKUP' | translate }}</strong>
-                <p>{{ 'CLIENT.CHECKOUT.PICKUP_SUBTITLE' | translate }}</p>
-              </div>
-              <div class="radio-check"><mat-icon>check_circle</mat-icon></div>
+            <div class="step-label">
+              <span class="step-num">{{ 'CLIENT.CHECKOUT.STEP_2' | translate }}</span>
+              <span class="step-name">{{ 'CLIENT.CHECKOUT.DELIVERY_TITLE' | translate }}</span>
             </div>
-          </label>
-        </div>
-
-        <div *ngIf="deliveryType === 'shipping'" class="sub-section">
-          <div class="sub-section-title">
-            <mat-icon>storefront</mat-icon>
-            {{ 'CLIENT.CHECKOUT.SELECT_COURIER' | translate }}
           </div>
-          <div class="radio-group">
-            <label class="radio-card" *ngFor="let method of shippingMethods"
-              [class.selected]="selectedShippingMethodId === method.id"
-              [class.unavailable]="!isBookAvailableForShipping()">
-              <input type="radio" [(ngModel)]="selectedShippingMethodId" [value]="method.id" [disabled]="!isBookAvailableForShipping()" />
-              <div class="radio-card-content">
-                <div class="radio-card-icon"><mat-icon>delivery_dining</mat-icon></div>
-                <div class="radio-card-info">
-                  <strong>{{ method.name }}</strong>
-                  <p>{{ method.description }}</p>
-                </div>
-                <div class="shipping-price">{{ method.price | number: '1.2-2' : 'en' }} KM</div>
-                <div class="radio-check"><mat-icon>check_circle</mat-icon></div>
-              </div>
-            </label>
+          <div class="step-line" [class.completed]="currentStep > 2"></div>
+          <div class="step" [class.active]="currentStep === 3">
+            <div class="step-circle">
+              <span>3</span>
+            </div>
+            <div class="step-label">
+              <span class="step-num">{{ 'CLIENT.CHECKOUT.STEP_3' | translate }}</span>
+              <span class="step-name">{{ 'CLIENT.CHECKOUT.REVIEW_TITLE' | translate }}</span>
+            </div>
           </div>
         </div>
 
-        <div *ngIf="deliveryType === 'pickup'" class="sub-section">
-          <div class="sub-section-title">
-            <mat-icon>pin_drop</mat-icon>
-            {{ 'CLIENT.CHECKOUT.SELECT_STORE' | translate }}
-          </div>
-          <div class="radio-group">
-            <label class="radio-card" *ngFor="let store of stores"
-              [class.selected]="selectedStoreId === store.id"
-              [class.unavailable]="!isBookAvailableInStore(store.id)">
-              <input type="radio" [(ngModel)]="selectedStoreId" [value]="store.id" [disabled]="!isBookAvailableInStore(store.id)" />
-              <div class="radio-card-content">
-                <div class="radio-card-icon"><mat-icon>storefront</mat-icon></div>
-                <div class="radio-card-info">
-                  <strong>{{ store.storeName }}</strong>
-                  <p>{{ store.line1 }}, {{ store.city }}</p>
-                  <p>📞 {{ store.phone }}</p>
-                  <p>🕐 {{ store.openingHours }}</p>
-                  <p *ngIf="!isBookAvailableInStore(store.id)" class="unavailable-text">
-                    ⚠️ {{ 'CLIENT.CHECKOUT.UNAVAILABLE' | translate }} {{ getUnavailableBooksForStore(store.id).join(', ') }}
-                  </p>
-                </div>
-                <div class="radio-check"><mat-icon>check_circle</mat-icon></div>
-              </div>
-            </label>
-          </div>
-        </div>
-      </div>
-
-      <div class="step-card-footer">
-        <button mat-button class="btn-prev" (click)="prevStep()">
-          <mat-icon>arrow_back</mat-icon>
-          {{ 'CLIENT.CHECKOUT.BACK' | translate }}
-        </button>
-        <button mat-raised-button color="primary" class="btn-action" (click)="nextStep()" [disabled]="!isStep2Valid()">
-          {{ 'CLIENT.CHECKOUT.CONTINUE' | translate }}
-          <mat-icon>arrow_forward</mat-icon>
-        </button>
-      </div>
-    </div>
-
-    <!-- KORAK 3 — PREGLED -->
-    <div *ngIf="currentStep === 3" class="step-card">
-      <div class="step-card-header">
-        <div class="step-header-icon">
-          <mat-icon>receipt_long</mat-icon>
-        </div>
-        <div>
-          <h2>{{ 'CLIENT.CHECKOUT.REVIEW_TITLE' | translate }}</h2>
-          <p>{{ 'CLIENT.CHECKOUT.REVIEW_SUBTITLE' | translate }}</p>
-        </div>
-      </div>
-
-      <div class="step-card-body">
-
-        <div class="review-grid">
-          <div class="review-block">
-            <div class="review-block-title">
+        <!-- KORAK 1 — ADRESA -->
+        <div *ngIf="currentStep === 1" class="step-card">
+          <div class="step-card-header">
+            <div class="step-header-icon">
               <mat-icon>location_on</mat-icon>
-              <span>{{ 'CLIENT.CHECKOUT.ADDRESS_TITLE' | translate }}</span>
             </div>
-            <div class="review-block-content">
-              <p>{{ getDeliveryAddress()?.line1 }}</p>
-              <p *ngIf="getDeliveryAddress()?.line2">{{ getDeliveryAddress()?.line2 }}</p>
-              <p>{{ getDeliveryAddress()?.city }}, {{ getDeliveryAddress()?.country }}</p>
+            <div>
+              <h2>{{ 'CLIENT.CHECKOUT.ADDRESS_TITLE' | translate }}</h2>
+              <p>{{ 'CLIENT.CHECKOUT.ADDRESS_SUBTITLE' | translate }}</p>
             </div>
           </div>
 
-          <div class="review-block">
-            <div class="review-block-title">
-              <mat-icon>local_shipping</mat-icon>
-              <span>{{ 'CLIENT.CHECKOUT.DELIVERY_TITLE' | translate }}</span>
-            </div>
-            <div class="review-block-content">
-              <div *ngIf="deliveryType === 'shipping'">
-                <p><strong>{{ getSelectedShippingMethod()?.name }}</strong></p>
-                <p>{{ 'CLIENT.CHECKOUT.SHIPPING_PRICE' | translate }} {{ getSelectedShippingMethod()?.price | number: '1.2-2' : 'en' }} KM</p>
-              </div>
-              <div *ngIf="deliveryType === 'pickup'">
-                <p><strong>{{ getSelectedStore()?.storeName }}</strong></p>
-                <p>{{ getSelectedStore()?.line1 }}, {{ getSelectedStore()?.city }}</p>
-              </div>
-            </div>
-          </div>
-        </div>
+          <div class="step-card-body">
+            <div *ngIf="userAddress?.line1" class="radio-group">
+              <label class="radio-card" [class.selected]="useExistingAddress">
+                <input type="radio" [(ngModel)]="useExistingAddress" [value]="true" />
+                <div class="radio-card-content">
+                  <div class="radio-card-icon"><mat-icon>home</mat-icon></div>
+                  <div class="radio-card-info">
+                    <strong>{{ 'CLIENT.CHECKOUT.MY_SAVED_ADDRESS' | translate }}</strong>
+                    <p>{{ userAddress?.line1 }}</p>
+                    <p *ngIf="userAddress?.line2">{{ userAddress?.line2 }}</p>
+                    <p>{{ userAddress?.city }}, {{ userAddress?.country }}</p>
+                  </div>
+                  <div class="radio-check"><mat-icon>check_circle</mat-icon></div>
+                </div>
+              </label>
 
-        <div class="coupon-section">
-          <div class="coupon-section-title">
-            <mat-icon>local_offer</mat-icon>
-            <span>{{ 'CLIENT.CHECKOUT.COUPON_TITLE' | translate }}</span>
+              <label class="radio-card" [class.selected]="!useExistingAddress">
+                <input type="radio" [(ngModel)]="useExistingAddress" [value]="false" />
+                <div class="radio-card-content">
+                  <div class="radio-card-icon"><mat-icon>add_location</mat-icon></div>
+                  <div class="radio-card-info">
+                    <strong>{{ 'CLIENT.CHECKOUT.NEW_ADDRESS' | translate }}</strong>
+                    <p>{{ 'CLIENT.CHECKOUT.NEW_ADDRESS_SUBTITLE' | translate }}</p>
+                  </div>
+                  <div class="radio-check"><mat-icon>check_circle</mat-icon></div>
+                </div>
+              </label>
+            </div>
+
+            <form
+              [formGroup]="addressForm"
+              *ngIf="!useExistingAddress || !userAddress?.line1"
+              class="address-form"
+            >
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>{{ 'CLIENT.CHECKOUT.STREET' | translate }}</mat-label>
+                <mat-icon matPrefix>place</mat-icon>
+                <input
+                  matInput
+                  formControlName="line1"
+                  [placeholder]="'CLIENT.CHECKOUT.STREET_PLACEHOLDER' | translate"
+                />
+                <mat-error *ngIf="addressForm.get('line1')?.hasError('required')">{{
+                  'CLIENT.CHECKOUT.STREET_REQUIRED' | translate
+                }}</mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>{{ 'CLIENT.CHECKOUT.APARTMENT' | translate }}</mat-label>
+                <mat-icon matPrefix>apartment</mat-icon>
+                <input matInput formControlName="line2" />
+              </mat-form-field>
+
+              <div class="form-row">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>{{ 'CLIENT.CHECKOUT.COUNTRY' | translate }}</mat-label>
+                  <mat-icon matPrefix>flag</mat-icon>
+                  <mat-select
+                    formControlName="country"
+                    (selectionChange)="onCountryChange($event.value)"
+                  >
+                    <mat-option *ngFor="let country of countries" [value]="country">
+                      {{ country.name }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error>{{ 'CLIENT.CHECKOUT.COUNTRY_REQUIRED' | translate }}</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>{{ 'CLIENT.CHECKOUT.CITY' | translate }}</mat-label>
+                  <mat-icon matPrefix>location_city</mat-icon>
+                  <mat-select formControlName="city">
+                    <mat-option *ngIf="loadingCities" disabled>{{
+                      'CLIENT.CHECKOUT.LOADING_CITIES' | translate
+                    }}</mat-option>
+                    <mat-option *ngFor="let city of cities" [value]="city">{{ city }}</mat-option>
+                  </mat-select>
+                  <mat-error>{{ 'CLIENT.CHECKOUT.CITY_REQUIRED' | translate }}</mat-error>
+                </mat-form-field>
+              </div>
+            </form>
           </div>
-          <div class="coupon-input">
-            <mat-form-field appearance="outline" class="coupon-field">
-              <mat-label>{{ 'CLIENT.CHECKOUT.COUPON_LABEL' | translate }}</mat-label>
-              <mat-icon matPrefix>confirmation_number</mat-icon>
-              <input matInput [formControl]="uneseniKupon" [placeholder]="'CLIENT.CHECKOUT.COUPON_PLACEHOLDER' | translate" />
-              @if (uneseniKupon.pending) {
-                <mat-hint>{{ 'CLIENT.CHECKOUT.CHECKING_COUPON' | translate }}</mat-hint>
-              }
-              @if (uneseniKupon.hasError('kuponNePostoji')) {
-                <mat-error>{{ 'CLIENT.CHECKOUT.COUPON_INVALID' | translate }}</mat-error>
-              }
-            </mat-form-field>
-            <button mat-raised-button color="accent" class="btn-coupon"
-              (click)="applyCoupon()"
-              [disabled]="!uneseniKupon.valid || !uneseniKupon.value || uneseniKupon.pending">
-              <mat-icon>add</mat-icon>
-              {{ 'CLIENT.CHECKOUT.APPLY_COUPON' | translate }}
+
+          <div class="step-card-footer">
+            <div></div>
+            <button
+              mat-raised-button
+              color="primary"
+              class="btn-action"
+              (click)="nextStep()"
+              [disabled]="!isStep1Valid()"
+            >
+              {{ 'CLIENT.CHECKOUT.CONTINUE' | translate }}
+              <mat-icon>arrow_forward</mat-icon>
             </button>
           </div>
+        </div>
 
-          <div class="applied-coupons">
-            <div *ngFor="let coupon of appliedCoupons" class="applied-coupon">
-              <mat-icon>local_offer</mat-icon>
-              <span class="coupon-name">{{ coupon.name }}</span>
-              <span class="coupon-discount">
-                <ng-container *ngIf="coupon.amountOff">- {{ coupon.amountOff | number: '1.2-2' : 'en' }} KM</ng-container>
-                <ng-container *ngIf="coupon.percentOff">- {{ coupon.percentOff }}%</ng-container>
-              </span>
-              <button mat-icon-button color="warn" (click)="removeCoupon(coupon.id)">
-                <mat-icon>close</mat-icon>
-              </button>
+        <!-- KORAK 2 — NAČIN DOSTAVE -->
+        <div *ngIf="currentStep === 2" class="step-card">
+          <div class="step-card-header">
+            <div class="step-header-icon">
+              <mat-icon>local_shipping</mat-icon>
+            </div>
+            <div>
+              <h2>{{ 'CLIENT.CHECKOUT.DELIVERY_TITLE' | translate }}</h2>
+              <p>{{ 'CLIENT.CHECKOUT.DELIVERY_SUBTITLE' | translate }}</p>
+            </div>
+          </div>
+
+          <div class="step-card-body">
+            <div class="radio-group">
+              <label
+                class="radio-card"
+                [class.selected]="deliveryType === 'shipping'"
+                [class.unavailable]="!isBookAvailableForShipping()"
+              >
+                <input
+                  type="radio"
+                  [(ngModel)]="deliveryType"
+                  value="shipping"
+                  [disabled]="!isBookAvailableForShipping()"
+                />
+                <div class="radio-card-content">
+                  <div class="radio-card-icon"><mat-icon>local_shipping</mat-icon></div>
+                  <div class="radio-card-info">
+                    <strong>{{ 'CLIENT.CHECKOUT.SHIPPING' | translate }}</strong>
+                    <p>{{ 'CLIENT.CHECKOUT.SHIPPING_SUBTITLE' | translate }}</p>
+                    <p *ngIf="!isBookAvailableForShipping()" class="unavailable-text">
+                      ⚠️ {{ 'CLIENT.CHECKOUT.UNAVAILABLE_BOOKS' | translate }}
+                      {{ getUnavailableBooksForShipping().join(', ') }}
+                    </p>
+                  </div>
+                  <div class="radio-check"><mat-icon>check_circle</mat-icon></div>
+                </div>
+              </label>
+
+              <label class="radio-card" [class.selected]="deliveryType === 'pickup'">
+                <input type="radio" [(ngModel)]="deliveryType" value="pickup" />
+                <div class="radio-card-content">
+                  <div class="radio-card-icon"><mat-icon>store</mat-icon></div>
+                  <div class="radio-card-info">
+                    <strong>{{ 'CLIENT.CHECKOUT.PICKUP' | translate }}</strong>
+                    <p>{{ 'CLIENT.CHECKOUT.PICKUP_SUBTITLE' | translate }}</p>
+                  </div>
+                  <div class="radio-check"><mat-icon>check_circle</mat-icon></div>
+                </div>
+              </label>
+            </div>
+
+            <div *ngIf="deliveryType === 'shipping'" class="sub-section">
+              <div class="sub-section-title">
+                <mat-icon>storefront</mat-icon>
+                {{ 'CLIENT.CHECKOUT.SELECT_COURIER' | translate }}
+              </div>
+              <div class="radio-group">
+                <label
+                  class="radio-card"
+                  *ngFor="let method of shippingMethods"
+                  [class.selected]="selectedShippingMethodId === method.id"
+                  [class.unavailable]="!isBookAvailableForShipping()"
+                >
+                  <input
+                    type="radio"
+                    [(ngModel)]="selectedShippingMethodId"
+                    [value]="method.id"
+                    [disabled]="!isBookAvailableForShipping()"
+                  />
+                  <div class="radio-card-content">
+                    <div class="radio-card-icon"><mat-icon>delivery_dining</mat-icon></div>
+                    <div class="radio-card-info">
+                      <strong>{{ method.name }}</strong>
+                      <p>{{ method.description }}</p>
+                    </div>
+                    <div class="shipping-price">{{ method.price | number: '1.2-2' : 'en' }} KM</div>
+                    <div class="radio-check"><mat-icon>check_circle</mat-icon></div>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <div *ngIf="deliveryType === 'pickup'" class="sub-section">
+              <div class="sub-section-title">
+                <mat-icon>pin_drop</mat-icon>
+                {{ 'CLIENT.CHECKOUT.SELECT_STORE' | translate }}
+              </div>
+              <div class="radio-group">
+                <label
+                  class="radio-card"
+                  *ngFor="let store of stores"
+                  [class.selected]="selectedStoreId === store.id"
+                  [class.unavailable]="!isBookAvailableInStore(store.id)"
+                >
+                  <input
+                    type="radio"
+                    [(ngModel)]="selectedStoreId"
+                    [value]="store.id"
+                    [disabled]="!isBookAvailableInStore(store.id)"
+                  />
+                  <div class="radio-card-content">
+                    <div class="radio-card-icon"><mat-icon>storefront</mat-icon></div>
+                    <div class="radio-card-info">
+                      <strong>{{ store.storeName }}</strong>
+                      <p>{{ store.line1 }}, {{ store.city }}</p>
+                      <p>📞 {{ store.phone }}</p>
+                      <p>🕐 {{ store.openingHours }}</p>
+                      <p *ngIf="!isBookAvailableInStore(store.id)" class="unavailable-text">
+                        ⚠️ {{ 'CLIENT.CHECKOUT.UNAVAILABLE' | translate }}
+                        {{ getUnavailableBooksForStore(store.id).join(', ') }}
+                      </p>
+                    </div>
+                    <div class="radio-check"><mat-icon>check_circle</mat-icon></div>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-card-footer">
+            <button mat-button class="btn-prev" (click)="prevStep()">
+              <mat-icon>arrow_back</mat-icon>
+              {{ 'CLIENT.CHECKOUT.BACK' | translate }}
+            </button>
+            <button
+              mat-raised-button
+              color="primary"
+              class="btn-action"
+              (click)="nextStep()"
+              [disabled]="!isStep2Valid()"
+            >
+              {{ 'CLIENT.CHECKOUT.CONTINUE' | translate }}
+              <mat-icon>arrow_forward</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <!-- KORAK 3 — PREGLED -->
+        <div *ngIf="currentStep === 3" class="step-card">
+          <div class="step-card-header">
+            <div class="step-header-icon">
+              <mat-icon>receipt_long</mat-icon>
+            </div>
+            <div>
+              <h2>{{ 'CLIENT.CHECKOUT.REVIEW_TITLE' | translate }}</h2>
+              <p>{{ 'CLIENT.CHECKOUT.REVIEW_SUBTITLE' | translate }}</p>
+            </div>
+          </div>
+
+          <div class="step-card-body">
+            <div class="review-grid">
+              <div class="review-block">
+                <div class="review-block-title">
+                  <mat-icon>location_on</mat-icon>
+                  <span>{{ 'CLIENT.CHECKOUT.ADDRESS_TITLE' | translate }}</span>
+                </div>
+                <div class="review-block-content">
+                  <p>{{ getDeliveryAddress()?.line1 }}</p>
+                  <p *ngIf="getDeliveryAddress()?.line2">{{ getDeliveryAddress()?.line2 }}</p>
+                  <p>{{ getDeliveryAddress()?.city }}, {{ getDeliveryAddress()?.country }}</p>
+                </div>
+              </div>
+
+              <div class="review-block">
+                <div class="review-block-title">
+                  <mat-icon>local_shipping</mat-icon>
+                  <span>{{ 'CLIENT.CHECKOUT.DELIVERY_TITLE' | translate }}</span>
+                </div>
+                <div class="review-block-content">
+                  <div *ngIf="deliveryType === 'shipping'">
+                    <p>
+                      <strong>{{ getSelectedShippingMethod()?.name }}</strong>
+                    </p>
+                    <p>
+                      {{ 'CLIENT.CHECKOUT.SHIPPING_PRICE' | translate }}
+                      {{ getSelectedShippingMethod()?.price | number: '1.2-2' : 'en' }} KM
+                    </p>
+                  </div>
+                  <div *ngIf="deliveryType === 'pickup'">
+                    <p>
+                      <strong>{{ getSelectedStore()?.storeName }}</strong>
+                    </p>
+                    <p>{{ getSelectedStore()?.line1 }}, {{ getSelectedStore()?.city }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="coupon-section">
+              <div class="coupon-section-title">
+                <mat-icon>local_offer</mat-icon>
+                <span>{{ 'CLIENT.CHECKOUT.COUPON_TITLE' | translate }}</span>
+              </div>
+              <div class="coupon-input">
+                <mat-form-field appearance="outline" class="coupon-field">
+                  <mat-label>{{ 'CLIENT.CHECKOUT.COUPON_LABEL' | translate }}</mat-label>
+                  <mat-icon matPrefix>confirmation_number</mat-icon>
+                  <input
+                    matInput
+                    [formControl]="uneseniKupon"
+                    [placeholder]="'CLIENT.CHECKOUT.COUPON_PLACEHOLDER' | translate"
+                  />
+                  @if (uneseniKupon.pending) {
+                    <mat-hint>{{ 'CLIENT.CHECKOUT.CHECKING_COUPON' | translate }}</mat-hint>
+                  }
+                  @if (uneseniKupon.hasError('kuponNePostoji')) {
+                    <mat-error>{{ 'CLIENT.CHECKOUT.COUPON_INVALID' | translate }}</mat-error>
+                  }
+                </mat-form-field>
+                <button
+                  mat-raised-button
+                  color="accent"
+                  class="btn-coupon"
+                  (click)="applyCoupon()"
+                  [disabled]="!uneseniKupon.valid || !uneseniKupon.value || uneseniKupon.pending"
+                >
+                  <mat-icon>add</mat-icon>
+                  {{ 'CLIENT.CHECKOUT.APPLY_COUPON' | translate }}
+                </button>
+              </div>
+
+              <div class="applied-coupons">
+                <div *ngFor="let coupon of appliedCoupons" class="applied-coupon">
+                  <mat-icon>local_offer</mat-icon>
+                  <span class="coupon-name">{{ coupon.name }}</span>
+                  <span class="coupon-discount">
+                    <ng-container *ngIf="coupon.amountOff"
+                      >- {{ coupon.amountOff | number: '1.2-2' : 'en' }} KM</ng-container
+                    >
+                    <ng-container *ngIf="coupon.percentOff"
+                      >- {{ coupon.percentOff }}%</ng-container
+                    >
+                  </span>
+                  <button mat-icon-button color="warn" (click)="removeCoupon(coupon.id)">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="price-summary">
+              <div class="price-summary-title">
+                <mat-icon>receipt</mat-icon>
+                <span>{{ 'CLIENT.CHECKOUT.PRICE_REVIEW' | translate }}</span>
+              </div>
+              <div class="price-rows">
+                <div class="price-row">
+                  <span>{{ 'CLIENT.CHECKOUT.PRODUCTS_PRICE' | translate }}</span>
+                  <strong>{{ cart.totalPrice | number: '1.2-2' : 'en' }} KM</strong>
+                </div>
+                <div
+                  class="price-row"
+                  *ngIf="deliveryType === 'shipping' && getSelectedShippingMethod()"
+                >
+                  <span
+                    >{{ 'CLIENT.CHECKOUT.DELIVERY_PRICE' | translate }} ({{
+                      getSelectedShippingMethod()?.name
+                    }})</span
+                  >
+                  <strong
+                    >{{ getSelectedShippingMethod()?.price | number: '1.2-2' : 'en' }} KM</strong
+                  >
+                </div>
+                <div class="price-row" *ngIf="deliveryType === 'pickup'">
+                  <span>{{ 'CLIENT.CHECKOUT.DELIVERY_PRICE' | translate }}</span>
+                  <strong class="free">{{ 'CLIENT.CHECKOUT.FREE' | translate }}</strong>
+                </div>
+                <div class="price-row discount" *ngIf="appliedCoupons.length > 0">
+                  <span>{{ 'CLIENT.CHECKOUT.DISCOUNT' | translate }}</span>
+                  <strong
+                    >- {{ getDiscountAmount(cart.totalPrice) | number: '1.2-2' : 'en' }} KM</strong
+                  >
+                </div>
+                <div class="price-divider"></div>
+                <div class="price-row total">
+                  <span>{{ 'CLIENT.CHECKOUT.TOTAL_TO_PAY' | translate }}</span>
+                  <strong>{{ getFinalPrice() | number: '1.2-2' : 'en' }} KM</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-card-footer">
+            <button mat-button class="btn-prev" (click)="prevStep()">
+              <mat-icon>arrow_back</mat-icon>
+              {{ 'CLIENT.CHECKOUT.BACK' | translate }}
+            </button>
+            <button
+              mat-raised-button
+              color="primary"
+              class="btn-action"
+              (click)="proceedToPayment()"
+            >
+              <mat-icon>lock</mat-icon>
+              {{ 'CLIENT.CHECKOUT.CONFIRM_AND_PAY' | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ORDER SUMMARY SIDEBAR -->
+      <aside class="order-sidebar">
+        <div class="sidebar-header">
+          <mat-icon>shopping_cart</mat-icon>
+          <span>{{ 'CLIENT.CHECKOUT.YOUR_ORDER' | translate }}</span>
+          <span class="items-count">{{ cart.activeItems.length }}</span>
+        </div>
+
+        <div class="sidebar-items">
+          <div class="sidebar-item" *ngFor="let item of cart.activeItems">
+            <div class="item-image">
+              <img *ngIf="item.imageUrl" [src]="item.imageUrl" [alt]="item.bookTitle" />
+              <div *ngIf="!item.imageUrl" class="item-image-placeholder">
+                <mat-icon>menu_book</mat-icon>
+              </div>
+            </div>
+            <div class="item-details">
+              <span class="item-title">{{ item.bookTitle }}</span>
+              <span class="item-qty"
+                >{{ 'CLIENT.CHECKOUT.QUANTITY' | translate }} {{ item.quantity }}</span
+              >
+              <span class="item-price">{{ item.subtotal | number: '1.2-2' : 'en' }} KM</span>
             </div>
           </div>
         </div>
 
-        <div class="price-summary">
-          <div class="price-summary-title">
-            <mat-icon>receipt</mat-icon>
-            <span>{{ 'CLIENT.CHECKOUT.PRICE_REVIEW' | translate }}</span>
-          </div>
-          <div class="price-rows">
-            <div class="price-row">
-              <span>{{ 'CLIENT.CHECKOUT.PRODUCTS_PRICE' | translate }}</span>
-              <strong>{{ cart.totalPrice | number: '1.2-2' : 'en' }} KM</strong>
-            </div>
-            <div class="price-row" *ngIf="deliveryType === 'shipping' && getSelectedShippingMethod()">
-              <span>{{ 'CLIENT.CHECKOUT.DELIVERY_PRICE' | translate }} ({{ getSelectedShippingMethod()?.name }})</span>
-              <strong>{{ getSelectedShippingMethod()?.price | number: '1.2-2' : 'en' }} KM</strong>
-            </div>
-            <div class="price-row" *ngIf="deliveryType === 'pickup'">
-              <span>{{ 'CLIENT.CHECKOUT.DELIVERY_PRICE' | translate }}</span>
-              <strong class="free">{{ 'CLIENT.CHECKOUT.FREE' | translate }}</strong>
-            </div>
-            <div class="price-row discount" *ngIf="appliedCoupons.length > 0">
-              <span>{{ 'CLIENT.CHECKOUT.DISCOUNT' | translate }}</span>
-              <strong>- {{ getDiscountAmount(cart.totalPrice) | number: '1.2-2' : 'en' }} KM</strong>
-            </div>
-            <div class="price-divider"></div>
-            <div class="price-row total">
-              <span>{{ 'CLIENT.CHECKOUT.TOTAL_TO_PAY' | translate }}</span>
-              <strong>{{ getFinalPrice() | number: '1.2-2' : 'en' }} KM</strong>
-            </div>
+        <div class="sidebar-total">
+          <div class="sidebar-total-row">
+            <span>{{ 'CLIENT.CHECKOUT.SUBTOTAL' | translate }}</span>
+            <strong>{{ cart.totalPrice | number: '1.2-2' : 'en' }} KM</strong>
           </div>
         </div>
-
-      </div>
-
-      <div class="step-card-footer">
-        <button mat-button class="btn-prev" (click)="prevStep()">
-          <mat-icon>arrow_back</mat-icon>
-          {{ 'CLIENT.CHECKOUT.BACK' | translate }}
-        </button>
-        <button mat-raised-button color="primary" class="btn-confirm" (click)="proceedToPayment()">
-          <mat-icon>lock</mat-icon>
-          {{ 'CLIENT.CHECKOUT.CONFIRM_AND_PAY' | translate }}
-        </button>
-      </div>
-    </div>
-
-    </div>
-
-    <!-- ORDER SUMMARY SIDEBAR -->
-    <aside class="order-sidebar">
-      <div class="sidebar-header">
-        <mat-icon>shopping_cart</mat-icon>
-        <span>{{ 'CLIENT.CHECKOUT.YOUR_ORDER' | translate }}</span>
-        <span class="items-count">{{ cart.activeItems.length }}</span>
-      </div>
-
-      <div class="sidebar-items">
-        <div class="sidebar-item" *ngFor="let item of cart.activeItems">
-          <div class="item-image">
-            <img *ngIf="item.imageUrl" [src]="item.imageUrl" [alt]="item.bookTitle" />
-            <div *ngIf="!item.imageUrl" class="item-image-placeholder">
-              <mat-icon>menu_book</mat-icon>
-            </div>
-          </div>
-          <div class="item-details">
-            <span class="item-title">{{ item.bookTitle }}</span>
-            <span class="item-qty">{{ 'CLIENT.CHECKOUT.QUANTITY' | translate }} {{ item.quantity }}</span>
-            <span class="item-price">{{ item.subtotal | number: '1.2-2' : 'en' }} KM</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="sidebar-total">
-        <div class="sidebar-total-row">
-          <span>{{ 'CLIENT.CHECKOUT.TOTAL' | translate }}</span>
-          <strong>{{ cart.totalPrice | number: '1.2-2' : 'en' }} KM</strong>
-        </div>
-      </div>
-    </aside>
-
+      </aside>
     </div>
   </div>
 </div>

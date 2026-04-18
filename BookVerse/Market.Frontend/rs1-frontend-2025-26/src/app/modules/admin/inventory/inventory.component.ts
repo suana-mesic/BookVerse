@@ -1,45 +1,29 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable, Subject } from 'rxjs';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-  map,
-  startWith,
-  takeUntil,
-} from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, startWith, takeUntil } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { BaseListPagedComponent } from '../../../core/components/base-classes/base-list-paged-component';
-import {
-  ListOrdersQueryDto,
-  ListOrdersRequest,
-  OrderStatusType,
-} from '../../../api-services/orders/orders-api.models';
+import { ListOrdersQueryDto } from '../../../api-services/orders/orders-api.models';
 import { ToasterService } from '../../../core/services/toaster.service';
-import { OrderStatusHelper } from '../../../api-services/orders/order-status.helper';
 import { ChangeStatusDialogComponent } from '../orders/change-status-dialog/change-status-dialog.component';
 import {
   ListInventoryQueryDto,
   ListInventoryRequest,
 } from '../../../api-services/inventory/inventory-api.model';
 import { InventoryApiService } from '../../../api-services/inventory/inventory-api.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { DialogHelperService } from '../../shared/services/dialog-helper.service';
 import { DialogButton } from '../../shared/models/dialog-config.model';
 import { TranslateService } from '@ngx-translate/core';
 import { BooksApiService } from '../../../api-services/books/books-api.service';
 import { StoresApiService } from '../../../api-services/stores/stores-api.service';
-import {
-  ListBooksForAutocompleteQueryDto,
-  ListBooksQueryDto,
-  ListBooksRequest,
-} from '../../../api-services/books/books-api.models';
+import { ListBooksForAutocompleteQueryDto } from '../../../api-services/books/books-api.models';
 import {
   ListStoresQueryDto,
   ListStoresRequest,
 } from '../../../api-services/stores/stores-api.model';
-import { ListBookFormatsRequest } from '../../../api-services/book-formats/book-format-api.model';
+import { AuthFacadeService } from '../../core/services/auth/auth-facade.service';
 
 @Component({
   selector: 'app-admin-orders',
@@ -57,11 +41,11 @@ export class InventoryComponent
   private destroy$ = new Subject<void>();
   private globalCounter: number = 0;
   private router = inject(Router);
-  private route = inject(ActivatedRoute);
   private dialogHelper = inject(DialogHelperService);
   private booksApi = inject(BooksApiService);
   private storesApi = inject(StoresApiService);
   private translate = inject(TranslateService);
+  auth = inject(AuthFacadeService);
 
   // Table columns
   displayedColumns: string[] = [

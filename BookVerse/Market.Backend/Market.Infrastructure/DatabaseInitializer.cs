@@ -28,7 +28,7 @@ public static class DatabaseInitializer
 
         if (env.IsDevelopment())
         {
-           // await DynamicDataSeeder.SeedAsync(ctx);
+            await DynamicDataSeeder.SeedAsync(ctx);
         }
     }
 }

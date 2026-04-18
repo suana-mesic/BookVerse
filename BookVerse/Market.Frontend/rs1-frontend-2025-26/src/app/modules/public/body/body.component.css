@@ -28,7 +28,7 @@ h4 {
 /* --------------------------------------------- */
 
 body {
-  background-color: #fff;
+  background-color: transparent;
   height: 100vh;
   padding: 0 8rem;
 }
@@ -40,7 +40,7 @@ body h1 {
 .body__books {
   display: grid;
   width: 1680px;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   grid-template-rows: repeat(3, 1fr);
   justify-content: space-between;
   align-items: center;
@@ -53,7 +53,6 @@ body h1 {
   align-items: center;
   margin: 0 0 1rem 0;
   padding-bottom: 1rem;
-  border-bottom: 1px solid #555;
 }
 
 .body__page-size {
@@ -105,4 +104,13 @@ body h1 {
 
 .body__pages div:hover {
   cursor: pointer;
+}
+
+:host ::ng-deep .paginator-container {
+  background: #FAF9FD;
+  border-top: none;
+}
+
+:host-context(.dark-theme) ::ng-deep .paginator-container {
+  border-top: none;
 }

@@ -2,15 +2,15 @@ import { Component, OnDestroy, OnInit, effect, inject, signal, untracked } from 
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { SignalRService, OrderStatusNotification } from './core/services/signal-r/signal-r.service';
-import { AuthFacadeService } from './modules/core/services/auth/auth-facade.service';
 import { ToasterService } from './modules/core/services/toaster.service';
 import { OrderStatusHelper } from './api-services/orders/order-status.helper';
+import { AuthFacadeService } from './modules/core/services/auth/auth-facade.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   standalone: false,
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit, OnDestroy {
   protected readonly title = signal('rs1-frontend-2025-26');
@@ -36,7 +36,7 @@ export class AppComponent implements OnInit, OnDestroy {
       error: (error) => {
         console.error('Error loading translations:', error);
         console.error('Check if files exist at: /i18n/' + savedLang + '.json');
-      }
+      },
     });
 
     effect(() => {
@@ -60,7 +60,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const savedSettings = localStorage.getItem('userSettings');
+    const savedSettings =
+      localStorage.getItem('userSettings') || localStorage.getItem('adminSettings');
     if (savedSettings) {
       const settings = JSON.parse(savedSettings);
       if (settings.theme === 'dark') {
@@ -88,9 +89,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
         const statusKey = OrderStatusHelper.getLabel(notification.newStatus);
         const statusLabel = this.translate.instant(statusKey);
-        const message = this.translate.instant('NOTIFICATIONS.ORDER_STATUS_CHANGED', { status: statusLabel });
+        const message = this.translate.instant('NOTIFICATIONS.ORDER_STATUS_CHANGED', {
+          status: statusLabel,
+        });
         this.toaster.info(message);
-      }
+      },
     );
   }
 
@@ -109,7 +112,7 @@ export class AppComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error('Error switching language:', error);
-      }
+      },
     });
   }
 

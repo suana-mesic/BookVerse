@@ -98,7 +98,7 @@
             [checked]="category.isEnabled"
             (change)="onToggleStatus(category)"
             color="primary"
-            [disabled]="isLoading"
+            [disabled]="isLoading || auth.isEmployee() || auth.isManager()"
             class="status-toggle"
           >
             <span class="status-label" [class.enabled]="category.isEnabled">
@@ -131,15 +131,17 @@
             >
               <mat-icon>edit</mat-icon>
             </button>
-            <button
-              mat-icon-button
-              color="warn"
-              (click)="onDelete(category)"
-              [matTooltip]="'GENRES.ACTIONS.DELETE_TOOLTIP' | translate"
-              class="action-btn delete-btn"
-            >
-              <mat-icon>delete</mat-icon>
-            </button>
+            @if (!auth.isEmployee() && !auth.isManager()) {
+              <button
+                mat-icon-button
+                color="warn"
+                (click)="onDelete(category)"
+                [matTooltip]="'GENRES.ACTIONS.DELETE_TOOLTIP' | translate"
+                class="action-btn delete-btn"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            }
           </div>
         </td>
       </ng-container>

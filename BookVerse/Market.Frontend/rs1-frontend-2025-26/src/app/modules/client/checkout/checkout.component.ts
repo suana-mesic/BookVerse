@@ -71,7 +71,7 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
     country: ['', Validators.required],
   });
 
-  countries: string[] = [];
+  countries: { name: string; countryCode: string; nameBs: string }[] = [];
   cities: string[] = [];
   loadingCities = false;
 
@@ -129,20 +129,20 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
     });
   }
 
-  public onCountryChange(country: string) {
+  public onCountryChange(country: { name: string; countryCode: string }) {
     this.addressForm.get('city')?.reset();
     this.addressForm.get('city')?.disable();
     this.cities = [];
 
     if (country) {
       this.loadingCities = true;
-      this.countriesService.getCitiesByCountry(country).subscribe({
+      this.countriesService.getCitiesByCountry(country.countryCode).subscribe({
         next: (cities) => {
           this.cities = cities;
           this.loadingCities = false;
           this.addressForm.get('city')?.enable();
         },
-        error: (err) => (this.loadingCities = false),
+        error: () => (this.loadingCities = false),
       });
     }
   }
@@ -194,7 +194,7 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
       line1: this.useExistingAddress ? null : address.line1,
       line2: this.useExistingAddress ? null : address.line2,
       city: this.useExistingAddress ? null : address.city,
-      country: this.useExistingAddress ? null : address.country,
+      country: this.useExistingAddress ? null : address.country?.nameBs,
       couponIds: this.appliedCoupons.map((c) => c.id),
     };
 
@@ -227,7 +227,9 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
       next: (coupon) => {
         this.appliedCoupons.push(coupon);
         this.uneseniKupon.setValue('');
-        this.toaster.success(this.translate.instant('CLIENT.CHECKOUT.COUPON_APPLIED', { name: coupon.name }));
+        this.toaster.success(
+          this.translate.instant('CLIENT.CHECKOUT.COUPON_APPLIED', { name: coupon.name }),
+        );
       },
       error: () => {
         this.couponError = this.translate.instant('CLIENT.CHECKOUT.COUPON_NOT_FOUND');
@@ -326,7 +328,7 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
       // ako je država bila odabrana, učitaj gradove i enable-aj city
       if (state.addressForm.country) {
         this.loadingCities = true;
-        this.countriesService.getCitiesByCountry(state.addressForm.country).subscribe({
+        this.countriesService.getCitiesByCountry(state.addressForm.country.countryCode).subscribe({
           next: (cities) => {
             this.cities = cities;
             this.loadingCities = false;

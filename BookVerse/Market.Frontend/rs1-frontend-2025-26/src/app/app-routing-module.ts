@@ -7,7 +7,7 @@ const routes: Routes = [
   {
     path: 'admin',
     canActivate: [myAuthGuard],
-    data: myAuthData({ requireAuth: true, requireAdmin: true }),
+    data: myAuthData({ requireAuth: true, requireStaff: true }),
     loadChildren: () => import('./modules/admin/admin-module').then((m) => m.AdminModule),
   },
   {
@@ -27,14 +27,14 @@ const routes: Routes = [
     loadChildren: () => import('./modules/client/client-module').then((m) => m.ClientModule),
   },
   {
-  path: 'public',
-  loadChildren: () => import('./modules/public/public-module').then((m) => m.PublicModule),
+    path: 'public',
+    loadChildren: () => import('./modules/public/public-module').then((m) => m.PublicModule),
   },
   {
     path: 'knjige/:id',
     loadComponent: () =>
       import('./modules/public/book-details/book-details.component').then(
-        (m) => m.BookDetailsComponent
+        (m) => m.BookDetailsComponent,
       ),
   },
   {
@@ -43,7 +43,7 @@ const routes: Routes = [
       // Promijenite loadChildren u loadComponent
       import('./modules/public/landing-page/landing-page').then((m) => m.LandingPage),
   },
-    
+
   // fallback 404
   { path: '**', redirectTo: '' },
 ];

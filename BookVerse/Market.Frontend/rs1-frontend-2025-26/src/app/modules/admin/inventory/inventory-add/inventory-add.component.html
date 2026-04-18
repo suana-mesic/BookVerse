@@ -89,10 +89,11 @@
               <mat-autocomplete
                 #autoBooks="matAutocomplete"
                 (optionSelected)="onBookSelected($event, i)"
+                [displayWith]="displayBookTitle"
               >
-                @for (book of filteredBookOptions[i] | async; track book[0]) {
-                  <mat-option [value]="book[1]">
-                    {{ book[1] }}
+                @for (book of filteredBookOptions[i] | async; track book.id) {
+                  <mat-option [value]="book">
+                    {{ book.title }}
                   </mat-option>
                 }
               </mat-autocomplete>

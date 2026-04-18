@@ -4,11 +4,13 @@ import { CategoriesService } from '../Petar/categories.service';
 import { Book } from '../Petar/book/Book';
 import { BooksService } from '../Petar/books.service';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { SharedModule } from '../../shared/shared-module';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-body',
-  imports: [BookComponent, RouterModule, TranslateModule],
+  imports: [BookComponent, RouterModule, TranslateModule, SharedModule],
   templateUrl: 'body.component.html',
   styleUrl: 'body.component.css',
 })
@@ -16,49 +18,58 @@ export class BodyComponent implements OnInit {
   bookService = inject(BooksService);
   categoryService = inject(CategoriesService);
   books = signal<Array<Book>>([]);
+  language: 'bs' | 'en' = 'bs';
+  translate = inject(TranslateService);
+  private langChangeSub!: Subscription;
 
-  totalSize = 0;
+  totalItems = 0;
+  totalPages = 0;
+  isLoading = false;
 
-  pageSize = 10;
-  booksSize = 0;
-  pageNumber = signal(1);
-
-  pageNumberArray = signal<Array<Number>>([]);
+  request = {
+    paging: {
+      page: 1,
+      pageSize: 20,
+    },
+  };
 
   ngOnInit(): void {
-    this.bookService.getBooksFromApi().subscribe((book: any) => {
-      this.books.set(book.items);
-      this.totalSize = this.books().length;
-
-      this.pageNumber.set(Math.ceil(this.totalSize / this.pageSize));
-
-      this.setPageArray();
+    this.language = (this.translate.currentLang || this.translate.defaultLang || 'bs') as 'bs' | 'en';
+    this.loadBooks();
+    this.langChangeSub = this.translate.onLangChange.subscribe((event) => {
+      this.language = event.lang as 'bs' | 'en';
+      this.loadBooks();
     });
   }
 
-  setPageArray() {
-    this.pageNumberArray.set(Array.from({ length: this.pageNumber() }, (_, i) => i + 1));
-  }
-
-  setCurrentPage(page: number) {
-    this.bookService.page.set(page);
-
-    this.bookService.getBooksFromApi().subscribe((book: any) => {
-      this.books.set(book.items);
+  private loadBooks(): void {
+    this.isLoading = true;
+    this.bookService.page.set(this.request.paging.page);
+    this.bookService.pageSize.set(this.request.paging.pageSize);
+    this.bookService.getBooksFromApi(this.language).subscribe((response: any) => {
+      this.books.set(response.items);
+      this.totalItems = response.totalItems;
+      this.totalPages = response.totalPages;
+      this.isLoading = false;
     });
   }
 
-  setPageSize(event: Event) {
-    const select = event.target as HTMLSelectElement;
-    this.pageSize = Number(select.value);
-    this.bookService.pageSize.set(this.pageSize);
+  goToPage(page: number): void {
+    if (page < 1 || (this.totalPages && page > this.totalPages)) return;
+    this.request.paging.page = page;
+    this.loadBooks();
+  }
 
-    this.bookService.getBooksFromApi().subscribe((book: any) => {
-      this.books.set(book.items);
-      this.pageNumber.set(Math.ceil(this.totalSize / this.pageSize));
-      console.log(this.pageNumber());
+  nextPage(): void {
+    this.goToPage(this.request.paging.page + 1);
+  }
+  prevPage(): void {
+    this.goToPage(this.request.paging.page - 1);
+  }
 
-      this.setPageArray();
-    });
+  changePageSize(size: number): void {
+    this.request.paging.pageSize = size;
+    this.request.paging.page = 1;
+    this.loadBooks();
   }
 }

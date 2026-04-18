@@ -25,7 +25,7 @@
     "TITLE": "Notifications",
     "CLEAR_ALL": "Clear all",
     "EMPTY": "No new notifications",
-    "ORDER_PAID": "Order paid",
+    "ORDER_PAID": "User {{name}} has paid the order",
     "ORDER_STATUS_CHANGED": "Your order status updated: {{status}}"
   },
   "AUTH": {
@@ -741,6 +741,7 @@
       "YOUR_ORDER": "Your order",
       "QUANTITY": "Quantity:",
       "TOTAL": "Total",
+      "SUBTOTAL": "Subtotal:",
       "SHIPPING_PRICE": "Shipping price:",
       "ORDER_CONFIRMED": "Order confirmed! Redirecting to payment...",
       "ERROR_LOAD_ADDRESS": "Error loading address.",
@@ -882,6 +883,7 @@
       "PUBLISHER": "Publisher:",
       "ISBN": "ISBN:",
       "PAGE_COUNT": "Pages:",
+      "BUYERS": "Number of buyers",
       "LANGUAGE": "Language:",
       "PRICE": "Price:",
       "ADD_TO_CART": "Add to Cart",
@@ -895,7 +897,9 @@
       "REVIEWS": "Reviews",
       "RATING": "Rating",
       "ADDED_TO_CART": "Book successfully added to cart",
-      "ERROR_ADD_TO_CART": "Error adding book to cart"
+      "ERROR_ADD_TO_CART": "Error adding book to cart",
+      "NO_REVIEWS": "Be the first to buy and review this book!",
+      "BOOKS_WORD": "books"
     },
     "SEARCH": {
       "PLACEHOLDER": "Start searching",
@@ -925,5 +929,6 @@
       "SAVE": "Save settings",
       "RESET": "Reset to defaults"
     }
-  }
+  },
+  "CURRENCY": "BAM"
 }

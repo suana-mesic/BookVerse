@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnDestroy, signal } from '@angular/core';
 import { Location } from '@angular/common';
 import { HeaderComponent } from '../header/header.component';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -18,6 +18,7 @@ import {
 } from '../../../api-services/reviews/reviews-api.model';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
+import { Subscription } from 'rxjs';
 
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 
@@ -34,7 +35,7 @@ L.Icon.Default.mergeOptions({
   styleUrl: './book-details.component.scss',
   imports: [HeaderComponent, RouterLink, MapComponent, TranslateModule, MatIconModule],
 })
-export class BookDetailsComponent {
+export class BookDetailsComponent implements OnDestroy {
   book = signal<Book | null>(null);
   authors = signal<Array<Author>>([]);
   reviews = signal<Array<ListReviewsForBookQueryDto>>([]);
@@ -43,6 +44,8 @@ export class BookDetailsComponent {
   authorService = inject(AuthorsService);
   reviewService = inject(ReviewsApiService);
   bookId!: string;
+  private langChangeSub!: Subscription;
+  private loadRequestId = 0;
 
   reviewRating = 0;
   reviewNumber = 0;
@@ -105,43 +108,59 @@ export class BookDetailsComponent {
     this.storeInfoOpened = !this.storeInfoOpened;
   }
 
-  ngOnInit() {
-    this.bookId = this.route.snapshot.paramMap.get('id')!;
-
-    this.bookService.getBookDetailsFromApi(this.bookId).subscribe((book: any) => {
+  private loadBookDetails(): void {
+    const requestId = ++this.loadRequestId;
+    const language = this.translate.currentLang || this.translate.defaultLang || 'bs';
+    this.authors.set([]);
+    this.bookService.getBookDetailsFromApi(this.bookId, language).subscribe((book: any) => {
+      if (requestId !== this.loadRequestId) return;
       this.book.set(book);
       for (let i = 0; i < this.book()!.authorIds.length; i++) {
         this.authorService.getAuthorFromApi(this.book()!.authorIds[i]).subscribe((author: any) => {
+          if (requestId !== this.loadRequestId) return;
           this.authors.update((arr) => [...arr, author]);
         });
       }
-
-      this.reviewService.getAllReviewsForBook(Number(this.bookId)).subscribe({
-        next: (response: ListReviewsResponse) => {
-          const items = response.items;
-          this.reviews.set(items);
-
-          this.reviewNumber = items.length;
-          this.reviewRating = 0;
-          this.reviewRatingsCount = [0, 0, 0, 0, 0];
-          this.reviewRatingsBarWidth = [0, 0, 0, 0, 0];
-
-          for (const review of items) {
-            this.reviewRating += review.rating;
-            this.reviewRatingsCount[review.rating - 1]++;
-          }
-
-          if (this.reviewNumber > 0) {
-            this.reviewRating = this.reviewRating / this.reviewNumber;
-          }
-
-          for (let i = 0; i < 5; i++) {
-            this.reviewRatingsBarWidth[i] = (this.reviewRatingsCount[i] / this.reviewNumber) * 180;
-          }
-        },
-        error: (err) => {},
-      });
     });
+  }
+
+  ngOnInit() {
+    this.bookId = this.route.snapshot.paramMap.get('id')!;
+    this.loadBookDetails();
+
+    this.langChangeSub = this.translate.onLangChange.subscribe(() => {
+      this.loadBookDetails();
+    });
+
+    this.reviewService.getAllReviewsForBook(Number(this.bookId)).subscribe({
+      next: (response: ListReviewsResponse) => {
+        const items = response.items;
+        this.reviews.set(items);
+
+        this.reviewNumber = items.length;
+        this.reviewRating = 0;
+        this.reviewRatingsCount = [0, 0, 0, 0, 0];
+        this.reviewRatingsBarWidth = [0, 0, 0, 0, 0];
+
+        for (const review of items) {
+          this.reviewRating += review.rating;
+          this.reviewRatingsCount[review.rating - 1]++;
+        }
+
+        if (this.reviewNumber > 0) {
+          this.reviewRating = this.reviewRating / this.reviewNumber;
+        }
+
+        for (let i = 0; i < 5; i++) {
+          this.reviewRatingsBarWidth[i] = (this.reviewRatingsCount[i] / this.reviewNumber) * 180;
+        }
+      },
+      error: (err) => {},
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.langChangeSub?.unsubscribe();
   }
 
   dodajUkorpu(bookId: number | undefined) {

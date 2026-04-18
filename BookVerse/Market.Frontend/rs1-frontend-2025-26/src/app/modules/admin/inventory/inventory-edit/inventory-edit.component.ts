@@ -1,10 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ListBooksQueryDto, ListBooksRequest} from '../../../../api-services/books/books-api.models';
+import { ListBooksForAutocompleteQueryDto } from '../../../../api-services/books/books-api.models';
 import { ToasterService } from '../../../../core/services/toaster.service';
 import { BooksApiService } from '../../../../api-services/books/books-api.service';
 import { BaseComponent } from '../../../core/components/base-classes/base-component';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { map, Observable, startWith } from 'rxjs';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { TranslateService } from '@ngx-translate/core';
 import { InventoryApiService } from '../../../../api-services/inventory/inventory-api.service';
 import { GetInventoryByIdQueryDto } from '../../../../api-services/inventory/inventory-api.model';
@@ -37,9 +39,12 @@ export class InventoryEditComponent
   
 
   productId!: number;
-  books:ListBooksQueryDto[]=[];
-  stores:ListStoresQueryDto[]=[];
+  books: ListBooksForAutocompleteQueryDto[] = [];
+  stores: ListStoresQueryDto[] = [];
   inventory!: GetInventoryByIdQueryDto;
+
+  booksAutocompleteInput = new FormControl('');
+  filteredBooksOptions!: Observable<ListBooksForAutocompleteQueryDto[]>;
   
   ngOnInit(): void {
     this.startLoading();
@@ -48,6 +53,24 @@ export class InventoryEditComponent
     this.loadForm();
   }
   
+  private setFilteredBooksOptions(): void {
+    this.filteredBooksOptions = this.booksAutocompleteInput.valueChanges.pipe(
+      startWith(''),
+      map((value) => {
+        const filterValue = (value ?? '').toLowerCase();
+        return this.books.filter((x) => x.title.toLowerCase().includes(filterValue));
+      }),
+    );
+  }
+
+  displayBookTitle = (bookId: number): string => {
+    return this.books.find((x) => x.id === bookId)?.title ?? '';
+  };
+
+  onBookSelected(event: MatAutocompleteSelectedEvent): void {
+    this.form.get('bookId')?.setValue(event.option.value);
+  }
+
   private loadForm(){
     this.inventoryApi.getById(this.storeId, this.bookId).subscribe({
       next:(response)=> {
@@ -79,12 +102,14 @@ export class InventoryEditComponent
   });
   }
 
-  private loadBooks(){
-    const request = new ListBooksRequest();
-    request.paging.pageSize=10000000;
-    this.booksApi.list(request).subscribe({
-      next:(response)=>this.books=response.items,
-      error:(err)=>this.toaster.error(this.translate.instant('INVENTORY.DIALOGS.ERROR_LOAD_BOOKS'))
+  private loadBooks(): void {
+    this.booksApi.listBooksForAutocomplete().subscribe({
+      next: (response) => {
+        this.books = response;
+        this.setFilteredBooksOptions();
+        this.booksAutocompleteInput.setValue(this.inventory.bookId as any);
+      },
+      error: (err) => this.toaster.error(this.translate.instant('INVENTORY.DIALOGS.ERROR_LOAD_BOOKS')),
     });
   }
 

@@ -25,6 +25,7 @@ namespace Market.Application.Modules.Shopping.OrdersOrderItems.Commands.StripeWe
                 var order = await context.Orders
                     .Include(x => x.OrderItems)
                     .ThenInclude(x => x.Book)
+                    .Include(x => x.User)
                     .FirstOrDefaultAsync(o => o.PaymentIntentId == paymentIntent.Id, ct);
 
 
@@ -102,7 +103,8 @@ namespace Market.Application.Modules.Shopping.OrdersOrderItems.Commands.StripeWe
                     }
                 }
                 await context.SaveChangesAsync(ct);
-                await notificationService.NotifyNewPaidOrderAsync(order.Id, order.TrackingNumber, ct);
+                var customerName = $"{order.User.FirstName} {order.User.LastName}";
+                await notificationService.NotifyNewPaidOrderAsync(order.Id, order.TrackingNumber, customerName, ct);
             }
 
             // Plaćanje nije bilo uspješno (pogrešan broj kartice, nema sredstava...)

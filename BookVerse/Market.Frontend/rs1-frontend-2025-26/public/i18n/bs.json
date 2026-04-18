@@ -25,7 +25,7 @@
     "TITLE": "Obavijesti",
     "CLEAR_ALL": "Obriši sve",
     "EMPTY": "Nema novih obavijesti",
-    "ORDER_PAID": "Plaćena narudžba",
+    "ORDER_PAID": "Korisnik {{name}} je platio narudžbu",
     "ORDER_STATUS_CHANGED": "Novi status vaše narudžbe: {{status}}"
   },
   "AUTH": {
@@ -756,6 +756,7 @@
       "YOUR_ORDER": "Vaša narudžba",
       "QUANTITY": "Količina:",
       "TOTAL": "Ukupno",
+      "SUBTOTAL": "Cijena svih stavki:",
       "SHIPPING_PRICE": "Cijena dostave:",
       "ORDER_CONFIRMED": "Narudžba potvrđena! Preusmjeravamo na plaćanje...",
       "ERROR_LOAD_ADDRESS": "Greška pri učitavanju adrese.",
@@ -897,6 +898,7 @@
       "PUBLISHER": "Izdavač:",
       "ISBN": "ISBN:",
       "PAGE_COUNT": "Broj strana:",
+      "BUYERS": "Broj kupaca",
       "LANGUAGE": "Jezik:",
       "PRICE": "Cijena:",
       "ADD_TO_CART": "Dodaj u korpu",
@@ -910,7 +912,9 @@
       "REVIEWS": "Recenzije",
       "RATING": "Ocjena",
       "ADDED_TO_CART": "Uspješno ste dodali knjigu u korpu",
-      "ERROR_ADD_TO_CART": "Greška prilikom dodavanje knjige u korpu"
+      "ERROR_ADD_TO_CART": "Greška prilikom dodavanje knjige u korpu",
+      "NO_REVIEWS": "Budite prvi koji će kupiti i recenzirati ovu knjigu!",
+      "BOOKS_WORD": "knjiga"
     },
     "SEARCH": {
       "PLACEHOLDER": "Započnite pretragu",
@@ -940,5 +944,6 @@
       "SAVE": "Sačuvaj postavke",
       "RESET": "Resetuj na zadano"
     }
-  }
+  },
+  "CURRENCY": "KM"
 }

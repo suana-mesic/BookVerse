@@ -16,15 +16,23 @@
       <div class="form-row">
         <mat-form-field appearance="outline" class="half-width">
           <mat-label>{{ 'INVENTORY.TABLE.TITLE' | translate }}</mat-label>
-          <mat-select formControlName="bookId">
-            @for (x of books; track x.id) {
-              <mat-option [value]="x.id">
-                {{ x.title }}
-              </mat-option>
+          <input
+            type="text"
+            matInput
+            [formControl]="booksAutocompleteInput"
+            [matAutocomplete]="autoBooks"
+          />
+          <mat-autocomplete
+            #autoBooks="matAutocomplete"
+            [displayWith]="displayBookTitle"
+            (optionSelected)="onBookSelected($event)"
+          >
+            @for (book of filteredBooksOptions | async; track book.id) {
+              <mat-option [value]="book.id">{{ book.title }}</mat-option>
             }
-          </mat-select>
+          </mat-autocomplete>
           <mat-icon matSuffix>book</mat-icon>
-          @if (this.form.get('bookId')?.hasError) {
+          @if (form.get('bookId')?.hasError('required')) {
             <mat-error>Obavezno polje</mat-error>
           }
         </mat-form-field>

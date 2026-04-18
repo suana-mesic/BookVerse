@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { trigger, transition, style, animate } from '@angular/animations';
-import { AuthFacadeService } from '../../../../app/modules/core/services/auth/auth-facade.service'
+import { AuthFacadeService } from '../../core/services/auth/auth-facade.service';
 
 @Component({
   selector: 'app-logout',
@@ -12,10 +12,10 @@ import { AuthFacadeService } from '../../../../app/modules/core/services/auth/au
     trigger('fadeInUp', [
       transition(':enter', [
         style({ opacity: 0, transform: 'translateY(10px)' }),
-        animate('400ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
-      ])
-    ])
-  ]
+        animate('400ms ease-out', style({ opacity: 1, transform: 'translateY(0)' })),
+      ]),
+    ]),
+  ],
 })
 export class LogoutComponent implements OnInit {
   private router = inject(Router);
@@ -27,7 +27,7 @@ export class LogoutComponent implements OnInit {
     this.resetThemeToLight();
     this.auth.logout().subscribe({
       next: () => this.startCountdown(),
-      error: () => this.startCountdown()
+      error: () => this.startCountdown(),
     });
   }
 

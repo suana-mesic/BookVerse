@@ -11,6 +11,7 @@ import {
   ListProductCategoriesQueryDto,
 } from '../../../../api-services/product-categories/product-categories-api.model';
 import { ProductCategoryUpsertComponent } from './product-category-upsert/product-category-upsert.component';
+import { AuthFacadeService } from '../../../core/services/auth/auth-facade.service';
 
 @Component({
   selector: 'app-product-categories',
@@ -27,6 +28,7 @@ export class ProductCategoriesComponent
   private toaster = inject(ToasterService);
   private dialogHelper = inject(DialogHelperService);
   private translate = inject(TranslateService);
+  auth = inject(AuthFacadeService);
 
   displayedColumns: string[] = ['name', 'isEnabled', 'actions'];
   showOnlyEnabled = false;

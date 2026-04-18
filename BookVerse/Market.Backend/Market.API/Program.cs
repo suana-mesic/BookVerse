@@ -6,6 +6,7 @@ using Market.Application;
 using Market.Application.Common.Interfaces;
 using Market.Infrastructure;
 using Market.Infrastructure.Common;
+using Market.Infrastructure.Translate;
 using Microsoft.Extensions.Options;
 using Serilog;
 using Stripe;
@@ -76,6 +77,7 @@ public partial class Program
 
             builder.Services.AddSignalR();
             builder.Services.AddScoped<IOrderNotificationService, OrderNotificationService>();
+            builder.Services.AddHttpClient<ITranslationService, TranslationService>();
 
             var app = builder.Build();
 
