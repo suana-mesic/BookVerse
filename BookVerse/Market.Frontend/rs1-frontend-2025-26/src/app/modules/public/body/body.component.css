@@ -37,14 +37,19 @@ body h1 {
   font-weight: 300;
 }
 
+.body__content {
+  width: fit-content;
+  margin: 0 auto;
+}
+
 .body__books {
   display: grid;
-  width: 1680px;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(7, 200px);
   grid-template-rows: repeat(3, 1fr);
-  justify-content: space-between;
-  align-items: center;
-  row-gap: 1rem;
+  justify-content: center;
+  align-items: start;
+  row-gap: 2.5rem;
+  column-gap: 2rem;
 }
 
 .body__header {

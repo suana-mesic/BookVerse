@@ -29,7 +29,7 @@ export class BodyComponent implements OnInit {
   request = {
     paging: {
       page: 1,
-      pageSize: 20,
+      pageSize: 50,
     },
   };
 

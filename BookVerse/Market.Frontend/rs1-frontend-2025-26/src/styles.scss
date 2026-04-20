@@ -22,6 +22,24 @@ body {
   margin: 0;
 }
 
+.notif-bell,
+.notif-bell.mat-mdc-icon-button,
+.notif-bell .mdc-icon-button__ripple,
+.notif-bell .mat-mdc-button-ripple,
+.notif-button,
+.notif-button.mat-mdc-icon-button,
+.notif-button .mdc-icon-button__ripple,
+.notif-button .mat-mdc-button-ripple {
+  overflow: visible !important;
+}
+
+.notif-bell .mat-badge-content,
+.notif-button .mat-badge-content {
+  z-index: 200 !important;
+  background-color: #f44336 !important;
+  color: #fff !important;
+}
+
 body.dark-theme {
   background-color: #1a1f2e !important;
 
@@ -1460,4 +1478,5 @@ body.dark-theme {
       background-color: #3e649a !important;
     }
   }
+
 }

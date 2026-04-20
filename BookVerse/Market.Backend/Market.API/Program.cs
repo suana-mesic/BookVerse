@@ -29,6 +29,7 @@ public partial class Program
             // 1) Standard builder (includes appsettings.json, appsettings.{ENV}.json,
             //    environment variables, user-secrets (Dev), and command-line args)
             //
+            DotNetEnv.Env.Load();
             var builder = WebApplication.CreateBuilder(args);
 
             // 2) Promote Serilog to full configuration from builder.Configuration

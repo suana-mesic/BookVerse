@@ -5,18 +5,23 @@ import {
   inject,
   OnDestroy,
   OnInit,
-  viewChild,
   ViewChild,
 } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { CurrentUserService } from '../../core/services/auth/current-user.service';
 import { AuthFacadeService } from '../../core/services/auth/auth-facade.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
+import { SignalRService } from '../../../core/services/signal-r/signal-r.service';
+import { MatIconModule } from '@angular/material/icon';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, TranslateModule],
+  imports: [RouterLink, TranslateModule, MatIconModule, MatBadgeModule, MatMenuModule, MatButtonModule, MatDividerModule, CommonModule],
   templateUrl: './header.component.html',
   styleUrl: 'header.component.css',
 })
@@ -27,6 +32,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   router = inject(Router);
   dropMenuOpened = false;
   authFacadeService = inject(AuthFacadeService);
+  signalR = inject(SignalRService);
   private translate = inject(TranslateService);
   private langChangeSub!: Subscription;
 
@@ -40,7 +46,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.translate.use(saved);
     }
 
-    //If we change language in settings section it will be reflected in main navigation
     this.langChangeSub = this.translate.onLangChange.subscribe((event) => {
       this.currentLang = event.lang as 'bs' | 'en';
     });
@@ -48,6 +53,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.langChangeSub?.unsubscribe();
+  }
+
+  markAllAsRead(): void {
+    this.signalR.markUserNotificationsRead();
+  }
+
+  clearNotifications(): void {
+    this.signalR.clearUserNotifications();
   }
 
   toggleLangMenu(event: Event): void {
@@ -81,12 +94,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
     this.dropMenuOpened = !this.dropMenuOpened;
   }
-
-  // ngOnInit(): void {
-  //   if(this.userService.isAuthenticated()){
-  //     this.userName.nativeElement.innerText=this.userService.currentUser()?.email??'';
-  //   }
-  // }
 
   prijavaIliDropDown() {
     console.log(this.authFacadeService.isAuthenticated());

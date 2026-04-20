@@ -1,7 +1,13 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { Subject } from 'rxjs';
 import { OrderStatusType } from '../../../api-services/orders/orders-api.models';
+
+export interface UserNotification {
+  message: string;
+  orderNumber: string;
+  receivedAt: Date;
+}
 
 export interface OrderNotification {
   orderId: number;
@@ -23,13 +29,28 @@ export class SignalRService {
   private adminHubConnection: signalR.HubConnection | null = null;
   private userHubConnection: signalR.HubConnection | null = null;
 
-  // Private Subject
   private newPaidOrderSubject = new Subject<OrderNotification>();
   private orderStatusChangedSubject = new Subject<OrderStatusNotification>();
 
-  // Public Observable - components can subscribe to this to receive notifications, but cannot emit values
   newPaidOrder$ = this.newPaidOrderSubject.asObservable();
   orderStatusChanged$ = this.orderStatusChangedSubject.asObservable();
+
+  userNotifications = signal<UserNotification[]>([]);
+  userUnreadCount = signal(0);
+
+  addUserNotification(notif: UserNotification): void {
+    this.userNotifications.update(list => [notif, ...list]);
+    this.userUnreadCount.update(c => c + 1);
+  }
+
+  clearUserNotifications(): void {
+    this.userNotifications.set([]);
+    this.userUnreadCount.set(0);
+  }
+
+  markUserNotificationsRead(): void {
+    this.userUnreadCount.set(0);
+  }
 
   startConnection(token: string) {
     this.adminHubConnection = new signalR.HubConnectionBuilder()

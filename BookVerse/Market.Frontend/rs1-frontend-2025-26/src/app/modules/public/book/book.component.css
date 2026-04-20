@@ -26,7 +26,7 @@ h4 {
 /* --------------------------------------------- */
 
 .book {
-  white-space: nowrap;
+  white-space: normal;
   height: 400px;
   width: 200px;
 }
