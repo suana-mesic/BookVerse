@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, NgZone, OnDestroy, OnInit, signal } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import {
@@ -19,6 +19,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   unreadCount = 0;
   private signalR = inject(SignalRService);
   private notificationSubscription: Subscription | null = null;
+  private ngZone = inject(NgZone);
 
   private translate = inject(TranslateService);
   auth = inject(AuthFacadeService);
@@ -163,8 +164,10 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
         this.signalR.startConnection(token);
         this.notificationSubscription = this.signalR.newPaidOrder$.subscribe(
           (notification: OrderNotification) => {
-            this.notifications.unshift(notification);
-            this.unreadCount++;
+            this.ngZone.run(() => {
+              this.notifications.unshift(notification);
+              this.unreadCount++;
+            });
 
             if (soundEnabled) {
               const audio = new Audio('sounds/pixel_notification.mp3');

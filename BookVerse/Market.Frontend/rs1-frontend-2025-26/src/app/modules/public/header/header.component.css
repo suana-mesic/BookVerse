@@ -7,6 +7,9 @@
   box-sizing: border-box;
   font-family: sans-serif;
   font-weight: 300;
+}
+
+header, header * {
   color: #fff;
 }
 
@@ -62,6 +65,12 @@ button:hover {
 .header__about-us {
   display: flex;
   flex: 1;
+}
+
+.header__left-side {
+  display: flex;
+  flex: 1;
+  align-items: center;
 }
 
 .header__right-side {
@@ -220,3 +229,93 @@ button:hover {
 .lang-dropdown li span {
   font-size: 18px;
 }
+
+mat-icon {
+  font-family: 'Material Icons' !important;
+}
+
+.notif-bell {
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible !important;
+}
+
+.notif-bell mat-icon {
+  color: #fff;
+  font-size: 28px;
+  width: 28px;
+  height: 28px;
+}
+
+::ng-deep .notif-menu .mat-mdc-menu-panel {
+  max-width: 360px;
+  min-width: 320px;
+}
+
+.notif-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  font-weight: 600;
+}
+
+.notif-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 16px;
+  color: gray;
+  gap: 8px;
+}
+
+.notif-empty mat-icon {
+  font-family: 'Material Icons' !important;
+}
+
+.notif-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+  cursor: default;
+}
+
+.notif-item:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.notif-icon {
+  font-family: 'Material Icons' !important;
+  color: green;
+  margin-top: 2px;
+}
+
+.notif-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.notif-title {
+  font-size: 14px;
+  font-weight: 500;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.notif-order {
+  font-size: 12px;
+  color: #0077b6;
+  font-weight: 600;
+}
+
+.notif-time {
+  font-size: 12px;
+  color: gray;
+}
+

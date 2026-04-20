@@ -2,9 +2,8 @@ import { Component, OnDestroy, OnInit, effect, inject, signal, untracked } from 
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { SignalRService, OrderStatusNotification } from './core/services/signal-r/signal-r.service';
-import { ToasterService } from './modules/core/services/toaster.service';
-import { OrderStatusHelper } from './api-services/orders/order-status.helper';
 import { AuthFacadeService } from './modules/core/services/auth/auth-facade.service';
+import { OrderStatusHelper } from './api-services/orders/order-status.helper';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +17,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private signalR = inject(SignalRService);
   private auth = inject(AuthFacadeService);
-  private toaster = inject(ToasterService);
   private orderStatusSub: Subscription | null = null;
 
   constructor(private translate: TranslateService) {
@@ -92,7 +90,12 @@ export class AppComponent implements OnInit, OnDestroy {
         const message = this.translate.instant('NOTIFICATIONS.ORDER_STATUS_CHANGED', {
           status: statusLabel,
         });
-        this.toaster.info(message);
+
+        this.signalR.addUserNotification({
+          message,
+          orderNumber: notification.orderNumber,
+          receivedAt: new Date(notification.updatedAt),
+        });
       },
     );
   }
