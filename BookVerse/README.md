@@ -7,11 +7,12 @@ Online knjižara i tržište knjiga s administrativnim panelom i korisničkim su
 ## Preduvjeti
 
 **Backend:**
+
 - .NET 8 SDK
-- SQL Server (lokalno ili Docker), port 1433
-- Docker (opcionalno, za SQL Server kontejner)
+- SQL Server, port 1433
 
 **Frontend:**
+
 - Node.js 18+
 
 ---
@@ -21,16 +22,19 @@ Online knjižara i tržište knjiga s administrativnim panelom i korisničkim su
 Tajne varijable (konekcijski string, JWT ključ, Stripe API ključevi, email i CAPTCHA podaci) se čuvaju u `.env` fajlu koji se **ne commituje** u repozitorij.
 
 U repozitoriju se nalazi zipovani fajl:
+
 ```
 BookVerse/Market.Backend/Market.API/.env-tajne.zip
 ```
 
 Potrebno je raspakovati zip (lozinka je poslana odvojeno putem e-maila) i postaviti `.env` fajl u direktorij:
+
 ```
 BookVerse/Market.Backend/Market.API/.env
 ```
 
 Struktura `.env` fajla:
+
 ```
 ConnectionStrings__Main=...
 Jwt__Key=...
@@ -72,12 +76,12 @@ Frontend se otvara na: `http://localhost:4200`
 
 ## Pristupni podaci
 
-| Email | Lozinka | Rola |
-|-------|---------|------|
-| admin@bookverse.com | string | Admin (sve ovlasti) |
-| manager@bookverse.com | string | Manager |
-| employee@bookverse.com | string | Zaposlenik |
-| user@bookverse.com | string | Korisnik |
+| Email                  | Lozinka | Rola                |
+| ---------------------- | ------- | ------------------- |
+| admin@bookverse.com    | string  | Admin (sve ovlasti) |
+| manager@bookverse.com  | string  | Manager             |
+| employee@bookverse.com | string  | Zaposlenik          |
+| user@bookverse.com     | string  | Korisnik            |
 
 Swagger je dostupan na `https://localhost:7260/swagger` i može se koristiti s istim podacima.
 
@@ -86,6 +90,7 @@ Swagger je dostupan na `https://localhost:7260/swagger` i može se koristiti s i
 ## Mogućnosti
 
 **Admin panel:**
+
 - Upravljanje korisnicima (RBAC — admin, manager, zaposlenik)
 - Upravljanje knjigama, kategorijama, autorima, izdavacima, formatima i zalihama
 - Pregled i promjena statusa narudzbi
@@ -93,6 +98,7 @@ Swagger je dostupan na `https://localhost:7260/swagger` i može se koristiti s i
 - Realtime notifikacije putem SignalR
 
 **Korisničko sučelje:**
+
 - Pregled i pretraga knjiga s filterima (kategorije, autori, format)
 - Detaljna stranica knjige s recenzijama i mapom lokacija knjižara
 - Košarica, naplata putem Stripe-a
@@ -128,5 +134,54 @@ Market.Tests        — integracijski testovi
 
 ## Screenshotovi
 
-### Početna stranica
-![Pocetna](Market.Frontend/preview-template-orders.png)
+### Prijava
+
+![Prijava](screenshots/login.png)
+
+### Admin panel - dashboard
+
+![Knjige](screenshots/admin_dashboard.png)
+
+### Admin panel - knjige
+
+![Knjige](screenshots/admin_knjige.png)
+
+### Admin panel - narudžbe
+
+![Narudžbe](screenshots/admin_narudzbe.png)
+
+### Admin panel - inventar
+
+![Narudžbe](screenshots/admin_inventar.png)
+
+### Admin panel - narudžbe (dark)
+
+![Narudžbe](screenshots/admin_narudzbe_dark.png)
+
+### Admin panel - korisnici
+
+![Narudžbe](screenshots/admin_narudzbe_korisnici.png)
+
+### Admin panel - postavke
+
+![Narudžbe](screenshots/admin_narudzbe_postavke.png)
+
+### Korisničko sučelje - pregled knjiga
+
+![Pregled knjiga](screenshots/pocetna.png)
+
+### Korisničko sučelje - košarica
+
+![Košarica](screenshots/kosarica.png)
+
+### Korisničko sučelje - moje narudžbe
+
+![Košarica](screenshots/moje_narudzbe.png)
+
+### Korisničko sučelje - moje kupljene knjige
+
+![Košarica](screenshots/moje_kupljene_knjige.png)
+
+### Korisničko sučelje - recenziranje (samo kupljenih knjiga)
+
+![Košarica](screenshots/recenziranje.png)
