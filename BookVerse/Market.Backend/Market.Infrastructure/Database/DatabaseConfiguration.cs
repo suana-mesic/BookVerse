@@ -68,8 +68,8 @@ public partial class DatabaseContext
             new { BooksId = 13, AuthorsId = 11 },
             new { BooksId = 14, AuthorsId = 12 },
             new { BooksId = 15, AuthorsId = 13 },
-            new { BooksId = 16, AuthorsId = 14},
-            new { BooksId = 17, AuthorsId = 15},
+            new { BooksId = 16, AuthorsId = 14 },
+            new { BooksId = 17, AuthorsId = 15 },
             new { BooksId = 18, AuthorsId = 16 },
             new { BooksId = 19, AuthorsId = 4 },
             new { BooksId = 20, AuthorsId = 17 }
@@ -112,19 +112,21 @@ public partial class DatabaseContext
         modelBuilder.Entity<StoreInventory>().HasKey(x => new { x.StoreId, x.BookId });
         modelBuilder.Entity<StoreInventory>().HasQueryFilter(x => !x.IsDeleted && !x.Book.IsDeleted && !x.Store.IsDeleted);
 
-        modelBuilder.Entity<CartItems>().HasKey(x => new { x.CartId, x.BookId });
+        modelBuilder.Entity<CartItems>()
+            .HasQueryFilter(x => !x.Book.IsDeleted)
+            .HasKey(x => new { x.CartId, x.BookId });
 
         modelBuilder.Entity<Carts>()
+            .HasQueryFilter(c => !c.User.IsDeleted)
             .HasMany(c => c.CartItems)
             .WithOne(ci => ci.Cart)
-            .HasForeignKey(ci => ci.CartId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .HasForeignKey(ci => ci.CartId);
 
         modelBuilder.Entity<OrderItems>().HasKey(x => new { x.OrderId, x.BookId });
         modelBuilder.Entity<OrderItems>().HasQueryFilter(x => !x.Order.IsDeleted && !x.Book.IsDeleted);
 
         modelBuilder.Entity<Refunds>()
-        .HasKey(r => new { r.OrderId, r.BookId }); 
+        .HasKey(r => new { r.OrderId, r.BookId });
 
         modelBuilder.Entity<Refunds>().HasOne<OrderItems>()
             .WithMany()

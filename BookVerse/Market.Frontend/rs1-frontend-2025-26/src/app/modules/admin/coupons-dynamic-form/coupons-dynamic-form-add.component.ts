@@ -28,9 +28,9 @@ export class CouponsDynamicFormAddComponent {
   submitted = false;
   formValues: any = null;
 
-  private fieldLabelMap: Record<string, string> = {
-    percentOff: 'COUPONS.TYPE_PERCENT',
-    amountOff: 'COUPONS.TYPE_AMOUNT',
+  private readonly fieldLabelMap: Record<string, string> = {
+    percentOff: 'COUPONS.PERCENT_OFF',
+    amountOff: 'COUPONS.AMOUNT_OFF',
     name: 'COMMON.NAME',
     promotionCode: 'COUPONS.PROMOTION_CODE',
     startDate: 'COUPONS.START_DATE',
@@ -38,8 +38,25 @@ export class CouponsDynamicFormAddComponent {
     description: 'COMMON.DESCRIPTION',
   };
 
+  private readonly fieldMaxLengthMap: Record<string, number> = {
+    name: 100,
+    promotionCode: 50,
+    description: 200,
+  };
+
   getFieldLabel(fieldName: string): string {
     return this.fieldLabelMap[fieldName] ?? fieldName;
+  }
+
+  getRequiredError(fieldName: string): string {
+    const labelKey = this.fieldLabelMap[fieldName] ?? fieldName;
+    const fieldLabel = this.translate.instant(labelKey);
+    return this.translate.instant('VALIDATION.REQUIRED_FIELD', { field: fieldLabel });
+  }
+
+  getMaxLengthError(fieldName: string): string {
+    const max = this.fieldMaxLengthMap[fieldName];
+    return this.translate.instant('VALIDATION.MAX_LENGTH', { max });
   }
 
   onTypeChange(type: 'percent' | 'amount'): void {
@@ -58,9 +75,11 @@ export class CouponsDynamicFormAddComponent {
   buildForm(fields: FormFieldConfig[]): void {
     const group: any = {};
     fields.forEach((field) => {
-      group[field.name] = field.required
-        ? this.fb.control('', Validators.required)
-        : this.fb.control('');
+      const validators = [];
+      if (field.required) validators.push(Validators.required);
+      const maxLength = this.fieldMaxLengthMap[field.name];
+      if (maxLength) validators.push(Validators.maxLength(maxLength));
+      group[field.name] = this.fb.control('', validators);
     });
     this.dynamicForm = this.fb.group(group);
   }

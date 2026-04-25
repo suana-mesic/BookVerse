@@ -192,8 +192,13 @@ $bg-gradient-end: #e3ecf7;
     0 1px 3px rgba(0, 0, 0, 0.06);
   border: 1px solid $border-color;
 
+  .table-scroll {
+    overflow-x: auto;
+  }
+
   table {
     width: 100%;
+    min-width: 800px;
 
     th {
       background: linear-gradient(135deg, $primary-lighter 0%, #f5f9fd 100%);
@@ -311,7 +316,7 @@ $bg-gradient-end: #e3ecf7;
 }
 
 // Responzivnost
-@media (max-width: 1024px) {
+@media (max-width: 1100px) {
   .header-card {
     .header-card-content {
       flex-direction: column;
@@ -323,10 +328,12 @@ $bg-gradient-end: #e3ecf7;
 
       .actions-container {
         justify-content: center;
+        width: 100%;
 
         .search-field {
-          width: 100%;
-          max-width: 400px;
+          flex: 1 1 240px;
+          width: auto;
+          max-width: 100%;
         }
       }
     }
@@ -338,16 +345,101 @@ $bg-gradient-end: #e3ecf7;
     padding: 16px;
   }
 
-  .mat-elevation-z8 {
-    table {
-      display: block;
-      overflow-x: auto;
+  .header-card {
+    padding: 20px;
+    border-radius: 12px;
 
+    .header-card-content {
+      h1 {
+        font-size: 24px;
+
+        &::before {
+          width: 40px;
+          height: 40px;
+        }
+
+        &::after {
+          font-size: 24px;
+          left: 8px;
+        }
+      }
+
+      .actions-container {
+        flex-direction: column;
+        width: 100%;
+        gap: 12px;
+
+        .search-field {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  .mat-elevation-z8 {
+    border-radius: 12px;
+
+    table {
       th,
       td {
         padding: 12px;
         font-size: 13px;
       }
     }
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 12px;
+  }
+
+  .header-card {
+    padding: 16px;
+
+    .header-card-content {
+      h1 {
+        font-size: 18px;
+        gap: 12px;
+
+        &::before {
+          width: 36px;
+          height: 36px;
+        }
+
+        &::after {
+          font-size: 20px;
+          left: 8px;
+        }
+      }
+    }
+  }
+
+  .mat-elevation-z8 {
+    table {
+      th,
+      td {
+        padding: 10px 8px;
+        font-size: 12px;
+      }
+
+      td {
+        button[mat-icon-button] {
+          width: 36px;
+          height: 36px;
+
+          mat-icon {
+            font-size: 18px;
+            width: 18px;
+            height: 18px;
+          }
+        }
+      }
+    }
+  }
+
+  .role-badge {
+    padding: 2px 8px;
+    font-size: 11px;
   }
 }

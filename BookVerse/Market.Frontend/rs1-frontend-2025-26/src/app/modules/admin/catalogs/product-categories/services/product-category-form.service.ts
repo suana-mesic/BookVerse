@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {GetProductCategoryByIdQueryDto} from '../../../../../api-services/product-categories/product-categories-api.model';
+import { GetProductCategoryByIdQueryDto } from '../../../../../api-services/product-categories/product-categories-api.model';
 import { TranslateService } from '@ngx-translate/core';
 
 /**
@@ -20,12 +20,9 @@ export class ProductCategoryFormService {
     return this.fb.group({
       name: [
         category?.name ?? '',
-        [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.maxLength(100)
-        ]
-      ]
+        [Validators.required, Validators.maxLength(100)],
+      ],
+      isEnabled: [category?.isEnabled ?? true],
     });
   }
 
@@ -43,11 +40,10 @@ export class ProductCategoryFormService {
     if (errors['required']) {
       return this.translate.instant('VALIDATION.REQUIRED');
     }
-    if (errors['minlength']) {
-      return this.translate.instant('VALIDATION.MIN_LENGTH', { min: errors['minlength'].requiredLength });
-    }
     if (errors['maxlength']) {
-      return this.translate.instant('VALIDATION.MAX_LENGTH', { max: errors['maxlength'].requiredLength });
+      return this.translate.instant('VALIDATION.MAX_LENGTH', {
+        max: errors['maxlength'].requiredLength,
+      });
     }
 
     return this.translate.instant('VALIDATION.CUSTOM');

@@ -13,7 +13,7 @@
     <div class="order-info">
       <div class="order-ref">
         <mat-icon>confirmation_number</mat-icon>
-        <span>{{ data.order.trackingNumber }}</span>
+        <span>{{ data.order.trackingNumber || ('#' + data.order.orderId) }}</span>
       </div>
       <div class="customer-name">
         <mat-icon>person</mat-icon>

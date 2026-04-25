@@ -377,7 +377,7 @@ body.dark-theme {
 
   // === PAGINATOR COMPONENT ===
   .paginator-container {
-    background: var(--primary-lighter) !important;
+    background: #FAF9FD !important;
     border-top-color: var(--border-color) !important;
 
     .nav-arrow {
@@ -900,36 +900,44 @@ body.dark-theme {
 
   // === PAGINATOR ===
   .paginator-container {
-    background: #1a1f2e !important;
+    background: #1e2530 !important;
     border-top-color: var(--border-color) !important;
 
     .selector-label {
-      color: var(--text-muted) !important;
+      color: #d8d8d8 !important;
     }
 
     .nav-arrow {
-      color: var(--text-secondary) !important;
+      color: #d8d8d8 !important;
+
+      mat-icon {
+        color: #d8d8d8 !important;
+      }
 
       &:not(:disabled):hover {
         background: #1e2d42 !important;
-        color: #4976b5 !important;
+        color: #6b92c9 !important;
+      }
+
+      &:disabled {
+        opacity: 0.6;
       }
     }
 
     .page-btn {
-      color: var(--text-secondary) !important;
+      color: #d8d8d8 !important;
 
       &:not(:disabled):not(.active):hover {
         background: #1e2d42 !important;
-        color: #4976b5 !important;
+        color: #6b92c9 !important;
       }
     }
 
     .info-text {
-      color: var(--text-muted) !important;
+      color: #d8d8d8 !important;
 
       strong {
-        color: var(--text-primary) !important;
+        color: #d8d8d8 !important;
       }
     }
   }
@@ -1077,6 +1085,10 @@ body.dark-theme {
     .book-description {
       color: var(--text-secondary) !important;
     }
+  }
+
+  .detail-description {
+    color: var(--text-secondary) !important;
   }
 
   .category-badge,

@@ -12,8 +12,7 @@
           <input
             matInput
             [placeholder]="'BOOKS.SEARCH_INPUT_PLACEHOLDER' | translate"
-            (keyup.enter)="request.paging.page = 1; loadPagedData()"
-            [(ngModel)]="request.search"
+            [formControl]="searchControl"
           />
           <mat-icon matSuffix>search</mat-icon>
         </mat-form-field>
@@ -37,6 +36,7 @@
 
   <!-- Tabela -->
   <div class="mat-elevation-z8" *ngIf="!isLoading && !errorMessage">
+    <div class="table-scroll">
     <table mat-table [dataSource]="items">
       <!-- Naziv -->
       <ng-container matColumnDef="title">
@@ -125,7 +125,7 @@
           >
             <mat-icon>edit</mat-icon>
           </button>
-          @if (!auth.isEmployee() && !auth.isManager()) {
+          @if (auth.isAdmin()) {
             <button
               mat-icon-button
               color="warn"
@@ -182,6 +182,7 @@
         </td>
       </tr>
     </table>
+    </div>
 
     <app-fit-paginator-bar [vm]="this" />
   </div>

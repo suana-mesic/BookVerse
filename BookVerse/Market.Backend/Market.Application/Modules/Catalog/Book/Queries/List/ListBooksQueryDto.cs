@@ -10,7 +10,7 @@ namespace Market.Application.Modules.Catalog.Book.Queries.List;
 public sealed class ListBooksQueryDto
     {
     public int Id { get; set; }
-    public string ISBN { get; set; }
+    public string Isbn { get; set; }
     public string Title { get; set; }
     public List<ListAuthorsQueryDto> Authors { get; set; }
     public List<ListCategoriesQueryDto> Categories { get; set; }

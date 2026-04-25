@@ -16,7 +16,7 @@ import { CategoriesService } from '../../public/Petar/categories.service';
 import { DialogButton } from '../../shared/models/dialog-config.model';
 import { Categories } from '../../public/Petar/book/Categories';
 import { Location } from '@angular/common';
-import { TranslateService } from '@ngx-translate/core';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-my-books',
   standalone: false,
@@ -60,6 +60,7 @@ export class UserBooksComponent
     this.request = new ListMyBooksRequest();
     this.request.paging.page = 1;
     this.request.paging.pageSize = 10;
+    this.request.language = this.translate.currentLang || this.translate.defaultLang || 'bs';
   }
 
   ngOnInit(): void {
@@ -67,6 +68,14 @@ export class UserBooksComponent
     this.setupSearchDebounce();
     this.setupCategorySearch();
     this.loadCategories();
+
+    this.translate.onLangChange
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((event: LangChangeEvent) => {
+        this.request.language = event.lang;
+        this.loadCategories();
+        this.loadPagedData();
+      });
   }
 
   ngOnDestroy(): void {
@@ -113,10 +122,9 @@ export class UserBooksComponent
   }
 
   private loadCategories() {
-    this.categoriesService.getCategoriesFromApi().subscribe({
+    const lang = this.translate.currentLang || this.translate.defaultLang || 'bs';
+    this.categoriesService.getCategoriesFromApi(lang).subscribe({
       next: (response) => {
-        console.log('Dostupne kategorije:');
-        console.log(response);
         this.availableCategories = response;
         this.filteredCategories = response;
       },
@@ -131,6 +139,10 @@ export class UserBooksComponent
     this.booksService.listMyBooks(this.request).subscribe({
       next: (response) => {
         this.handlePageResult(response);
+        if (this.selectedBook) {
+          const updated = this.items.find((b) => b.bookId === this.selectedBook!.bookId);
+          this.selectedBook = updated ?? null;
+        }
         this.stopLoading();
       },
       error: () => {

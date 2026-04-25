@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 $primary: #4976b5;
 $primary-light: #6b96d1;
 $primary-lighter: #e8f0f9;
@@ -10,6 +12,8 @@ $font: 'DM Sans', system-ui, sans-serif;
 
 .paginator-bar {
   font-family: $font;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .paginator-container {
@@ -19,9 +23,16 @@ $font: 'DM Sans', system-ui, sans-serif;
   flex-wrap: wrap;
   gap: 16px;
   padding: 14px 24px;
-  background: #FAF9FD;
+  background: var(--paginator-bg);
   border-top: none;
   border-radius: 0 0 14px 14px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.nav-buttons {
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .nav-buttons {
@@ -41,7 +52,7 @@ $font: 'DM Sans', system-ui, sans-serif;
   font-family: $font;
   font-size: 13px;
   font-weight: 600;
-  color: $text-secondary;
+  color: var(--text-primary) !important;
   cursor: pointer;
   transition: all 0.18s ease;
 
@@ -49,15 +60,16 @@ $font: 'DM Sans', system-ui, sans-serif;
     font-size: 18px;
     width: 18px;
     height: 18px;
+    color: var(--text-primary) !important;
   }
 
   &:not(:disabled):hover {
-    background: $primary-lighter;
-    color: $primary;
+    background: var(--primary-lighter);
+    color: var(--primary-color) !important;
   }
 
   &:disabled {
-    opacity: 0.35;
+    opacity: 0.6;
     cursor: not-allowed;
   }
 }
@@ -75,19 +87,19 @@ $font: 'DM Sans', system-ui, sans-serif;
   font-family: $font;
   font-size: 13px;
   font-weight: 600;
-  color: $text-secondary;
+  color: var(--text-primary) !important;
   cursor: pointer;
   transition: all 0.18s ease;
 
   &:not(:disabled):not(.active):hover {
-    background: $primary-lighter;
-    color: $primary;
+    background: var(--primary-lighter);
+    color: var(--primary-color);
   }
 
   &.active {
-    background: $primary;
+    background: var(--primary-color);
     color: white;
-    box-shadow: 0 2px 8px rgba($primary, 0.35);
+    box-shadow: 0 2px 8px rgba(73, 118, 181, 0.35);
     cursor: default;
   }
 
@@ -100,7 +112,7 @@ $font: 'DM Sans', system-ui, sans-serif;
 .page-ellipsis {
   width: 28px;
   text-align: center;
-  color: $text-muted;
+  color: var(--text-muted);
   font-size: 14px;
   user-select: none;
   line-height: 34px;
@@ -113,7 +125,7 @@ $font: 'DM Sans', system-ui, sans-serif;
 
   .selector-label {
     font-size: 13px;
-    color: $text-muted;
+    color: var(--text-primary) !important;
     font-weight: 500;
     white-space: nowrap;
   }
@@ -123,12 +135,13 @@ $font: 'DM Sans', system-ui, sans-serif;
 
     ::ng-deep {
       .mdc-text-field--filled:not(.mdc-text-field--disabled) {
-        background-color: $primary-lighter;
+        background-color: var(--primary-lighter);
         border-radius: 8px !important;
       }
 
       .mdc-text-field--filled:not(.mdc-text-field--disabled):hover {
-        background-color: darken($primary-lighter, 3%);
+        background-color: var(--primary-lighter);
+        filter: brightness(0.95);
       }
 
       .mdc-line-ripple {
@@ -141,14 +154,14 @@ $font: 'DM Sans', system-ui, sans-serif;
       }
 
       .mat-mdc-select-value {
-        color: $primary !important;
+        color: var(--primary-color) !important;
         font-weight: 700 !important;
         font-size: 13px !important;
         font-family: $font !important;
       }
 
       .mat-mdc-select-arrow {
-        color: $primary !important;
+        color: var(--primary-color) !important;
       }
 
       .mat-mdc-form-field-subscript-wrapper {
@@ -161,11 +174,11 @@ $font: 'DM Sans', system-ui, sans-serif;
 .paginator-info {
   .info-text {
     font-size: 13px;
-    color: $text-muted;
+    color: var(--text-primary) !important;
     font-weight: 500;
 
     strong {
-      color: $text-primary;
+      color: var(--text-primary) !important;
       font-weight: 700;
     }
   }
@@ -181,18 +194,18 @@ $font: 'DM Sans', system-ui, sans-serif;
     min-height: 40px !important;
 
     &.mdc-list-item--selected {
-      background: $primary-lighter !important;
-      color: $primary !important;
+      background: var(--primary-lighter) !important;
+      color: var(--primary-color) !important;
       font-weight: 700 !important;
     }
 
     &:hover {
-      background: rgba($primary, 0.05) !important;
+      background: var(--hover-color) !important;
     }
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 900px) {
   .paginator-container {
     flex-direction: column;
     align-items: center;
@@ -200,11 +213,94 @@ $font: 'DM Sans', system-ui, sans-serif;
     gap: 12px;
   }
 
+  .paginator-info {
+    text-align: center;
+  }
+}
+
+@media (max-width: 640px) {
   .nav-arrow span {
     display: none;
   }
 
-  .paginator-info {
-    text-align: center;
+  .nav-arrow {
+    padding: 6px 8px;
+  }
+
+  .page-btn {
+    min-width: 30px;
+    height: 30px;
+    font-size: 12px;
+  }
+
+  .page-size-selector {
+    .selector-label {
+      font-size: 12px;
+    }
+    .page-size-field {
+      width: 80px;
+    }
+  }
+
+  .paginator-info .info-text {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 400px) {
+  .paginator-container {
+    padding: 12px 8px;
+  }
+
+  .page-btn {
+    min-width: 26px;
+    height: 26px;
+    font-size: 11px;
+    padding: 0 4px;
+  }
+
+  .nav-arrow {
+    padding: 4px 6px;
+
+    mat-icon {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+    }
+  }
+}
+
+// Dark mode overrides — applied via host-context for maximum specificity
+:host-context(body.dark-theme) {
+  .paginator-container {
+    background: #1e2530 !important;
+  }
+
+  .selector-label {
+    color: #d8d8d8 !important;
+  }
+
+  .nav-arrow {
+    color: #d8d8d8 !important;
+
+    mat-icon {
+      color: #d8d8d8 !important;
+    }
+  }
+
+  .page-btn:not(.active) {
+    color: #d8d8d8 !important;
+  }
+
+  .paginator-info .info-text {
+    color: #d8d8d8 !important;
+
+    strong {
+      color: #ffffff !important;
+    }
+  }
+
+  .page-ellipsis {
+    color: #d8d8d8 !important;
   }
 }

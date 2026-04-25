@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 $primary: #4976b5;
 $primary-light: #6b96d1;
 $primary-lighter: #e8f0f9;
@@ -158,7 +160,7 @@ $error: #ef5350;
 
     &:disabled {
       background: rgba($success, 0.15);
-      color: darken($success, 20%);
+      color: color.adjust($success, $lightness: -20%);
       border: 1px solid rgba($success, 0.35);
       box-shadow: none;
     }

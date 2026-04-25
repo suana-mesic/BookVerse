@@ -10,6 +10,8 @@ namespace Market.Application.Modules.Catalog.Inventory.Commands.Update
     {
         public int StoreId { get; set; }
         public int BookId { get; set; }
+        public int OldStoreId { get; set; }
+        public int OldBookId { get; set; }
         public int QuantityInStock { get; set; }
         public int ReorderTreshold { get; set; }
         public string? Location { get; set; } //npr. Polica 3

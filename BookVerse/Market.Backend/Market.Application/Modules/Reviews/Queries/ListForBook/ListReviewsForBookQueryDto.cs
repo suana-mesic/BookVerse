@@ -2,6 +2,7 @@
 {
     public class ListReviewsForBookQueryDto
     {
+        public int Id { get; set; }
         public int BookId { get; set; }
         public int UserId { get; set; }
         public  ListReviewsForBookQueryDtoUserInfo User { get; set; }

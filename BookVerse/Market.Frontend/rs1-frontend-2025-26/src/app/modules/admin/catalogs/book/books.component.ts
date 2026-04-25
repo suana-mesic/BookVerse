@@ -1,7 +1,10 @@
 // products.component.ts
 
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormControl } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import {
   ListBooksRequest,
   ListBooksQueryDto,
@@ -22,7 +25,7 @@ import { AuthFacadeService } from '../../../core/services/auth/auth-facade.servi
 })
 export class BooksComponent
   extends BaseListPagedComponent<ListBooksQueryDto, ListBooksRequest>
-  implements OnInit
+  implements OnInit, OnDestroy
 {
   private api = inject(BooksApiService);
   private router = inject(Router);
@@ -30,6 +33,9 @@ export class BooksComponent
   private dialogHelper = inject(DialogHelperService);
   private translate = inject(TranslateService);
   auth = inject(AuthFacadeService);
+
+  private destroy$ = new Subject<void>();
+  searchControl = new FormControl('');
 
   displayedColumns: string[] = [
     'title',
@@ -51,6 +57,24 @@ export class BooksComponent
   ngOnInit(): void {
     this.getPaginationSettings();
     this.initList();
+    this.setupSearchDebounce();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private setupSearchDebounce(): void {
+    this.searchControl.valueChanges
+      .pipe(debounceTime(400), distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe((searchTerm) => {
+        if (!searchTerm || searchTerm.length >= 3) {
+          this.request.search = searchTerm || '';
+          this.request.paging.page = 1;
+          this.loadPagedData();
+        }
+      });
   }
 
   protected loadPagedData(): void {
@@ -116,8 +140,4 @@ export class BooksComponent
     });
   }
 
-  onSearch(): void {
-    this.request.paging.page = 1;
-    this.loadPagedData();
-  }
 }

@@ -17,9 +17,10 @@ namespace Market.Application.Modules.Catalog.Inventory.Commands.Create
     {
         public CustomValidator()
         {
-            RuleFor(x => x.StoreId).GreaterThan(0).WithMessage("ID prodavnice mora biti veći od 0");
-            RuleFor(x => x.BookId).GreaterThan(0).WithMessage("ID knjige mora biti veći od 0");
-            RuleFor(x => x.BookId).GreaterThan(0).WithMessage("ID knjige mora biti veći od 0");
+            RuleFor(x => x.StoreId).GreaterThan(0).WithMessage("Polje StoreId je obavezno");
+            RuleFor(x => x.BookId).GreaterThan(0).WithMessage("Polje BookId je obavezno");
+            RuleFor(x => x.QuantityInStock).GreaterThanOrEqualTo(0).WithMessage("Polje QuantityInStock je obavezno");
+            RuleFor(x => x.ReorderTreshold).GreaterThan(0).WithMessage("Polje ReorderTreshold je obavezno");
         }
     }
 }

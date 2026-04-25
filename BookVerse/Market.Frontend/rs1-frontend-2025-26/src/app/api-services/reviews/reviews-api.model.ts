@@ -4,6 +4,7 @@ import { BasePagedQuery } from '../../core/models/paging/base-paged-query';
 export class ListMyBooksRequest extends BasePagedQuery {
   search?: string | null;
   categoryIds?: number[];
+  language?: string | null;
 
   constructor() {
     super();
@@ -32,6 +33,7 @@ export interface UpdateReviewCommand {
 }
 
 export type ListReviewsForBookQueryDto = {
+  id: number;
   bookId: number;
   userId: number;
   user: {

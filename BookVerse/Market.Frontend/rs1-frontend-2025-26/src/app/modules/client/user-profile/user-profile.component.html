@@ -50,13 +50,30 @@
           </div>
 
           <div class="form-field">
-            <label>{{ 'CLIENT.USER_PROFILE.CITY' | translate }}</label>
-            <input formControlName="city" />
+            <label>{{ 'CLIENT.USER_PROFILE.COUNTRY' | translate }}</label>
+            <select
+              formControlName="country"
+              [compareWith]="compareCountry"
+              (change)="onCountryChange(profileForm.get('country')?.value ?? null)"
+            >
+              <option [ngValue]="null" disabled>
+                {{ 'CLIENT.USER_PROFILE.SELECT_COUNTRY' | translate }}
+              </option>
+              <option *ngFor="let c of countries" [ngValue]="c">{{ c.name }}</option>
+            </select>
           </div>
 
           <div class="form-field">
-            <label>{{ 'CLIENT.USER_PROFILE.COUNTRY' | translate }}</label>
-            <input formControlName="country" />
+            <label>{{ 'CLIENT.USER_PROFILE.CITY' | translate }}</label>
+            <select formControlName="city">
+              <option [ngValue]="null" disabled *ngIf="loadingCities">
+                {{ 'CLIENT.USER_PROFILE.LOADING_CITIES' | translate }}
+              </option>
+              <option [ngValue]="null" disabled *ngIf="!loadingCities && cities.length === 0">
+                {{ 'CLIENT.USER_PROFILE.SELECT_CITY' | translate }}
+              </option>
+              <option *ngFor="let city of cities" [ngValue]="city">{{ city }}</option>
+            </select>
           </div>
         </div>
       </form>

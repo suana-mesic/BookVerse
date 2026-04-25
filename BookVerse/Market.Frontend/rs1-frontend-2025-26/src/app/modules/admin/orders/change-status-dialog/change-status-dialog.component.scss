@@ -1,4 +1,4 @@
-@import '../admin-orders-status-styles.scss';
+@use '../admin-orders-status-styles' as *;
 
 $primary-color: #4976b5;
 $text-primary: #2c3e50;
@@ -32,7 +32,7 @@ $border-color: rgba(73, 118, 181, 0.15);
       margin: 0;
       font-size: 20px;
       font-weight: 600;
-      color: $text-primary;
+      color: var(--text-primary);
     }
   }
 }
@@ -69,7 +69,7 @@ $border-color: rgba(73, 118, 181, 0.15);
 
     span {
       font-size: 14px;
-      color: $text-primary;
+      color: var(--text-primary);
       font-weight: 500;
     }
   }
@@ -90,7 +90,7 @@ $border-color: rgba(73, 118, 181, 0.15);
   .section-label {
     font-size: 13px;
     font-weight: 600;
-    color: $text-secondary;
+    color: var(--text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
@@ -152,7 +152,7 @@ $border-color: rgba(73, 118, 181, 0.15);
   align-items: center;
   gap: 12px;
   padding: 40px 20px;
-  color: $text-muted;
+  color: var(--text-muted);
 
   mat-icon {
     font-size: 48px;

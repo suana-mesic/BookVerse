@@ -243,8 +243,13 @@ $hover-bg: rgba(73, 118, 181, 0.04);
     0 1px 3px rgba(0, 0, 0, 0.06);
   border: 1px solid $border-color;
 
+  .table-scroll {
+    overflow-x: auto;
+  }
+
   table {
     width: 100%;
+    min-width: 900px;
 
     th {
       background: linear-gradient(135deg, $primary-lighter 0%, #f5f9fd 100%);
@@ -352,7 +357,7 @@ $hover-bg: rgba(73, 118, 181, 0.04);
 }
 
 // Responzivnost
-@media (max-width: 1024px) {
+@media (max-width: 1100px) {
   .header-card {
     .header-card-content {
       flex-direction: column;
@@ -364,10 +369,12 @@ $hover-bg: rgba(73, 118, 181, 0.04);
 
       .actions-container {
         justify-content: center;
+        width: 100%;
 
         .search-field {
-          width: 100%;
-          max-width: 400px;
+          flex: 1 1 240px;
+          width: auto;
+          max-width: 100%;
         }
       }
     }
@@ -401,6 +408,7 @@ $hover-bg: rgba(73, 118, 181, 0.04);
       .actions-container {
         flex-direction: column;
         width: 100%;
+        gap: 12px;
 
         .search-field,
         button[mat-raised-button] {
@@ -414,9 +422,6 @@ $hover-bg: rgba(73, 118, 181, 0.04);
     border-radius: 12px;
 
     table {
-      display: block;
-      overflow-x: auto;
-
       th,
       td {
         padding: 12px;
@@ -427,10 +432,17 @@ $hover-bg: rgba(73, 118, 181, 0.04);
 }
 
 @media (max-width: 480px) {
+  .container {
+    padding: 12px;
+  }
+
   .header-card {
+    padding: 16px;
+
     .header-card-content {
       h1 {
-        font-size: 20px;
+        font-size: 18px;
+        gap: 12px;
 
         &::before {
           width: 36px;

@@ -510,6 +510,17 @@ $hover-bg: rgba(73, 118, 181, 0.04);
   }
 }
 
+.inline-edit-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.inline-edit-error {
+  font-size: 11px;
+  color: $error-color;
+  margin-top: 2px;
+}
+
 .inline-edit-input {
   border: none;
   border-bottom: 2px solid #1976d2;

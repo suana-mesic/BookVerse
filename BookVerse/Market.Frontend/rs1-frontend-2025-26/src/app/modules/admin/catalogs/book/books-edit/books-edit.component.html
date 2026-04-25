@@ -86,7 +86,7 @@
           <mat-select formControlName="bookFormatId">
             @for(x of bookFormats;track x.id){
             <mat-option [value]="x.id">
-              {{x.format}}
+              {{ x.format }}
             </mat-option>
             }
           </mat-select>
@@ -104,7 +104,7 @@
           <mat-select formControlName="categoryIds" multiple>
             @for(cat of categories;track cat.id){
             <mat-option [value]="cat.id">
-              {{cat.name}}
+              {{ cat.name }}
             </mat-option>
             }
           </mat-select>
@@ -167,6 +167,9 @@
         <input formControlName="publishedDate" matInput [matDatepicker]="datepicker">
         <mat-datepicker #datepicker />
         <mat-datepicker-toggle [for]="datepicker" matSuffix />
+        <mat-error *ngIf="hasError('publishedDate')">
+          {{ getErrorMessage('publishedDate') }}
+        </mat-error>
       </mat-form-field>
 
       <!-- in app-image-upload component we must implement Control Value Accessor -->

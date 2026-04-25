@@ -114,7 +114,7 @@
             <div class="timeline-title">
               <span class="book-title-main">{{ book.title }}</span>
             </div>
-            <span class="book-price">{{ book.price | number: '1.2-2' : 'en' }} KM</span>
+            <span class="book-price">{{ book.price | number: '1.2-2' : 'en' }} {{ 'CURRENCY' | translate }}</span>
           </div>
 
           <!-- Book image preview -->
@@ -250,7 +250,7 @@
           </div>
           <div class="detail-meta-row">
             <mat-icon>payments</mat-icon>
-            <span>{{ selectedBook.price | number: '1.2-2' : 'en' }} KM</span>
+            <span>{{ selectedBook.price | number: '1.2-2' : 'en' }} {{ 'CURRENCY' | translate }}</span>
           </div>
         </div>
 

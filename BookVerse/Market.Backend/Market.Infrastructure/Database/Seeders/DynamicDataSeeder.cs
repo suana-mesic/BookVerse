@@ -46,8 +46,14 @@ public static class DynamicDataSeeder
 
         var bookPrices = new Dictionary<int, decimal>
         {
-            [1] = 29.99m, [2] = 34.99m, [3] = 24.99m, [4] = 19.99m,
-            [5] = 22.99m, [6] = 26.99m, [7] = 21.99m, [8] = 27.99m,
+            [1] = 29.99m,
+            [2] = 34.99m,
+            [3] = 24.99m,
+            [4] = 19.99m,
+            [5] = 22.99m,
+            [6] = 26.99m,
+            [7] = 21.99m,
+            [8] = 27.99m,
         };
 
         decimal ShipPrice(int sm) => sm == 1 ? 9.50m : sm == 2 ? 8.00m : 9.00m;
@@ -129,6 +135,7 @@ public static class DynamicDataSeeder
 
         var orders = new List<Orders>();
         int piCounter = 1;
+        int trackingCounter = 1;
 
         foreach (var (userId, date, status, psIdx, addrId, sm, books) in configs)
         {
@@ -151,11 +158,12 @@ public static class DynamicDataSeeder
                 ShippingMethodId = sm,
                 PaymentSummaryId = isPaid && psIdx >= 0 ? ps[psIdx % ps.Count].Id : null,
                 PaymentIntentId = isPaid ? $"pi_seed_{piCounter:D3}" : string.Empty,
-                TrackingNumber = status == 4 ? $"TRK{piCounter:D4}" : string.Empty,
+                TrackingNumber = status == 4 ? $"TRK{piCounter:D4}" : trackingCounter.ToString(),
                 PaidAt = isPaid ? date.AddHours(1) : null,
                 CancelledAt = status == 5 ? date.AddDays(2) : null,
             };
 
+            trackingCounter++;
             orders.Add(order);
             piCounter++;
         }
@@ -234,12 +242,12 @@ public static class DynamicDataSeeder
         await context.SaveChangesAsync();
 
         context.CartItems.AddRange(
-            new CartItems { CartId = cart1.Id, BookId = 2, Quantity = 1, DateAdded = new DateTime(2026,4,1), SavedForLater = false },
-            new CartItems { CartId = cart1.Id, BookId = 7, Quantity = 1, DateAdded = new DateTime(2026,4,1), SavedForLater = false },
-            new CartItems { CartId = cart2.Id, BookId = 1, Quantity = 2, DateAdded = new DateTime(2026,4,5), SavedForLater = false },
-            new CartItems { CartId = cart3.Id, BookId = 4, Quantity = 1, DateAdded = new DateTime(2026,4,8), SavedForLater = false },
-            new CartItems { CartId = cart3.Id, BookId = 8, Quantity = 1, DateAdded = new DateTime(2026,4,8), SavedForLater = false },
-            new CartItems { CartId = cart3.Id, BookId = 5, Quantity = 1, DateAdded = new DateTime(2026,4,8), SavedForLater = true }
+            new CartItems { CartId = cart1.Id, BookId = 2, Quantity = 1, DateAdded = new DateTime(2026, 4, 1), SavedForLater = false },
+            new CartItems { CartId = cart1.Id, BookId = 7, Quantity = 1, DateAdded = new DateTime(2026, 4, 1), SavedForLater = false },
+            new CartItems { CartId = cart2.Id, BookId = 1, Quantity = 2, DateAdded = new DateTime(2026, 4, 5), SavedForLater = false },
+            new CartItems { CartId = cart3.Id, BookId = 4, Quantity = 1, DateAdded = new DateTime(2026, 4, 8), SavedForLater = false },
+            new CartItems { CartId = cart3.Id, BookId = 8, Quantity = 1, DateAdded = new DateTime(2026, 4, 8), SavedForLater = false },
+            new CartItems { CartId = cart3.Id, BookId = 5, Quantity = 1, DateAdded = new DateTime(2026, 4, 8), SavedForLater = true }
         );
 
         await context.SaveChangesAsync();
@@ -250,14 +258,14 @@ public static class DynamicDataSeeder
         if (await context.WishlistItems.AnyAsync()) return;
 
         context.WishlistItems.AddRange(
-            new WishlistItems { UserId = 3, BookId = 2, DateAdded = new DateTime(2026,3,10) },
-            new WishlistItems { UserId = 3, BookId = 5, DateAdded = new DateTime(2026,3,15) },
-            new WishlistItems { UserId = 5, BookId = 1, DateAdded = new DateTime(2026,3,20) },
-            new WishlistItems { UserId = 5, BookId = 8, DateAdded = new DateTime(2026,3,25) },
-            new WishlistItems { UserId = 7, BookId = 3, DateAdded = new DateTime(2026,4,1) },
-            new WishlistItems { UserId = 7, BookId = 4, DateAdded = new DateTime(2026,4,2) },
-            new WishlistItems { UserId = 8, BookId = 6, DateAdded = new DateTime(2026,4,3) },
-            new WishlistItems { UserId = 9, BookId = 7, DateAdded = new DateTime(2026,4,5) }
+            new WishlistItems { UserId = 3, BookId = 2, DateAdded = new DateTime(2026, 3, 10) },
+            new WishlistItems { UserId = 3, BookId = 5, DateAdded = new DateTime(2026, 3, 15) },
+            new WishlistItems { UserId = 5, BookId = 1, DateAdded = new DateTime(2026, 3, 20) },
+            new WishlistItems { UserId = 5, BookId = 8, DateAdded = new DateTime(2026, 3, 25) },
+            new WishlistItems { UserId = 7, BookId = 3, DateAdded = new DateTime(2026, 4, 1) },
+            new WishlistItems { UserId = 7, BookId = 4, DateAdded = new DateTime(2026, 4, 2) },
+            new WishlistItems { UserId = 8, BookId = 6, DateAdded = new DateTime(2026, 4, 3) },
+            new WishlistItems { UserId = 9, BookId = 7, DateAdded = new DateTime(2026, 4, 5) }
         );
 
         await context.SaveChangesAsync();
@@ -268,20 +276,20 @@ public static class DynamicDataSeeder
         if (await context.InventoryLog.AnyAsync()) return;
 
         context.InventoryLog.AddRange(
-            new InventoryLog { BookId = 1, ChangeTypeId = 1, QuantityChanged = 200, DateChanged = new DateTime(2025,1,1) },
-            new InventoryLog { BookId = 2, ChangeTypeId = 1, QuantityChanged = 150, DateChanged = new DateTime(2025,1,1) },
-            new InventoryLog { BookId = 3, ChangeTypeId = 1, QuantityChanged = 120, DateChanged = new DateTime(2025,1,1) },
-            new InventoryLog { BookId = 4, ChangeTypeId = 1, QuantityChanged = 100, DateChanged = new DateTime(2025,2,1) },
-            new InventoryLog { BookId = 5, ChangeTypeId = 1, QuantityChanged = 80, DateChanged = new DateTime(2025,2,1) },
-            new InventoryLog { BookId = 6, ChangeTypeId = 1, QuantityChanged = 90, DateChanged = new DateTime(2025,2,1) },
-            new InventoryLog { BookId = 7, ChangeTypeId = 1, QuantityChanged = 75, DateChanged = new DateTime(2025,3,1) },
-            new InventoryLog { BookId = 8, ChangeTypeId = 1, QuantityChanged = 130, DateChanged = new DateTime(2025,3,1) },
-            new InventoryLog { BookId = 1, ChangeTypeId = 2, QuantityChanged = 45, DateChanged = new DateTime(2025,6,30) },
-            new InventoryLog { BookId = 2, ChangeTypeId = 2, QuantityChanged = 30, DateChanged = new DateTime(2025,6,30) },
-            new InventoryLog { BookId = 1, ChangeTypeId = 1, QuantityChanged = 100, DateChanged = new DateTime(2025,7,5) },
-            new InventoryLog { BookId = 8, ChangeTypeId = 2, QuantityChanged = 20, DateChanged = new DateTime(2025,9,15) },
-            new InventoryLog { BookId = 3, ChangeTypeId = 2, QuantityChanged = 15, DateChanged = new DateTime(2025,12,1) },
-            new InventoryLog { BookId = 1, ChangeTypeId = 2, QuantityChanged = 60, DateChanged = new DateTime(2025,12,31) }
+            new InventoryLog { BookId = 1, ChangeTypeId = 1, QuantityChanged = 200, DateChanged = new DateTime(2025, 1, 1) },
+            new InventoryLog { BookId = 2, ChangeTypeId = 1, QuantityChanged = 150, DateChanged = new DateTime(2025, 1, 1) },
+            new InventoryLog { BookId = 3, ChangeTypeId = 1, QuantityChanged = 120, DateChanged = new DateTime(2025, 1, 1) },
+            new InventoryLog { BookId = 4, ChangeTypeId = 1, QuantityChanged = 100, DateChanged = new DateTime(2025, 2, 1) },
+            new InventoryLog { BookId = 5, ChangeTypeId = 1, QuantityChanged = 80, DateChanged = new DateTime(2025, 2, 1) },
+            new InventoryLog { BookId = 6, ChangeTypeId = 1, QuantityChanged = 90, DateChanged = new DateTime(2025, 2, 1) },
+            new InventoryLog { BookId = 7, ChangeTypeId = 1, QuantityChanged = 75, DateChanged = new DateTime(2025, 3, 1) },
+            new InventoryLog { BookId = 8, ChangeTypeId = 1, QuantityChanged = 130, DateChanged = new DateTime(2025, 3, 1) },
+            new InventoryLog { BookId = 1, ChangeTypeId = 2, QuantityChanged = 45, DateChanged = new DateTime(2025, 6, 30) },
+            new InventoryLog { BookId = 2, ChangeTypeId = 2, QuantityChanged = 30, DateChanged = new DateTime(2025, 6, 30) },
+            new InventoryLog { BookId = 1, ChangeTypeId = 1, QuantityChanged = 100, DateChanged = new DateTime(2025, 7, 5) },
+            new InventoryLog { BookId = 8, ChangeTypeId = 2, QuantityChanged = 20, DateChanged = new DateTime(2025, 9, 15) },
+            new InventoryLog { BookId = 3, ChangeTypeId = 2, QuantityChanged = 15, DateChanged = new DateTime(2025, 12, 1) },
+            new InventoryLog { BookId = 1, ChangeTypeId = 2, QuantityChanged = 60, DateChanged = new DateTime(2025, 12, 31) }
         );
 
         await context.SaveChangesAsync();
@@ -293,12 +301,12 @@ public static class DynamicDataSeeder
         if (existingCount >= 6) return;
 
         context.Reviews.AddRange(
-            new Review { BookId = 1, UserId = 5, Rating = 5, Comment = "Remek-djelo bosanske književnosti. Selimović piše o sudbini i vjeri na način koji te u potpunosti uvuče.", DatePosted = new DateTime(2025,3,15), IsDeleted = false },
-            new Review { BookId = 2, UserId = 6, Rating = 4, Comment = "Andrićevo majstorstvo pripovijedanja dolazi do punog izražaja u ovom romanu.", DatePosted = new DateTime(2025,5,20), IsDeleted = false },
-            new Review { BookId = 8, UserId = 7, Rating = 5, Comment = "Prokleta avlija je briljantna novela o zatočeništvu i slobodi. Kratko ali duboko.", DatePosted = new DateTime(2025,7,10), IsDeleted = false },
-            new Review { BookId = 5, UserId = 8, Rating = 3, Comment = "Sušić piše angažovano i s mnogo emocija, mada mi se ponekad čini preromantizirano.", DatePosted = new DateTime(2025,9,5), IsDeleted = false },
-            new Review { BookId = 7, UserId = 9, Rating = 5, Comment = "Sarajevo Blues je nešto posebno. Čitaš ga i osjećaš svaki red kao udarac u srce.", DatePosted = new DateTime(2025,11,22), IsDeleted = false },
-            new Review { BookId = 6, UserId = 3, Rating = 4, Comment = "Ugursuz je duhovita i topla knjiga, puna bosanske duše i humora.", DatePosted = new DateTime(2026,1,14), IsDeleted = false }
+            new Review { BookId = 1, UserId = 5, Rating = 5, Comment = "Remek-djelo bosanske književnosti. Selimović piše o sudbini i vjeri na način koji te u potpunosti uvuče.", DatePosted = new DateTime(2025, 3, 15), IsDeleted = false },
+            new Review { BookId = 2, UserId = 6, Rating = 4, Comment = "Andrićevo majstorstvo pripovijedanja dolazi do punog izražaja u ovom romanu.", DatePosted = new DateTime(2025, 5, 20), IsDeleted = false },
+            new Review { BookId = 8, UserId = 7, Rating = 5, Comment = "Prokleta avlija je briljantna novela o zatočeništvu i slobodi. Kratko ali duboko.", DatePosted = new DateTime(2025, 7, 10), IsDeleted = false },
+            new Review { BookId = 5, UserId = 8, Rating = 3, Comment = "Sušić piše angažovano i s mnogo emocija, mada mi se ponekad čini preromantizirano.", DatePosted = new DateTime(2025, 9, 5), IsDeleted = false },
+            new Review { BookId = 7, UserId = 9, Rating = 5, Comment = "Sarajevo Blues je nešto posebno. Čitaš ga i osjećaš svaki red kao udarac u srce.", DatePosted = new DateTime(2025, 11, 22), IsDeleted = false },
+            new Review { BookId = 6, UserId = 3, Rating = 4, Comment = "Ugursuz je duhovita i topla knjiga, puna bosanske duše i humora.", DatePosted = new DateTime(2026, 1, 14), IsDeleted = false }
         );
 
         await context.SaveChangesAsync();

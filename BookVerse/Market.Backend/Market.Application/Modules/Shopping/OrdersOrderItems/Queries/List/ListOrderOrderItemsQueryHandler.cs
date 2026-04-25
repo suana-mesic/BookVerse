@@ -11,7 +11,7 @@ namespace Market.Application.Modules.Shopping.OrdersOrderItems.Queries.List
     {
         public async Task<PageResult<ListOrderOrderItemsQueryDto>> Handle(ListOrderOrderItemsQuery request, CancellationToken ct)
         {
-            var q = ctx.Orders.Include(x => x.User).Include(x => x.OrderStatus).AsNoTracking();
+            var q = ctx.Orders.Include(x => x.User).ThenInclude(u => u.Address).Include(x => x.OrderStatus).AsNoTracking();
             if (!string.IsNullOrWhiteSpace(request.Search))
             {
                 var searchFilter = request.Search.ToLower();
@@ -36,7 +36,9 @@ namespace Market.Application.Modules.Shopping.OrdersOrderItems.Queries.List
                 {
                     UserId = x.User.Id,
                     FirstName = x.User.FirstName,
-                    LastName = x.User.LastName
+                    LastName = x.User.LastName,
+                    UserAddress = x.User.Address != null ? x.User.Address.Line1 : null,
+                    UserCity = x.User.Address != null ? x.User.Address.City : null
                 },
                 OrderDate = x.OrderDate,
                 Total = x.TotalPrice,

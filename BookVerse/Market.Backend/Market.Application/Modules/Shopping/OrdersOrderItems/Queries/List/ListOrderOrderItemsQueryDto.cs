@@ -21,5 +21,7 @@ namespace Market.Application.Modules.Shopping.OrdersOrderItems.Queries.List
         public int UserId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string? UserAddress { get; set; }
+        public string? UserCity { get; set; }
     }
 }

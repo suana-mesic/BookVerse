@@ -9,8 +9,7 @@
           <input
             matInput
             [placeholder]="'USERS.SEARCH_INPUT_PLACEHOLDER' | translate"
-            (keyup.enter)="request.paging.page = 1; loadPagedData()"
-            [(ngModel)]="request.search"
+            [formControl]="searchControl"
           />
           <mat-icon matSuffix>search</mat-icon>
         </mat-form-field>
@@ -24,6 +23,7 @@
 
   <!-- Tabela -->
   <div class="mat-elevation-z8" *ngIf="!isLoading && !errorMessage">
+    <div class="table-scroll">
     <table mat-table [dataSource]="items">
       <!-- Ime i prezime -->
       <ng-container matColumnDef="fullName">
@@ -82,6 +82,7 @@
         <td class="mat-cell" colspan="5">{{ 'USERS.NO_DATA' | translate }}</td>
       </tr>
     </table>
+    </div>
 
     <app-fit-paginator-bar [vm]="$any(this)" />
   </div>

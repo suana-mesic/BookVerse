@@ -276,8 +276,8 @@ export class InventoryComponent
     this.router.navigate(['/admin/inventory/edit/store', storeId, 'book', bookId]);
   }
 
-  deleteInventory(storeId: number, storeName: string, bookId: number) {
-    this.dialogHelper.inventory.confirmDelete(storeName).subscribe((result) => {
+  deleteInventory(storeId: number, storeName: string, bookId: number, title: string) {
+    this.dialogHelper.inventory.confirmDelete(storeName, title).subscribe((result) => {
       if (result && result.button === DialogButton.DELETE) {
         this.performDelete(storeId, bookId);
       }

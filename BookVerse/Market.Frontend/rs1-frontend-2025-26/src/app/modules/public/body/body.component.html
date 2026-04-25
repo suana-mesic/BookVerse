@@ -1,11 +1,10 @@
 <body>
   <div class="body__content">
-    <div class="body__header">
-      <h1>{{ 'CLIENT.BODY.RECOMMENDED' | translate }}</h1>
+    <div class="body__paginator">
       <app-fit-paginator-bar [vm]="$any(this)"></app-fit-paginator-bar>
     </div>
     <div class="body__books">
-      @for(book of books(); track book.id) {
+      @for (book of books(); track book.id) {
         <app-book [routerLink]="['/knjige', book.id]" [book]="book" />
       }
     </div>

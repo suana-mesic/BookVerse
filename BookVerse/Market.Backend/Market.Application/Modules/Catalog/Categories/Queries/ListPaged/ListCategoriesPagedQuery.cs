@@ -6,6 +6,7 @@ namespace Market.Application.Modules.Catalog.Categories.Queries.ListPaged
     {
         public string? Search { get; init; }
         public bool? OnlyEnabled { get; init; }
+        public string? Language { get; init; }
 
     }
 }

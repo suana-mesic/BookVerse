@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 // Colors
 $primary-color: #4976b5;
 $primary-light: #6b92c9;
@@ -76,7 +78,7 @@ mat-dialog-content {
     mat-form-field {
       &.mat-form-field-appearance-outline {
         .mat-mdc-form-field-flex {
-          background-color: $background-card;
+          background-color: var(--card-bg);
           border-radius: 12px;
           padding: 4px 8px;
           box-shadow: 0 2px 4px rgba(73, 118, 181, 0.06);
@@ -120,12 +122,12 @@ mat-dialog-content {
         }
 
         input {
-          color: $text-primary;
+          color: var(--text-primary);
           font-size: 15px;
           padding: 12px 0;
 
           &::placeholder {
-            color: $text-light;
+            color: var(--text-muted);
           }
         }
 
@@ -293,7 +295,7 @@ mat-dialog-actions {
       }
 
       &[disabled] {
-        background: linear-gradient(135deg, lighten($border-color, 5%) 0%, $border-color 100%);
+        background: linear-gradient(135deg, color.adjust($border-color, $lightness: 5%) 0%, $border-color 100%);
         color: $text-light;
         box-shadow: none;
         cursor: not-allowed;

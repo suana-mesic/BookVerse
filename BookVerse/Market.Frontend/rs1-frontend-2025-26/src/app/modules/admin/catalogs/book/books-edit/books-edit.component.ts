@@ -48,16 +48,15 @@ export class BooksEditComponent extends BaseFormComponent<GetBookByIdQueryDto> i
   ngOnInit(): void {
     this.productId = +this.route.snapshot.params['id'];
     this.initForm(true); // Edit mode
+    this.startLoading();
   }
 
   protected loadData(): void {
-    this.startLoading();
-
     // Load product and categories in parallel
     forkJoin({
       product: this.api.getById(this.productId),
-      categories: this.categoriesApi.list(),
-      bookFormats: this.bookFormatsApi.list({ onlyEnabled: true, paging: largePaging }),
+      categories: this.categoriesApi.list({ language: this.translate.currentLang }),
+      bookFormats: this.bookFormatsApi.list({ onlyEnabled: true, paging: largePaging, language: this.translate.currentLang }),
       authors: this.authorsApi.list({ onlyEnabled: true, paging: largePaging }),
       publishers: this.publishersApi.list({ onlyEnabled: true, paging: largePaging }),
     }).subscribe({
@@ -74,6 +73,7 @@ export class BooksEditComponent extends BaseFormComponent<GetBookByIdQueryDto> i
         this.stopLoading(this.translate.instant('BOOKS.DIALOGS.ERROR_LOAD'));
         this.toaster.error(this.translate.instant('ERRORS.NOT_FOUND'));
         console.error('Load product error:', err);
+        this.stopLoading();
         this.router.navigate(['/admin/products']);
       },
     });

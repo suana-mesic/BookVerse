@@ -101,7 +101,9 @@
       "STRENGTH_VERY_WEAK": "veoma slaba",
       "STRENGTH_WEAK": "slaba",
       "STRENGTH_FAIR": "dovoljna",
-      "STRENGTH_STRONG": "jaka"
+      "STRENGTH_STRONG": "jaka",
+      "SUCCESS_TITLE": "Uspješna registracija",
+      "SUCCESS_MESSAGE": "Uspješno ste se registrovali"
     },
     "LOGOUT": {
       "TITLE": "Odjava",
@@ -325,13 +327,14 @@
     },
     "DIALOGS": {
       "DELETE_TITLE": "Brisanje inventara",
-      "DELETE_MESSAGE": "Da li ste sigurni da želite obrisati inventar za prodavnicu \"{{name}}\"?",
+      "DELETE_MESSAGE": "Da li ste sigurni da želite obrisati inventar za prodavnicu \"{{storeName}}\" i knjigu \"{{title}}\"?",
       "CONFIRM_ENABLE": "Da li ste sigurni da želite aktivirati inventar za prodavnicu \"{{name}}\"?",
       "CONFIRM_DISABLE": "Da li ste sigurni da želite deaktivirati inventar za prodavnicu \"{{name}}\"?",
       "SUCCESS_CREATE": "Popis inventara uspješno kreiran.",
       "SUCCESS_UPDATE": "Inventar uspješno ažuriran.",
       "SUCCESS_DELETE": "Inventar uspješno obrisan.",
       "ERROR_CREATE": "Greška pri kreiranju inventara.",
+      "DUPLICATE_INVENTORY": "Već je popisan inventar za prodavnicu {{storeName}} i knjigu {{bookTitle}}",
       "ERROR_UPDATE": "Greška pri ažuriranju inventara.",
       "ERROR_DELETE": "Greška pri brisanju inventara.",
       "ERROR_TOGGLE": "Greška pri promjeni statusa inventara.",
@@ -351,7 +354,7 @@
     "CLEAR_FILTERS": "Očisti Filtere",
     "LOADING": "Učitavanje narudžbi...",
     "RETRY": "Pokušaj Ponovo",
-    "ERROR_TITLE": "Greška pri Učitavanju Narudžbi",
+    "ERROR_TITLE": "Greška Pri Učitavanju Narudžbi",
     "NO_DATA": "Nema narudžbi",
     "NO_DATA_FILTER": "Nema narudžbi koje odgovaraju filterima",
     "STATUS": {
@@ -541,7 +544,7 @@
   },
   "VALIDATION": {
     "REQUIRED": "Ovo polje je obavezno",
-    "REQUIRED_FIELD": "{{field}} je obavezno",
+    "REQUIRED_FIELD": "Polje {{field}} je obavezno",
     "EMAIL": "Unesite validnu email adresu",
     "MIN_LENGTH": "Minimalna dužina je {{min}} znakova",
     "MAX_LENGTH": "Maksimalna dužina je {{max}} znakova",
@@ -679,7 +682,9 @@
     },
     "PROMOTION_CODE": "Promocijski kod",
     "START_DATE": "Datum početka",
-    "END_DATE": "Datum isteka"
+    "END_DATE": "Datum isteka",
+    "PERCENT_OFF": "Popust (%)",
+    "AMOUNT_OFF": "Fiksni iznos"
   },
   "CLIENT": {
     "HEADER": {
@@ -881,6 +886,9 @@
       "ADDRESS2": "Adresa 2",
       "CITY": "Grad",
       "COUNTRY": "Zemlja",
+      "SELECT_COUNTRY": "Odaberite zemlju",
+      "SELECT_CITY": "Odaberite grad",
+      "LOADING_CITIES": "Učitavanje gradova...",
       "SECURITY": "Sigurnost",
       "CHANGE_EMAIL": "Promjena mejla →",
       "CHANGE_PASSWORD": "Promjena lozinke →",

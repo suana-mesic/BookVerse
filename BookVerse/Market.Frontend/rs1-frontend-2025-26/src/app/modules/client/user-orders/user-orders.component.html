@@ -99,13 +99,13 @@
               <mat-icon *ngIf="!item.book.imageUrl" class="book-icon">menu_book</mat-icon>
               <span class="book-title">{{ item.book.title }}</span>
               <span class="book-price">
-                {{ item.quantity }}x {{ item.unitPrice | number: '1.2-2' : 'en' }} KM
+                {{ item.quantity }}x {{ item.unitPrice | number: '1.2-2' : 'en' }} {{ 'CURRENCY' | translate }}
               </span>
             </div>
           </div>
 
           <div class="timeline-footer">
-            <strong class="total">{{ order.totalAmount | number: '1.2-2' : 'en' }} KM</strong>
+            <strong class="total">{{ order.totalAmount | number: '1.2-2' : 'en' }} {{ 'CURRENCY' | translate }}</strong>
             <div class="footer-actions">
               <button
                 *ngIf="canCancel(order.status)"
@@ -176,10 +176,10 @@
                 <div class="carousel-info">
                   <span class="carousel-title">{{ item.book.title }}</span>
                   <span class="carousel-meta">
-                    {{ item.quantity }} kom × {{ item.unitPrice | number: '1.2-2' : 'en' }} KM
+                    {{ item.quantity }} kom × {{ item.unitPrice | number: '1.2-2' : 'en' }} {{ 'CURRENCY' | translate }}
                   </span>
                   <strong class="carousel-price">
-                    {{ item.quantity * item.unitPrice | number: '1.2-2' : 'en' }} KM
+                    {{ item.quantity * item.unitPrice | number: '1.2-2' : 'en' }} {{ 'CURRENCY' | translate }}
                   </strong>
                 </div>
               </div>
@@ -208,22 +208,22 @@
           <h4>{{ 'CLIENT.USER_ORDERS.PRICE' | translate }}</h4>
           <div class="price-row">
             <span>{{ 'CLIENT.USER_ORDERS.SUBTOTAL' | translate }}</span>
-            <span>{{ selectedOrder.subtotal | number: '1.2-2' : 'en' }} KM</span>
+            <span>{{ selectedOrder.subtotal | number: '1.2-2' : 'en' }} {{ 'CURRENCY' | translate }}</span>
           </div>
           <div class="price-row" *ngIf="selectedOrder.shippingPriceAtTheTime > 0">
             <span>{{ 'CLIENT.USER_ORDERS.SHIPPING' | translate }}</span>
-            <span>{{ selectedOrder.shippingPriceAtTheTime | number: '1.2-2' : 'en' }} KM</span>
+            <span>{{ selectedOrder.shippingPriceAtTheTime | number: '1.2-2' : 'en' }} {{ 'CURRENCY' | translate }}</span>
           </div>
           <div
             class="price-row discount"
             *ngIf="selectedOrder.discountAmount && selectedOrder.discountAmount > 0"
           >
             <span>{{ 'CLIENT.USER_ORDERS.DISCOUNT' | translate }}</span>
-            <span>- {{ selectedOrder.discountAmount | number: '1.2-2' : 'en' }} KM</span>
+            <span>- {{ selectedOrder.discountAmount | number: '1.2-2' : 'en' }} {{ 'CURRENCY' | translate }}</span>
           </div>
           <div class="price-row total-row">
             <strong>{{ 'CLIENT.USER_ORDERS.TOTAL' | translate }}</strong>
-            <strong>{{ selectedOrder.totalAmount | number: '1.2-2' : 'en' }} KM</strong>
+            <strong>{{ selectedOrder.totalAmount | number: '1.2-2' : 'en' }} {{ 'CURRENCY' | translate }}</strong>
           </div>
         </div>
 

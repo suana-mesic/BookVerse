@@ -86,14 +86,15 @@ export class InventoryAddComponent extends BaseComponent implements OnInit {
   }
 
   private _filterStores(enteredValue: string, index: number): ListStoresQueryDto[] {
-    //ima 1 filter
-    //filter definiše korisnik -> npr. unese slovo "a" u store autocomplete polju za unos
-
     const filterValue = enteredValue.toLowerCase();
-    const result = this.stores.filter((store) =>
-      store.storeName.toLowerCase().includes(filterValue),
-    );
-    return result;
+    const selectedBookId = this.inventoryArray?.at(index)?.get('bookId')?.value;
+
+    return this.stores.filter((store) => {
+      if (!store.storeName.toLowerCase().includes(filterValue)) return false;
+      if (!selectedBookId) return true;
+      const availableBooks = this.storeBookPairs?.[store.id];
+      return !!availableBooks && !!availableBooks[selectedBookId];
+    });
   }
 
   clearBookInSameRow(index: number) {
@@ -103,17 +104,24 @@ export class InventoryAddComponent extends BaseComponent implements OnInit {
 
   private setFilteredBookOptions(): void {
     this.filteredBookOptions = this.booksAutocompleteInputs.controls.map(
-      (control: FormControl) =>
+      (control: FormControl, index: number) =>
         control.valueChanges.pipe(
           startWith(''),
-          map((value) => this._filterBooks(typeof value === 'string' ? value : '')),
+          map((value) => this._filterBooks(typeof value === 'string' ? value : '', index)),
         ),
     );
   }
 
-  private _filterBooks(enteredValue: string): ListBooksForAutocompleteQueryDto[] {
+  private _filterBooks(enteredValue: string, index: number): ListBooksForAutocompleteQueryDto[] {
     const filterValue = enteredValue.toLowerCase();
-    return this.books.filter((x) => x.title.toLowerCase().includes(filterValue));
+    const selectedStoreId = this.inventoryArray?.at(index)?.get('storeId')?.value;
+
+    return this.books.filter((book) => {
+      if (!book.title.toLowerCase().includes(filterValue)) return false;
+      if (!selectedStoreId) return true;
+      const availableBooks = this.storeBookPairs?.[selectedStoreId];
+      return !!availableBooks && !!availableBooks[book.id];
+    });
   }
 
   addStoreAutocompleteInput() {
@@ -134,9 +142,9 @@ export class InventoryAddComponent extends BaseComponent implements OnInit {
   }
 
   onStoreSelected(event: MatAutocompleteSelectedEvent, index: number) {
-    this.clearBookInSameRow(index);
     const storeId = this.stores.filter((x) => x.storeName == event.option.value).at(0)?.id;
     if (storeId) this.inventoryArray.at(index).get('storeId')?.setValue(storeId);
+    this.clearBookInSameRow(index);
   }
 
   displayBookTitle = (book: ListBooksForAutocompleteQueryDto | string): string => {
@@ -148,6 +156,8 @@ export class InventoryAddComponent extends BaseComponent implements OnInit {
   onBookSelected(event: MatAutocompleteSelectedEvent, index: number) {
     const book: ListBooksForAutocompleteQueryDto = event.option.value;
     this.inventoryArray.at(index).get('bookId')?.setValue(book.id);
+    const storeCtrl = this.storesAutocompleteInputs.at(index);
+    storeCtrl.setValue(storeCtrl.value);
   }
 
   loadStoreBookPairs() {
@@ -220,7 +230,27 @@ export class InventoryAddComponent extends BaseComponent implements OnInit {
         this.toaster.success(this.translate.instant('INVENTORY.DIALOGS.SUCCESS_CREATE'));
         this.router.navigate(['/admin/inventory']);
       },
-      error: (err) => this.toaster.error(this.translate.instant('INVENTORY.DIALOGS.ERROR_CREATE')),
+      error: (err) => {
+        if (err.status === 409) {
+          let storeName = '';
+          let bookTitle = '';
+          for (let i = 0; i < this.inventoryArray.length; i++) {
+            const storeId = this.inventoryArray.at(i).get('storeId')?.value;
+            const bookId = this.inventoryArray.at(i).get('bookId')?.value;
+            if (storeId && bookId && this.storeBookPairs?.[storeId]?.[bookId]) {
+              storeName = this.storesAutocompleteInputs.at(i).value ?? '';
+              const bookInput = this.booksAutocompleteInputs.at(i).value;
+              bookTitle = typeof bookInput === 'string' ? bookInput : (bookInput?.title ?? '');
+              break;
+            }
+          }
+          this.toaster.error(
+            this.translate.instant('INVENTORY.DIALOGS.DUPLICATE_INVENTORY', { storeName, bookTitle })
+          );
+        } else {
+          this.toaster.error(this.translate.instant('INVENTORY.DIALOGS.ERROR_CREATE'));
+        }
+      },
     });
   }
 }

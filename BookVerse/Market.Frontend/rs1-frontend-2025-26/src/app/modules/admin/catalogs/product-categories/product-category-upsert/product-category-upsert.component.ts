@@ -41,7 +41,7 @@ export class ProductCategoryUpsertComponent implements OnInit {
     this.isEditMode = this.data.mode === 'edit';
     this.title = this.isEditMode
       ? this.translate.instant('GENRES.FORM.EDIT_TITLE')
-      : this.translate.instant('GENRES.NEW_CATEGORY');
+      : this.translate.instant('GENRES.NEW_GENRE');
 
     if (this.isEditMode && this.data.categoryId) {
       this.loadCategory(this.data.categoryId);
@@ -89,6 +89,7 @@ export class ProductCategoryUpsertComponent implements OnInit {
     this.api.create(command).subscribe({
       next: () => {
         this.toaster.success(this.translate.instant('GENRES.DIALOGS.SUCCESS_CREATE'));
+        this.dialogRef.close(true);
       },
       error: (err) => {
         this.isLoading = false;
@@ -98,8 +99,11 @@ export class ProductCategoryUpsertComponent implements OnInit {
   }
 
   private updateCategory(): void {
+    console.log('Is enabled');
+    console.log(this.form.value.isEnabled);
     const command: UpdateProductCategoryCommand = {
       name: this.form.value.name.trim(),
+      isEnabled: this.form.value.isEnabled,
     };
 
     this.api.update(this.data.categoryId!, command).subscribe({
