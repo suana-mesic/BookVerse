@@ -41,7 +41,7 @@
           <mat-label>{{ 'INVENTORY.TABLE.STORE_NAME' | translate }}</mat-label>
           <mat-select formControlName="storeId">
             @for (x of stores; track x.id) {
-              <mat-option [value]="x.id">
+              <mat-option [value]="x.id" [disabled]="isStoreOccupied(x.id)">
                 {{ x.storeName }}
               </mat-option>
             }

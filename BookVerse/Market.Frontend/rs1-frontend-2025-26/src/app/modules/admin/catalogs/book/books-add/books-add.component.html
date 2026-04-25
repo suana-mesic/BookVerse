@@ -23,7 +23,11 @@
       <div class="form-row">
         <mat-form-field appearance="outline" class="half-width">
           <mat-label>{{ 'BOOKS.FORM.ISBN' | translate }}</mat-label>
-          <input matInput formControlName="isbn" [placeholder]="'BOOKS.FORM.ISBN_PLACEHOLDER' | translate" />
+          <input
+            matInput
+            formControlName="isbn"
+            [placeholder]="'BOOKS.FORM.ISBN_PLACEHOLDER' | translate"
+          />
           <mat-icon matSuffix>description</mat-icon>
           <mat-error *ngIf="hasError('isbn')">
             {{ getErrorMessage('isbn') }}
@@ -33,7 +37,11 @@
         <!-- Title -->
         <mat-form-field appearance="outline" class="half-width">
           <mat-label>{{ 'BOOKS.FORM.TITLE' | translate }}</mat-label>
-          <input matInput formControlName="title" [placeholder]="'BOOKS.FORM.TITLE_PLACEHOLDER' | translate" />
+          <input
+            matInput
+            formControlName="title"
+            [placeholder]="'BOOKS.FORM.TITLE_PLACEHOLDER' | translate"
+          />
           <mat-icon matSuffix>title</mat-icon>
           <mat-error *ngIf="hasError('title')">
             {{ getErrorMessage('title') }}
@@ -44,8 +52,12 @@
       <!-- Description  -->
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>{{ 'BOOKS.FORM.DESCRIPTION' | translate }}</mat-label>
-        <textarea matInput formControlName="description"
-          [placeholder]="'BOOKS.FORM.DESCRIPTION_PLACEHOLDER' | translate" rows="4"></textarea>
+        <textarea
+          matInput
+          formControlName="description"
+          [placeholder]="'BOOKS.FORM.DESCRIPTION_PLACEHOLDER' | translate"
+          rows="4"
+        ></textarea>
         <mat-icon matSuffix>description</mat-icon>
         <mat-error *ngIf="hasError('description')">
           {{ getErrorMessage('description') }}
@@ -56,8 +68,13 @@
         <!-- Price -->
         <mat-form-field appearance="outline" class="half-width">
           <mat-label>{{ 'BOOKS.FORM.PRICE' | translate }}</mat-label>
-          <input matInput type="number" formControlName="price" step="0.01"
-            [placeholder]="'BOOKS.FORM.PRICE_PLACEHOLDER' | translate" />
+          <input
+            matInput
+            type="number"
+            formControlName="price"
+            step="0.01"
+            [placeholder]="'BOOKS.FORM.PRICE_PLACEHOLDER' | translate"
+          />
           <span matTextPrefix>KM&nbsp;</span>
           <mat-icon matSuffix>payments</mat-icon>
           <mat-error *ngIf="hasError('price')">
@@ -68,7 +85,11 @@
         <!-- Page count -->
         <mat-form-field appearance="outline" class="half-width">
           <mat-label>{{ 'BOOKS.FORM.PAGE_COUNT' | translate }}</mat-label>
-          <input matInput formControlName="pageCount" [placeholder]="'BOOKS.FORM.PAGE_COUNT_PLACEHOLDER' | translate" />
+          <input
+            matInput
+            formControlName="pageCount"
+            [placeholder]="'BOOKS.FORM.PAGE_COUNT_PLACEHOLDER' | translate"
+          />
           <mat-icon matSuffix>description</mat-icon>
           <mat-error *ngIf="hasError('pageCount')">
             {{ getErrorMessage('pageCount') }}
@@ -80,7 +101,11 @@
         <!-- Language -->
         <mat-form-field appearance="outline" class="half-width">
           <mat-label>{{ 'BOOKS.FORM.LANGUAGE' | translate }}</mat-label>
-          <input matInput formControlName="language" [placeholder]="'BOOKS.FORM.LANGUAGE_PLACEHOLDER' | translate" />
+          <input
+            matInput
+            formControlName="language"
+            [placeholder]="'BOOKS.FORM.LANGUAGE_PLACEHOLDER' | translate"
+          />
           <mat-icon matSuffix>language</mat-icon>
           <mat-error *ngIf="hasError('language')">
             {{ getErrorMessage('language') }}
@@ -88,12 +113,12 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="half-width">
-          <mat-label> {{'BOOKS.FORM.FORMAT' | translate}}</mat-label>
+          <mat-label> {{ 'BOOKS.FORM.FORMAT' | translate }}</mat-label>
           <mat-select formControlName="bookFormatId">
-            @for(x of bookFormats;track x.id){
-            <mat-option [value]="x.id">
-              {{x.format}}
-            </mat-option>
+            @for (x of bookFormats; track x.id) {
+              <mat-option [value]="x.id">
+                {{ x.format }}
+              </mat-option>
             }
           </mat-select>
           <mat-icon matSuffix>book</mat-icon>
@@ -103,17 +128,15 @@
         </mat-form-field>
       </div>
 
-
-
       <!-- Category-->
       <div class="form-row">
         <mat-form-field appearance="outline" class="half-width">
           <mat-label>{{ 'BOOKS.FORM.CATEGORY' | translate }}</mat-label>
           <mat-select formControlName="categoryIds" multiple>
-            @for(cat of categories;track cat.id){
-            <mat-option [value]="cat.id">
-              {{cat.name}}
-            </mat-option>
+            @for (cat of categories; track cat.id) {
+              <mat-option [value]="cat.id">
+                {{ cat.name }}
+              </mat-option>
             }
           </mat-select>
           <mat-icon matSuffix>category</mat-icon>
@@ -125,8 +148,11 @@
         <!-- Quantity in stock for online orders -->
         <mat-form-field appearance="outline" class="half-width">
           <mat-label>{{ 'BOOKS.FORM.STOCK' | translate }}</mat-label>
-          <input matInput formControlName="quantityInStockForOnlineOrders"
-            [placeholder]="'BOOKS.FORM.STOCK_PLACEHOLDER' | translate" />
+          <input
+            matInput
+            formControlName="quantityInStockForOnlineOrders"
+            [placeholder]="'BOOKS.FORM.STOCK_PLACEHOLDER' | translate"
+          />
           <mat-icon matSuffix>description</mat-icon>
           <mat-error *ngIf="hasError('quantityInStockForOnlineOrders')">
             {{ getErrorMessage('quantityInStockForOnlineOrders') }}
@@ -137,12 +163,12 @@
       <div class="form-row">
         <!-- Publisher -->
         <mat-form-field appearance="outline" class="half-width">
-          <mat-label> {{'BOOKS.FORM.PUBLISHER' | translate}}</mat-label>
+          <mat-label> {{ 'BOOKS.FORM.PUBLISHER' | translate }}</mat-label>
           <mat-select formControlName="publisherId">
-            @for(pub of publishers;track pub.id){
-            <mat-option [value]="pub.id">
-              {{pub.name}}
-            </mat-option>
+            @for (pub of publishers; track pub.id) {
+              <mat-option [value]="pub.id">
+                {{ pub.name }}
+              </mat-option>
             }
           </mat-select>
           <mat-icon matSuffix>category</mat-icon>
@@ -155,10 +181,8 @@
         <mat-form-field appearance="outline" class="half-width">
           <mat-label>{{ 'BOOKS.FORM.AUTHOR' | translate }}</mat-label>
           <mat-select formControlName="authorIds" multiple>
-            @for(au of authors; track au.id){
-            <mat-option [value]="au.id">
-              {{au.firstName}} {{au.lastName}}
-            </mat-option>
+            @for (au of authors; track au.id) {
+              <mat-option [value]="au.id"> {{ au.firstName }} {{ au.lastName }} </mat-option>
             }
           </mat-select>
           <mat-icon matSuffix>category</mat-icon>
@@ -170,16 +194,17 @@
 
       <!-- Published Date -->
       <mat-form-field appearance="outline">
-        <mat-label> {{'BOOKS.FORM.PUBLISHED_DATE' | translate}}</mat-label>
-        <input formControlName="publishedDate" matInput [matDatepicker]="datepicker">
+        <mat-label> {{ 'BOOKS.FORM.PUBLISHED_DATE' | translate }}</mat-label>
+        <input formControlName="publishedDate" matInput [matDatepicker]="datepicker" />
         <mat-datepicker #datepicker />
         <mat-datepicker-toggle [for]="datepicker" matSuffix />
+        <mat-error *ngIf="hasError('publishedDate')">
+          {{ getErrorMessage('publishedDate') }}
+        </mat-error>
       </mat-form-field>
 
       <!-- in app-image-upload component we must implement Control Value Accessor -->
-      <app-image-upload formControlName="imageUrl">
-
-      </app-image-upload>
+      <app-image-upload formControlName="imageUrl"> </app-image-upload>
 
       <!-- Actions -->
       <div class="form-actions">
@@ -188,7 +213,12 @@
           {{ 'BOOKS.FORM.CANCEL' | translate }}
         </button>
 
-        <button type="submit" mat-raised-button color="primary" [disabled]="form.invalid || isLoading">
+        <button
+          type="submit"
+          mat-raised-button
+          color="primary"
+          [disabled]="form.invalid || isLoading"
+        >
           <mat-icon>save</mat-icon>
           {{ 'BOOKS.FORM.SAVE' | translate }}
         </button>

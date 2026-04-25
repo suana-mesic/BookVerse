@@ -9,20 +9,17 @@ namespace Market.Application.Modules.Catalog.Categories.Commands.Delete
     internal class DeleteCategoryCommandHandler(IAppDbContext context, IAppCurrentUser appCurrentUser)
         : IRequestHandler<DeleteCategoryCommand, Unit>
     {
-        public Task<Unit> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken) {
-            //if (appCurrentUser.UserId is null)
-            //    throw new MarketBusinessRuleException("123", "Korisnik nije autentifikovan.");
-
-            var category = context.Categories
-                .FirstOrDefault(x => x.Id == request.Id);
+        public async Task<Unit> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken) {
+            var category = await context.Categories
+                .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
             if (category is null)
                 throw new MarketNotFoundException("Kategorija nije pronađena.");
 
-            category.IsDeleted = true; // Soft delete
-            context.SaveChangesAsync(cancellationToken);
+            category.IsDeleted = true;
+            await context.SaveChangesAsync(cancellationToken);
 
-            return Task.FromResult(Unit.Value);
+            return Unit.Value;
         }
     }
 }

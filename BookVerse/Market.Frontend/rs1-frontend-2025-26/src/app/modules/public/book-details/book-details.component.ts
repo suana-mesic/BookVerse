@@ -19,6 +19,7 @@ import {
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Subscription } from 'rxjs';
+import { SharedModule } from '../../shared/shared-module';
 
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 
@@ -33,7 +34,7 @@ L.Icon.Default.mergeOptions({
   selector: 'app-book-details',
   templateUrl: './book-details.component.html',
   styleUrl: './book-details.component.scss',
-  imports: [HeaderComponent, RouterLink, MapComponent, TranslateModule, MatIconModule],
+  imports: [HeaderComponent, MapComponent, TranslateModule, MatIconModule, SharedModule],
 })
 export class BookDetailsComponent implements OnDestroy {
   book = signal<Book | null>(null);

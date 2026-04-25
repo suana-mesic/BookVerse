@@ -11,7 +11,7 @@ $success: #56d39c;
 
 :host {
   display: block;
-  background-color: #faf9fd;
+  background-color: var(--page-bg);
   min-height: calc(100vh - 70px);
 }
 
@@ -30,7 +30,7 @@ $success: #56d39c;
   h1 {
     font-size: 22px;
     font-weight: 700;
-    color: $text-primary;
+    color: var(--text-primary);
     margin: 0;
   }
 
@@ -139,7 +139,7 @@ $success: #56d39c;
 }
 
 .form-section {
-  background: white;
+  background: var(--card-bg);
   border-radius: 14px;
   padding: 24px;
   border: 1px solid $border;
@@ -165,32 +165,35 @@ $success: #56d39c;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    color: $text-muted;
+    color: var(--text-muted);
     margin-bottom: 6px;
   }
 
-  input {
+  input,
+  select {
     height: 44px;
     border: 1.5px solid $border;
     border-radius: 9px;
     padding: 0 16px;
     font-size: 14px;
-    color: $text-primary;
+    color: var(--text-primary);
     transition: all 0.2s;
     outline: none;
+    background-color: var(--card-bg);
 
     &:focus {
       border-color: $primary;
       box-shadow: 0 0 0 3px rgba($primary, 0.1);
     }
 
-    &:hover:not(.disabled-field) {
+    &:hover:not(.disabled-field):not(:disabled) {
       border-color: $primary-light;
     }
 
-    &.disabled-field {
-      background-color: #f8fafc;
-      color: $text-muted;
+    &.disabled-field,
+    &:disabled {
+      background-color: var(--border-color-light);
+      color: var(--text-muted);
       cursor: not-allowed;
 
       &:hover {
@@ -198,10 +201,19 @@ $success: #56d39c;
       }
     }
   }
+
+  select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='%23546e7a' d='M6 8L0 0h12z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+  }
 }
 
 .security-section {
-  background: white;
+  background: var(--card-bg);
   border-radius: 14px;
   padding: 24px;
   border: 1px solid $border;
@@ -210,7 +222,7 @@ $success: #56d39c;
   h2 {
     font-size: 16px;
     font-weight: 700;
-    color: $text-primary;
+    color: var(--text-primary);
     margin: 0 0 12px;
   }
 
@@ -241,6 +253,19 @@ $success: #56d39c;
       color: $primary-dark;
       text-decoration: underline;
     }
+  }
+}
+
+:host-context(body.dark-theme) {
+  .form-field select {
+    background-color: #1e2d42 !important;
+    color: #d8d8d8 !important;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='%23d8d8d8' d='M6 8L0 0h12z'/></svg>");
+  }
+
+  .form-field select option {
+    background-color: #1e2d42;
+    color: #d8d8d8;
   }
 }
 

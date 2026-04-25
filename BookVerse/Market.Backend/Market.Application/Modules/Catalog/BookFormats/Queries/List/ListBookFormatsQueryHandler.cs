@@ -1,4 +1,5 @@
-﻿using Market.Application.Modules.Catalog.Categories.Queries.List;
+using Market.Application.Common.Interfaces;
+using Market.Application.Modules.Catalog.Categories.Queries.List;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Market.Application.Modules.Catalog.BookFormats.Queries.List
 {
-    public class ListBookFormatsQueryHandler(IAppDbContext ctx)
+    public class ListBookFormatsQueryHandler(IAppDbContext ctx, ITranslationService translationService)
         : IRequestHandler<ListBookFormatsQuery, PageResult<ListBookFormatsQueryDto>>
     {
         public async Task<PageResult<ListBookFormatsQueryDto>> Handle(ListBookFormatsQuery request, CancellationToken ct)
@@ -28,7 +29,21 @@ namespace Market.Application.Modules.Catalog.BookFormats.Queries.List
                     IsDeleted = x.IsDeleted
                 });
 
-            return await PageResult<ListBookFormatsQueryDto>.FromQueryableAsync(projectedQuery, request.Paging, ct);
+            return await PageResult<ListBookFormatsQueryDto>.FromQueryableAsync(
+                query: projectedQuery,
+                paging: request.Paging,
+                ct: ct,
+                postProcess: async items =>
+                {
+                    if (string.IsNullOrWhiteSpace(request.Language) ||
+                        request.Language == "bs")
+                        return;
+
+                    await Task.WhenAll(items.Select(async f =>
+                    {
+                        f.Format = await translationService.Translate(f.Format, request.Language);
+                    }));
+                });
         }
     }
 }

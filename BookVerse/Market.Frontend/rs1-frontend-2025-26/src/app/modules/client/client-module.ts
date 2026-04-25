@@ -11,6 +11,7 @@ import { OrderSuccessComponent } from './order-success/order-success.component';
 import { UserOrdersComponent } from './user-orders/user-orders.component';
 import { UserBooksComponent } from './user-books/user-books.component';
 import { UserSettingsComponent } from './user-settings/user-settings.component';
+import { AppDatePipe } from '../shared/pipes/date-pipe';
 
 @NgModule({
   declarations: [

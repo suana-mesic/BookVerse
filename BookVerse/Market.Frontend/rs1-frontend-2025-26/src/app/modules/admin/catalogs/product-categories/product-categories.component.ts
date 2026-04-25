@@ -1,5 +1,8 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { BaseListPagedComponent } from '../../../../core/components/base-classes/base-list-paged-component';
 import { ProductCategoriesApiService } from '../../../../api-services/product-categories/product-categories-api.service';
 import { ToasterService } from '../../../../core/services/toaster.service';
@@ -21,7 +24,7 @@ import { AuthFacadeService } from '../../../core/services/auth/auth-facade.servi
 })
 export class ProductCategoriesComponent
   extends BaseListPagedComponent<ListProductCategoriesQueryDto, ListProductCategoriesRequest>
-  implements OnInit
+  implements OnInit, OnDestroy
 {
   private api = inject(ProductCategoriesApiService);
   private dialog = inject(MatDialog);
@@ -34,7 +37,10 @@ export class ProductCategoriesComponent
   showOnlyEnabled = false;
 
   editingCategoryId: number | null = null;
-  editingName: string = '';
+  inlineEditControl = new FormControl('', [Validators.required, Validators.maxLength(100)]);
+
+  private destroy$ = new Subject<void>();
+  searchControl = new FormControl('');
 
   constructor() {
     super();
@@ -45,6 +51,22 @@ export class ProductCategoriesComponent
   ngOnInit(): void {
     this.getPaginationSettings();
     this.initList();
+    this.setupSearchDebounce();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private setupSearchDebounce(): void {
+    this.searchControl.valueChanges
+      .pipe(debounceTime(400), distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe((searchTerm) => {
+        if (!searchTerm || searchTerm.length >= 3) {
+          this.onSearchChange(searchTerm || '');
+        }
+      });
   }
 
   protected loadPagedData(): void {
@@ -210,20 +232,30 @@ export class ProductCategoriesComponent
 
   startEdit(category: ListProductCategoriesQueryDto) {
     this.editingCategoryId = category.id;
-    this.editingName = category.name;
+    this.inlineEditControl.setValue(category.name);
+    this.inlineEditControl.markAsUntouched();
   }
 
   cancelEdit(): void {
     this.editingCategoryId = null;
-    this.editingName = '';
+    this.inlineEditControl.reset();
   }
 
   saveEdit(category: ListProductCategoriesQueryDto) {
-    if (!this.editingName.trim() || this.editingName == category.name) {
+    this.inlineEditControl.markAsTouched();
+
+    if (this.inlineEditControl.invalid) {
+      return;
+    }
+
+    const name = (this.inlineEditControl.value ?? '').trim();
+
+    if (!name || name === category.name) {
       this.cancelEdit();
       return;
     }
-    this.api.update(category.id, { name: this.editingName }).subscribe({
+
+    this.api.update(category.id, { name, isEnabled: category.isEnabled }).subscribe({
       next: () => {
         this.toaster.success(this.translate.instant('GENRES.DIALOGS.SUCCESS_UPDATE'));
         this.cancelEdit();

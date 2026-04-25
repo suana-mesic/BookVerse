@@ -101,6 +101,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
 
   private sectionOrder = signal<string[]>([]);
 
+  //Here defined what user can see
   navSections = computed(() => {
     const user = this.auth.currentUser();
     const order = this.sectionOrder();

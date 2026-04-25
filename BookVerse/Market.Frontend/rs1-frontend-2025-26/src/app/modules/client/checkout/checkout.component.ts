@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import {
   AbstractControl,
   AsyncValidatorFn,
@@ -42,6 +42,7 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
   private toaster = inject(ToasterService);
   private location = inject(Location);
   private translate = inject(TranslateService);
+  private cdr = inject(ChangeDetectorRef);
 
   countriesService = inject(CountriesApiService);
 
@@ -127,24 +128,32 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
     this.countriesService.getCountries().subscribe((countries) => {
       this.countries = countries;
     });
+
+    this.uneseniKupon.statusChanges.subscribe(() => {
+      this.uneseniKupon.markAsTouched();
+      this.cdr.detectChanges();
+    });
   }
 
-  public onCountryChange(country: { name: string; countryCode: string }) {
+  private isRestoringState = false;
+  public onCountryChange(country: { name: string; countryCode: string } | null): void {
+    if (this.isRestoringState) return; // blokiraj tokom restore-a
+
     this.addressForm.get('city')?.reset();
     this.addressForm.get('city')?.disable();
     this.cities = [];
 
-    if (country) {
-      this.loadingCities = true;
-      this.countriesService.getCitiesByCountry(country.countryCode).subscribe({
-        next: (cities) => {
-          this.cities = cities;
-          this.loadingCities = false;
-          this.addressForm.get('city')?.enable();
-        },
-        error: () => (this.loadingCities = false),
-      });
-    }
+    if (!country?.countryCode) return;
+
+    this.loadingCities = true;
+    this.countriesService.getCitiesByCountry(country.countryCode).subscribe({
+      next: (cities) => {
+        this.cities = cities;
+        this.loadingCities = false;
+        this.addressForm.get('city')?.enable();
+      },
+      error: () => (this.loadingCities = false),
+    });
   }
 
   nextStep(): void {
@@ -173,28 +182,31 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
     return this.stores.find((s) => s.id === this.selectedStoreId) ?? null;
   }
 
-  getDeliveryAddress(): UserAddressDto | any {
-    return this.useExistingAddress ? this.userAddress : this.addressForm.value;
+  getDeliveryAddress(): any {
+    if (this.useExistingAddress) return this.userAddress;
+
+    const formValue = this.addressForm.getRawValue();
+    const country = formValue.country as any;
+    return {
+      ...formValue,
+      country: country?.name ?? country,
+    };
   }
 
   proceedToPayment(): void {
     this.startLoading();
 
     const address = this.getDeliveryAddress();
-
-    console.log('selectedShippingMethodId');
-    console.log(this.selectedShippingMethodId);
-    console.log('selectedStoreId');
-    console.log(this.selectedStoreId);
+    const rawCountry = this.addressForm.getRawValue().country as any;
 
     const request = {
       shippingMethodId: this.selectedShippingMethodId ?? null,
-      storeId: this.deliveryType == 'pickup' ? this.selectedStoreId : null,
+      storeId: this.deliveryType === 'pickup' ? this.selectedStoreId : null,
       useExistingAddress: this.useExistingAddress,
       line1: this.useExistingAddress ? null : address.line1,
       line2: this.useExistingAddress ? null : address.line2,
       city: this.useExistingAddress ? null : address.city,
-      country: this.useExistingAddress ? null : address.country?.nameBs,
+      country: this.useExistingAddress ? null : (rawCountry?.nameBs ?? rawCountry?.name ?? null),
       couponIds: this.appliedCoupons.map((c) => c.id),
     };
 
@@ -309,6 +321,7 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
       }),
     );
   }
+
   private restoreCheckoutState() {
     const saved = sessionStorage.getItem('checkoutState');
     if (!saved) return;
@@ -321,12 +334,12 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
     this.selectedStoreId = state.selectedStoreId;
     this.appliedCoupons = state.appliedCoupons ?? [];
 
-    //ako je korisnik unosio novu adresu pri plaćanju
     if (state.addressForm) {
+      this.isRestoringState = true; // uključi flag PRIJE patchValue
       this.addressForm.patchValue(state.addressForm);
+      this.isRestoringState = false; // isključi flag NAKON patchValue
 
-      // ako je država bila odabrana, učitaj gradove i enable-aj city
-      if (state.addressForm.country) {
+      if (state.addressForm.country?.countryCode) {
         this.loadingCities = true;
         this.countriesService.getCitiesByCountry(state.addressForm.country.countryCode).subscribe({
           next: (cities) => {
@@ -339,8 +352,10 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
         });
       }
     }
+
     sessionStorage.removeItem('checkoutState');
   }
+
   goBack(): void {
     this.location.back();
   }

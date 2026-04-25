@@ -63,9 +63,7 @@ export class AdminSettingsComponent implements OnDestroy {
       document.body.classList.remove('dark-theme');
     }
   }
-  onThemeChange() {
-    this.applyTheme();
-  }
+  onThemeChange() {}
   onPageSizeChange() {}
   onDateFormatChange() {}
   onTimeFormatChange() {}

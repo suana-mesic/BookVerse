@@ -43,8 +43,8 @@ public class InventoryController(ISender sender) : ControllerBase
 
     public async Task UpdatInventory(int storeId, int bookId, UpdateInventoryCommand command, CancellationToken ct)
     {
-        command.StoreId = storeId;
-        command.BookId = bookId;
+        command.OldStoreId = storeId;
+        command.OldBookId = bookId;
         await sender.Send(command, ct);
     }
 

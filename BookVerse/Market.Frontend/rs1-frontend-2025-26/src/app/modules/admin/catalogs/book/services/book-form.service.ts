@@ -3,80 +3,61 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { GetBookByIdQueryDto } from '../../../../../api-services/books/books-api.models';
 import { TranslateService } from '@ngx-translate/core';
 
-/**
- * Service for creating and managing product forms.
- * Provides reusable form creation with validation for Add and Edit components.
- */
+const ISBN_MAX_LENGTH = 20;
+const TITLE_MAX_LENGTH = 150;
+const LANGUAGE_MAX_LENGTH = 60;
+
 @Injectable()
 export class BooksFormService {
   private fb = inject(FormBuilder);
   private translate = inject(TranslateService);
 
-  /**
-   * Create a product form with validation.
-   * If product data is provided, form is pre-filled (edit mode).
-   */
+  private readonly fieldLabelKeys: Record<string, string> = {
+    isbn: 'BOOKS.FORM.ISBN',
+    title: 'BOOKS.FORM.TITLE',
+    language: 'BOOKS.FORM.LANGUAGE',
+    price: 'BOOKS.FORM.PRICE',
+    publisherId: 'BOOKS.FORM.PUBLISHER',
+    bookFormatId: 'BOOKS.FORM.FORMAT',
+    pageCount: 'BOOKS.FORM.PAGE_COUNT',
+    publishedDate: 'BOOKS.FORM.PUBLISHED_DATE',
+    categoryIds: 'BOOKS.FORM.CATEGORY',
+    authorIds: 'BOOKS.FORM.AUTHOR',
+  };
+
   createProductForm(product?: GetBookByIdQueryDto): FormGroup {
     return this.fb.group({
       isbn: [
         product?.isbn ?? '',
-        [
-          Validators.required,
-          Validators.minLength(3),
-          Validators.maxLength(100)
-        ]
+        [Validators.required, Validators.maxLength(ISBN_MAX_LENGTH)],
       ],
-
-      description: [
-        product?.description ?? '',
-        [Validators.maxLength(500)]
-      ],
+      description: [product?.description ?? '', [Validators.maxLength(2000)]],
       title: [
         product?.title ?? '',
-        [Validators.required]
+        [Validators.required, Validators.maxLength(TITLE_MAX_LENGTH)],
       ],
       price: [
-        product?.price ?? 0,
-        [
-          Validators.required,
-          Validators.min(0.01),
-          Validators.max(1000000)
-        ]
+        product?.price ?? null,
+        [Validators.required, Validators.min(0.01), Validators.max(1000000)],
       ],
-      publisherId: [
-        product?.publisherId ?? null,
-        [Validators.required]
-      ],
-      bookFormatId: [
-        product?.bookFormatId ?? null,
-        [Validators.required]
-      ],
+      publisherId: [product?.publisherId ?? null, [Validators.required]],
+      bookFormatId: [product?.bookFormatId ?? null, [Validators.required]],
       language: [
-        product?.language ?? "",
-        [Validators.required]
+        product?.language ?? '',
+        [Validators.required, Validators.maxLength(LANGUAGE_MAX_LENGTH)],
       ],
-      pageCount: [
-        product?.pageCount ?? null,
-        [Validators.required]
-      ],
-      quantityInStockForOnlineOrders: [
-        product?.quantityInStockForOnlineOrders ?? null,
-      ],
+      pageCount: [product?.pageCount ?? null, [Validators.required]],
+      quantityInStockForOnlineOrders: [product?.quantityInStockForOnlineOrders ?? null],
       publishedDate: [
-        product?.publishedDate ? product.publishedDate : null,
-        [Validators.required]
+        product?.publishedDate ? new Date(product.publishedDate) : null,
+        [Validators.required],
       ],
-      imageUrl: [
-        product?.imageUrl ?? '',
-      ],
+      imageUrl: [product?.imageUrl ?? ''],
       categoryIds: [product?.categoryIds || [], Validators.required],
-      authorIds: [product?.authorIds ?? [], Validators.required]
+      authorIds: [product?.authorIds ?? [], Validators.required],
     });
   }
 
-  /**
-   * Get validation error message for a form control.
-   */
   getErrorMessage(form: FormGroup, controlName: string): string {
     const control = form.get(controlName);
     if (!control || !control.errors || !control.touched) {
@@ -84,15 +65,16 @@ export class BooksFormService {
     }
 
     const errors = control.errors;
+    const labelKey = this.fieldLabelKeys[controlName];
+    const fieldName = labelKey ? this.translate.instant(labelKey) : controlName;
 
     if (errors['required']) {
-      return this.translate.instant('VALIDATION.REQUIRED');
-    }
-    if (errors['minlength']) {
-      return this.translate.instant('VALIDATION.MIN_LENGTH', { min: errors['minlength'].requiredLength });
+      return this.translate.instant('VALIDATION.REQUIRED_FIELD', { field: fieldName });
     }
     if (errors['maxlength']) {
-      return this.translate.instant('VALIDATION.MAX_LENGTH', { max: errors['maxlength'].requiredLength });
+      return this.translate.instant('VALIDATION.MAX_LENGTH', {
+        max: errors['maxlength'].requiredLength,
+      });
     }
     if (errors['min']) {
       return this.translate.instant('VALIDATION.MIN_VALUE', { min: errors['min'].min });

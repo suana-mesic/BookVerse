@@ -156,7 +156,7 @@ export class RegisterComponent implements OnInit {
 
   private showMessage() {
     this.dialogHelper
-      .showSuccess('Uspješna registracija', 'Uspješno ste se registrovali')
+      .showSuccess('AUTH.REGISTER.SUCCESS_TITLE', 'AUTH.REGISTER.SUCCESS_MESSAGE')
       .subscribe((result) => {
         if (result && result.button === DialogButton.OK) {
         }

@@ -101,7 +101,9 @@
       "STRENGTH_VERY_WEAK": "very weak",
       "STRENGTH_WEAK": "weak",
       "STRENGTH_FAIR": "fair",
-      "STRENGTH_STRONG": "strong"
+      "STRENGTH_STRONG": "strong",
+      "SUCCESS_TITLE": "Successful registration",
+      "SUCCESS_MESSAGE": "You have successfully registered"
     },
     "LOGOUT": {
       "TITLE": "Logout",
@@ -317,6 +319,7 @@
       "SUCCESS_UPDATE": "Inventory successfully updated.",
       "SUCCESS_DELETE": "Inventory successfully deleted.",
       "ERROR_CREATE": "Error creating inventory.",
+      "DUPLICATE_INVENTORY": "Inventory for store {{storeName}} and book {{bookTitle}} has already been catalogued.",
       "ERROR_UPDATE": "Error updating inventory.",
       "ERROR_DELETE": "Error deleting inventory.",
       "ERROR_TOGGLE": "Error changing inventory status.",
@@ -526,7 +529,7 @@
   },
   "VALIDATION": {
     "REQUIRED": "This field is required",
-    "REQUIRED_FIELD": "{{field}} is required",
+    "REQUIRED_FIELD": "Field {{field}} is required",
     "EMAIL": "Please enter a valid email address",
     "MIN_LENGTH": "Minimum length is {{min}} characters",
     "MAX_LENGTH": "Maximum length is {{max}} characters",
@@ -664,7 +667,9 @@
     },
     "PROMOTION_CODE": "Promotion code",
     "START_DATE": "Start date",
-    "END_DATE": "End date"
+    "END_DATE": "End date",
+    "PERCENT_OFF": "Discount (%)",
+    "AMOUNT_OFF": "Fixed amount"
   },
   "CLIENT": {
     "HEADER": {
@@ -866,6 +871,9 @@
       "ADDRESS2": "Address 2",
       "CITY": "City",
       "COUNTRY": "Country",
+      "SELECT_COUNTRY": "Select country",
+      "SELECT_CITY": "Select city",
+      "LOADING_CITIES": "Loading cities...",
       "SECURITY": "Security",
       "CHANGE_EMAIL": "Change email →",
       "CHANGE_PASSWORD": "Change password →",

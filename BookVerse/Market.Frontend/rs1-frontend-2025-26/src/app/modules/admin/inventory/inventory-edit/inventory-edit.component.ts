@@ -9,7 +9,7 @@ import { map, Observable, startWith } from 'rxjs';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { TranslateService } from '@ngx-translate/core';
 import { InventoryApiService } from '../../../../api-services/inventory/inventory-api.service';
-import { GetInventoryByIdQueryDto } from '../../../../api-services/inventory/inventory-api.model';
+import { GetInventoryByIdQueryDto, StoreBookPairs } from '../../../../api-services/inventory/inventory-api.model';
 import { ListStoresQueryDto, ListStoresRequest } from '../../../../api-services/stores/stores-api.model';
 import { StoresApiService } from '../../../../api-services/stores/stores-api.service';
 
@@ -42,6 +42,7 @@ export class InventoryEditComponent
   books: ListBooksForAutocompleteQueryDto[] = [];
   stores: ListStoresQueryDto[] = [];
   inventory!: GetInventoryByIdQueryDto;
+  storeBookPairs: StoreBookPairs | null = null;
 
   booksAutocompleteInput = new FormControl('');
   filteredBooksOptions!: Observable<ListBooksForAutocompleteQueryDto[]>;
@@ -77,6 +78,7 @@ export class InventoryEditComponent
         this.inventory = response;
         this.loadBooks();
         this.loadStores();
+        this.loadStoreBookPairs();
         this.createForm();
         this.stopLoading();
       },
@@ -86,6 +88,31 @@ export class InventoryEditComponent
         this.stopLoading();
         }
     });
+  }
+
+  private loadStoreBookPairs(): void {
+    this.inventoryApi.getStoreBookPairs().subscribe({
+      next: (response) => (this.storeBookPairs = response),
+      error: () => {},
+    });
+  }
+
+  isStoreOccupied(storeId: number): boolean {
+    const currentBookId = this.form?.get('bookId')?.value;
+    if (!currentBookId || this.storeBookPairs === null) return false;
+    if (storeId === this.storeId && currentBookId === this.bookId) return false;
+    const available = this.storeBookPairs[storeId];
+    if (!available) return false;
+    return !available[currentBookId];
+  }
+
+  isBookOccupied(bookId: number): boolean {
+    const currentStoreId = this.form?.get('storeId')?.value;
+    if (!currentStoreId || this.storeBookPairs === null) return false;
+    if (currentStoreId === this.storeId && bookId === this.bookId) return false;
+    const available = this.storeBookPairs[currentStoreId];
+    if (!available) return false;
+    return !available[bookId];
   }
 
   private createForm(){
@@ -98,7 +125,7 @@ export class InventoryEditComponent
   quantityInStock: new FormControl(this.inventory.quantityInStock,[Validators.required]),
   lastRestocked: new FormControl(this.inventory.lastRestocked),
   reorderTreshold: new FormControl(this.inventory.reorderTreshold,[Validators.required]),
-  location: new FormControl(this.inventory.location,[Validators.required, this.validateLocation()]),
+  location: new FormControl(this.inventory.location,[this.validateLocation()]),
   });
   }
 
@@ -133,7 +160,8 @@ export class InventoryEditComponent
 }
 
   onSubmit(){
-    const {storeName, title, isbn, lastRestocked, ...comamnd} = this.form.value;
+    const {storeName, title, isbn, lastRestocked, ...raw} = this.form.value;
+    const comamnd = { ...raw, quantityInStock: +raw.quantityInStock, reorderTreshold: +raw.reorderTreshold };
     this.inventoryApi.update(this.storeId, this.bookId,comamnd).subscribe({
       next:(response)=>{
         this.toaster.success(this.translate.instant('INVENTORY.DIALOGS.SUCCESS_UPDATE'));

@@ -35,7 +35,7 @@ public sealed class ListBooksQueryHandler(IAppDbContext context, ITranslationSer
             .Select(x => new ListBooksQueryDto
             {
                 Id = x.Id,
-                ISBN = x.ISBN,
+                Isbn = x.ISBN,
                 Title = x.Title,
                 PublisherName = x.Publisher.Name,
                 Authors = x.Authors.Distinct().Select(a => new ListAuthorsQueryDto

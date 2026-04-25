@@ -142,6 +142,10 @@ namespace Market.Application.Modules.Shopping.OrdersOrderItems.Commands.Create
             {
                 Amount = (long)(totalPrice * 100),
                 Currency = "bam",
+                AutomaticPaymentMethods = new PaymentIntentAutomaticPaymentMethodsOptions
+                {
+                    Enabled = true
+                },
                 Metadata = new Dictionary<string, string>
     {
         { "orderId", order.Id.ToString() }

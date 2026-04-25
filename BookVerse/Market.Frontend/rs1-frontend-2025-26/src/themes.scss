@@ -20,6 +20,7 @@ body {
   --table-header-bg: linear-gradient(135deg, #e8f0f9 0%, #f5f9fd 100%);
   --table-header-text: #365a8f;
   --table-row-text: #212121;
+  --paginator-bg: #FAF9FD;
 }
 
 body.dark-theme {
@@ -46,4 +47,5 @@ body.dark-theme {
   --table-header-text: #b0b8c8;
   --table-row-text: #a8b0c1;
   --badge-color: #3770ba;
+  --paginator-bg: #1e2530;
 }

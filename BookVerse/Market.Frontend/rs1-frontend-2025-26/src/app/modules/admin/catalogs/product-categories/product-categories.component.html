@@ -27,8 +27,7 @@
           <mat-label>{{ 'GENRES.SEARCH_PLACEHOLDER' | translate }}</mat-label>
           <input
             matInput
-            [(ngModel)]="request.search"
-            (keyup.enter)="onSearchChange(request.search || '')"
+            [formControl]="searchControl"
             [placeholder]="'GENRES.SEARCH_INPUT_PLACEHOLDER' | translate"
           />
           <mat-icon matSuffix>search</mat-icon>
@@ -68,14 +67,20 @@
         </th>
         <td mat-cell *matCellDef="let category">
           @if (editingCategoryId == category.id) {
-            <input
-              class="inline-edit-input"
-              [(ngModel)]="editingName"
-              (keyup.enter)="saveEdit(category)"
-              (keyup.escape)="cancelEdit()"
-              (blur)="saveEdit(category)"
-              autofocus
-            />
+            <div class="inline-edit-wrapper">
+              <input
+                class="inline-edit-input"
+                [formControl]="inlineEditControl"
+                (keyup.enter)="saveEdit(category)"
+                (keyup.escape)="cancelEdit()"
+                (blur)="saveEdit(category)"
+                autofocus
+              />
+              <div class="inline-edit-error" *ngIf="inlineEditControl.invalid && inlineEditControl.touched">
+                <ng-container *ngIf="inlineEditControl.errors?.['required']">{{ 'VALIDATION.REQUIRED' | translate }}</ng-container>
+                <ng-container *ngIf="inlineEditControl.errors?.['maxlength']">{{ 'VALIDATION.MAX_LENGTH' | translate: { max: 100 } }}</ng-container>
+              </div>
+            </div>
           } @else {
             <span class="category-name" (click)="startEdit(category)" style="cursor: pointer"
               >{{ category.name }}
@@ -98,7 +103,7 @@
             [checked]="category.isEnabled"
             (change)="onToggleStatus(category)"
             color="primary"
-            [disabled]="isLoading || auth.isEmployee() || auth.isManager()"
+            [disabled]="isLoading || !auth.isAdmin()"
             class="status-toggle"
           >
             <span class="status-label" [class.enabled]="category.isEnabled">
@@ -131,7 +136,7 @@
             >
               <mat-icon>edit</mat-icon>
             </button>
-            @if (!auth.isEmployee() && !auth.isManager()) {
+            @if (auth.isAdmin()) {
               <button
                 mat-icon-button
                 color="warn"

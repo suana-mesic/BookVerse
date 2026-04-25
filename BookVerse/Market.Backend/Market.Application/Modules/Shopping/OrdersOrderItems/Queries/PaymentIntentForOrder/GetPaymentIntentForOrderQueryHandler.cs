@@ -31,6 +31,22 @@ namespace Market.Application.Modules.Shopping.OrdersOrderItems.Queries.PaymentIn
             var paymentIntentService = new PaymentIntentService();
             var paymentIntent = await paymentIntentService.GetAsync(order.PaymentIntentId, cancellationToken: ct);
 
+            var validStates = new[] { "requires_payment_method", "requires_confirmation", "requires_action" };
+            if (!validStates.Contains(paymentIntent.Status))
+            {
+                paymentIntent = await paymentIntentService.CreateAsync(new PaymentIntentCreateOptions
+                {
+                    Amount = (long)(order.TotalPrice * 100),
+                    Currency = "bam",
+                    AutomaticPaymentMethods = new PaymentIntentAutomaticPaymentMethodsOptions { Enabled = true },
+                    Metadata = new Dictionary<string, string> { { "orderId", order.Id.ToString() } },
+                    Expand = new List<string> { "latest_charge" }
+                }, cancellationToken: ct);
+
+                order.PaymentIntentId = paymentIntent.Id;
+                await context.SaveChangesAsync(ct);
+            }
+
             return new GetPaymentIntentForOrderQueryDto
             {
                 ClientSecret = paymentIntent.ClientSecret,

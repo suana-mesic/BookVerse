@@ -1,5 +1,5 @@
 <div class="dynamic-form-container">
-  <h2>Kreiraj kupon</h2>
+  <h2>{{ 'COUPONS.TITLE' | translate }}</h2>
 
   <div class="type-selector">
     <button
@@ -7,21 +7,21 @@
       [color]="selectedType === 'percent' ? 'primary' : ''"
       (click)="onTypeChange('percent')"
     >
-      Procentualni popust
+      {{ 'COUPONS.TYPE_PERCENT' | translate }}
     </button>
     <button
       mat-raised-button
       [color]="selectedType === 'amount' ? 'primary' : ''"
       (click)="onTypeChange('amount')"
     >
-      Fiksni iznos
+      {{ 'COUPONS.TYPE_AMOUNT' | translate }}
     </button>
   </div>
 
   <form *ngIf="formFields.length > 0" [formGroup]="dynamicForm" (ngSubmit)="onSubmit()">
     <div *ngFor="let field of formFields" class="form-field">
       <mat-form-field appearance="outline" class="full-width">
-        <mat-label>{{ field.label }}</mat-label>
+        <mat-label>{{ getFieldLabel(field.name) | translate }}</mat-label>
 
         <!-- Dynamic datepicker: each field gets its own reference -->
         <ng-container *ngIf="field.type === 'date'; else otherInput">
@@ -35,8 +35,11 @@
           <input matInput [type]="field.type" [formControlName]="field.name" />
         </ng-template>
 
-        <mat-error *ngIf="dynamicForm.get(field.name)?.invalid">
-          {{ 'INVENTORY.REQUIRED_FIELD' | translate }}
+        <mat-error *ngIf="dynamicForm.get(field.name)?.hasError('required')">
+          {{ getRequiredError(field.name) }}
+        </mat-error>
+        <mat-error *ngIf="dynamicForm.get(field.name)?.hasError('maxlength')">
+          {{ getMaxLengthError(field.name) }}
         </mat-error>
       </mat-form-field>
     </div>
@@ -49,7 +52,7 @@
   <div *ngIf="submitted && formValues" class="result">
     <h3>Uneseni podaci:</h3>
     <div *ngFor="let field of formFields">
-      <strong>{{ field.label }}:</strong> {{ formValues[field.name] }}
+      <strong>{{ getFieldLabel(field.name) | translate }}:</strong> {{ formValues[field.name] }}
     </div>
   </div>
 </div>

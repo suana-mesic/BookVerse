@@ -7,7 +7,7 @@
         <div class="title-icon">
           <mat-icon>shopping_cart</mat-icon>
         </div>
-        <h1>{{ 'ORDERS.TITLE' | translate }}</h1>
+        <h1>{{ 'INVENTORY.TITLE' | translate }}</h1>
       </div>
 
       <!-- Right: Filters and Actions -->
@@ -98,17 +98,18 @@
   <div *ngIf="!isLoading && errorMessage" class="error-container">
     <mat-icon>error_outline</mat-icon>
     <div class="error-content">
-      <p class="error-title">{{ 'ORDERS.ERROR_TITLE' | translate }}</p>
-      <p class="error-message">{{ errorMessage }}</p>
+      <p class="error-title">{{ 'INVENTORY.ERROR_TITLE' | translate }}</p>
+      <!-- <p class="error-message">{{ errorMessage }}</p> -->
       <button mat-stroked-button color="primary" (click)="loadPagedData()">
         <mat-icon>refresh</mat-icon>
-        {{ 'ORDERS.RETRY' | translate }}
+        {{ 'INVENTORY.RETRY' | translate }}
       </button>
     </div>
   </div>
 
   <!-- Table Card -->
   <div class="table-card" *ngIf="!isLoading && !errorMessage">
+    <div class="table-scroll">
     <table mat-table [dataSource]="items" class="orders-table">
       <!-- Store Name -->
       <ng-container matColumnDef="storeName">
@@ -172,8 +173,7 @@
         </th>
         <td mat-cell *matCellDef="let order">
           <div class="date-info">
-            <span class="customer-name date">{{ order.lastRestocked | date: 'dd.MM.yyyy' }} </span>
-            <span class="customer-name time">{{ order.lastRestocked | date: 'HH:mm' }}</span>
+            <span class="customer-name date">{{ order.lastRestocked | appDate }}</span>
           </div>
         </td>
       </ng-container>
@@ -222,7 +222,7 @@
         <th mat-header-cell *matHeaderCellDef>
           <div class="header-cell">
             <mat-icon class="header-icon">settings</mat-icon>
-            {{ 'ORDERS.TABLE.ACTIONS' | translate }}
+            {{ 'INVENTORY.TABLE.ACTIONS' | translate }}
           </div>
         </th>
         <td mat-cell *matCellDef="let order">
@@ -236,11 +236,11 @@
             >
               <mat-icon>edit</mat-icon>
             </button>
-            @if (!auth.isEmployee() && !auth.isManager()) {
+            @if (auth.isAdmin()) {
               <button
                 mat-icon-button
-                (click)="deleteInventory(order.storeId, order.storeName, order.bookId)"
-                [matTooltip]="'ORDERS.ACTIONS.VIEW_DETAILS' | translate"
+                (click)="deleteInventory(order.storeId, order.storeName, order.bookId, order.title)"
+                [matTooltip]="'INVENTORY.ACTIONS.VIEW_DETAILS' | translate"
                 class="action-btn view-btn delete-btn"
               >
                 <mat-icon>delete</mat-icon>
@@ -263,16 +263,17 @@
             <mat-icon>shopping_cart</mat-icon>
             <p>
               <ng-container *ngIf="searchControl.value; else noDataDefault">
-                {{ 'ORDERS.NO_DATA_FILTER' | translate }}
+                {{ 'INVENTORY.NO_DATA_FILTER' | translate }}
               </ng-container>
               <ng-template #noDataDefault>
-                {{ 'ORDERS.NO_DATA' | translate }}
+                {{ 'INVENTORY.NO_DATA' | translate }}
               </ng-template>
             </p>
           </div>
         </td>
       </tr>
     </table>
+    </div>
 
     <!-- Paginator -->
     <div class="paginator-wrapper">

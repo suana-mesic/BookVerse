@@ -262,8 +262,15 @@ export class DialogHelperService {
   };
 
   inventory = {
-    confirmDelete: (storeName: string) => {
-      return this.confirmDelete(storeName, 'INVENTORY.DIALOGS.DELETE_MESSAGE');
+    confirmDelete: (storeName: string, title: string) => {
+      return this.open({
+        type: DialogType.WARNING,
+        titleKey: 'DIALOGS.TITLES.CONFIRM_DELETE',
+        messageKey: 'INVENTORY.DIALOGS.DELETE_MESSAGE',
+        messageParams: { storeName, title },
+        icon: 'delete_forever',
+        buttons: [{ type: DialogButton.CANCEL }, { type: DialogButton.DELETE, color: 'warn' }],
+      });
     },
     showDeleteSuccess: () => {
       return this.showSuccess('DIALOGS.TITLES.SUCCESS', 'INVENTORY.DIALOGS.SUCCESS_DELETE');

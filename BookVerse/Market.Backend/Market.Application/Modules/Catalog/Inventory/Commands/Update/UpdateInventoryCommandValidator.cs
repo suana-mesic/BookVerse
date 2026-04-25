@@ -10,8 +10,12 @@ namespace Market.Application.Modules.Catalog.Inventory.Commands.Update
     {
         public UpdateInventoryCommandValidator()
         {
-            RuleFor(x => x.BookId).GreaterThan(0).WithMessage("BookId ne smije biti jednak nuli");
-            RuleFor(x => x.StoreId).GreaterThan(0).WithMessage("StoreId ne smije biti jednak nuli");
+            RuleFor(x => x.OldStoreId).GreaterThan(0).WithMessage("Polje StoreId je obavezno");
+            RuleFor(x => x.OldBookId).GreaterThan(0).WithMessage("Polje BookId je obavezno");
+            RuleFor(x => x.StoreId).GreaterThan(0).WithMessage("Polje StoreId je obavezno");
+            RuleFor(x => x.BookId).GreaterThan(0).WithMessage("Polje BookId je obavezno");
+            RuleFor(x => x.QuantityInStock).GreaterThanOrEqualTo(0).WithMessage("Polje QuantityInStock je obavezno");
+            RuleFor(x => x.ReorderTreshold).GreaterThan(0).WithMessage("Polje ReorderTreshold je obavezno");
         }
     }
 }

@@ -10,10 +10,12 @@ import { PageResult } from '../../core/models/paging/page-result';
 export class ListProductCategoriesRequest extends BasePagedQuery {
   search?: string | null;
   onlyEnabled?: boolean | null;
+  language?: string | null;
 }
 
 export class ListProductCategoriesQuery {
   search?: string | null;
+  language?: string | null;
 }
 
 /**
@@ -57,4 +59,5 @@ export interface CreateProductCategoryCommand {
  */
 export interface UpdateProductCategoryCommand {
   name: string;
+  isEnabled: boolean;
 }

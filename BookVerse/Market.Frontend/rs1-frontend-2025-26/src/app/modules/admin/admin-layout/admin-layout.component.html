@@ -128,7 +128,7 @@
         (menuOpened)="markAllAsRead()"
         class="notif-button"
       >
-        <mat-icon [matBadge]="unreadCount > 0 ? unreadCount : null" matBadgeColor="warn">
+        <mat-icon [matBadge]="unreadCount > 0 ? unreadCount : null" matBadgeColor="warn" aria-hidden="false">
           notifications
         </mat-icon>
       </button>

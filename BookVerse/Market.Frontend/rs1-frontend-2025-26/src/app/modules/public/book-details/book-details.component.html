@@ -5,7 +5,13 @@
     <span>{{ 'CLIENT.BOOK_DETAILS.BACK' | translate }}</span>
   </a>
   <div class="book__container">
-    <img src="{{ book()?.imageUrl }}" alt="slika knjige" />
+    <img
+      src="{{ book()?.imageUrl }}"
+      alt="slika knjige"
+      width="300"
+      height="420"
+      style="object-fit: cover"
+    />
     <aside>
       <div class="book__title-and-authors">
         <h1>{{ book()?.title }}</h1>
@@ -41,7 +47,9 @@
     </aside>
   </div>
   <div class="book__buy">
-    <h1>{{ 'CLIENT.BOOK_DETAILS.PRICE' | translate }} {{ book()?.price }} {{ 'CURRENCY' | translate }}</h1>
+    <h1>
+      {{ 'CLIENT.BOOK_DETAILS.PRICE' | translate }} {{ book()?.price }} {{ 'CURRENCY' | translate }}
+    </h1>
     <div>
       <button (click)="dodajUkorpu(book()?.id)">
         {{ 'CLIENT.BOOK_DETAILS.ADD_TO_CART' | translate }} <img src="icons/cart.png" alt="cart" />
@@ -83,75 +91,75 @@
   <div class="book__reviews">
     <span>
       @if (reviews().length > 0) {
-      <div class="book__reviews-header">
-        <h1>{{ 'CLIENT.BOOK_DETAILS.RATING' | translate }}</h1>
-        <div class="book__rating">
-          <img src="icons/star.png" alt="star" [class.dark-star]="this.reviewRating >= 1" />
-          <img src="icons/star.png" alt="star" [class.dark-star]="this.reviewRating >= 2" />
-          <img src="icons/star.png" alt="star" [class.dark-star]="this.reviewRating >= 3" />
-          <img src="icons/star.png" alt="star" [class.dark-star]="this.reviewRating >= 4" />
-          <img src="icons/star.png" alt="star" [class.dark-star]="this.reviewRating >= 5" />
-          <h1>{{ this.reviewRating.toFixed(1) }}</h1>
+        <div class="book__reviews-header">
+          <h1>{{ 'CLIENT.BOOK_DETAILS.RATING' | translate }}</h1>
+          <div class="book__rating">
+            <img src="icons/star.png" alt="star" [class.dark-star]="this.reviewRating >= 1" />
+            <img src="icons/star.png" alt="star" [class.dark-star]="this.reviewRating >= 2" />
+            <img src="icons/star.png" alt="star" [class.dark-star]="this.reviewRating >= 3" />
+            <img src="icons/star.png" alt="star" [class.dark-star]="this.reviewRating >= 4" />
+            <img src="icons/star.png" alt="star" [class.dark-star]="this.reviewRating >= 5" />
+            <h1>{{ this.reviewRating.toFixed(1) }}</h1>
+          </div>
         </div>
-      </div>
-      <div class="book__reviews-grades">
-        <div class="book__reviews-grade">
-          <span>
-            <h1>5</h1>
-            <img src="icons/star.png" alt="star" />
-            <div class="book__review-bar">
-              <div class="book__review-fill" [style.width.px]="reviewRatingsBarWidth[4]"></div>
-            </div>
-          </span>
-          <h1>({{ this.reviewRatingsCount[4] }})</h1>
+        <div class="book__reviews-grades">
+          <div class="book__reviews-grade">
+            <span>
+              <h1>5</h1>
+              <img src="icons/star.png" alt="star" />
+              <div class="book__review-bar">
+                <div class="book__review-fill" [style.width.px]="reviewRatingsBarWidth[4]"></div>
+              </div>
+            </span>
+            <h1>({{ this.reviewRatingsCount[4] }})</h1>
+          </div>
+          <div class="book__reviews-grade">
+            <span>
+              <h1>4</h1>
+              <img src="icons/star.png" alt="star" />
+              <div class="book__review-bar">
+                <div class="book__review-fill" [style.width.px]="reviewRatingsBarWidth[3]"></div>
+              </div>
+            </span>
+            <h1>({{ this.reviewRatingsCount[3] }})</h1>
+          </div>
+          <div class="book__reviews-grade">
+            <span>
+              <h1>3</h1>
+              <img src="icons/star.png" alt="star" />
+              <div class="book__review-bar">
+                <div class="book__review-fill" [style.width.px]="reviewRatingsBarWidth[2]"></div>
+              </div>
+            </span>
+            <h1>({{ this.reviewRatingsCount[2] }})</h1>
+          </div>
+          <div class="book__reviews-grade">
+            <span>
+              <h1>2</h1>
+              <img src="icons/star.png" alt="star" />
+              <div class="book__review-bar">
+                <div class="book__review-fill" [style.width.px]="reviewRatingsBarWidth[1]"></div>
+              </div>
+            </span>
+            <h1>({{ this.reviewRatingsCount[1] }})</h1>
+          </div>
+          <div class="book__reviews-grade">
+            <span>
+              <h1>1</h1>
+              <img src="icons/star.png" alt="star" />
+              <div class="book__review-bar">
+                <div class="book__review-fill" [style.width.px]="reviewRatingsBarWidth[0]"></div>
+              </div>
+            </span>
+            <h1>({{ this.reviewRatingsCount[0] }})</h1>
+          </div>
         </div>
-        <div class="book__reviews-grade">
-          <span>
-            <h1>4</h1>
-            <img src="icons/star.png" alt="star" />
-            <div class="book__review-bar">
-              <div class="book__review-fill" [style.width.px]="reviewRatingsBarWidth[3]"></div>
-            </div>
-          </span>
-          <h1>({{ this.reviewRatingsCount[3] }})</h1>
-        </div>
-        <div class="book__reviews-grade">
-          <span>
-            <h1>3</h1>
-            <img src="icons/star.png" alt="star" />
-            <div class="book__review-bar">
-              <div class="book__review-fill" [style.width.px]="reviewRatingsBarWidth[2]"></div>
-            </div>
-          </span>
-          <h1>({{ this.reviewRatingsCount[2] }})</h1>
-        </div>
-        <div class="book__reviews-grade">
-          <span>
-            <h1>2</h1>
-            <img src="icons/star.png" alt="star" />
-            <div class="book__review-bar">
-              <div class="book__review-fill" [style.width.px]="reviewRatingsBarWidth[1]"></div>
-            </div>
-          </span>
-          <h1>({{ this.reviewRatingsCount[1] }})</h1>
-        </div>
-        <div class="book__reviews-grade">
-          <span>
-            <h1>1</h1>
-            <img src="icons/star.png" alt="star" />
-            <div class="book__review-bar">
-              <div class="book__review-fill" [style.width.px]="reviewRatingsBarWidth[0]"></div>
-            </div>
-          </span>
-          <h1>({{ this.reviewRatingsCount[0] }})</h1>
-        </div>
-      </div>
       } @else {
         <p class="book__no-reviews-inline">{{ 'CLIENT.BOOK_DETAILS.NO_REVIEWS' | translate }}</p>
       }
     </span>
     <aside class="book__review-section">
-      @for (review of reviews(); let i = $index; track review.bookId) {
+      @for (review of reviews(); let i = $index; track $index) {
         <article>
           <img class="book__review-profile-picture" />
           <section>
@@ -162,7 +170,7 @@
               <img src="icons/star.png" alt="star" [class.dark-star]="review.rating >= 3" />
               <img src="icons/star.png" alt="star" [class.dark-star]="review.rating >= 4" />
               <img src="icons/star.png" alt="star" [class.dark-star]="review.rating >= 5" />
-              <h3>{{ review.datePosted.toString().split('T')[0] }}</h3>
+              <h3>{{ review.datePosted | appDate }}</h3>
             </div>
           </section>
         </article>

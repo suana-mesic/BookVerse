@@ -24,12 +24,20 @@ public class ChangeOrderStatusCommandHandler(IAppDbContext db, IOrderNotificatio
         //// Update status
         order.OrderStatusId = (int)request.NewStatus;
 
+        if (request.NewStatus == OrderStatusType.Shipped)
+        {
+            var trkNumbers = await db.Orders
+                .Where(o => o.TrackingNumber.StartsWith("TRK"))
+                .Select(o => o.TrackingNumber)
+                .ToListAsync(ct);
 
-        //// If marking as paid, set paid date
-        //if (request.NewStatus == OrderStatusType.Paid && !order.PaidAtUtc.HasValue)
-        //{
-        //    order.PaidAtUtc = DateTime.UtcNow;
-        //}
+            int nextNumber = trkNumbers
+                .Select(t => int.TryParse(t[3..], out int n) ? n : 0)
+                .DefaultIfEmpty(0)
+                .Max() + 1;
+
+            order.TrackingNumber = $"TRK{nextNumber:D4}";
+        }
 
         await db.SaveChangesAsync(ct);
 

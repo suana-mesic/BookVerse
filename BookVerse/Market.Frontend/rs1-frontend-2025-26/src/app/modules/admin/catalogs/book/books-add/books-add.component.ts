@@ -94,7 +94,7 @@ export class BooksAddComponent extends BaseFormComponent<GetBookByIdQueryDto> im
   }
 
   private loadCategories(): void {
-    this.categoriesApi.list().subscribe({
+    this.categoriesApi.list({ language: this.translate.currentLang }).subscribe({
       next: (response) => {
         this.categories = response;
       },
@@ -117,7 +117,7 @@ export class BooksAddComponent extends BaseFormComponent<GetBookByIdQueryDto> im
   }
 
   private loadBookFormats(): void {
-    this.bookFormatsApi.list({ onlyEnabled: true, paging: largePaging }).subscribe({
+    this.bookFormatsApi.list({ onlyEnabled: true, paging: largePaging, language: this.translate.currentLang }).subscribe({
       next: (response) => {
         this.bookFormats = response.items;
       },

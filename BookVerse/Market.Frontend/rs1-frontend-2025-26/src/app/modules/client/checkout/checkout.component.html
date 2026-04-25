@@ -366,9 +366,7 @@
                   @if (uneseniKupon.pending) {
                     <mat-hint>{{ 'CLIENT.CHECKOUT.CHECKING_COUPON' | translate }}</mat-hint>
                   }
-                  @if (uneseniKupon.hasError('kuponNePostoji')) {
-                    <mat-error>{{ 'CLIENT.CHECKOUT.COUPON_INVALID' | translate }}</mat-error>
-                  }
+                  <mat-error>{{ 'CLIENT.CHECKOUT.COUPON_INVALID' | translate }}</mat-error>
                 </mat-form-field>
                 <button
                   mat-raised-button
@@ -482,7 +480,7 @@
               <span class="item-qty"
                 >{{ 'CLIENT.CHECKOUT.QUANTITY' | translate }} {{ item.quantity }}</span
               >
-              <span class="item-price">{{ item.subtotal | number: '1.2-2' : 'en' }} KM</span>
+              <span class="item-price">{{ item.price | number: '1.2-2' : 'en' }} KM</span>
             </div>
           </div>
         </div>

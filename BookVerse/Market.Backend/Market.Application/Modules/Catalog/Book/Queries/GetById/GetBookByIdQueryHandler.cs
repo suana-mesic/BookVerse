@@ -12,7 +12,7 @@ public class GetBookByIdQueryHandler(IAppDbContext context, ITranslationService 
             .Select(x => new GetBookByIdQueryDto
             {
                 Id = x.Id,
-                ISBN = x.ISBN,
+                Isbn = x.ISBN,
                 Title = x.Title,
                 PublisherId = x.PublisherId,
                 PublisherName = x.Publisher.Name,

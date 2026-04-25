@@ -1,5 +1,8 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormControl } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { ListUsersQueryDto, ListUsersRequest } from '../../../api-services/users/users-api.model';
 import { BaseListPagedComponent } from '../../core/components/base-classes/base-list-paged-component';
 import { UsersApiService } from '../../../api-services/users/users-api.service';
@@ -14,7 +17,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class UsersComponent
   extends BaseListPagedComponent<ListUsersQueryDto, ListUsersRequest>
-  implements OnInit
+  implements OnInit, OnDestroy
 {
   private api = inject(UsersApiService);
   private router = inject(Router);
@@ -23,6 +26,9 @@ export class UsersComponent
   private translate = inject(TranslateService);
 
   displayedColumns = ['fullName', 'email', 'roles', 'isEnabled', 'actions'];
+
+  private destroy$ = new Subject<void>();
+  searchControl = new FormControl('');
 
   constructor() {
     super();
@@ -33,6 +39,24 @@ export class UsersComponent
   ngOnInit(): void {
     this.getPaginationSettings();
     this.initList();
+    this.setupSearchDebounce();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private setupSearchDebounce(): void {
+    this.searchControl.valueChanges
+      .pipe(debounceTime(400), distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe((searchTerm) => {
+        if (!searchTerm || searchTerm.length >= 3) {
+          this.request.search = searchTerm || '';
+          this.request.paging.page = 1;
+          this.loadPagedData();
+        }
+      });
   }
 
   protected loadPagedData(): void {
