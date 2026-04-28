@@ -135,7 +135,6 @@ public static class DynamicDataSeeder
 
         var orders = new List<Orders>();
         int piCounter = 1;
-        int trackingCounter = 1;
 
         foreach (var (userId, date, status, psIdx, addrId, sm, books) in configs)
         {
@@ -158,12 +157,11 @@ public static class DynamicDataSeeder
                 ShippingMethodId = sm,
                 PaymentSummaryId = isPaid && psIdx >= 0 ? ps[psIdx % ps.Count].Id : null,
                 PaymentIntentId = isPaid ? $"pi_seed_{piCounter:D3}" : string.Empty,
-                TrackingNumber = status == 4 ? $"TRK{piCounter:D4}" : trackingCounter.ToString(),
+                TrackingNumber = status == (int)OrderStatusType.Shipped ? $"TRK{piCounter:D4}" : "",
                 PaidAt = isPaid ? date.AddHours(1) : null,
                 CancelledAt = status == 5 ? date.AddDays(2) : null,
             };
 
-            trackingCounter++;
             orders.Add(order);
             piCounter++;
         }

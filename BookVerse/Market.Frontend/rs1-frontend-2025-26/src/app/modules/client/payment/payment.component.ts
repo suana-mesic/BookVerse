@@ -101,7 +101,6 @@ export class PaymentComponent extends BaseComponent implements OnInit, OnDestroy
 
     this.stripe = await loadStripe(this.orderData.publishableKey);
 
-    // clientSecret je tajni ključ koji smo dobili od backenda
     // appearance definira vizuelni stil Stripe forme
     if (!this.stripe) {
       this.toaster.error(this.translate.instant('CLIENT.PAYMENT.STRIPE_ERROR'));
@@ -113,7 +112,7 @@ export class PaymentComponent extends BaseComponent implements OnInit, OnDestroy
     const stripeLocale = lang === 'en' ? 'en' : 'hr';
 
     this.elements = this.stripe.elements({
-      clientSecret: this.orderData.clientSecret,
+      clientSecret: this.orderData.clientSecret,  // clientSecret je tajni ključ koji smo dobili od backenda
       locale: stripeLocale as any,
       appearance: isDark
         ? {

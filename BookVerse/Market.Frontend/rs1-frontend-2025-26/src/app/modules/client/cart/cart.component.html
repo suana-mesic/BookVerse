@@ -13,7 +13,7 @@
     <!-- AKTIVNE STAVKE -->
     <ng-container *ngIf="cart.activeItems.length > 0; else emptyCart">
       <div class="cart-item" *ngFor="let item of cart.activeItems">
-        <img [src]="item.imageUrl || 'assets/no-image.png'" [alt]="item.bookTitle" />
+        <img [src]="(item.imageUrl | apiUrl) || 'assets/no-image.png'" [alt]="item.bookTitle" />
 
         <div class="cart-item-info">
           <h4>{{ item.bookTitle }}</h4>
@@ -53,7 +53,7 @@
     <ng-container *ngIf="cart.savedForLaterItems.length > 0">
       <h3>{{ 'CLIENT.CART.SAVED_FOR_LATER' | translate }}</h3>
       <div class="cart-item saved" *ngFor="let item of cart.savedForLaterItems">
-        <img [src]="item.imageUrl || 'assets/no-image.png'" [alt]="item.bookTitle" />
+        <img [src]="(item.imageUrl | apiUrl) || 'assets/no-image.png'" [alt]="item.bookTitle" />
 
         <div class="cart-item-info">
           <h4>{{ item.bookTitle }}</h4>

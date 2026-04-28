@@ -10,7 +10,7 @@ export class AuthorsService {
 
   getAuthorFromApi(authorId: number) {
     const url = `https://localhost:7260/Authors/${authorId}`;
-    console.log(url);
+    // console.log(url);
     return this.http.get<Author>(url);
   }
 }

@@ -1,8 +1,10 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { CartApiService } from '../../../api-services/cart/cart-api.service';
 import { ListCartDto } from '../../../api-services/cart/cart-api.model';
 import { Location } from '@angular/common';
 import { AuthFacadeService } from '../../core/services/auth/auth-facade.service';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-cart',
@@ -10,10 +12,13 @@ import { AuthFacadeService } from '../../core/services/auth/auth-facade.service'
   styleUrls: ['./cart.component.scss'],
   standalone: false,
 })
-export class CartComponent implements OnInit {
+export class CartComponent implements OnInit, OnDestroy {
   cart: ListCartDto = { activeItems: [], savedForLaterItems: [], totalPrice: 0 };
   isLoading = true;
   private location = inject(Location);
+  private translate = inject(TranslateService);
+  private destroy$ = new Subject<void>();
+  private currentLang = 'bs';
 
   constructor(
     private cartService: CartApiService,
@@ -21,12 +26,26 @@ export class CartComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.currentLang = this.translate.currentLang || this.translate.defaultLang || 'bs';
+
     if (!this.authFacade.isAuthenticated()) {
       this.cart = { activeItems: [], savedForLaterItems: [], totalPrice: 0 };
       this.isLoading = false;
       return;
     }
     this.loadCart();
+
+    this.translate.onLangChange
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((event: LangChangeEvent) => {
+        this.currentLang = event.lang;
+        this.loadCart();
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   loadCart(): void {
@@ -36,7 +55,7 @@ export class CartComponent implements OnInit {
       return;
     }
     this.isLoading = true;
-    this.cartService.getCart().subscribe({
+    this.cartService.getCart(this.currentLang).subscribe({
       next: (data) => {
         this.cart = data;
         this.isLoading = false;

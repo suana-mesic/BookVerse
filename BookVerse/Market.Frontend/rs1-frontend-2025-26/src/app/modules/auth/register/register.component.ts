@@ -127,7 +127,7 @@ export class RegisterComponent implements OnInit {
   }
 
   onRegister() {
-    console.log('Submit button clicked');
+    // console.log('Submit button clicked');
     const formData = this.registerForm.value;
 
     const payload = {
@@ -135,7 +135,7 @@ export class RegisterComponent implements OnInit {
       country: formData.country?.nameBs ?? '',
     };
     delete payload.confirmedPassword;
-    console.log(payload);
+    // console.log(payload);
 
     this.http
       .post<RegisterCommandDto>('https://localhost:7260/api/auth/register', payload, {

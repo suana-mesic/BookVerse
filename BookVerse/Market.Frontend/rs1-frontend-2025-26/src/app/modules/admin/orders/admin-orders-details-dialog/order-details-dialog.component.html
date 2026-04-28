@@ -5,7 +5,7 @@
       <mat-icon class="header-icon">receipt_long</mat-icon>
       <h2 mat-dialog-title>
         {{ 'ORDERS.DETAILS.TITLE' | translate }}
-        <span class="order-ref" *ngIf="order">{{ order.trackingNumber }}</span>
+        <span class="order-ref" *ngIf="order">{{ order.trackingNumber || '#' + order.id }}</span>
       </h2>
     </div>
     <button mat-icon-button (click)="onClose()" class="close-btn">

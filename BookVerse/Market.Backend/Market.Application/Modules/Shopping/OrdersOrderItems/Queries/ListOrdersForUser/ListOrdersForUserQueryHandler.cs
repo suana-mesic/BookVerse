@@ -1,8 +1,9 @@
-﻿using Market.Application.Modules.Shopping.OrdersOrderItems.Queries.List;
+﻿using Market.Application.Common.Interfaces;
+using Market.Application.Modules.Shopping.OrdersOrderItems.Queries.List;
 
 namespace Market.Application.Modules.Shopping.OrdersOrderItems.Queries.ListOrdersForUser
 {
-    public class ListOrdersForUserQueryHandler(IAppDbContext context, IAppCurrentUser currentUser) : IRequestHandler<ListOrdersForUserQuery, PageResult<ListOrdersForUserQueryDto>>
+    public class ListOrdersForUserQueryHandler(IAppDbContext context, IAppCurrentUser currentUser, ITranslationService translationService) : IRequestHandler<ListOrdersForUserQuery, PageResult<ListOrdersForUserQueryDto>>
     {
         public async Task<PageResult<ListOrdersForUserQueryDto>> Handle(ListOrdersForUserQuery request, CancellationToken ct)
         {
@@ -39,7 +40,17 @@ namespace Market.Application.Modules.Shopping.OrdersOrderItems.Queries.ListOrder
                       }).ToList()
                   });
 
-            return await PageResult<ListOrdersForUserQueryDto>.FromQueryableAsync(query, request.Paging, ct);
+            return await PageResult<ListOrdersForUserQueryDto>.FromQueryableAsync(query, request.Paging, ct,
+                postProcess: async items =>
+                {
+                    if (string.IsNullOrWhiteSpace(request.Language) || request.Language == "bs")
+                        return;
+
+                    await Task.WhenAll(items.SelectMany(o => o.Items).Select(async i =>
+                    {
+                        i.Book.Title = await translationService.Translate(i.Book.Title ?? string.Empty, request.Language);
+                    }));
+                });
 
         }
     }

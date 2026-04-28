@@ -15,6 +15,7 @@ namespace Market.Application.Modules.Reports.Orders
                 ["reportTitle"] = "Izvještaj narudžbi",
                 ["id"] = "ID",
                 ["customer"] = "Kupac",
+                ["allCustomers"] = "Svi kupci",
                 ["date"] = "Datum",
                 ["amount"] = "Iznos (KM)",
                 ["status"] = "Status",
@@ -31,6 +32,7 @@ namespace Market.Application.Modules.Reports.Orders
                 ["reportTitle"] = "Orders Report",
                 ["id"] = "ID",
                 ["customer"] = "Customer",
+                ["allCustomers"] = "All customers",
                 ["date"] = "Date",
                 ["amount"] = "Amount (BAM)",
                 ["status"] = "Status",
@@ -58,7 +60,7 @@ namespace Market.Application.Modules.Reports.Orders
 
             var timeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
             var dateFromLocal = TimeZoneInfo.ConvertTimeFromUtc(request.DateFrom, timeZone);
-            var dateToLocal = TimeZoneInfo.ConvertTimeFromUtc(request.DateTo, timeZone);
+            var dateToLocal = TimeZoneInfo.ConvertTimeFromUtc(request.DateTo, timeZone).Date.AddDays(-1);
 
             var query = context.Orders
                 .AsNoTracking()
@@ -76,7 +78,6 @@ namespace Market.Application.Modules.Reports.Orders
             var orders = await query.Select(x => new
             {
                 x.Id,
-                Kupac = x.User.FirstName + " " + x.User.LastName,
                 x.CreatedAtUtc,
                 x.TotalPrice,
                 Status = x.OrderStatus.StatusName
@@ -84,6 +85,18 @@ namespace Market.Application.Modules.Reports.Orders
 
             var ukupanPrihod = orders.Sum(x => x.TotalPrice);
             var ukupanBroj = orders.Count;
+
+            string customerName = translatePdf(lang, "allCustomers");
+            if (request.UserId.HasValue)
+            {
+                var name = await context.Users
+                    .AsNoTracking()
+                    .Where(u => u.Id == request.UserId.Value)
+                    .Select(u => u.FirstName + " " + u.LastName)
+                    .FirstOrDefaultAsync(ct);
+                if (!string.IsNullOrWhiteSpace(name))
+                    customerName = name;
+            }
 
             var pdf = Document.Create(container =>
             {
@@ -93,8 +106,13 @@ namespace Market.Application.Modules.Reports.Orders
                     page.Margin(2, QuestPDF.Infrastructure.Unit.Centimetre);
                     page.DefaultTextStyle(x => x.FontSize(11));
 
-                    page.Header().Text($"{translatePdf(lang, "reportTitle")}: {dateFromLocal:dd.MM.yyyy} - {dateToLocal:dd.MM.yyyy}")
-                      .SemiBold().FontSize(16).FontColor(Colors.Blue.Medium);
+                    page.Header().Column(h =>
+                    {
+                        h.Item().Text($"{translatePdf(lang, "reportTitle")}: {dateFromLocal:dd.MM.yyyy} - {dateToLocal:dd.MM.yyyy}")
+                          .SemiBold().FontSize(16).FontColor(Colors.Blue.Medium);
+                        h.Item().PaddingTop(4).Text($"{translatePdf(lang, "customer")}: {customerName}")
+                          .FontSize(12).FontColor(Colors.Grey.Darken2);
+                    });
 
                     page.Content().Column(col =>
                     {
@@ -104,14 +122,13 @@ namespace Market.Application.Modules.Reports.Orders
                             {
                                 c.ConstantColumn(50);
                                 c.RelativeColumn(2);
-                                c.RelativeColumn(2);
                                 c.RelativeColumn(1);
                                 c.RelativeColumn(1);
                             });
 
                             table.Header(header =>
                             {
-                                foreach (var col in new[] { translatePdf(lang,"id"), translatePdf(lang,"customer"), translatePdf(lang,"date"), translatePdf(lang,"amount"), translatePdf(lang,"status") })
+                                foreach (var col in new[] { translatePdf(lang,"id"), translatePdf(lang,"date"), translatePdf(lang,"amount"), translatePdf(lang,"status") })
                                     header.Cell().Background(Colors.Blue.Medium).Padding(5)
                                         .Text(col).FontColor(Colors.White).SemiBold();
                             });
@@ -119,7 +136,6 @@ namespace Market.Application.Modules.Reports.Orders
                             foreach (var order in orders)
                             {
                                 table.Cell().Padding(5).Text(order.Id.ToString());
-                                table.Cell().Padding(5).Text(order.Kupac);
                                 table.Cell().Padding(5).Text(order.CreatedAtUtc.ToString("dd.MM.yyyy"));
                                 table.Cell().Padding(5).Text(order.TotalPrice.ToString("F2"));
                                 table.Cell().Padding(5).Text(translatePdf(lang, order.Status.ToString()));

@@ -21,7 +21,16 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, TranslateModule, MatIconModule, MatBadgeModule, MatMenuModule, MatButtonModule, MatDividerModule, CommonModule],
+  imports: [
+    RouterLink,
+    TranslateModule,
+    MatIconModule,
+    MatBadgeModule,
+    MatMenuModule,
+    MatButtonModule,
+    MatDividerModule,
+    CommonModule,
+  ],
   templateUrl: './header.component.html',
   styleUrl: 'header.component.css',
 })
@@ -86,7 +95,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   showDropMenu() {
-    console.log(this.dropMenu);
+    // console.log(this.dropMenu);
     if (!this.dropMenuOpened) {
       this.dropMenu.nativeElement.style.height = '455px';
     } else {
@@ -96,7 +105,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   prijavaIliDropDown() {
-    console.log(this.authFacadeService.isAuthenticated());
+    // console.log(this.authFacadeService.isAuthenticated());
     if (!this.authFacadeService.isAuthenticated()) this.router.navigate(['/auth/login']);
     else {
       this.showDropMenu();

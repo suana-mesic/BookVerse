@@ -9,7 +9,7 @@ public class CreateBookCommand : IRequest<int>
    public required int[] AuthorIds { get; set; }
     public required int BookFormatId { get; set; }
     public  required decimal Price { get; set; }
-    public required string Language { get; set; }
+    public required int LanguageId { get; set; }
     public string? Description { get; set; }
     public required int PageCount { get; set; }
     public int? QuantityInStockForOnlineOrders { get; set; }

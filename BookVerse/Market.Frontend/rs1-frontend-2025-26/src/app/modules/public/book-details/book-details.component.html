@@ -6,7 +6,7 @@
   </a>
   <div class="book__container">
     <img
-      src="{{ book()?.imageUrl }}"
+      [src]="book()?.imageUrl | apiUrl"
       alt="slika knjige"
       width="300"
       height="420"

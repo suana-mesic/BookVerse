@@ -156,10 +156,19 @@ body h1 {
 }
 
 :host ::ng-deep .paginator-container {
-  background: #FAF9FD;
+  background: #faf9fd;
   border-top: none;
 }
 
 :host-context(.dark-theme) ::ng-deep .paginator-container {
   border-top: none;
+}
+.body__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 16px;
+  color: var(--text-secondary, #666);
 }

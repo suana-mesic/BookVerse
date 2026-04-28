@@ -17,6 +17,8 @@ import { BookFormatApiService } from '../../../../../api-services/book-formats/b
 import { ListAuthorsQueryDto } from '../../../../../api-services/authors/authors-api.model';
 import { AuthorsApiService } from '../../../../../api-services/authors/authors-api.service';
 import { BooksApiService } from '../../../../../api-services/books/books-api.service';
+import { LanguagesApiService } from '../../../../../api-services/languages/languages-api.service';
+import { ListLanguagesQueryDto } from '../../../../../api-services/languages/languages-api.model';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -31,6 +33,7 @@ export class BooksAddComponent extends BaseFormComponent<GetBookByIdQueryDto> im
   private categoriesApi = inject(ProductCategoriesApiService);
   private publishersApi = inject(PublishersService);
   private bookFormatsApi = inject(BookFormatApiService);
+  private languagesApi = inject(LanguagesApiService);
   private authorsApi = inject(AuthorsApiService);
   private formService = inject(BooksFormService);
   private router = inject(Router);
@@ -40,6 +43,7 @@ export class BooksAddComponent extends BaseFormComponent<GetBookByIdQueryDto> im
   categories: ListProductCategoriesQueryDto[] = [];
   publishers: ListPublishersQueryDto[] = [];
   bookFormats: ListBookFormatsQueryDto[] = [];
+  languages: ListLanguagesQueryDto[] = [];
   authors: ListAuthorsQueryDto[] = [];
 
   ngOnInit(): void {
@@ -47,6 +51,7 @@ export class BooksAddComponent extends BaseFormComponent<GetBookByIdQueryDto> im
     this.loadCategories();
     this.loadPublishers();
     this.loadBookFormats();
+    this.loadLanguages();
     this.loadAuthors();
   }
 
@@ -64,7 +69,7 @@ export class BooksAddComponent extends BaseFormComponent<GetBookByIdQueryDto> im
     const command: CreateBookCommand = {
       isbn: this.form.value.isbn,
       title: this.form.value.title,
-      language: this.form.value.language,
+      languageId: this.form.value.languageId,
       pageCount: this.form.value.pageCount,
       description: this.form.value.description,
       quantityInStockForOnlineOrders:
@@ -124,6 +129,18 @@ export class BooksAddComponent extends BaseFormComponent<GetBookByIdQueryDto> im
       error: (err) => {
         this.toaster.error(this.translate.instant('BOOKS.DIALOGS.ERROR_LOAD_FORMATS'));
         console.error('Load book formats error:', err);
+      },
+    });
+  }
+
+  private loadLanguages(): void {
+    this.languagesApi.list({ language: this.translate.currentLang }).subscribe({
+      next: (response) => {
+        this.languages = response;
+      },
+      error: (err) => {
+        this.toaster.error(this.translate.instant('BOOKS.DIALOGS.ERROR_LOAD_LANGUAGES'));
+        console.error('Load languages error:', err);
       },
     });
   }

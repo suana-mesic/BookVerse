@@ -557,6 +557,7 @@
     "NEGATIVE": "Vrijednost mora biti negativna",
     "URL": "Unesite validan URL",
     "DATE": "Unesite validan datum",
+    "ISBN_INVALID": "ISBN nije validan. Mora biti ISBN-10 ili ISBN-13 sa ispravnom kontrolnom cifrom.",
     "TIME": "Unesite validno vrijeme",
     "PHONE": "Unesite validan broj telefona",
     "PASSWORD_MATCH": "Lozinke se ne podudaraju",

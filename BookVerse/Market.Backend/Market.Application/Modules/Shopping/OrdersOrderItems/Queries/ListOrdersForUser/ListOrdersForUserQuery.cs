@@ -7,5 +7,6 @@ namespace Market.Application.Modules.Shopping.OrdersOrderItems.Queries.ListOrder
     {
         public string? Search { get; set; }
         public OrderStatusType? Status { get; set; }
+        public string? Language { get; set; }
     }
 }

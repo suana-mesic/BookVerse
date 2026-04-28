@@ -121,7 +121,7 @@
           <div class="timeline-book-preview">
             <img
               *ngIf="book.imageUrl"
-              [src]="book.imageUrl"
+              [src]="book.imageUrl | apiUrl"
               [alt]="book.title"
               class="timeline-book-img"
             />
@@ -232,7 +232,7 @@
         <div class="details-image-section">
           <img
             *ngIf="selectedBook.imageUrl"
-            [src]="selectedBook.imageUrl"
+            [src]="selectedBook.imageUrl | apiUrl"
             [alt]="selectedBook.title"
             class="detail-book-img"
           />

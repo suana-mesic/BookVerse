@@ -34,8 +34,8 @@ public sealed class UpdateBookCommandHandler(IAppDbContext context)
             book.BookFormatId = request.BookFormatId.Value;
         if (request.Price.HasValue)
             book.Price = request.Price.Value;
-        if (!string.IsNullOrEmpty(request.Language))
-            book.Language = request.Language;
+        if (request.LanguageId.HasValue)
+            book.LanguageId = request.LanguageId.Value;
         if (!string.IsNullOrEmpty(request.Description))
             book.Description = request.Description;
         if (request.PageCount.HasValue)

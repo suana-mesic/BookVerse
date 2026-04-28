@@ -12,7 +12,7 @@ namespace Market.Application.Modules.Shopping.Coupons.Queries.List
         {
             return await context.Coupons
                 .AsNoTracking()
-                .Where(x => !x.IsDeleted && x.StartDate <= DateTime.Now && x.EndDate >= DateTime.Now)
+                .Where(x => !x.IsDeleted && x.StartDate <= DateTime.UtcNow && x.EndDate >= DateTime.UtcNow)
                 .Select(x => new ListCouponsQueryDto
                 {
                     Name = x.PromotionCode

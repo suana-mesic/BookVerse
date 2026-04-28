@@ -14,7 +14,10 @@ namespace Market.Infrastructure.Translate
             _http = http;
         }
 
-        public async Task<string> Translate(string text, string targetLang)
+        public Task<string> Translate(string text, string targetLang)
+            => Translate(text, "bs", targetLang);
+
+        public async Task<string> Translate(string text, string sourceLang, string targetLang)
         {
             if (string.IsNullOrWhiteSpace(text))
                 return text;
@@ -22,7 +25,7 @@ namespace Market.Infrastructure.Translate
             try
             {
                 var encoded = Uri.EscapeDataString(text);
-                var url = $"https://translate.googleapis.com/translate_a/single?client=gtx&sl=bs&tl={targetLang}&dt=t&q={encoded}";
+                var url = $"https://translate.googleapis.com/translate_a/single?client=gtx&sl={sourceLang}&tl={targetLang}&dt=t&q={encoded}";
 
                 var response = await _http.GetAsync(url);
                 if (!response.IsSuccessStatusCode)
@@ -31,7 +34,6 @@ namespace Market.Infrastructure.Translate
                 var json = await response.Content.ReadAsStringAsync();
                 var parsed = JsonSerializer.Deserialize<JsonElement>(json);
 
-                // Response: [[[translatedText, originalText, ...], ...], ...]
                 var translated = parsed[0].EnumerateArray()
                     .Select(segment => segment[0].GetString() ?? "")
                     .Aggregate(string.Concat);

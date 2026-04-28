@@ -14,7 +14,8 @@ namespace Market.Application.Modules.Reports.Books
             {
                 ["reportTitle"] = "Izvještaj o prodaji knjiga",
                 ["book"] = "Knjiga",
-                ["author"] = "Autor",
+                ["allBooks"] = "Sve knjige",
+                ["orderId"] = "ID narudžbe",
                 ["date"] = "Datum",
                 ["qty"] = "Kol.",
                 ["price"] = "Cijena",
@@ -29,7 +30,8 @@ namespace Market.Application.Modules.Reports.Books
             {
                 ["reportTitle"] = "Book Sales Report",
                 ["book"] = "Book",
-                ["author"] = "Author",
+                ["allBooks"] = "All books",
+                ["orderId"] = "Order ID",
                 ["date"] = "Date",
                 ["qty"] = "Qty.",
                 ["price"] = "Price",
@@ -56,9 +58,8 @@ namespace Market.Application.Modules.Reports.Books
 
             var timeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
             var dateFromLocal = TimeZoneInfo.ConvertTimeFromUtc(request.DateFrom, timeZone);
-            var dateToLocal = TimeZoneInfo.ConvertTimeFromUtc(request.DateTo, timeZone);
+            var dateToLocal = TimeZoneInfo.ConvertTimeFromUtc(request.DateTo, timeZone).Date.AddDays(-1);
 
-            //dohvatimo sve zapise o narudžbama knjige request.BookId u periodu od request.DateFrom do request.DateTo
             var query = context.OrderItems
                 .AsNoTracking()
                 .Include(x => x.Book)
@@ -72,19 +73,27 @@ namespace Market.Application.Modules.Reports.Books
                 query = query.Where(x => x.BookId == request.BookId);
 
             var items = await query
-                .Include(x => x.Book)
-                .ThenInclude(b => b.Authors)
                 .Include(x => x.Order)
                 .Select(x => new
                 {
-                    x.BookId,
-                    Knjiga = x.Book.Title,
-                    Autori = string.Join(", ", x.Book.Authors.Select(a => a.FirstName + " " + a.LastName)),
+                    x.OrderId,
                     DatumNarudžbe = x.Order.CreatedAtUtc,
                     x.Quantity,
                     x.PriceAtTime,
                     Ukupno = x.Quantity * x.PriceAtTime
                 }).ToListAsync(ct);
+
+            string bookTitle = translatePdf(lang, "allBooks");
+            if (request.BookId.HasValue)
+            {
+                var title = await context.Books
+                    .AsNoTracking()
+                    .Where(b => b.Id == request.BookId.Value)
+                    .Select(b => b.Title)
+                    .FirstOrDefaultAsync(ct);
+                if (!string.IsNullOrWhiteSpace(title))
+                    bookTitle = title;
+            }
 
             var ukupnoKolicina = items.Sum(x => x.Quantity);
             var ukupanPrihod = items.Sum(x => x.Ukupno);
@@ -97,8 +106,13 @@ namespace Market.Application.Modules.Reports.Books
                     page.Margin(2, QuestPDF.Infrastructure.Unit.Centimetre);
                     page.DefaultTextStyle(x => x.FontSize(11));
 
-                    page.Header().Text($"{translatePdf(lang, "reportTitle")}: {dateFromLocal:dd.MM.yyyy} - {dateToLocal:dd.MM.yyyy}")
-                          .SemiBold().FontSize(16).FontColor(Colors.Green.Medium);
+                    page.Header().Column(h =>
+                    {
+                        h.Item().Text($"{translatePdf(lang, "reportTitle")}: {dateFromLocal:dd.MM.yyyy} - {dateToLocal:dd.MM.yyyy}")
+                              .SemiBold().FontSize(16).FontColor(Colors.Green.Medium);
+                        h.Item().PaddingTop(4).Text($"{translatePdf(lang, "book")}: {bookTitle}")
+                              .FontSize(12).FontColor(Colors.Grey.Darken2);
+                    });
 
                     page.Content().Column(col =>
                     {
@@ -106,7 +120,6 @@ namespace Market.Application.Modules.Reports.Books
                         {
                             table.ColumnsDefinition(c =>
                             {
-                                c.RelativeColumn(3);
                                 c.RelativeColumn(2);
                                 c.RelativeColumn(2);
                                 c.ConstantColumn(40);
@@ -116,15 +129,14 @@ namespace Market.Application.Modules.Reports.Books
 
                             table.Header(header =>
                             {
-                                foreach (var naziv in new[] { translatePdf(lang,"book"), translatePdf(lang,"author"), translatePdf(lang,"date"), translatePdf(lang,"qty"), translatePdf(lang,"price"), translatePdf(lang,"total") })
+                                foreach (var naziv in new[] { translatePdf(lang,"orderId"), translatePdf(lang,"date"), translatePdf(lang,"qty"), translatePdf(lang,"price"), translatePdf(lang,"total") })
                                     header.Cell().Background(Colors.Green.Medium).Padding(5)
                                         .Text(naziv).FontColor(Colors.White).SemiBold();
                             });
 
                             foreach (var item in items)
                             {
-                                table.Cell().Padding(5).Text(item.Knjiga);
-                                table.Cell().Padding(5).Text(item.Autori);
+                                table.Cell().Padding(5).Text(item.OrderId.ToString());
                                 table.Cell().Padding(5).Text(item.DatumNarudžbe.ToString("dd.MM.yyyy"));
                                 table.Cell().Padding(5).Text(item.Quantity.ToString());
                                 table.Cell().Padding(5).Text(item.PriceAtTime.ToString("F2"));

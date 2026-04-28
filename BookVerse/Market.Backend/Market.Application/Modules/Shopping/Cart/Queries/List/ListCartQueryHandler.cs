@@ -1,6 +1,8 @@
-﻿namespace Market.Application.Modules.Shopping.Cart.Queries.List;
+﻿using Market.Application.Common.Interfaces;
 
-public class ListCartQueryHandler(IAppDbContext context, IAppCurrentUser currentUser)
+namespace Market.Application.Modules.Shopping.Cart.Queries.List;
+
+public class ListCartQueryHandler(IAppDbContext context, IAppCurrentUser currentUser, ITranslationService translationService)
     : IRequestHandler<ListCartQuery, ListCartQueryDto>
 {
     public async Task<ListCartQueryDto> Handle(ListCartQuery request, CancellationToken ct)
@@ -79,11 +81,21 @@ public class ListCartQueryHandler(IAppDbContext context, IAppCurrentUser current
                 QuantityInStockInStores = inventoryByBook.TryGetValue(x.BookId, out var dict) ? dict : null
             }).ToList();
 
-        return new ListCartQueryDto
+        var result = new ListCartQueryDto
         {
             ActiveItems = activeItems,
             SavedForLaterItems = savedItems,
             TotalPrice = activeItems.Sum(x => x.Subtotal)
         };
+
+        if (!string.IsNullOrWhiteSpace(request.Language) && request.Language != "bs")
+        {
+            await Task.WhenAll(result.ActiveItems.Concat(result.SavedForLaterItems).Select(async i =>
+            {
+                i.BookTitle = await translationService.Translate(i.BookTitle ?? string.Empty, request.Language);
+            }));
+        }
+
+        return result;
     }
 }

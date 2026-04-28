@@ -326,7 +326,7 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
       next: (data) => {
         const months = [...new Set(data.map((x) => x.monthName))];
         const categories = [...new Set(data.map((x) => x.categoryName))];
-        console.log(data);
+        // console.log(data);
         const datasets = categories.map((category, index) => ({
           label: category,
           data: months.map((month) => {
@@ -401,17 +401,19 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
 
   downloadBooksReport(): void {
     const lang = this.translate.currentLang || this.translate.defaultLang || 'bs';
-    this.reportsApi.generateBooksReport(this.dateFrom, this.dateTo, this.selectedBookId, lang).subscribe({
-      next: (blob) => {
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = this.translate.instant('STATISTICS.REPORTS.BOOKS_FILENAME');
-        a.click();
-        window.URL.revokeObjectURL(url);
-      },
-      error: () =>
-        this.toaster.error(this.translate.instant('STATISTICS.DIALOGS.ERROR_BOOKS_REPORT')),
-    });
+    this.reportsApi
+      .generateBooksReport(this.dateFrom, this.dateTo, this.selectedBookId, lang)
+      .subscribe({
+        next: (blob) => {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = this.translate.instant('STATISTICS.REPORTS.BOOKS_FILENAME');
+          a.click();
+          window.URL.revokeObjectURL(url);
+        },
+        error: () =>
+          this.toaster.error(this.translate.instant('STATISTICS.DIALOGS.ERROR_BOOKS_REPORT')),
+      });
   }
 }

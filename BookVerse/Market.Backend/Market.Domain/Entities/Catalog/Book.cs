@@ -22,7 +22,8 @@ namespace Market.Domain.Entities.Catalog
         public int BookFormatId { get; set; }
         public BookFormat BookFormat { get; set; }
         public decimal Price { get; set; }
-        public string Language { get; set; }
+        public int LanguageId { get; set; }
+        public Language Language { get; set; }
         public string? Description { get; set; }
         public int PageCount { get; set; }
         public int? QuantityInStockForOnlineOrders { get; set; }
@@ -33,7 +34,6 @@ namespace Market.Domain.Entities.Catalog
         {
             public const int ISBNMaxLength = 20;
             public const int TitleMaxLength = 150;
-            public const int LanguageMaxLength = 60;
         }
     }
 }

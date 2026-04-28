@@ -61,30 +61,30 @@ export class AuthFacadeService {
    * Login korisnika (email + password).
    * Snima tokene u storage, dekodira JWT i popunjava current user state.
    */
-login(payload: LoginCommand): Observable<LoginCommandDto> {
-  return this.api.login(payload).pipe(
-    tap((response: LoginCommandDto) => {
-      // snimamo tokene SAMO ako nema 2FA i accessToken postoji
-      if (!response.requiresTwoFactor && response.accessToken) {
-        this.storage.saveLogin(response);
-        this.decodeAndSetUser(response.accessToken);
-      }
-    }),
-    map((response) => response)
-  );
-}
+  login(payload: LoginCommand): Observable<LoginCommandDto> {
+    return this.api.login(payload).pipe(
+      tap((response: LoginCommandDto) => {
+        // snimamo tokene SAMO ako nema 2FA i accessToken postoji
+        if (!response.requiresTwoFactor && response.accessToken) {
+          this.storage.saveLogin(response); // čuva u localStorage
+          this.decodeAndSetUser(response.accessToken); // dekodira JWT
+        }
+      }),
+      map((response) => response),
+    );
+  }
 
-verifyTwoFactor(payload: VerifyTwoFactorCommand): Observable<void> {
-  return this.api.verifyTwoFactor(payload).pipe(
-    tap((response: LoginCommandDto) => {
-      if (response.accessToken) {
-        this.storage.saveLogin(response);
-        this.decodeAndSetUser(response.accessToken);
-      }
-    }),
-    map(() => void 0)
-  );
-}
+  verifyTwoFactor(payload: VerifyTwoFactorCommand): Observable<void> {
+    return this.api.verifyTwoFactor(payload).pipe(
+      tap((response: LoginCommandDto) => {
+        if (response.accessToken) {
+          this.storage.saveLogin(response);
+          this.decodeAndSetUser(response.accessToken);
+        }
+      }),
+      map(() => void 0),
+    );
+  }
 
   /**
    * Logout korisnika:
@@ -95,10 +95,10 @@ verifyTwoFactor(payload: VerifyTwoFactorCommand): Observable<void> {
     const refreshToken = this.storage.getRefreshToken();
 
     // 1) lokalno očisti (optimistic logout)
-  console.log('BEFORE clear - isAuthenticated:', this._currentUser());
-  this.clearUserState();
-  console.log('AFTER clear - isAuthenticated:', this._currentUser());
-  console.log('localStorage accessToken:', localStorage.getItem('accessToken'));
+    // console.log('BEFORE clear - isAuthenticated:', this._currentUser());
+    this.clearUserState();
+    // console.log('AFTER clear - isAuthenticated:', this._currentUser());
+    // console.log('localStorage accessToken:', localStorage.getItem('accessToken'));
 
     // 2) nema refresh tokena → nema ni API poziva
     if (!refreshToken) {
@@ -118,9 +118,9 @@ verifyTwoFactor(payload: VerifyTwoFactorCommand): Observable<void> {
   refresh(payload: RefreshTokenCommand): Observable<RefreshTokenCommandDto> {
     return this.api.refresh(payload).pipe(
       tap((response: RefreshTokenCommandDto) => {
-        this.storage.saveRefresh(response);           // snimi nove tokene
-        this.decodeAndSetUser(response.accessToken);  // update current usera
-      })
+        this.storage.saveRefresh(response); // snimi nove tokene
+        this.decodeAndSetUser(response.accessToken); // update current usera
+      }),
     );
   }
 
@@ -168,21 +168,21 @@ verifyTwoFactor(payload: VerifyTwoFactorCommand): Observable<void> {
    * Dekodiraj JWT i postavi current user state.
    */
   private decodeAndSetUser(token: string): void {
-    if(!token) return;
+    if (!token) return;
     try {
       const payload = jwtDecode<JwtPayloadDto>(token);
-      console.log("JWT PAYLOAD:", payload);
+      // console.log('JWT PAYLOAD:', payload);
 
       const user: CurrentUserDto = {
         userId: Number(payload.sub),
-        email: payload["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"],
+        email: payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'],
         isAdmin: payload.is_admin === 'true',
         isManager: payload.is_manager === 'true',
         isEmployee: payload.is_employee === 'true',
         tokenVersion: Number(payload.ver),
-        firstName:payload.firstName,
-        lastName:payload.lastName,
-        fullName:payload.fullName
+        firstName: payload.firstName,
+        lastName: payload.lastName,
+        fullName: payload.fullName,
       };
 
       this._currentUser.set(user);

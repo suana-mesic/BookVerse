@@ -18,6 +18,8 @@ import { ListPublishersQueryDto } from '../../../../../api-services/publishers/p
 import { PublishersService } from '../../../../../api-services/publishers/publishers-api.service';
 import { AuthorsApiService } from '../../../../../api-services/authors/authors-api.service';
 import { BooksApiService } from '../../../../../api-services/books/books-api.service';
+import { LanguagesApiService } from '../../../../../api-services/languages/languages-api.service';
+import { ListLanguagesQueryDto } from '../../../../../api-services/languages/languages-api.model';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -31,6 +33,7 @@ export class BooksEditComponent extends BaseFormComponent<GetBookByIdQueryDto> i
   private api = inject(BooksApiService);
   private categoriesApi = inject(ProductCategoriesApiService);
   private bookFormatsApi = inject(BookFormatApiService);
+  private languagesApi = inject(LanguagesApiService);
   private publishersApi = inject(PublishersService);
   private authorsApi = inject(AuthorsApiService);
   private formService = inject(BooksFormService);
@@ -42,6 +45,7 @@ export class BooksEditComponent extends BaseFormComponent<GetBookByIdQueryDto> i
   productId!: number;
   categories: ListProductCategoriesQueryDto[] = [];
   bookFormats: ListBookFormatsQueryDto[] = [];
+  languages: ListLanguagesQueryDto[] = [];
   authors: ListAuthorsQueryDto[] = [];
   publishers: ListPublishersQueryDto[] = [];
 
@@ -57,13 +61,15 @@ export class BooksEditComponent extends BaseFormComponent<GetBookByIdQueryDto> i
       product: this.api.getById(this.productId),
       categories: this.categoriesApi.list({ language: this.translate.currentLang }),
       bookFormats: this.bookFormatsApi.list({ onlyEnabled: true, paging: largePaging, language: this.translate.currentLang }),
+      languages: this.languagesApi.list({ language: this.translate.currentLang }),
       authors: this.authorsApi.list({ onlyEnabled: true, paging: largePaging }),
       publishers: this.publishersApi.list({ onlyEnabled: true, paging: largePaging }),
     }).subscribe({
-      next: ({ product, categories, bookFormats, authors, publishers }) => {
+      next: ({ product, categories, bookFormats, languages, authors, publishers }) => {
         this.model = product;
         this.categories = categories;
         this.bookFormats = bookFormats.items;
+        this.languages = languages;
         this.authors = authors.items;
         this.publishers = publishers.items;
         this.form = this.formService.createProductForm(product);
@@ -98,7 +104,7 @@ export class BooksEditComponent extends BaseFormComponent<GetBookByIdQueryDto> i
       authorIds: this.form.value.authorIds,
       categoryIds: this.form.value.categoryIds,
       price: this.form.value.price,
-      language: this.form.value.language,
+      languageId: this.form.value.languageId,
       description: this.form.value.description,
       pageCount: this.form.value.pageCount,
       quantityInStockForOnlineOrders: this.form.value.quantityInStockForOnlineOrders,

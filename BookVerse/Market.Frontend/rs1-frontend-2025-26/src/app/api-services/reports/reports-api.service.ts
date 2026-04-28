@@ -15,9 +15,12 @@ export class ReportsApiServices {
     userId?: number,
     language: string = 'bs',
   ): Observable<Blob> {
+    const dateToEnd = new Date(dateTo);
+    dateToEnd.setDate(dateToEnd.getDate() + 1);
+    dateToEnd.setHours(2, 0, 0, 0);
     const params: any = {
       dateFrom: dateFrom.toISOString(),
-      dateTo: dateTo.toISOString(),
+      dateTo: dateToEnd.toISOString(),
       language,
       _t: new Date().getTime(),
     };
@@ -36,9 +39,12 @@ export class ReportsApiServices {
     bookId?: number,
     language: string = 'bs',
   ): Observable<Blob> {
+    const dateToEnd = new Date(dateTo);
+    dateToEnd.setDate(dateToEnd.getDate() + 1);
+    dateToEnd.setHours(2, 0, 0, 0);
     const params: any = {
       dateFrom: dateFrom.toISOString(),
-      dateTo: dateTo.toISOString(),
+      dateTo: dateToEnd.toISOString(),
       language,
       _t: new Date().getTime(),
     };

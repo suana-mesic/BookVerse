@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 import { DialogHelperService } from '../../shared/services/dialog-helper.service';
 import { DialogButton } from '../../shared/models/dialog-config.model';
 import { Location } from '@angular/common';
-import { TranslateService } from '@ngx-translate/core';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-user-orders',
   standalone: false,
@@ -45,11 +45,19 @@ export class UserOrdersComponent
     this.request = new ListOrdersForUserRequest();
     this.request.paging.page = 1;
     this.request.paging.pageSize = 10;
+    this.request.language = this.translate.currentLang || this.translate.defaultLang || 'bs';
   }
 
   ngOnInit(): void {
     this.initList();
     this.setupSearchDebounce();
+
+    this.translate.onLangChange
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((event: LangChangeEvent) => {
+        this.request.language = event.lang;
+        this.loadPagedData();
+      });
   }
 
   ngOnDestroy(): void {

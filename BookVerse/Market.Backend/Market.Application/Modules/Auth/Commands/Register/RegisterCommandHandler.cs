@@ -25,7 +25,7 @@ namespace Market.Application.Modules.Auth.Commands.Register
             var adresa = new Address
             {
                 IsDeleted = false,
-                CreatedAtUtc = DateTime.Now,
+                CreatedAtUtc = DateTime.UtcNow,
                 Line1 = request.Line1,
                 Line2 = request.Line2,
                 City = request.City,
@@ -41,7 +41,7 @@ namespace Market.Application.Modules.Auth.Commands.Register
                 LastName = request.LastName,
                 AddressId = adresa.Id,
                 IsDeleted = false,
-                CreatedAtUtc = DateTime.Now,
+                CreatedAtUtc = DateTime.UtcNow,
                 Email = request.Email,
                 PasswordHash = hasher.HashPassword(null, request.Password),
                 IsAdmin = false,

@@ -8,6 +8,8 @@ namespace Market.API.Hubs
         IHubContext<AdminOrderHub> adminOrderHub,
         IHubContext<UserOrderHub> userOrderHub) : IOrderNotificationService
     {
+        // Grupa admins dobijaju notifikaciju o novoj plaćenoj narudžbi
+
         public async Task NotifyNewPaidOrderAsync(int orderId, string orderNumber, string customerName, CancellationToken ct)
         {
             await adminOrderHub.Clients.Group("admins").SendAsync("NewPaidOrder", new
@@ -18,6 +20,8 @@ namespace Market.API.Hubs
                 paidAt = DateTime.UtcNow
             }, ct);
         }
+
+        // Korisnik dobija notifikaciju o promjeni statusa svoje narudžbe 
 
         public async Task NotifyOrderStatusChangedAsync(int orderId, string orderNumber, string userId, OrderStatusType newStatus, CancellationToken ct)
         {

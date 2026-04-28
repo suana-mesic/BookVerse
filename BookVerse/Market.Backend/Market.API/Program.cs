@@ -98,6 +98,7 @@ public partial class Program
             app.UseCors("allowCors");
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
             app.UseAuthentication();
             app.UseAuthorization();
 

@@ -13,9 +13,9 @@ public class CartController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
 
-    public async Task<IActionResult> GetCart(CancellationToken ct)
+    public async Task<IActionResult> GetCart([FromQuery] string? language, CancellationToken ct)
     {
-        var result = await mediator.Send(new ListCartQuery(), ct);
+        var result = await mediator.Send(new ListCartQuery { Language = language }, ct);
         return Ok(result);
     }
 
