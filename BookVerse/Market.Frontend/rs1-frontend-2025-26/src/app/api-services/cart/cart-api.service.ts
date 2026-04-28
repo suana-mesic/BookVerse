@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import {
@@ -18,8 +18,10 @@ export class CartApiService {
 
   constructor(private http: HttpClient) {}
 
-  getCart(): Observable<ListCartDto> {
-    return this.http.get<ListCartDto>(this.baseUrl);
+  getCart(language?: string): Observable<ListCartDto> {
+    let params = new HttpParams();
+    if (language) params = params.set('language', language);
+    return this.http.get<ListCartDto>(this.baseUrl, { params });
   }
 
   addToCart(request: CreateCartItemRequest): Observable<string> {

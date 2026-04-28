@@ -11,7 +11,7 @@ public sealed class UpdateBookCommand : IRequest<Unit>
     public int[]? AuthorIds { get; set; }
     public int[]? CategoryIds { get; set; }
     public decimal? Price { get; set; }
-    public string? Language { get; set; } = string.Empty;
+    public int? LanguageId { get; set; }
     public string? Description { get; set; }
     public int? PageCount { get; set; }
     public int? QuantityInStockForOnlineOrders { get; set; }

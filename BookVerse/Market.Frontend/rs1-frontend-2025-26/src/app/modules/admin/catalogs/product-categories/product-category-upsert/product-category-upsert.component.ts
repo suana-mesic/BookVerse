@@ -99,8 +99,8 @@ export class ProductCategoryUpsertComponent implements OnInit {
   }
 
   private updateCategory(): void {
-    console.log('Is enabled');
-    console.log(this.form.value.isEnabled);
+    // console.log('Is enabled');
+    // console.log(this.form.value.isEnabled);
     const command: UpdateProductCategoryCommand = {
       name: this.form.value.name.trim(),
       isEnabled: this.form.value.isEnabled,

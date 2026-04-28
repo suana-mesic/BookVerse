@@ -50,7 +50,7 @@ export class InventoryAddComponent extends BaseComponent implements OnInit {
   books: ListBooksForAutocompleteQueryDto[] = [];
   stores: ListStoresQueryDto[] = [];
   inventory!: GetInventoryByIdQueryDto;
-  storeBookPairs!: StoreBookPairs;
+  storeBookPairs!: StoreBookPairs; //sadrži kombinacije prodavnica i knjiga koje NEMAJU popisan inventar
 
   filteredBookOptions: Observable<ListBooksForAutocompleteQueryDto[]>[] = [];
   filteredStoreOptions: Observable<ListStoresQueryDto[]>[] = [];
@@ -86,21 +86,36 @@ export class InventoryAddComponent extends BaseComponent implements OnInit {
   }
 
   private _filterStores(enteredValue: string, index: number): ListStoresQueryDto[] {
+    // Pretvara ukucani tekst u mala slova da bi pretraga bila case-insensitive — npr. "kNjiga" i "knjiga" tretiraju se isto.
     const filterValue = enteredValue.toLowerCase();
+    // Provjerava da li je korisnik već odabrao knjigu u istom redu forme.
+    // Ako je knjiga već odabrana, lista prodavnica treba biti sužena samo na one koje nemaju popisan inventar za nju.
     const selectedBookId = this.inventoryArray?.at(index)?.get('bookId')?.value;
 
+    // Prolazi kroz sve prodavnice i za svaku odlučuje da li će biti prikazana u dropdownu (vraća true) ili ne (vraća false).
     return this.stores.filter((store) => {
+      // Prva provjera: Da li naziv prodavnice sadrži ukucani tekst?
+      // Ako ne — odmah izbaci tu prodavnicu iz liste (vrati false)
+      // Npr. korisnik je ukucao prodavnicu koja ne postoji "p67" — samo prodavnice čiji naziv sadrži "p67" prolaze dalje.
       if (!store.storeName.toLowerCase().includes(filterValue)) return false;
+      // Druga provjera: Da li je korisnik uopće odabrao neku knjigu?
+      // Ako nije — vrati true i prikaži sve prodavnice koje su prošle prvu provjeru (nema potrebe za daljnjim filtriranjem).
       if (!selectedBookId) return true;
+      // Ako je knjiga odabrana, uzima se objekat za tu prodavnicu iz storeBookPairs.
+      // Npr. za prodavnicu sa id=2, availableBooks bi bio { 11: "Zločin i kazna", 12: "Crveno i crno" }.
       const availableBooks = this.storeBookPairs?.[store.id];
+      // Treća provjera (dvostruka):
+      // !!availableBooks — da li ta prodavnica uopće postoji u storeBookPairs (TRUE znači da postoje knjige koje nemaju popisan inventar u njoj)?
+      // !!availableBooks[selectedBookId] — da li ta prodavnica ima baš tu odabranu knjigu? (TRUE znači da ima tu knjigu, to jeste da za odabranu knjigu nije popisan inventar)
+      // Dakle, prodavnicu ćemo ispisati AKO i samo AKO postoje knjige koje nemaju popisan inventar u njoj i selectedBookId nema popisan inventar u njoj
       return !!availableBooks && !!availableBooks[selectedBookId];
     });
   }
 
-  clearBookInSameRow(index: number) {
-    //počistiti autocomplete polje u istom redu gdje se unosi naziv knjige
-    this.booksAutocompleteInputs.at(index).setValue('');
-  }
+  //clearBookInSameRow(index: number) {
+  //počistiti autocomplete polje u istom redu gdje se unosi naziv knjige
+  //this.booksAutocompleteInputs.at(index).setValue('');
+  //}
 
   private setFilteredBookOptions(): void {
     this.filteredBookOptions = this.booksAutocompleteInputs.controls.map(
@@ -144,7 +159,7 @@ export class InventoryAddComponent extends BaseComponent implements OnInit {
   onStoreSelected(event: MatAutocompleteSelectedEvent, index: number) {
     const storeId = this.stores.filter((x) => x.storeName == event.option.value).at(0)?.id;
     if (storeId) this.inventoryArray.at(index).get('storeId')?.setValue(storeId);
-    this.clearBookInSameRow(index);
+    //this.clearBookInSameRow(index);
   }
 
   displayBookTitle = (book: ListBooksForAutocompleteQueryDto | string): string => {
@@ -160,10 +175,12 @@ export class InventoryAddComponent extends BaseComponent implements OnInit {
     storeCtrl.setValue(storeCtrl.value);
   }
 
+  //dohvata kombinacije prodavnica i knjiga koje NEMAJU popisan inventar
   loadStoreBookPairs() {
     this.inventoryApi.getStoreBookPairs().subscribe({
       next: (response) => (this.storeBookPairs = response),
-      error: (err) => this.toaster.error(this.translate.instant('INVENTORY.DIALOGS.ERROR_LOAD_STORE_BOOK_PAIRS')),
+      error: (err) =>
+        this.toaster.error(this.translate.instant('INVENTORY.DIALOGS.ERROR_LOAD_STORE_BOOK_PAIRS')),
     });
   }
 
@@ -189,7 +206,8 @@ export class InventoryAddComponent extends BaseComponent implements OnInit {
   private loadBooks() {
     this.booksApi.listBooksForAutocomplete().subscribe({
       next: (response) => (this.books = response),
-      error: (err) => this.toaster.error(this.translate.instant('INVENTORY.DIALOGS.ERROR_LOAD_BOOKS')),
+      error: (err) =>
+        this.toaster.error(this.translate.instant('INVENTORY.DIALOGS.ERROR_LOAD_BOOKS')),
     });
   }
 
@@ -198,7 +216,8 @@ export class InventoryAddComponent extends BaseComponent implements OnInit {
     request.paging.pageSize = 10000000;
     this.storesApi.list(request).subscribe({
       next: (response) => (this.stores = response.items),
-      error: (err) => this.toaster.error(this.translate.instant('INVENTORY.DIALOGS.ERROR_LOAD_BOOKS')),
+      error: (err) =>
+        this.toaster.error(this.translate.instant('INVENTORY.DIALOGS.ERROR_LOAD_BOOKS')),
     });
   }
 
@@ -245,7 +264,10 @@ export class InventoryAddComponent extends BaseComponent implements OnInit {
             }
           }
           this.toaster.error(
-            this.translate.instant('INVENTORY.DIALOGS.DUPLICATE_INVENTORY', { storeName, bookTitle })
+            this.translate.instant('INVENTORY.DIALOGS.DUPLICATE_INVENTORY', {
+              storeName,
+              bookTitle,
+            }),
           );
         } else {
           this.toaster.error(this.translate.instant('INVENTORY.DIALOGS.ERROR_CREATE'));

@@ -51,7 +51,8 @@ public sealed class ListBooksQueryHandler(IAppDbContext context, ITranslationSer
                 }).ToList(),
                 BookFormatName = x.BookFormat.Format,
                 Price = x.Price,
-                Language = x.Language,
+                LanguageId = x.LanguageId,
+                Language = x.Language.Name,
                 Description = x.Description,
                 PageCount = x.PageCount,
                 QuantityInStockForOnlineOrders = x.QuantityInStockForOnlineOrders,
@@ -72,28 +73,27 @@ public sealed class ListBooksQueryHandler(IAppDbContext context, ITranslationSer
 
             await Task.WhenAll(items.Select(async book =>
             {
-                var mainResults = await Task.WhenAll(
-                    translationService.Translate(book.Title, request.Language),
-                    translationService.Translate(book.Description, request.Language),
-                    translationService.Translate(book.PublisherName, request.Language),
-                    translationService.Translate(book.BookFormatName, request.Language),
-                    translationService.Translate(book.Language, request.Language)
-                );
-                book.Title = mainResults[0];
-                book.Description = mainResults[1];
-                book.PublisherName = mainResults[2];
-                book.BookFormatName = mainResults[3];
-                book.Language = mainResults[4];
-
-                //await Task.WhenAll(book.Authors.Select(async a =>
-                //{
-                //    var r = await Task.WhenAll(
-                //        translationService.Translate(a.FirstName, request.Language),
-                //        translationService.Translate(a.LastName, request.Language)
-                //    );
-                //    a.FirstName = r[0];
-                //    a.LastName = r[1];
-                //}));
+                if (request.LookupsOnly)
+                {
+                    book.BookFormatName = await translationService.Translate(book.BookFormatName, request.Language);
+                }
+                else
+                {
+                    //paralelno izvršavanje više asinhronih zahtjeva odjednom.
+                    //pokreće svih 5 prijevoda istovremeno
+                    var mainResults = await Task.WhenAll(
+                        translationService.Translate(book.Title, request.Language),
+                        translationService.Translate(book.Description, request.Language),
+                        translationService.Translate(book.PublisherName, request.Language),
+                        translationService.Translate(book.BookFormatName, request.Language),
+                        translationService.Translate(book.Language, request.Language)
+                    );
+                    book.Title = mainResults[0];
+                    book.Description = mainResults[1];
+                    book.PublisherName = mainResults[2];
+                    book.BookFormatName = mainResults[3];
+                    book.Language = mainResults[4];
+                }
 
                 await Task.WhenAll(book.Categories.Select(async c =>
                 {

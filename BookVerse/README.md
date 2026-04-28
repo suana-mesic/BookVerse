@@ -62,6 +62,22 @@ Migracije se primjenjuju automatski pri pokretanju (`MigrateAsync`). Statički s
 
 ---
 
+## Stripe webhookovi (lokalno testiranje plaćanja)
+
+Da bi plaćanja radila lokalno, potrebno je instalirati [Stripe CLI](https://stripe.com/docs/stripe-cli) i u zasebnom terminalu pokrenuti:
+
+```bash
+stripe listen --forward-to https://localhost:7260/OrdersOrderItems/stripe-webhook
+```
+
+Stripe CLI pri pokretanju ispiše webhook secret (`whsec_...`) — taj ključ je potrebno upisati u `.env` kao `Stripe__WebhookSecret` i restartovati backend.
+
+Bez ovog koraka Stripe neće slati webhook evente na lokalni backend, pa narudžbe neće biti označene kao plaćene nakon uspješnog plaćanja u Stripe formi.
+
+Za testiranje plaćanja koriste se [test kartice](https://stripe.com/docs/testing#cards), npr. `4242 4242 4242 4242` (uspješno plaćanje), bilo koji datum u budućnosti i bilo koji CVC.
+
+---
+
 ## Pokretanje frontenda
 
 ```bash

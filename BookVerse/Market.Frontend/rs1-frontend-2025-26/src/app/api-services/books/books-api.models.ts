@@ -9,7 +9,8 @@ import { BasePagedQuery } from '../../core/models/paging/base-paged-query';
  */
 export class ListBooksRequest extends BasePagedQuery {
   search?: string | null;
-  // Future filters: categoryId?, isEnabled?, priceMin?, priceMax?
+  language?: string | null;
+  lookupsOnly?: boolean;
 }
 
 /**
@@ -25,6 +26,7 @@ export interface ListBooksQueryDto {
   publisherName: string;
   bookFormatName: string;
   price: number;
+  languageId: number;
   language: string;
   description?: string | null;
   pageCount: number;
@@ -62,6 +64,7 @@ export interface GetBookByIdQueryDto {
   authorIds: number[];
   categoryIds: number[];
   price: number;
+  languageId: number;
   language: string;
   description: string;
   pageCount: number;
@@ -89,7 +92,7 @@ export interface CreateBookCommand {
   authorIds: number[];
   categoryIds: number[];
   price: number;
-  language: string;
+  languageId: number;
   description: string;
   pageCount: number;
   quantityInStockForOnlineOrders: number;
@@ -109,7 +112,7 @@ export interface UpdateBookCommand {
   authorIds: number[];
   categoryIds: number[];
   price: number;
-  language: string;
+  languageId: number;
   description: string;
   pageCount: number;
   quantityInStockForOnlineOrders: number;

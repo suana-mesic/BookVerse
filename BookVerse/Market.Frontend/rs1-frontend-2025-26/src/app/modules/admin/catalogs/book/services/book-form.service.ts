@@ -2,10 +2,10 @@ import { Injectable, inject } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { GetBookByIdQueryDto } from '../../../../../api-services/books/books-api.models';
 import { TranslateService } from '@ngx-translate/core';
+import { isbnValidator } from './isbn-validator';
 
 const ISBN_MAX_LENGTH = 20;
 const TITLE_MAX_LENGTH = 150;
-const LANGUAGE_MAX_LENGTH = 60;
 
 @Injectable()
 export class BooksFormService {
@@ -15,7 +15,7 @@ export class BooksFormService {
   private readonly fieldLabelKeys: Record<string, string> = {
     isbn: 'BOOKS.FORM.ISBN',
     title: 'BOOKS.FORM.TITLE',
-    language: 'BOOKS.FORM.LANGUAGE',
+    languageId: 'BOOKS.FORM.LANGUAGE',
     price: 'BOOKS.FORM.PRICE',
     publisherId: 'BOOKS.FORM.PUBLISHER',
     bookFormatId: 'BOOKS.FORM.FORMAT',
@@ -29,7 +29,7 @@ export class BooksFormService {
     return this.fb.group({
       isbn: [
         product?.isbn ?? '',
-        [Validators.required, Validators.maxLength(ISBN_MAX_LENGTH)],
+        [Validators.required, Validators.maxLength(ISBN_MAX_LENGTH), isbnValidator()],
       ],
       description: [product?.description ?? '', [Validators.maxLength(2000)]],
       title: [
@@ -42,10 +42,7 @@ export class BooksFormService {
       ],
       publisherId: [product?.publisherId ?? null, [Validators.required]],
       bookFormatId: [product?.bookFormatId ?? null, [Validators.required]],
-      language: [
-        product?.language ?? '',
-        [Validators.required, Validators.maxLength(LANGUAGE_MAX_LENGTH)],
-      ],
+      languageId: [product?.languageId ?? null, [Validators.required]],
       pageCount: [product?.pageCount ?? null, [Validators.required]],
       quantityInStockForOnlineOrders: [product?.quantityInStockForOnlineOrders ?? null],
       publishedDate: [
@@ -84,6 +81,9 @@ export class BooksFormService {
     }
     if (errors['email']) {
       return this.translate.instant('VALIDATION.EMAIL');
+    }
+    if (errors['isbn']) {
+      return this.translate.instant('VALIDATION.ISBN_INVALID');
     }
 
     return this.translate.instant('VALIDATION.CUSTOM');

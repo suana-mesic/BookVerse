@@ -121,8 +121,15 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
       next: (stores) => (this.stores = stores.items),
     });
 
-    this.cartService.getCart().subscribe({
+    const lang = this.translate.currentLang || this.translate.defaultLang || 'bs';
+    this.cartService.getCart(lang).subscribe({
       next: (cart) => (this.cart = cart),
+    });
+
+    this.translate.onLangChange.subscribe((event) => {
+      this.cartService.getCart(event.lang).subscribe({
+        next: (cart) => (this.cart = cart),
+      });
     });
 
     this.countriesService.getCountries().subscribe((countries) => {
@@ -254,25 +261,23 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
   }
 
   getDiscountAmount(totalPrice: number): number {
-    const shipping =
-      this.deliveryType === 'shipping' ? (this.getSelectedShippingMethod()?.price ?? 0) : 0;
-
-    let cijena = totalPrice + shipping;
+    const subTotal = totalPrice;
+    let discountAmount = 0;
 
     for (const coupon of this.appliedCoupons) {
-      if (coupon.amountOff) cijena -= coupon.amountOff;
-      else if (coupon.percentOff) cijena -= cijena * (coupon.percentOff / 100);
+      if (coupon.amountOff) discountAmount += coupon.amountOff;
+      else if (coupon.percentOff) discountAmount += subTotal * (coupon.percentOff / 100);
     }
 
-    if (cijena < 0) cijena = 0;
-
-    return totalPrice + shipping - cijena;
+    return discountAmount;
   }
 
   getFinalPrice(): number {
     const shipping =
       this.deliveryType === 'shipping' ? (this.getSelectedShippingMethod()?.price ?? 0) : 0;
-    return this.cart.totalPrice + shipping - this.getDiscountAmount(this.cart.totalPrice);
+    const finalPrice =
+      this.cart.totalPrice + shipping - this.getDiscountAmount(this.cart.totalPrice);
+    return finalPrice < 0 ? 0 : finalPrice;
   }
 
   isBookAvailableInStore(storeId: number): boolean {

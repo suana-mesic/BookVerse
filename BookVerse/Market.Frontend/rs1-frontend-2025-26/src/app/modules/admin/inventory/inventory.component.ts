@@ -76,7 +76,7 @@ export class InventoryComponent
 
   constructor() {
     super();
-    console.log(this.globalCounter, '. Pozvan je constructor:');
+    //console.log(this.globalCounter, '. Pozvan je constructor:');
     this.globalCounter += this.globalCounter;
 
     this.request = new ListInventoryRequest();
@@ -86,7 +86,7 @@ export class InventoryComponent
   }
 
   ngOnInit(): void {
-    console.log(this.globalCounter, '. Pozvan je ngOnInit:');
+    // console.log(this.globalCounter, '. Pozvan je ngOnInit:');
     this.globalCounter += this.globalCounter;
 
     this.getPaginationSettings();
@@ -114,7 +114,7 @@ export class InventoryComponent
   }
 
   setFilteredBookOptions() {
-    console.log('Pozvana je metoda setFilteredBookOptions');
+    // console.log('Pozvana je metoda setFilteredBookOptions');
     this.filteredBookOptions = this.booksAutocompleteInput.valueChanges.pipe(
       startWith(''),
       map((value) => this._filterBooks(value || '')),
@@ -122,7 +122,7 @@ export class InventoryComponent
   }
 
   setFilteredStoresOptions() {
-    console.log('Pozvana je metoda setFilteredStoresOptions');
+    // console.log('Pozvana je metoda setFilteredStoresOptions');
     this.filteredStoresOptions = this.storesAutocompleteInput.valueChanges.pipe(
       startWith(''),
       map((value) => this._filterStores(value || '')),
@@ -130,7 +130,7 @@ export class InventoryComponent
   }
 
   private setupSearchByBookDebounce(): void {
-    console.log(this.globalCounter, '. Pozvan je setupSearchByBookDebounce:');
+    // console.log(this.globalCounter, '. Pozvan je setupSearchByBookDebounce:');
     this.globalCounter += this.globalCounter;
 
     this.booksAutocompleteInput.valueChanges
@@ -145,7 +145,7 @@ export class InventoryComponent
   }
 
   private setupSearchByStoreDebounce(): void {
-    console.log(this.globalCounter, '. Pozvan je setupSearchByStoreDebounce:');
+    // console.log(this.globalCounter, '. Pozvan je setupSearchByStoreDebounce:');
     this.globalCounter += this.globalCounter;
 
     this.storesAutocompleteInput.valueChanges
@@ -173,7 +173,7 @@ export class InventoryComponent
    * Setup search with debounce and minimum length
    */
   private setupSearchDebounce(): void {
-    console.log(this.globalCounter, '. Pozvan je setupSearchDebounce:');
+    // console.log(this.globalCounter, '. Pozvan je setupSearchDebounce:');
     this.globalCounter += this.globalCounter;
 
     this.searchControl.valueChanges
@@ -185,13 +185,13 @@ export class InventoryComponent
       .subscribe((searchTerm) => {
         // Only search if 3+ characters or empty (to clear)
         if (!searchTerm || searchTerm.length >= 3) {
-          this.onSearchChange(searchTerm || '');
+          this.onSearchChange();
         }
       });
   }
 
   protected loadPagedData(): void {
-    console.log(this.globalCounter, '. Pozvan je loadPagedData:');
+    // console.log(this.globalCounter, '. Pozvan je loadPagedData:');
     this.globalCounter += this.globalCounter;
 
     this.startLoading();
@@ -210,11 +210,11 @@ export class InventoryComponent
 
   // === Filters ===
 
-  onSearchChange(searchTerm?: string): void {
-    console.log(this.globalCounter, '. Pozvan je onSearchChange:');
+  onSearchChange(): void {
+    // console.log(this.globalCounter, '. Pozvan je onSearchChange:');
     this.globalCounter += this.globalCounter;
 
-    this.request.search = searchTerm;
+    this.request.search = this.searchControl.value?.toLocaleLowerCase();
     this.request.book = this.booksAutocompleteInput.value ?? null;
     this.request.store = this.storesAutocompleteInput.value ?? null;
     this.request.paging.page = 1; // Reset to first page
@@ -223,7 +223,7 @@ export class InventoryComponent
   }
 
   clearFilters(): void {
-    console.log(this.globalCounter, '. Pozvan je clearFilters:');
+    // console.log(this.globalCounter, '. Pozvan je clearFilters:');
     this.globalCounter += this.globalCounter;
 
     this.searchControl.setValue('', { emitEvent: false });
@@ -253,7 +253,7 @@ export class InventoryComponent
   }
 
   onChangeStatus(order: ListOrdersQueryDto, event?: Event): void {
-    console.log(this.globalCounter, '. Pozvan je onChangeStatus:');
+    // console.log(this.globalCounter, '. Pozvan je onChangeStatus:');
     this.globalCounter += this.globalCounter;
 
     // Prevent row click

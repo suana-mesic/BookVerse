@@ -1,3 +1,5 @@
+using Market.Application.Common;
+
 namespace Market.Application.Modules.Catalog.Book.Commands.Update;
 
 public sealed class UpdateBookCommandValidator
@@ -9,15 +11,16 @@ public sealed class UpdateBookCommandValidator
 
         RuleFor(x => x.ISBN)
             .NotEmpty().WithMessage("ISBN is required.")
-            .MaximumLength(Books.Constraints.ISBNMaxLength).WithMessage($"ISBN can be at most {Books.Constraints.ISBNMaxLength} characters long.");
+            .MaximumLength(Books.Constraints.ISBNMaxLength).WithMessage($"ISBN can be at most {Books.Constraints.ISBNMaxLength} characters long.")
+            .Must(IsbnValidator.IsValid).WithMessage("ISBN is not valid. Must be a valid ISBN-10 or ISBN-13 with correct check digit.");
 
         RuleFor(x => x.Title)
             .NotEmpty().WithMessage("Title is required.")
             .MaximumLength(Books.Constraints.TitleMaxLength).WithMessage($"Title can be at most {Books.Constraints.TitleMaxLength} characters long.");
 
-        RuleFor(x => x.Language)
-            .NotEmpty().WithMessage("Language is required.")
-            .MaximumLength(Books.Constraints.LanguageMaxLength).WithMessage($"Language can be at most {Books.Constraints.LanguageMaxLength} characters long.");
+        RuleFor(x => x.LanguageId)
+            .NotNull().WithMessage("Language is required.")
+            .GreaterThan(0).When(x => x.LanguageId.HasValue);
 
         RuleFor(x => x.PublisherId)
             .NotNull().WithMessage("Publisher is required.")

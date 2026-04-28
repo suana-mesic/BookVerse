@@ -12,6 +12,7 @@ import { UserOrdersComponent } from './user-orders/user-orders.component';
 import { UserBooksComponent } from './user-books/user-books.component';
 import { UserSettingsComponent } from './user-settings/user-settings.component';
 import { AppDatePipe } from '../shared/pipes/date-pipe';
+import { ApiUrlPipe } from '../shared/pipes/api-url.pipe';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,6 @@ import { AppDatePipe } from '../shared/pipes/date-pipe';
     UserBooksComponent,
     UserSettingsComponent,
   ],
-  imports: [SharedModule, ClientRoutingModule, HeaderComponent],
+  imports: [SharedModule, ClientRoutingModule, HeaderComponent, ApiUrlPipe],
 })
 export class ClientModule {}

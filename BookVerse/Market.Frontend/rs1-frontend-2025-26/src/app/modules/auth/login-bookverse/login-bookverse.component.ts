@@ -52,7 +52,7 @@ export class LoginBookverseComponent extends BaseComponent {
 
     this.auth.login(payload).subscribe({
       next: (response: LoginCommandDto) => {
-        console.log('login response:', response);
+        // console.log('login response:', response);
         this.stopLoading();
         // ako backend traži 2FA
         if (response.requiresTwoFactor) {

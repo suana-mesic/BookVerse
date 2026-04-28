@@ -15,9 +15,9 @@ public class BookConfiguration : IEntityTypeConfiguration<Books>
              .HasMaxLength(Books.Constraints.TitleMaxLength);
 
         builder
-           .Property(x => x.Language)
-           .IsRequired()
-           .HasMaxLength(Books.Constraints.LanguageMaxLength);
-
+            .HasOne(x => x.Language)
+            .WithMany(l => l.Books)
+            .HasForeignKey(x => x.LanguageId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

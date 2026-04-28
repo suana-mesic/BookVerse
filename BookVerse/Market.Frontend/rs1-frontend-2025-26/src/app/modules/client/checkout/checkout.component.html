@@ -470,7 +470,7 @@
         <div class="sidebar-items">
           <div class="sidebar-item" *ngFor="let item of cart.activeItems">
             <div class="item-image">
-              <img *ngIf="item.imageUrl" [src]="item.imageUrl" [alt]="item.bookTitle" />
+              <img *ngIf="item.imageUrl" [src]="item.imageUrl | apiUrl" [alt]="item.bookTitle" />
               <div *ngIf="!item.imageUrl" class="item-image-placeholder">
                 <mat-icon>menu_book</mat-icon>
               </div>

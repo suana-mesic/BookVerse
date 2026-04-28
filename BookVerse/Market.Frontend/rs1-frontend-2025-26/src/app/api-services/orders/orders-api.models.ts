@@ -240,6 +240,7 @@ export interface ListOrdersForUserQueryDtoItemBook {
 export class ListOrdersForUserRequest extends BasePagedQuery {
   search?: string | null;
   status?: OrderStatusType | null;
+  language?: string | null;
   constructor() {
     super();
   }

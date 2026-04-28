@@ -12,6 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { ImageUploadComponent } from './components/image-upload/image-upload.component';
 import { RouterModule } from '@angular/router';
 import { AppDatePipe } from './pipes/date-pipe';
+import { ApiUrlPipe } from './pipes/api-url.pipe';
 import { DynamicDateAdapter } from './adapters/dynamic-date.adapter';
 import { DateFormatService } from './services/date-format.service';
 import { DateAdapter } from '@angular/material/core';
@@ -32,6 +33,7 @@ import { DateAdapter } from '@angular/material/core';
     FormsModule,
     TranslatePipe,
     RouterModule,
+    ApiUrlPipe,
     ...materialModules,
   ],
   providers: [
@@ -50,6 +52,7 @@ import { DateAdapter } from '@angular/material/core';
     ImageUploadComponent,
     RouterModule,
     AppDatePipe,
+    ApiUrlPipe,
     materialModules,
   ],
 })

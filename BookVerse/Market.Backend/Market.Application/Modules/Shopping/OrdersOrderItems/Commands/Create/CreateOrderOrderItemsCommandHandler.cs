@@ -107,7 +107,7 @@ namespace Market.Application.Modules.Shopping.OrdersOrderItems.Commands.Create
                 DiscountAmount = discountAmount,
                 OrderStatusId = (int)OrderStatusType.Draft,
                 ShipToAddressId = shipToAddressId,
-                TrackingNumber = Guid.NewGuid().ToString("N")[..10].ToUpper(),
+                TrackingNumber = "",
                 PaymentIntentId = ""
             };
 
@@ -147,9 +147,9 @@ namespace Market.Application.Modules.Shopping.OrdersOrderItems.Commands.Create
                     Enabled = true
                 },
                 Metadata = new Dictionary<string, string>
-    {
-        { "orderId", order.Id.ToString() }
-    },
+                {
+                    { "orderId", order.Id.ToString() }
+                },
                 Expand = new List<string> { "latest_charge" }
             });
 
@@ -160,7 +160,7 @@ namespace Market.Application.Modules.Shopping.OrdersOrderItems.Commands.Create
             return new CreateOrderOrderItemsCommandDto
             {
                 OrderId = order.Id,
-                ClientSecret = paymentIntent.ClientSecret,
+                ClientSecret = paymentIntent.ClientSecret, //ClientSecret je jednosmjeran — frontend ga koristi samo za prikaz forme, ali broj kartice nikad ne prolazi kroz naš backend.
                 PublishableKey = stripeSettings.PublishableKey,
                 TotalPrice = totalPrice
             };

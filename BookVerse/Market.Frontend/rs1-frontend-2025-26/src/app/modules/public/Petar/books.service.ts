@@ -15,13 +15,13 @@ export class BooksService {
 
   getBooksFromApi(language: string) {
     const url = `https://localhost:7260/Books?Paging.Page=${this.page()}&Paging.PageSize=${this.pageSize()}&Language=${language}`;
-    console.log(url);
+    //console.log(url);
     return this.http.get<Array<Book>>(url);
   }
 
   getBookDetailsFromApi(bookId: string, language: string = 'bs') {
     const url = `https://localhost:7260/Books/${bookId}?language=${language}`;
-    console.log(url);
+    //console.log(url);
     return this.http.get<Array<Book>>(url);
   }
 

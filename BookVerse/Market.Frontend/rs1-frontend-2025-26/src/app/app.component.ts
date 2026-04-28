@@ -1,7 +1,11 @@
 import { Component, OnDestroy, OnInit, effect, inject, signal, untracked } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { SignalRService, OrderStatusNotification } from './core/services/signal-r/signal-r.service';
+import {
+  SignalRService,
+  OrderStatusNotification,
+  OrderNotification,
+} from './core/services/signal-r/signal-r.service';
 import { AuthFacadeService } from './modules/core/services/auth/auth-facade.service';
 import { OrderStatusHelper } from './api-services/orders/order-status.helper';
 
@@ -18,6 +22,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private signalR = inject(SignalRService);
   private auth = inject(AuthFacadeService);
   private orderStatusSub: Subscription | null = null;
+  private newPaidOrderSub: Subscription | null = null;
 
   constructor(private translate: TranslateService) {
     this.translate.addLangs(['en', 'bs']);
@@ -39,19 +44,26 @@ export class AppComponent implements OnInit, OnDestroy {
 
     effect(() => {
       const isAuth = this.auth.isAuthenticated();
+      const user = this.auth.currentUser();
       if (isAuth) {
         untracked(() => {
+          const token = this.auth.getAccessToken();
+          if (!token) return;
+
           if (!this.orderStatusSub) {
-            const token = this.auth.getAccessToken();
-            if (token) {
-              this.signalR.startUserConnection(token);
-              this.subscribeToOrderStatusNotifications();
-            }
+            this.signalR.startUserConnection(token);
+            this.subscribeToOrderStatusNotifications();
+          }
+
+          if (user?.isAdmin && !this.newPaidOrderSub) {
+            this.signalR.startAdminConnection(token);
+            this.subscribeToNewPaidOrderNotifications();
           }
         });
       } else {
         untracked(() => {
           this.cleanupOrderStatusNotifications();
+          this.cleanupNewPaidOrderNotifications();
         });
       }
     });
@@ -93,7 +105,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
         this.signalR.addUserNotification({
           message,
-          orderNumber: notification.orderNumber,
+          orderNumber: notification.orderNumber || '',
           receivedAt: new Date(notification.updatedAt),
         });
       },
@@ -104,6 +116,28 @@ export class AppComponent implements OnInit, OnDestroy {
     this.signalR.stopUserConnection();
     this.orderStatusSub?.unsubscribe();
     this.orderStatusSub = null;
+  }
+
+  private subscribeToNewPaidOrderNotifications(): void {
+    this.newPaidOrderSub = this.signalR.newPaidOrder$.subscribe(
+      (notification: OrderNotification) => {
+        const settings = JSON.parse(localStorage.getItem('adminSettings') || '{}');
+        if (settings.notificationsEnabled === false) return;
+
+        this.signalR.addAdminNotification(notification);
+
+        if (settings.soundEnabled !== false) {
+          const audio = new Audio('/sounds/pixel_notification.mp3');
+          audio.play().catch((err) => console.warn('Audio play failed: ', err));
+        }
+      },
+    );
+  }
+
+  private cleanupNewPaidOrderNotifications(): void {
+    this.signalR.stopConnection();
+    this.newPaidOrderSub?.unsubscribe();
+    this.newPaidOrderSub = null;
   }
 
   switchLanguage(lang: string): void {
@@ -121,5 +155,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.cleanupOrderStatusNotifications();
+    this.cleanupNewPaidOrderNotifications();
   }
 }

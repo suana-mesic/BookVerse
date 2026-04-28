@@ -128,7 +128,7 @@
         (menuOpened)="markAllAsRead()"
         class="notif-button"
       >
-        <mat-icon [matBadge]="unreadCount > 0 ? unreadCount : null" matBadgeColor="warn" aria-hidden="false">
+        <mat-icon [matBadge]="signalR.adminUnreadCount() > 0 ? signalR.adminUnreadCount() : null" matBadgeColor="warn" aria-hidden="false">
           notifications
         </mat-icon>
       </button>
@@ -145,13 +145,13 @@
         <mat-divider></mat-divider>
 
         <!-- Notifications list -->
-        @if (notifications.length === 0) {
+        @if (signalR.adminNotifications().length === 0) {
           <div class="notif-empty" (click)="$event.stopPropagation()">
             <mat-icon>notifications_none</mat-icon>
             <span>{{ 'NOTIFICATIONS.EMPTY' | translate }}</span>
           </div>
         } @else {
-          @for (notif of notifications; track notif.orderId) {
+          @for (notif of signalR.adminNotifications(); track notif.orderId) {
             <div class="notif-item" (click)="$event.stopPropagation()">
               <mat-icon class="notif-icon">paid</mat-icon>
               <div class="notif-content">

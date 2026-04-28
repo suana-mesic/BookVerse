@@ -55,7 +55,7 @@ export class AdminOrdersComponent
 
   constructor() {
     super();
-    console.log(this.globalCounter, '. Pozvan je constructor:');
+    // console.log(this.globalCounter, '. Pozvan je constructor:');
     this.globalCounter += this.globalCounter;
 
     this.request = new ListOrdersRequest();
@@ -63,7 +63,7 @@ export class AdminOrdersComponent
   }
 
   ngOnInit(): void {
-    console.log(this.globalCounter, '. Pozvan je ngOnInit:');
+    // console.log(this.globalCounter, '. Pozvan je ngOnInit:');
     this.globalCounter += this.globalCounter;
 
     this.getPaginationSettings();
@@ -90,7 +90,7 @@ export class AdminOrdersComponent
    * Setup search with debounce and minimum length
    */
   private setupSearchDebounce(): void {
-    console.log(this.globalCounter, '. Pozvan je setupSearchDebounce:');
+    // console.log(this.globalCounter, '. Pozvan je setupSearchDebounce:');
     this.globalCounter += this.globalCounter;
 
     this.searchControl.valueChanges
@@ -108,7 +108,7 @@ export class AdminOrdersComponent
   }
 
   protected loadPagedData(): void {
-    console.log(this.globalCounter, '. Pozvan je loadPagedData:');
+    // console.log(this.globalCounter, '. Pozvan je loadPagedData:');
     this.globalCounter += this.globalCounter;
 
     this.startLoading();
@@ -116,7 +116,7 @@ export class AdminOrdersComponent
     this.ordersApi.list(this.request).subscribe({
       next: (response) => {
         this.handlePageResult(response);
-        console.log(response);
+        // console.log(response);
         this.stopLoading();
       },
       error: (err) => {
@@ -129,7 +129,7 @@ export class AdminOrdersComponent
   // === Filters ===
 
   onSearchChange(searchTerm: string): void {
-    console.log(this.globalCounter, '. Pozvan je onSearchChange:');
+    // console.log(this.globalCounter, '. Pozvan je onSearchChange:');
     this.globalCounter += this.globalCounter;
 
     this.request.search = searchTerm;
@@ -138,7 +138,7 @@ export class AdminOrdersComponent
   }
 
   onStatusFilterChange(status: OrderStatusType | null): void {
-    console.log(this.globalCounter, '. Pozvan je onStatusFilterChange:');
+    // console.log(this.globalCounter, '. Pozvan je onStatusFilterChange:');
     this.globalCounter += this.globalCounter;
 
     this.statusFilter = status;
@@ -150,7 +150,7 @@ export class AdminOrdersComponent
   }
 
   clearFilters(): void {
-    console.log(this.globalCounter, '. Pozvan je clearFilters:');
+    // console.log(this.globalCounter, '. Pozvan je clearFilters:');
     this.globalCounter += this.globalCounter;
 
     this.searchControl.setValue('', { emitEvent: false });
@@ -164,7 +164,7 @@ export class AdminOrdersComponent
   // === Actions ===
 
   onViewDetails(order: ListOrdersQueryDto, event?: MouseEvent): void {
-    console.log(this.globalCounter, '. Pozvan je onViewDetails:');
+    // console.log(this.globalCounter, '. Pozvan je onViewDetails:');
     this.globalCounter += this.globalCounter;
 
     // spriječi da klik sa dugmeta ode na <tr> i ponovo otvori dialog
@@ -188,10 +188,9 @@ export class AdminOrdersComponent
   }
 
   onChangeStatus(order: ListOrdersQueryDto, event?: Event): void {
-    console.log('PROMJENA STATUSA');
-    console.log(order);
-
-    console.log(this.globalCounter, '. Pozvan je onChangeStatus:');
+    // console.log('PROMJENA STATUSA');
+    // console.log(order);
+    // console.log(this.globalCounter, '. Pozvan je onChangeStatus:');
     this.globalCounter += this.globalCounter;
 
     // Prevent row click

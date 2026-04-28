@@ -18,6 +18,7 @@ public partial class DatabaseContext : DbContext, IAppDbContext
     public DbSet<Category> Categories => Set<Category>();
     public DbSet<Publisher> Publishers => Set<Publisher>();
     public DbSet<BookFormat> BookFormats => Set<BookFormat>();
+    public DbSet<Language> Languages => Set<Language>();
     public DbSet<Review> Reviews => Set<Review>();
     public DbSet<WishlistItems> WishlistItems => Set<WishlistItems>();
     public DbSet<Store> Stores => Set<Store>();

@@ -546,6 +546,7 @@
     "PHONE": "Please enter a valid phone number",
     "PASSWORD_MATCH": "Passwords do not match",
     "UNIQUE": "This value already exists",
+    "ISBN_INVALID": "ISBN is not valid. Must be a valid ISBN-10 or ISBN-13 with correct check digit.",
     "CUSTOM": "Validation error"
   },
   "ERRORS": {

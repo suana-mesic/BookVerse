@@ -19,7 +19,8 @@ public class GetBookByIdQueryHandler(IAppDbContext context, ITranslationService 
                 BookFormatId = x.BookFormatId,
                 BookFormatName = x.BookFormat.Format,
                 Price = x.Price,
-                Language = x.Language,
+                LanguageId = x.LanguageId,
+                Language = x.Language.Name,
                 Description = x.Description,
                 PageCount = x.PageCount,
                 QuantityInStockForOnlineOrders = x.QuantityInStockForOnlineOrders,
@@ -34,6 +35,8 @@ public class GetBookByIdQueryHandler(IAppDbContext context, ITranslationService 
 
         if (!string.IsNullOrWhiteSpace(request.Language) && request.Language != "bs")
         {
+            //paralelno izvršavanje više asinhronih zahtjeva odjednom.
+            //pokreće sve prijevode istovremeno
             var results = await Task.WhenAll(
                 translationService.Translate(book.Title, request.Language),
                 translationService.Translate(book.Description, request.Language),

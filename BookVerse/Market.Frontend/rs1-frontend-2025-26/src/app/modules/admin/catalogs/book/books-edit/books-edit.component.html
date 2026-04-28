@@ -74,10 +74,14 @@
         <!-- Language -->
         <mat-form-field appearance="outline" class="half-width">
           <mat-label>{{ 'BOOKS.FORM.LANGUAGE' | translate }}</mat-label>
-          <input matInput formControlName="language" [placeholder]="'BOOKS.FORM.LANGUAGE_PLACEHOLDER' | translate" />
+          <mat-select formControlName="languageId">
+            @for (lang of languages; track lang.id) {
+              <mat-option [value]="lang.id">{{ lang.name }}</mat-option>
+            }
+          </mat-select>
           <mat-icon matSuffix>language</mat-icon>
-          <mat-error *ngIf="hasError('language')">
-            {{ getErrorMessage('language') }}
+          <mat-error *ngIf="hasError('languageId')">
+            {{ getErrorMessage('languageId') }}
           </mat-error>
         </mat-form-field>
 

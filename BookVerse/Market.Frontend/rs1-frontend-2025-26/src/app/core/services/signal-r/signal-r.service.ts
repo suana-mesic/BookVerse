@@ -38,9 +38,12 @@ export class SignalRService {
   userNotifications = signal<UserNotification[]>([]);
   userUnreadCount = signal(0);
 
+  adminNotifications = signal<OrderNotification[]>([]);
+  adminUnreadCount = signal(0);
+
   addUserNotification(notif: UserNotification): void {
-    this.userNotifications.update(list => [notif, ...list]);
-    this.userUnreadCount.update(c => c + 1);
+    this.userNotifications.update((list) => [notif, ...list]);
+    this.userUnreadCount.update((c) => c + 1);
   }
 
   clearUserNotifications(): void {
@@ -52,7 +55,21 @@ export class SignalRService {
     this.userUnreadCount.set(0);
   }
 
-  startConnection(token: string) {
+  addAdminNotification(notif: OrderNotification): void {
+    this.adminNotifications.update((list) => [notif, ...list]);
+    this.adminUnreadCount.update((c) => c + 1);
+  }
+
+  clearAdminNotifications(): void {
+    this.adminNotifications.set([]);
+    this.adminUnreadCount.set(0);
+  }
+
+  markAdminNotificationsRead(): void {
+    this.adminUnreadCount.set(0);
+  }
+
+  startAdminConnection(token: string) {
     this.adminHubConnection = new signalR.HubConnectionBuilder()
       .withUrl('https://localhost:7260/hubs/orders', {
         accessTokenFactory: () => token,

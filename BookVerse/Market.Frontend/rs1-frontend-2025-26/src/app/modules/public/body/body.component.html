@@ -3,10 +3,18 @@
     <div class="body__paginator">
       <app-fit-paginator-bar [vm]="$any(this)"></app-fit-paginator-bar>
     </div>
-    <div class="body__books">
-      @for (book of books(); track book.id) {
-        <app-book [routerLink]="['/knjige', book.id]" [book]="book" />
-      }
-    </div>
+
+    @if (isLoading) {
+      <div class="body__loading">
+        <mat-spinner diameter="48" color="primary"></mat-spinner>
+        <p>{{ 'COMMON.LOADING' | translate }}</p>
+      </div>
+    } @else {
+      <div class="body__books">
+        @for (book of books(); track book.id) {
+          <app-book [routerLink]="['/knjige', book.id]" [book]="book" />
+        }
+      </div>
+    }
   </div>
 </body>

@@ -30,7 +30,7 @@ namespace Market.Application.Modules.Catalog.Inventory.Commands.Create
                     existing.QuantityInStock = item.QuantityInStock;
                     existing.ReorderTreshold = item.ReorderTreshold;
                     existing.Location = item.Location;
-                    existing.LastRestocked = DateTime.Now;
+                    existing.LastRestocked = DateTime.UtcNow;
                 }
                 if (existing == null)
                 {
@@ -41,7 +41,7 @@ namespace Market.Application.Modules.Catalog.Inventory.Commands.Create
                         QuantityInStock = item.QuantityInStock,
                         ReorderTreshold = item.ReorderTreshold,
                         Location = item.Location,
-                        LastRestocked = DateTime.Now
+                        LastRestocked = DateTime.UtcNow
                     };
                     context.StoreInventory.Add(storeInventory);
                 }

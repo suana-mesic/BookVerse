@@ -1,11 +1,7 @@
-import { Component, computed, inject, NgZone, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import {
-  OrderNotification,
-  SignalRService,
-} from '../../../core/services/signal-r/signal-r.service';
-import { filter, Subscription } from 'rxjs';
+import { SignalRService } from '../../../core/services/signal-r/signal-r.service';
 import { AuthFacadeService } from '../../core/services/auth/auth-facade.service';
 
 @Component({
@@ -15,12 +11,7 @@ import { AuthFacadeService } from '../../core/services/auth/auth-facade.service'
   styleUrl: './admin-layout.component.scss',
 })
 export class AdminLayoutComponent implements OnInit, OnDestroy {
-  notifications: OrderNotification[] = [];
-  unreadCount = 0;
-  private signalR = inject(SignalRService);
-  private notificationSubscription: Subscription | null = null;
-  private ngZone = inject(NgZone);
-
+  signalR = inject(SignalRService);
   private translate = inject(TranslateService);
   auth = inject(AuthFacadeService);
 
@@ -123,13 +114,6 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     if (order.length > 0) {
       filtered.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
     }
-
-    console.log('isAdmin' + user?.isAdmin);
-    console.log('isManager' + user?.isManager);
-    console.log('isEmployee' + user?.isEmployee);
-    console.log('Filtered');
-    console.log(filtered);
-
     return filtered;
   });
 
@@ -155,30 +139,6 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
       }
     }
 
-    const notificationsEnabled = settings?.notificationsEnabled ?? true;
-    const soundEnabled = settings?.soundEnabled ?? true;
-
-    if (notificationsEnabled) {
-      const token = this.auth.getAccessToken();
-
-      if (token) {
-        this.signalR.startConnection(token);
-        this.notificationSubscription = this.signalR.newPaidOrder$.subscribe(
-          (notification: OrderNotification) => {
-            this.ngZone.run(() => {
-              this.notifications.unshift(notification);
-              this.unreadCount++;
-            });
-
-            if (soundEnabled) {
-              const audio = new Audio('sounds/pixel_notification.mp3');
-              audio.play().catch((err) => console.warn('Audio play failed: ', err));
-            }
-          },
-        );
-      }
-    }
-
     const saved = localStorage.getItem('navSectionsOrder');
     if (saved) {
       this.sectionOrder.set(JSON.parse(saved));
@@ -187,8 +147,6 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     document.body.classList.remove('dark-theme');
-    this.signalR.stopConnection();
-    this.notificationSubscription?.unsubscribe();
   }
 
   switchLanguage(langCode: string): void {
@@ -210,11 +168,10 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   }
 
   clearNotifications(): void {
-    this.notifications = [];
-    this.unreadCount = 0;
+    this.signalR.clearAdminNotifications();
   }
 
   markAllAsRead(): void {
-    this.unreadCount = 0;
+    this.signalR.markAdminNotificationsRead();
   }
 }

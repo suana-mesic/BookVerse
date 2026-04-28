@@ -11,4 +11,5 @@ public sealed class ListBooksQuery : BasePagedQuery<ListBooksQueryDto>
     public string? Search { get; init; }
     public bool? OnlyEnabled { get; init; }
     public string? Language { get; init; }
+    public bool LookupsOnly { get; init; }
 }
