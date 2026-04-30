@@ -1,0 +1,283 @@
+<div class="container">
+  <!-- Header Card -->
+  <div class="header-card">
+    <div class="header-card-content">
+      <!-- Left: Title with Icon -->
+      <div class="title-section">
+        <div class="title-icon">
+          <mat-icon>shopping_cart</mat-icon>
+        </div>
+        <h1>{{ 'INVENTORY.TITLE' | translate }}</h1>
+      </div>
+
+      <!-- Right: Filters and Actions -->
+      <div class="actions-container">
+        <!-- Search -->
+        <mat-form-field class="search-field" appearance="fill">
+          <mat-label>{{ 'INVENTORY.SEARCH_PLACEHOLDER' | translate }}</mat-label>
+          <input
+            matInput
+            [formControl]="searchControl"
+            [placeholder]="'INVENTORY.SEARCH_INPUT_PLACEHOLDER' | translate"
+          />
+          <mat-icon matSuffix>search</mat-icon>
+          <mat-hint *ngIf="searchControl.value && searchControl.value.length < 3">
+            {{ 'INVENTORY.SEARCH_MIN_LENGTH' | translate }}
+          </mat-hint>
+        </mat-form-field>
+
+        <!-- Filter by Stores -->
+        <mat-form-field>
+          <mat-label>{{ 'INVENTORY.FILTERS.STORE_LABEL' | translate }}</mat-label>
+          <input
+            type="text"
+            [placeholder]="'INVENTORY.FILTERS.STORE_PLACEHOLDER' | translate"
+            aria-label="store"
+            matInput
+            [formControl]="storesAutocompleteInput"
+            [matAutocomplete]="autoStores"
+          />
+          <mat-autocomplete #autoStores="matAutocomplete">
+            @for (s of filteredStoresOptions | async; track s.id) {
+              <mat-option [value]="s.storeName">{{ s.storeName }}</mat-option>
+            }
+          </mat-autocomplete>
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+
+        <!-- Filter by Books -->
+        <mat-form-field>
+          <mat-label>{{ 'INVENTORY.FILTERS.BOOK_LABEL' | translate }}</mat-label>
+          <input
+            type="text"
+            [placeholder]="'INVENTORY.FILTERS.BOOK_PLACEHOLDER' | translate"
+            aria-label="book"
+            matInput
+            [formControl]="booksAutocompleteInput"
+            [matAutocomplete]="autoBooks"
+          />
+          <mat-autocomplete #autoBooks="matAutocomplete">
+            @for (b of filteredBookOptions | async; track b.id) {
+              <mat-option [value]="b.title">{{ b.title }}</mat-option>
+            }
+          </mat-autocomplete>
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+
+        <!-- Clear Filters Button -->
+        <button
+          mat-stroked-button
+          (click)="clearFilters()"
+          [disabled]="
+            !searchControl.value && !booksAutocompleteInput.value && !storesAutocompleteInput.value
+          "
+          class="clear-filters-btn"
+        >
+          <mat-icon>clear_all</mat-icon>
+          <span>{{ 'INVENTORY.CLEAR_FILTERS' | translate }}</span>
+        </button>
+
+        <button mat-stroked-button routerLink="/admin/inventory/add">
+          <span>{{ 'INVENTORY.ACTIONS.ADD_INVENTORY' | translate }}</span>
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Skeleton Loader -->
+  <app-fit-table-skeleton
+    *ngIf="isLoading && !errorMessage"
+    [rows]="10"
+    [columns]="5"
+    [showActions]="true"
+  >
+  </app-fit-table-skeleton>
+
+  <!-- Error -->
+  <div *ngIf="!isLoading && errorMessage" class="error-container">
+    <mat-icon>error_outline</mat-icon>
+    <div class="error-content">
+      <p class="error-title">{{ 'INVENTORY.ERROR_TITLE' | translate }}</p>
+      <!-- <p class="error-message">{{ errorMessage }}</p> -->
+      <button mat-stroked-button color="primary" (click)="loadPagedData()">
+        <mat-icon>refresh</mat-icon>
+        {{ 'INVENTORY.RETRY' | translate }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Table Card -->
+  <div class="table-card" *ngIf="!isLoading && !errorMessage">
+    <div class="table-scroll">
+    <table mat-table [dataSource]="items" class="orders-table">
+      <!-- Store Name -->
+      <ng-container matColumnDef="storeName">
+        <th mat-header-cell *matHeaderCellDef>
+          <div class="header-cell">
+            <mat-icon class="header-icon">confirmation_number</mat-icon>
+            {{ 'INVENTORY.TABLE.STORE_NAME' | translate }}
+          </div>
+        </th>
+        <td mat-cell *matCellDef="let order">
+          <span class="order-ref">{{ order.storeName }}</span>
+        </td>
+      </ng-container>
+
+      <!-- isbn -->
+      <ng-container matColumnDef="isbn">
+        <th mat-header-cell *matHeaderCellDef>
+          <div class="header-cell">
+            <mat-icon class="header-icon">confirmation_number</mat-icon>
+            {{ 'INVENTORY.TABLE.ISBN' | translate }}
+          </div>
+        </th>
+        <td mat-cell *matCellDef="let order">
+          <span class="customer-name">{{ order.isbn }}</span>
+        </td>
+      </ng-container>
+
+      <!-- title -->
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef>
+          <div class="header-cell">
+            <mat-icon class="header-icon">confirmation_number</mat-icon>
+            {{ 'INVENTORY.TABLE.TITLE' | translate }}
+          </div>
+        </th>
+        <td mat-cell *matCellDef="let order">
+          <span class="order-ref">{{ order.title }}</span>
+        </td>
+      </ng-container>
+
+      <!-- quantityInStock -->
+      <ng-container matColumnDef="quantityInStock">
+        <th mat-header-cell *matHeaderCellDef>
+          <div class="header-cell">
+            <mat-icon class="header-icon">confirmation_number</mat-icon>
+            {{ 'INVENTORY.TABLE.QUANTITYINSTOCK' | translate }}
+          </div>
+        </th>
+        <td mat-cell *matCellDef="let order">
+          <span class="customer-name">{{ order.quantityInStock }}</span>
+        </td>
+      </ng-container>
+
+      <!-- lastRestocked -->
+      <ng-container matColumnDef="lastRestocked">
+        <th mat-header-cell *matHeaderCellDef>
+          <div class="header-cell">
+            <mat-icon class="header-icon">confirmation_number</mat-icon>
+            {{ 'INVENTORY.TABLE.LASTRESTOCKED' | translate }}
+          </div>
+        </th>
+        <td mat-cell *matCellDef="let order">
+          <div class="date-info">
+            <span class="customer-name date">{{ order.lastRestocked | appDate }}</span>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- reorderTreshold -->
+      <ng-container matColumnDef="reorderTreshold">
+        <th mat-header-cell *matHeaderCellDef>
+          <div class="header-cell">
+            <mat-icon class="header-icon">confirmation_number</mat-icon>
+            {{ 'INVENTORY.TABLE.REORDERTRESHOLD' | translate }}
+          </div>
+        </th>
+        <td mat-cell *matCellDef="let order">
+          <span class="customer-name">{{ order.reorderTreshold }}</span>
+        </td>
+      </ng-container>
+
+      <!-- location -->
+      <ng-container matColumnDef="location">
+        <th mat-header-cell *matHeaderCellDef>
+          <div class="header-cell">
+            <mat-icon class="header-icon">confirmation_number</mat-icon>
+            {{ 'INVENTORY.TABLE.LOCATION' | translate }}
+          </div>
+        </th>
+        <td mat-cell *matCellDef="let order">
+          <span class="customer-name">{{ order.location }}</span>
+        </td>
+      </ng-container>
+
+      <!-- quantityInStockForOnlineOrders -->
+      <ng-container matColumnDef="quantityInStockForOnlineOrders">
+        <th mat-header-cell *matHeaderCellDef>
+          <div class="header-cell">
+            <mat-icon class="header-icon">confirmation_number</mat-icon>
+            {{ 'INVENTORY.TABLE.QUANTITYINSTOCKFORONLINEORDERS' | translate }}
+          </div>
+        </th>
+        <td mat-cell *matCellDef="let order">
+          <span class="customer-name">{{ order.quantityInStockForOnlineOrders }}</span>
+        </td>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>
+          <div class="header-cell">
+            <mat-icon class="header-icon">settings</mat-icon>
+            {{ 'INVENTORY.TABLE.ACTIONS' | translate }}
+          </div>
+        </th>
+        <td mat-cell *matCellDef="let order">
+          <div class="action-buttons">
+            <button
+              mat-icon-button
+              color="accent"
+              (click)="editInventory(order.storeId, order.bookId)"
+              [matTooltip]="'INVENTORY.ACTIONS.EDIT_INVENTORY' | translate"
+              class="action-btn status-btn"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+            @if (auth.isAdmin()) {
+              <button
+                mat-icon-button
+                (click)="deleteInventory(order.storeId, order.storeName, order.bookId, order.title)"
+                [matTooltip]="'INVENTORY.ACTIONS.VIEW_DETAILS' | translate"
+                class="action-btn view-btn delete-btn"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            }
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Header Row -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+      <!-- Data Rows -->
+      <tr mat-row *matRowDef="let row; columns: displayedColumns" class="data-row"></tr>
+
+      <!-- No Data Row -->
+      <tr class="mat-row no-data-row" *matNoDataRow>
+        <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+          <div class="no-data-content">
+            <mat-icon>shopping_cart</mat-icon>
+            <p>
+              <ng-container *ngIf="searchControl.value; else noDataDefault">
+                {{ 'INVENTORY.NO_DATA_FILTER' | translate }}
+              </ng-container>
+              <ng-template #noDataDefault>
+                {{ 'INVENTORY.NO_DATA' | translate }}
+              </ng-template>
+            </p>
+          </div>
+        </td>
+      </tr>
+    </table>
+    </div>
+
+    <!-- Paginator -->
+    <div class="paginator-wrapper">
+      <app-fit-paginator-bar [vm]="this"></app-fit-paginator-bar>
+    </div>
+  </div>
+</div>

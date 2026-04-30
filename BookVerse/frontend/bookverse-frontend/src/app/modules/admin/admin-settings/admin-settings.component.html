@@ -1,0 +1,94 @@
+<div class="container">
+  <div class="header-card mat-elevation-z2">
+    <div class="header-card-content">
+      <h1>{{ 'SETTINGS.TITLE' | translate }}</h1>
+      <div class="header-card-actions">
+        <button type="button" class="reset-btn" (click)="resetSettings()">
+          {{ 'COMMON.RESET' | translate }}
+        </button>
+        <button type="button" class="save-btn" (click)="saveSettings()">
+          {{ 'COMMON.SAVE' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <form class="admin-settings-container" [formGroup]="settingsForm">
+    <div class="settings-section">
+      <h2>{{ 'SETTINGS.APPEARANCE' | translate }}</h2>
+      <div class="setting-item">
+        <span class="setting-label">{{ 'SETTINGS.THEME' | translate }}</span>
+        <mat-button-toggle-group formControlName="theme">
+          <mat-button-toggle value="light">
+            <mat-icon>light_mode</mat-icon> {{ 'SETTINGS.LIGHT' | translate }}
+          </mat-button-toggle>
+          <mat-button-toggle value="dark">
+            <mat-icon>dark_mode</mat-icon> {{ 'SETTINGS.DARK' | translate }}
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <h2>{{ 'SETTINGS.PAGINATION' | translate }}</h2>
+      <div class="setting-item">
+        <span class="setting-label">{{ 'SETTINGS.DEFAULT_PAGE_SIZE' | translate }}</span>
+        <mat-form-field appearance="fill">
+          <mat-select formControlName="defaultPageSize">
+            <mat-option [value]="5">5</mat-option>
+            <mat-option [value]="10">10</mat-option>
+            <mat-option [value]="20">20</mat-option>
+            <mat-option [value]="50">50</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <h2>{{ 'SETTINGS.DATE_TIME' | translate }}</h2>
+      <div class="setting-item">
+        <span class="setting-label">{{ 'SETTINGS.DATE_FORMAT' | translate }}</span>
+        <mat-form-field appearance="fill">
+          <mat-select formControlName="dateFormat">
+            <mat-option value="dd.MM.yyyy">DD.MM.YYYY</mat-option>
+            <mat-option value="MM/dd/yyyy">MM/DD/YYYY</mat-option>
+            <mat-option value="yyyy-MM-dd">YYYY-MM-DD</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="setting-item">
+        <span class="setting-label">{{ 'SETTINGS.TIME_FORMAT' | translate }}</span>
+        <mat-button-toggle-group formControlName="timeFormat">
+          <mat-button-toggle value="24h">24h</mat-button-toggle>
+          <mat-button-toggle value="12h">12h</mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <h2>{{ 'SETTINGS.LANGUAGE' | translate }}</h2>
+      <div class="setting-item">
+        <span class="setting-label">{{ 'SETTINGS.LANGUAGE_LABEL' | translate }}</span>
+        <mat-button-toggle-group formControlName="language">
+          <mat-button-toggle value="bs">🇧🇦 {{ 'SETTINGS.LANGUAGE_BS' | translate }}</mat-button-toggle>
+          <mat-button-toggle value="en">🇬🇧 {{ 'SETTINGS.LANGUAGE_EN' | translate }}</mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <h2>{{ 'SETTINGS.NOTIFICATIONS' | translate }}</h2>
+      <div class="setting-item">
+        <mat-slide-toggle formControlName="notificationsEnabled">
+          {{ 'SETTINGS.ENABLE_PAID_ORDER_NOTIFICATIONS' | translate }}
+        </mat-slide-toggle>
+      </div>
+      <div class="setting-item" *ngIf="notificationsEnabled">
+        <mat-slide-toggle formControlName="soundEnabled">
+          {{ 'SETTINGS.PLAY_SOUND_ON_NEW_ORDER' | translate }}
+        </mat-slide-toggle>
+      </div>
+    </div>
+
+  </form>
+</div>

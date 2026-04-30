@@ -1,0 +1,189 @@
+<div class="container">
+  <!-- Header card -->
+  <div class="header-card mat-elevation-z2">
+    <div class="header-card-content">
+      <!-- Left: title -->
+      <h1>{{ 'BOOKS.TITLE' | translate }}</h1>
+
+      <!-- Right: search + new product -->
+      <div class="actions-container">
+        <mat-form-field class="search-field" appearance="fill">
+          <mat-label>{{ 'BOOKS.SEARCH_PLACEHOLDER' | translate }}</mat-label>
+          <input
+            matInput
+            [placeholder]="'BOOKS.SEARCH_INPUT_PLACEHOLDER' | translate"
+            [formControl]="searchControl"
+          />
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" (click)="onCreate()">
+          <mat-icon>add</mat-icon>
+          {{ 'BOOKS.NEW_BOOKS' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading / error -->
+  <div *ngIf="isLoading" class="loading">
+    {{ 'BOOKS.LOADING' | translate }}
+  </div>
+
+  <div *ngIf="!isLoading && errorMessage" class="error">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Table -->
+  <div class="mat-elevation-z8" *ngIf="!isLoading && !errorMessage">
+    <div class="table-scroll">
+      <table mat-table [dataSource]="items">
+        <!-- Title -->
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef>{{ 'BOOKS.TABLE.TITLE' | translate }}</th>
+          <td mat-cell *matCellDef="let product">
+            <span style="font-weight: 500">{{ product.title }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Category -->
+        <ng-container matColumnDef="categoryName">
+          <th mat-header-cell *matHeaderCellDef>{{ 'BOOKS.TABLE.CATEGORY' | translate }}</th>
+          <td mat-cell *matCellDef="let product">
+            @for (cat of product.categories; track cat.id) {
+              <span class="category-badge">{{ cat.name }}</span>
+            }
+          </td>
+        </ng-container>
+
+        <!-- Price -->
+        <ng-container matColumnDef="price">
+          <th mat-header-cell *matHeaderCellDef>{{ 'BOOKS.TABLE.PRICE' | translate }}</th>
+          <td mat-cell *matCellDef="let product">
+            <span style="font-weight: 600; color: #4976b5"
+              >{{ product.price | number: '1.2-2' }} {{ 'CURRENCY' | translate }}</span
+            >
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="authors">
+          <th mat-header-cell *matHeaderCellDef>{{ 'BOOKS.TABLE.AUTHORS' | translate }}</th>
+          <td mat-cell *matCellDef="let product">
+            @for (x of product.authors; track x.id) {
+              <span class="category-badge">{{ x.firstName }} {{ x.lastName }}</span>
+            }
+          </td>
+        </ng-container>
+
+        <!-- Price -->
+        <ng-container matColumnDef="publisherName">
+          <th mat-header-cell *matHeaderCellDef>{{ 'BOOKS.TABLE.PUBLISHER' | translate }}</th>
+          <td mat-cell *matCellDef="let product">
+            <span style="font-weight: 600; color: #4976b5">{{ product.publisherName }}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="format">
+          <th mat-header-cell *matHeaderCellDef>{{ 'BOOKS.TABLE.FORMAT' | translate }}</th>
+          <td mat-cell *matCellDef="let product">
+            <span style="font-weight: 600; color: #4976b5">{{ product.bookFormatName }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Stock -->
+        <ng-container matColumnDef="stockQuantity">
+          <th mat-header-cell *matHeaderCellDef>{{ 'BOOKS.TABLE.STOCK' | translate }}</th>
+          <td mat-cell *matCellDef="let product">
+            <span
+              [style.color]="product.stockQuantity > 0 ? '#66bb6a' : '#ef5350'"
+              style="font-weight: 500"
+            >
+              {{ product.quantityInStockForOnlineOrders }}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- Active -->
+        <ng-container matColumnDef="isDeleted">
+          <th mat-header-cell *matHeaderCellDef>{{ 'BOOKS.TABLE.NOT_DELETED' | translate }}</th>
+          <td mat-cell *matCellDef="let product">
+            <mat-icon [ngClass]="!product.isDeleted ? 'icon-enabled' : 'icon-disabled'">
+              {{ !product.isDeleted ? 'check_circle' : 'cancel' }}
+            </mat-icon>
+          </td>
+        </ng-container>
+
+        <!-- Actions -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>{{ 'BOOKS.TABLE.ACTIONS' | translate }}</th>
+          <td mat-cell *matCellDef="let product">
+            <button
+              mat-icon-button
+              color="primary"
+              (click)="onEdit(product)"
+              [matTooltip]="'BOOKS.ACTIONS.EDIT_TOOLTIP' | translate"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+            @if (auth.isAdmin()) {
+              <button
+                mat-icon-button
+                color="warn"
+                (click)="onDelete(product)"
+                [matTooltip]="'BOOKS.ACTIONS.DELETE_TOOLTIP' | translate"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            }
+          </td>
+        </ng-container>
+
+        <tr
+          mat-header-row
+          *matHeaderRowDef="[
+            'title',
+            'categoryName',
+            'price',
+            'authors',
+            'publisherName',
+            'format',
+            'stockQuantity',
+            'isDeleted',
+            'actions',
+          ]"
+        ></tr>
+        <tr
+          mat-row
+          *matRowDef="
+            let row;
+            columns: [
+              'title',
+              'categoryName',
+              'price',
+              'authors',
+              'publisherName',
+              'format',
+              'stockQuantity',
+              'isDeleted',
+              'actions',
+            ]
+          "
+        ></tr>
+
+        <!-- No data -->
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="6">
+            <ng-container *ngIf="request.search; else noDataDefault">
+              {{ 'BOOKS.NO_DATA_FILTER' | translate }}
+            </ng-container>
+            <ng-template #noDataDefault>
+              {{ 'BOOKS.NO_DATA' | translate }}
+            </ng-template>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <app-fit-paginator-bar [vm]="this" />
+  </div>
+</div>

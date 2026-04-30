@@ -1,0 +1,181 @@
+<app-header />
+<div class="book">
+  <a class="back-nav" (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+    <span>{{ 'CLIENT.BOOK_DETAILS.BACK' | translate }}</span>
+  </a>
+  <div class="book__container">
+    <img
+      [src]="book()?.imageUrl | apiUrl"
+      [alt]="'CLIENT.BOOK_DETAILS.IMAGE_ALT' | translate"
+      width="300"
+      height="420"
+      style="object-fit: cover"
+    />
+    <aside>
+      <div class="book__title-and-authors">
+        <h1>{{ book()?.title }}</h1>
+        <div class="book__authors">
+          @for (author of authors(); let i = $index; track author.id) {
+            <label>{{ `${author.firstName} ${author.lastName}` }}</label>
+            @if (i < authors().length - 1) {
+              <label>,&nbsp;</label>
+            }
+          }
+        </div>
+      </div>
+      @if (reviews().length > 0) {
+        <div class="book__rating">
+          <img src="icons/star.png" alt="star" [class.dark-star]="reviewRating >= 1" />
+          <img src="icons/star.png" alt="star" [class.dark-star]="reviewRating >= 2" />
+          <img src="icons/star.png" alt="star" [class.dark-star]="reviewRating >= 3" />
+          <img src="icons/star.png" alt="star" [class.dark-star]="reviewRating >= 4" />
+          <img src="icons/star.png" alt="star" [class.dark-star]="reviewRating >= 5" />
+          <h2>{{ reviewRating.toFixed(1) }}</h2>
+        </div>
+      } @else {
+        <p class="book__no-reviews-inline">{{ 'CLIENT.BOOK_DETAILS.NO_REVIEWS' | translate }}</p>
+      }
+      <div class="book__info">
+        <h2>{{ 'CLIENT.BOOK_DETAILS.PUBLISHER' | translate }} {{ book()?.publisherName }}</h2>
+        <h2>{{ 'CLIENT.BOOK_DETAILS.BUYERS' | translate }}: 12</h2>
+        <h2>{{ 'CLIENT.BOOK_DETAILS.ISBN' | translate }} {{ book()?.isbn }}</h2>
+        <h2>{{ 'CLIENT.BOOK_DETAILS.PAGE_COUNT' | translate }} {{ book()?.pageCount }}</h2>
+        <h2>{{ 'CLIENT.BOOK_DETAILS.LANGUAGE' | translate }} {{ book()?.language }}</h2>
+      </div>
+      <p>{{ book()?.description }}</p>
+    </aside>
+  </div>
+  <div class="book__buy">
+    <h1>
+      {{ 'CLIENT.BOOK_DETAILS.PRICE' | translate }} {{ book()?.price }} {{ 'CURRENCY' | translate }}
+    </h1>
+    <div>
+      <button (click)="addToCart(book()?.id)">
+        {{ 'CLIENT.BOOK_DETAILS.ADD_TO_CART' | translate }} <img src="icons/cart.png" alt="cart" />
+      </button>
+    </div>
+  </div>
+  <div class="book__stores">
+    @if (storeInfoOpened) {
+      <div class="book__stores-info">
+        <h1>{{ this.storeNameKey() | translate }}</h1>
+        <div class="book__stores-info--close" (click)="toggleStoreInfo()">X</div>
+        <h2>{{ 'CLIENT.BOOK_DETAILS.WORKING_HOURS' | translate }}</h2>
+        <h3>{{ 'CLIENT.BOOK_DETAILS.MON_FRI' | translate }} {{ this.storeWorkTimeMonFri() }}</h3>
+        <h3>{{ 'CLIENT.BOOK_DETAILS.SAT_SUN' | translate }} {{ this.storeWorkTimeSatSun() }}</h3>
+        <h2>{{ 'CLIENT.BOOK_DETAILS.EMAIL' | translate }}</h2>
+        <h3>{{ this.storeEmail() }}</h3>
+        <h2>{{ 'CLIENT.BOOK_DETAILS.ADDRESS' | translate }}</h2>
+        <h3>{{ this.storeAddress() }}</h3>
+        <h2>{{ 'CLIENT.BOOK_DETAILS.PHONE' | translate }}</h2>
+        <h3>{{ this.storePhone() }}</h3>
+      </div>
+    }
+    <span>
+      <h2>{{ 'CLIENT.BOOK_DETAILS.AVAILABLE_IN_STORES' | translate }}</h2>
+      <h3 [title]="'CLIENT.BOOK_DETAILS.STORE_TOOLTIP' | translate" (click)="setCentralBookstore()">
+        {{ 'CLIENT.BOOK_DETAILS.CENTRAL_BOOKSTORE' | translate }} ({{ 'CLIENT.BOOK_DETAILS.MOSTAR' | translate }}): 12 {{ 'CLIENT.BOOK_DETAILS.BOOKS_WORD' | translate }}
+      </h3>
+      <h3 [title]="'CLIENT.BOOK_DETAILS.STORE_TOOLTIP' | translate" (click)="setForticaBooks()">
+        {{ 'CLIENT.BOOK_DETAILS.FORTICA_BOOKS' | translate }} ({{ 'CLIENT.BOOK_DETAILS.MOSTAR' | translate }}): 14 {{ 'CLIENT.BOOK_DETAILS.BOOKS_WORD' | translate }}
+      </h3>
+      <h3 [title]="'CLIENT.BOOK_DETAILS.STORE_TOOLTIP' | translate" (click)="setSpaceBookstore()">
+        {{ 'CLIENT.BOOK_DETAILS.SPACE_BOOKSTORE' | translate }} ({{ 'CLIENT.BOOK_DETAILS.SARAJEVO' | translate }}): 19 {{ 'CLIENT.BOOK_DETAILS.BOOKS_WORD' | translate }}
+      </h3>
+    </span>
+    <app-map class="book__stores-map"></app-map>
+  </div>
+
+  <h1 style="font-size: 3rem; margin: 1rem 0">{{ 'CLIENT.BOOK_DETAILS.REVIEWS' | translate }}</h1>
+  <div class="book__reviews">
+    <span>
+      @if (reviews().length > 0) {
+        <div class="book__reviews-header">
+          <h1>{{ 'CLIENT.BOOK_DETAILS.RATING' | translate }}</h1>
+          <div class="book__rating">
+            <img src="icons/star.png" alt="star" [class.dark-star]="this.reviewRating >= 1" />
+            <img src="icons/star.png" alt="star" [class.dark-star]="this.reviewRating >= 2" />
+            <img src="icons/star.png" alt="star" [class.dark-star]="this.reviewRating >= 3" />
+            <img src="icons/star.png" alt="star" [class.dark-star]="this.reviewRating >= 4" />
+            <img src="icons/star.png" alt="star" [class.dark-star]="this.reviewRating >= 5" />
+            <h1>{{ this.reviewRating.toFixed(1) }}</h1>
+          </div>
+        </div>
+        <div class="book__reviews-grades">
+          <div class="book__reviews-grade">
+            <span>
+              <h1>5</h1>
+              <img src="icons/star.png" alt="star" />
+              <div class="book__review-bar">
+                <div class="book__review-fill" [style.width.px]="reviewRatingsBarWidth[4]"></div>
+              </div>
+            </span>
+            <h1>({{ this.reviewRatingsCount[4] }})</h1>
+          </div>
+          <div class="book__reviews-grade">
+            <span>
+              <h1>4</h1>
+              <img src="icons/star.png" alt="star" />
+              <div class="book__review-bar">
+                <div class="book__review-fill" [style.width.px]="reviewRatingsBarWidth[3]"></div>
+              </div>
+            </span>
+            <h1>({{ this.reviewRatingsCount[3] }})</h1>
+          </div>
+          <div class="book__reviews-grade">
+            <span>
+              <h1>3</h1>
+              <img src="icons/star.png" alt="star" />
+              <div class="book__review-bar">
+                <div class="book__review-fill" [style.width.px]="reviewRatingsBarWidth[2]"></div>
+              </div>
+            </span>
+            <h1>({{ this.reviewRatingsCount[2] }})</h1>
+          </div>
+          <div class="book__reviews-grade">
+            <span>
+              <h1>2</h1>
+              <img src="icons/star.png" alt="star" />
+              <div class="book__review-bar">
+                <div class="book__review-fill" [style.width.px]="reviewRatingsBarWidth[1]"></div>
+              </div>
+            </span>
+            <h1>({{ this.reviewRatingsCount[1] }})</h1>
+          </div>
+          <div class="book__reviews-grade">
+            <span>
+              <h1>1</h1>
+              <img src="icons/star.png" alt="star" />
+              <div class="book__review-bar">
+                <div class="book__review-fill" [style.width.px]="reviewRatingsBarWidth[0]"></div>
+              </div>
+            </span>
+            <h1>({{ this.reviewRatingsCount[0] }})</h1>
+          </div>
+        </div>
+      } @else {
+        <p class="book__no-reviews-inline">{{ 'CLIENT.BOOK_DETAILS.NO_REVIEWS' | translate }}</p>
+      }
+    </span>
+    <aside class="book__review-section">
+      @for (review of reviews(); let i = $index; track $index) {
+        <article>
+          <img class="book__review-profile-picture" src="icons/default_profile.png" alt="profile" />
+          <section>
+            <h2>{{ review.user.firstName }} {{ review.user.lastName }}</h2>
+            <div class="book__review-user-rating">
+              <img src="icons/star.png" alt="star" [class.dark-star]="review.rating >= 1" />
+              <img src="icons/star.png" alt="star" [class.dark-star]="review.rating >= 2" />
+              <img src="icons/star.png" alt="star" [class.dark-star]="review.rating >= 3" />
+              <img src="icons/star.png" alt="star" [class.dark-star]="review.rating >= 4" />
+              <img src="icons/star.png" alt="star" [class.dark-star]="review.rating >= 5" />
+              <h3>{{ review.datePosted | appDate }}</h3>
+            </div>
+          </section>
+        </article>
+        <h3>{{ review.comment }}</h3>
+      }
+    </aside>
+  </div>
+</div>

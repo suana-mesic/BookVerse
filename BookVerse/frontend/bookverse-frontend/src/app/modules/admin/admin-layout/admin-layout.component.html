@@ -1,0 +1,179 @@
+<mat-sidenav-container class="sidenav-container">
+  <!-- SIDEBAR -->
+  <mat-sidenav mode="side" opened class="sidenav">
+    <!-- SIDEBAR HEADER WITH USER INFO -->
+    <div class="sidebar-header">
+      <!-- User Info -->
+      <div class="user-info">
+        <div class="user-avatar">
+          <mat-icon>account_circle</mat-icon>
+        </div>
+        <div class="user-details">
+          <!-- <div class="user-email">{{ auth.currentUser()?.email }}</div> -->
+          <div class="user-role">
+            @if (auth.isAdmin()) {
+              <span class="role-chip admin">
+                <mat-icon>admin_panel_settings</mat-icon>
+                {{ 'ADMIN_PANEL.ROLES.ADMIN' | translate }}
+              </span>
+            } @else if (auth.isManager()) {
+              <span class="role-chip manager">
+                <mat-icon>manage_accounts</mat-icon>
+                {{ 'ADMIN_PANEL.ROLES.MANAGER' | translate }}
+              </span>
+            } @else if (auth.isEmployee()) {
+              <span class="role-chip employee">
+                <mat-icon>badge</mat-icon>
+                {{ 'ADMIN_PANEL.ROLES.EMPLOYEE' | translate }}
+              </span>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Language Selector -->
+      <div class="language-selector">
+        <button mat-icon-button [matMenuTriggerFor]="langMenu" class="lang-button">
+          <span class="flag-icon">{{ getCurrentLanguage()?.flag }}</span>
+          <mat-icon>arrow_drop_down</mat-icon>
+        </button>
+
+        <mat-menu #langMenu="matMenu">
+          <button
+            mat-menu-item
+            *ngFor="let lang of languages"
+            (click)="switchLanguage(lang.code)"
+            [class.active-lang]="currentLang === lang.code"
+          >
+            <span class="flag-icon">{{ lang.flag }}</span>
+            <span>{{ lang.key | translate }}</span>
+            <mat-icon *ngIf="currentLang === lang.code" class="check-icon">check</mat-icon>
+          </button>
+        </mat-menu>
+      </div>
+    </div>
+
+    <!-- NAVIGATION MENU -->
+    <mat-nav-list cdkDropList (cdkDropListDropped)="onSectionDrop($any($event))">
+      @for (section of navSections(); track section.id) {
+        <div cdkDrag class="drag-section">
+          <!-- cdkDrag here -->
+          <div class="drag-handle" cdkDragHandle>
+            <mat-icon>drag_indicator</mat-icon>
+          </div>
+
+          <div class="nav-section-title">{{ section.label | translate }}</div>
+          @for (item of section.items; track item.route) {
+            <a mat-list-item [routerLink]="item.route" routerLinkActive="active">
+              <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+              <span matListItemTitle>{{ item.label | translate }}</span>
+            </a>
+          }
+          <mat-divider></mat-divider>
+        </div>
+      }
+      <!-- <div class="nav-section-title">
+        {{ 'ADMIN_PANEL.MENU.CATALOG' | translate }}
+      </div>
+
+      <a mat-list-item routerLink="/admin/product-categories" routerLinkActive="active">
+        <mat-icon matListItemIcon>category</mat-icon>
+        <span matListItemTitle>{{ 'ADMIN_PANEL.MENU.CATEGORIES' | translate }}</span>
+      </a> -->
+
+      <!-- <a mat-list-item routerLink="/admin/products" routerLinkActive="active">
+        <mat-icon matListItemIcon>inventory_2</mat-icon>
+        <span matListItemTitle>{{ 'ADMIN_PANEL.MENU.BOOKS' | translate }}</span>
+      </a>  -->
+
+      <!-- ORDERS SECTION -->
+      <!-- <div class="nav-section-title">
+        {{ 'ADMIN_PANEL.MENU.ORDERS_SECTION' | translate }}
+      </div> -->
+
+      <!-- <a mat-list-item routerLink="/admin/orders" routerLinkActive="active">
+        <mat-icon matListItemIcon>shopping_cart</mat-icon>
+        <span matListItemTitle>{{ 'ADMIN_PANEL.MENU.ORDERS' | translate }}</span>
+      </a>
+
+      <mat-divider></mat-divider> -->
+
+      <!-- SYSTEM SECTION -->
+      <!-- <div class="nav-section-title">
+        {{ 'ADMIN_PANEL.MENU.SYSTEM' | translate }}
+      </div> -->
+
+      <!-- <a mat-list-item routerLink="/admin/settings" routerLinkActive="active">
+        <mat-icon matListItemIcon>settings</mat-icon>
+        <span matListItemTitle>{{ 'ADMIN_PANEL.MENU.SETTINGS' | translate }}</span>
+      </a> -->
+
+      <!-- LOGOUT  -->
+      <a mat-list-item routerLink="/auth/logout" routerLinkActive="active" class="logout-item">
+        <mat-icon matListItemIcon>logout</mat-icon>
+        <span matListItemTitle>{{ 'ADMIN_PANEL.MENU.LOGOUT' | translate }}</span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <!-- MAIN CONTENT -->
+  <mat-sidenav-content class="main-content">
+    <!-- TOOLBAR WITH NOTIFICATIONS -->
+    <mat-toolbar class="content-toolbar">
+      <span class="toolbar-spacer"></span>
+
+      <button
+        mat-icon-button
+        [matMenuTriggerFor]="notifMenu"
+        (menuOpened)="markAllAsRead()"
+        class="notif-button"
+      >
+        <mat-icon
+          [matBadge]="signalR.staffUnreadCount() > 0 ? signalR.staffUnreadCount() : null"
+          matBadgeColor="warn"
+          aria-hidden="false"
+        >
+          notifications
+        </mat-icon>
+      </button>
+
+      <mat-menu #notifMenu="matMenu" class="notif-menu">
+        <!-- Header -->
+        <div class="notif-header" (click)="$event.stopPropagation()">
+          <span>{{ 'NOTIFICATIONS.TITLE' | translate }}</span>
+          <button mat-button color="warn" (click)="clearNotifications()">
+            {{ 'NOTIFICATIONS.CLEAR_ALL' | translate }}
+          </button>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <!-- Notifications list -->
+        @if (signalR.staffNotifications().length === 0) {
+          <div class="notif-empty" (click)="$event.stopPropagation()">
+            <mat-icon>notifications_none</mat-icon>
+            <span>{{ 'NOTIFICATIONS.EMPTY' | translate }}</span>
+          </div>
+        } @else {
+          <!-- executing the signal = calling the getter function of the signal -->
+          @for (notif of signalR.staffNotifications(); track notif.orderId) {
+            <div class="notif-item" (click)="$event.stopPropagation()">
+              <mat-icon class="notif-icon">paid</mat-icon>
+              <div class="notif-content">
+                <div class="notif-title">
+                  {{ 'NOTIFICATIONS.ORDER_PAID' | translate: { name: notif.customerName } }}
+                </div>
+                <div class="notif-time">
+                  {{ notif.paidAt | date: 'dd.MM.yyyy HH:mm' }}
+                </div>
+              </div>
+            </div>
+            <mat-divider></mat-divider>
+          }
+        }
+      </mat-menu>
+    </mat-toolbar>
+
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

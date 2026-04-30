@@ -1,0 +1,31 @@
+<div class="book">
+  <div class="book__cover">
+    <img
+      [src]="book().imageUrl | apiUrl"
+      [alt]="'COMMON.BOOK_COVER_IMAGE' | translate"
+      width="200"
+      height="280"
+      style="object-fit: cover"
+    />
+  </div>
+  <h3>{{ book().title }}</h3>
+  <div class="book__rating-and-count">
+    <div class="book__rating">
+      <h4>{{ book().language }}</h4>
+      <img src="./icons/star.png" alt="icon" />
+    </div>
+    <div class="book__user-count">
+      <h4>{{ book().pageCount }}</h4>
+      <img src="./icons/default_profile.png" alt="icon" />
+    </div>
+  </div>
+  <div class="book__authors">
+    @for (author of book().authors; let i = $index; track author.id) {
+      <label>{{ `${author.firstName} ${author.lastName}` }}</label>
+      @if (i < book().authors.length - 1) {
+        <label>,&nbsp;</label>
+      }
+    }
+  </div>
+  <h3>{{ book().price }} {{ 'CURRENCY' | translate }}</h3>
+</div>

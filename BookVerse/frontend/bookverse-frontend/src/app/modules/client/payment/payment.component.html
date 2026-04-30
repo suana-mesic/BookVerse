@@ -1,0 +1,57 @@
+<app-header></app-header>
+
+<div class="page-wrapper">
+  <a class="back-nav" (click)="goBack()" style="cursor: pointer">
+    <mat-icon>arrow_back</mat-icon>
+    <span>{{ 'CLIENT.PAYMENT.BACK' | translate }}</span>
+  </a>
+
+  <div class="payment-container">
+    <div class="order-summary">
+      <strong>{{ 'CLIENT.PAYMENT.TOTAL_TO_PAY' | translate }}</strong>
+      <strong>{{ totalPrice | number: '1.2-2' : 'en' }} {{ 'CURRENCY' | translate }}</strong>
+    </div>
+
+    <div id="payment-element"></div>
+
+    <div class="captcha-section">
+      <p class="captcha-label">{{ 'CLIENT.PAYMENT.CAPTCHA_TITLE' | translate }}</p>
+
+      <div class="captcha-image-row">
+        <img [src]="captchaImage" alt="Captcha" />
+        <button mat-stroked-button (click)="loadCaptcha()">
+          <mat-icon>cached</mat-icon>
+          {{ 'CLIENT.PAYMENT.NEW_IMAGE' | translate }}
+        </button>
+      </div>
+
+      <form [formGroup]="captchaForm" (ngSubmit)="verifyCaptcha()">
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'CLIENT.PAYMENT.CAPTCHA_LABEL' | translate }}</mat-label>
+          <input matInput formControlName="answer" />
+        </mat-form-field>
+
+        <button
+          type="submit"
+          class="verify-btn"
+          mat-raised-button
+          [disabled]="captchaVerified || captchaForm.invalid"
+        >
+          <mat-icon *ngIf="captchaVerified">check_circle</mat-icon>
+          {{ captchaVerified ? ('CLIENT.PAYMENT.VERIFIED' | translate) : ('CLIENT.PAYMENT.CONFIRM' | translate) }}
+        </button>
+      </form>
+    </div>
+
+    <div class="payment-actions">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="submitPayment()"
+        [disabled]="isLoading || !captchaVerified || !paymentFormComplete"
+      >
+        {{ isLoading ? ('CLIENT.PAYMENT.PROCESSING' | translate) : ('CLIENT.PAYMENT.PAY_AMOUNT' | translate: { amount: (totalPrice | number: '1.2-2' : 'en') }) }}
+      </button>
+    </div>
+  </div>
+</div>
