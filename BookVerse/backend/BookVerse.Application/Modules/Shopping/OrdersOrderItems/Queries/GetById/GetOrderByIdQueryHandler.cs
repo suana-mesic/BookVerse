@@ -14,7 +14,7 @@
                     .Include(x => x.PaymentSummary)
                     .Where(x => x.Id == request.Id);
 
-            if (!currentUser.IsAdmin)
+            if (!currentUser.IsAdmin && !currentUser.IsManager && !currentUser.IsEmployee)
                 q = q.Where(x => x.UserId == currentUser.UserId);
 
             var dto = await q

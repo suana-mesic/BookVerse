@@ -1,5 +1,4 @@
-﻿
-@use 'admin-orders-status-styles' as *;
+﻿@use 'admin-orders-status-styles' as *;
 
 $primary-color: #4976b5;
 $primary-light: #6b96d1;
@@ -81,7 +80,7 @@ $hover-bg: rgba(73, 118, 181, 0.04);
 
       .filter-field,
       .search-field {
-        min-width: 200px;
+        min-width: 330px;
 
         ::ng-deep {
           .mat-form-field-wrapper {
@@ -204,7 +203,7 @@ $hover-bg: rgba(73, 118, 181, 0.04);
       color: var(--text-primary);
     }
 
-.order-ref {
+    .order-ref {
       font-weight: 600;
       color: $primary-color;
       font-size: 15px;
@@ -290,7 +289,7 @@ $hover-bg: rgba(73, 118, 181, 0.04);
       }
     }
 
-.data-row {
+    .data-row {
       cursor: pointer;
       transition: background-color 0.2s ease;
 
@@ -299,7 +298,7 @@ $hover-bg: rgba(73, 118, 181, 0.04);
       }
     }
 
-.no-data-row {
+    .no-data-row {
       td {
         border-bottom: none;
         padding: 80px 20px;

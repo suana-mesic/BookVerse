@@ -199,13 +199,12 @@ export class DashboardComponent extends BaseComponent implements OnInit {
         scales: {
           y: {
             ticks: {
-              stepSize: 1,
               color: labelColor,
+              precision: 0,
             },
           },
           x: {
             ticks: {
-              stepSize: 1,
               color: labelColor,
             },
           },

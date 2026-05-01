@@ -31,7 +31,6 @@ public class OrdersOrderItemsController(ISender sender) : ControllerBase
         return result;
     }
 
-    // -> DONE
     [HttpGet("{id:int}")]
     [Authorize(Policy = "Staff")]
 
@@ -41,7 +40,6 @@ public class OrdersOrderItemsController(ISender sender) : ControllerBase
         return result;
     }
 
-    // -> DONE
     // Called when the user clicks "Confirm order" in the checkout component.
     [HttpPost]
     [Authorize(Policy = "Customer")]
@@ -52,7 +50,6 @@ public class OrdersOrderItemsController(ISender sender) : ControllerBase
         return Ok(result);
     }
 
-    // -> DONE
     // Called by staff when they want to change the order status
     [HttpPut("{id:int}/change-status")]
     [Authorize(Policy = "Staff")]

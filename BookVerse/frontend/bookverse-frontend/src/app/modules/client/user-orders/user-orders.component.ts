@@ -14,6 +14,7 @@ import { DialogHelperService } from '../../shared/services/dialog-helper.service
 import { DialogButton } from '../../shared/models/dialog-config.model';
 import { Location } from '@angular/common';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { SignalRService } from '../../../core/services/signal-r/signal-r.service';
 @Component({
   selector: 'app-user-orders',
   standalone: false,
@@ -25,6 +26,7 @@ export class UserOrdersComponent
   implements OnInit
 {
   private ordersService = inject(OrdersApiService);
+  private signalR = inject(SignalRService);
   private toaster = inject(ToasterService);
   private destroy$ = new Subject<void>();
   private router = inject(Router);
@@ -62,6 +64,10 @@ export class UserOrdersComponent
         this.request.language = event.lang;
         this.loadPagedData();
       });
+
+    this.signalR.orderStatusChanged$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.loadPagedData());
   }
 
   ngOnDestroy(): void {
