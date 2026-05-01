@@ -16,6 +16,7 @@ import { DialogButton } from '../../shared/models/dialog-config.model';
 import { Location } from '@angular/common';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { ProductCategoriesApiService } from '../../../api-services/product-categories/product-categories-api.service';
+import { SignalRService } from '../../../core/services/signal-r/signal-r.service';
 import { Categories } from '../../../api-services/product-categories/product-categories-api.model';
 @Component({
   selector: 'app-my-books',
@@ -28,6 +29,7 @@ export class UserBooksComponent
   implements OnInit, OnDestroy
 {
   private reviewService = inject(ReviewsApiService);
+  private signalR = inject(SignalRService);
   private categoriesService = inject(ProductCategoriesApiService);
   private booksService = inject(BooksApiService);
   private toaster = inject(ToasterService);
@@ -77,6 +79,10 @@ export class UserBooksComponent
         this.loadCategories();
         this.loadPagedData();
       });
+
+    this.signalR.orderStatusChanged$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.loadPagedData());
   }
 
   ngOnDestroy(): void {

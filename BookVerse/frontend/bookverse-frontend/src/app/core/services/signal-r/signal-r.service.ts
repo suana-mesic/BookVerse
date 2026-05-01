@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable, NgZone, signal } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
@@ -28,6 +28,7 @@ export interface OrderStatusNotification {
 })
 export class SignalRService {
   private translate = inject(TranslateService);
+  private ngZone = inject(NgZone);
   private staffHubConnection: signalR.HubConnection | null = null;
   private userHubConnection: signalR.HubConnection | null = null;
 
@@ -85,7 +86,11 @@ export class SignalRService {
       .catch((err) => console.error(this.translate.instant('DEBUG.SIGNALR_CONNECTION_ERROR'), err));
 
     this.staffHubConnection.on('NewPaidOrder', (notification: OrderNotification) => {
-      this.newPaidOrderSubject.next(notification);
+      //signalR callbacks run outside Angular zone
+      //they must be wrapped in ngZone.run() so that subscribed components
+      //(for example orders component)
+      //can detect changes and reload their content
+      this.ngZone.run(() => this.newPaidOrderSubject.next(notification));
     });
   }
 
@@ -115,7 +120,11 @@ export class SignalRService {
       );
 
     this.userHubConnection.on('OrderStatusChanged', (notification: OrderStatusNotification) => {
-      this.orderStatusChangedSubject.next(notification);
+      //signalR callbacks run outside Angular zone
+      //they must be wrapped in ngZone.run() so that subscribed components
+      //(for example user-orders, user-books)
+      //can detect changes and reload their content
+      this.ngZone.run(() => this.orderStatusChangedSubject.next(notification));
     });
   }
 }

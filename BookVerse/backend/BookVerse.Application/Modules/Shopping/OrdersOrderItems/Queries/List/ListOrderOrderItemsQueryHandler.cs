@@ -18,7 +18,10 @@ namespace BookVerse.Application.Modules.Shopping.OrdersOrderItems.Queries.List
                 q = q.Where(x =>
                     (x.User.FirstName != null && x.User.FirstName.ToLower().Contains(searchFilter)) ||
                     (x.User.LastName != null && x.User.LastName.ToLower().Contains(searchFilter)) ||
-                    (x.TrackingNumber != null && x.TrackingNumber.ToLower().Contains(searchFilter))
+                    (x.User.FirstName != null && x.User.LastName != null && (x.User.FirstName.ToLower() + " " + x.User.LastName.ToLower()).Contains(searchFilter)) ||
+                    (x.TrackingNumber != null && x.TrackingNumber.ToLower().Contains(searchFilter)) ||
+                    (x.User.Address != null && x.User.Address.Line1 != null && x.User.Address.Line1.ToLower().Contains(searchFilter)) ||
+                    (x.User.Address != null && x.User.Address.City != null && x.User.Address.City.ToLower().Contains(searchFilter))
                 );
             }
 

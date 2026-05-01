@@ -321,21 +321,30 @@ $hover-bg: rgba(73, 118, 181, 0.04);
       }
     }
 
-    tr.mat-row {
-      td.mat-cell[colspan] {
-        border-bottom: none;
-        padding: 60px 20px;
-        text-align: center;
-        color: $text-secondary;
-        font-size: 16px;
+  }
 
-        &::before {
-          content: 'inbox';
-          font-family: 'Material Icons';
+  .no-data-row {
+    td {
+      border-bottom: none;
+      padding: 60px 20px;
+
+      .no-data-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+
+        mat-icon {
           font-size: 64px;
+          width: 64px;
+          height: 64px;
           color: rgba(73, 118, 181, 0.3);
-          display: block;
-          margin-bottom: 16px;
+        }
+
+        p {
+          color: $text-secondary;
+          font-size: 16px;
+          margin: 0;
         }
       }
     }

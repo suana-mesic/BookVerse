@@ -15,6 +15,7 @@ import { OrderStatusHelper } from '../../../api-services/orders/order-status.hel
 import { ChangeStatusDialogComponent } from './change-status-dialog/change-status-dialog.component';
 import { OrderDetailsDialogComponent } from './admin-orders-details-dialog/order-details-dialog.component';
 import { TranslateService } from '@ngx-translate/core';
+import { SignalRService } from '../../../core/services/signal-r/signal-r.service';
 
 @Component({
   selector: 'app-admin-orders',
@@ -27,6 +28,7 @@ export class AdminOrdersComponent
   implements OnInit, OnDestroy
 {
   private ordersApi = inject(OrdersApiService);
+  private signalR = inject(SignalRService);
   private dialog = inject(MatDialog);
   private toaster = inject(ToasterService);
   private translate = inject(TranslateService);
@@ -73,6 +75,10 @@ export class AdminOrdersComponent
     this.getPaginationSettings();
     this.initList();
     this.setupSearchDebounce();
+
+    this.signalR.newPaidOrder$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.loadPagedData());
   }
 
   ngOnDestroy(): void {

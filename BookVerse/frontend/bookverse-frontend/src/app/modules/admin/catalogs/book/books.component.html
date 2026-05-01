@@ -171,14 +171,19 @@
         ></tr>
 
         <!-- No data -->
-        <tr class="mat-row" *matNoDataRow>
-          <td class="mat-cell" colspan="6">
-            <ng-container *ngIf="request.search; else noDataDefault">
-              {{ 'BOOKS.NO_DATA_FILTER' | translate }}
-            </ng-container>
-            <ng-template #noDataDefault>
-              {{ 'BOOKS.NO_DATA' | translate }}
-            </ng-template>
+        <tr class="mat-row no-data-row" *matNoDataRow>
+          <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+            <div class="no-data-content">
+              <mat-icon>inbox</mat-icon>
+              <p>
+                <ng-container *ngIf="request.search; else noDataDefault">
+                  {{ 'BOOKS.NO_DATA_FILTER' | translate }}
+                </ng-container>
+                <ng-template #noDataDefault>
+                  {{ 'BOOKS.NO_DATA' | translate }}
+                </ng-template>
+              </p>
+            </div>
           </td>
         </tr>
       </table>

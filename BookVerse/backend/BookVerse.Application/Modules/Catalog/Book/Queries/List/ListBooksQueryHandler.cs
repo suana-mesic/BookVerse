@@ -21,11 +21,7 @@ public sealed class ListBooksQueryHandler(IAppDbContext context, ITranslationSer
         if (!string.IsNullOrWhiteSpace(request.Search))
         {
             q = q.Where(x => x.Title.Contains(request.Search) ||
-             x.Price.ToString().Contains(request.Search) ||
              x.Publisher.Name.Contains(request.Search) ||
-             x.BookFormat.Format.Contains(request.Search) ||
-             x.QuantityInStockForOnlineOrders.ToString().Contains(request.Search) ||
-             x.Categories.Any(c => c.Name == request.Search) ||
              x.Authors.Any(a => (a.FirstName + " " + a.LastName).Contains(request.Search))
             );
 

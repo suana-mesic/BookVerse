@@ -49,7 +49,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
           route: '/admin/coupons',
           icon: 'local_activity',
           label: 'ADMIN_PANEL.MENU.COUPONS',
-          roles: ['admin', 'manager', 'employee'],
+          roles: ['admin', 'manager'],
         },
       ],
     },
