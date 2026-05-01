@@ -8,6 +8,6 @@ namespace BookVerse.Application.Modules.Statistics.Queries.RevenueByMonthAndCate
 {
     public class GetRevenueByMonthAndCategoryQuery : IRequest<List<GetRevenueByMonthAndCategoryQueryDto>>
     {
-
+        public string? Language { get; set; }
     }
 }

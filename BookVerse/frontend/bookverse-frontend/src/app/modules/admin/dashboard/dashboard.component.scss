@@ -244,7 +244,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr 1fr auto;
       gap: 1.5rem;
-      align-items: center;
+      align-items: end;
 
       .filter-item {
         width: 100%;
@@ -254,6 +254,7 @@
       button {
         height: 56px;
         padding: 0 2rem;
+        margin-bottom: 1.25em;
         font-weight: 500;
         border-radius: 12px;
         background: linear-gradient(135deg, #ffb347, #ff8c42);

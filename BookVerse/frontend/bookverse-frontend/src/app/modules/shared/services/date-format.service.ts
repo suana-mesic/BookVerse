@@ -1,23 +1,25 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({ providedIn: 'root' })
 export class DateFormatService {
+  private translate = inject(TranslateService);
+
+  private getLang(): string {
+    return (
+      this.translate.currentLang ||
+      this.translate.defaultLang ||
+      localStorage.getItem('lang') ||
+      'bs'
+    );
+  }
+
   getDateFormat(): string {
-    const saved = localStorage.getItem('adminSettings');
-    if (saved) {
-      const settings = JSON.parse(saved);
-      return settings.dateFormat || 'dd.MM.yyyy';
-    }
-    return 'dd.MM.yyyy';
+    return this.getLang() === 'en' ? 'MM/dd/yyyy' : 'dd.MM.yyyy';
   }
 
   getTimeFormat(): string {
-    const saved = localStorage.getItem('adminSettings');
-    if (saved) {
-      const settings = JSON.parse(saved);
-      return settings.timeFormat || '24h';
-    }
-    return '24h';
+    return this.getLang() === 'en' ? '12h' : '24h';
   }
 
   getDateTimeFormat(): string {

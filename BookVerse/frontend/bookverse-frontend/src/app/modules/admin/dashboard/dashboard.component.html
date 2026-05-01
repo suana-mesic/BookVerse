@@ -14,7 +14,7 @@
       <div class="card-header">
         <div>
           <div class="card-title">{{ 'STATISTICS.CARDS.TOTAL_REVENUE' | translate }}</div>
-          <div class="card-value">{{ summary?.totalRevenue | number: '1.2-2' }} {{ 'CURRENCY' | translate }}</div>
+          <div class="card-value">{{ summary?.totalRevenue | appNumber }} {{ 'CURRENCY' | translate }}</div>
         </div>
         <div class="card-icon">
           <mat-icon>attach_money</mat-icon>

@@ -16,8 +16,6 @@ export class AdminSettingsComponent implements OnInit, OnDestroy {
   settingsForm = this.fb.group({
     theme: this.fb.control<'light' | 'dark'>('light', Validators.required),
     defaultPageSize: this.fb.control<number>(20, [Validators.required, Validators.min(1)]),
-    dateFormat: this.fb.control<string>('dd.MM.yyyy', Validators.required),
-    timeFormat: this.fb.control<'24h' | '12h'>('24h', Validators.required),
     notificationsEnabled: this.fb.control<boolean>(true, Validators.required),
     soundEnabled: this.fb.control<boolean>(true, Validators.required),
     language: this.fb.control<'bs' | 'en'>('bs', Validators.required),
@@ -35,20 +33,6 @@ export class AdminSettingsComponent implements OnInit, OnDestroy {
   }
   set defaultPageSize(value: number) {
     this.settingsForm.controls.defaultPageSize.setValue(value);
-  }
-
-  get dateFormat(): string {
-    return this.settingsForm.controls.dateFormat.value ?? 'dd.MM.yyyy';
-  }
-  set dateFormat(value: string) {
-    this.settingsForm.controls.dateFormat.setValue(value);
-  }
-
-  get timeFormat(): '24h' | '12h' {
-    return this.settingsForm.controls.timeFormat.value ?? '24h';
-  }
-  set timeFormat(value: '24h' | '12h') {
-    this.settingsForm.controls.timeFormat.setValue(value);
   }
 
   get notificationsEnabled(): boolean {
@@ -95,8 +79,6 @@ export class AdminSettingsComponent implements OnInit, OnDestroy {
       const settings = JSON.parse(saved);
       this.theme = settings.theme || 'light';
       this.defaultPageSize = settings.defaultPageSize || 20;
-      this.dateFormat = settings.dateFormat || 'dd.MM.yyyy';
-      this.timeFormat = settings.timeFormat || '24h';
       this.notificationsEnabled = settings.notificationsEnabled ?? true;
       this.soundEnabled = settings.soundEnabled ?? true;
       this.language = settings.language || (localStorage.getItem('lang') as 'bs' | 'en') || 'bs';
@@ -108,27 +90,25 @@ export class AdminSettingsComponent implements OnInit, OnDestroy {
       }
     }
   }
+
   saveSettings() {
     const settings = {
       theme: this.theme,
       defaultPageSize: this.defaultPageSize,
-      dateFormat: this.dateFormat,
-      timeFormat: this.timeFormat,
       notificationsEnabled: this.notificationsEnabled,
       soundEnabled: this.soundEnabled,
       language: this.language,
     };
     localStorage.setItem('adminSettings', JSON.stringify(settings));
     localStorage.setItem('lang', this.language);
-    this.translate.use(this.language);
+    this.translate.use(this.language).subscribe();
     this.applyTheme();
     this.toaster.success(this.translate.instant('SETTINGS.DIALOGS.SUCCESS_SAVED'));
   }
+
   resetSettings() {
     this.theme = 'light';
     this.defaultPageSize = 20;
-    this.dateFormat = 'dd.MM.yyyy';
-    this.timeFormat = '24h';
     this.notificationsEnabled = true;
     this.soundEnabled = true;
     this.language = 'bs';

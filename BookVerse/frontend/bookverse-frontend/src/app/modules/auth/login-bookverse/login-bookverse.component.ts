@@ -10,6 +10,7 @@ import {
 } from '../../../api-services/auth/auth-api.model';
 import { AuthFacadeService } from '../../../core/services/auth/auth-facade.service';
 import { CartApiService } from '../../../api-services/cart/cart-api.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login-bookverse',
@@ -23,6 +24,7 @@ export class LoginBookverseComponent extends BaseComponent {
   private router = inject(Router);
   private currentUser = inject(CurrentUserService);
   private cartService = inject(CartApiService);
+  private translate = inject(TranslateService);
 
   hidePassword = true;
   showLoginError: boolean = false;
@@ -86,7 +88,17 @@ export class LoginBookverseComponent extends BaseComponent {
     return this.loginForm.get('email')?.valid && this.loginForm.get('password')?.valid;
   }
 
+  private restoreLanguage(): void {
+    const saved = localStorage.getItem('user_lang');
+    if (saved) {
+      localStorage.setItem('lang', saved);
+      localStorage.removeItem('user_lang');
+      this.translate.use(saved);
+    }
+  }
+
   private handlePostLoginNavigation(): void {
+    this.restoreLanguage();
     const pending = sessionStorage.getItem('pendingAddToCart');
     sessionStorage.removeItem('pendingAddToCart');
 

@@ -185,7 +185,8 @@ export class InventoryAddComponent extends BaseComponent implements OnInit {
   onStoreSelected(event: MatAutocompleteSelectedEvent, index: number) {
     const storeId = this.stores.filter((x) => x.storeName == event.option.value).at(0)?.id;
     if (storeId) this.inventoryArray.at(index).get('storeId')?.setValue(storeId);
-    //this.clearBookInSameRow(index);
+    const bookCtrl = this.booksAutocompleteInputs.at(index);
+    bookCtrl.setValue(bookCtrl.value);
   }
 
   displayBookTitle = (book: ListBooksForAutocompleteQueryDto | string): string => {

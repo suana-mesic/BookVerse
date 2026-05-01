@@ -1,4 +1,4 @@
-<app-header></app-header>
+﻿<app-header></app-header>
 
 <div class="container">
   <div class="header-card">
@@ -65,12 +65,12 @@
   </div>
 
   <!-- Loading -->
-  <app-fit-table-skeleton
+  <app-bookverse-table-skeleton
     *ngIf="isLoading && !errorMessage"
     [rows]="5"
     [columns]="1"
     [showActions]="false"
-  ></app-fit-table-skeleton>
+  ></app-bookverse-table-skeleton>
 
   <!-- Error -->
   <div *ngIf="!isLoading && errorMessage" class="error-container">
@@ -103,7 +103,7 @@
                 {{ getStatusLabel(order.status) }}
               </span>
             </div>
-            <span class="timeline-date">{{ order.orderedAtUtc | date: 'dd.MM.yyyy' }}</span>
+            <span class="timeline-date">{{ order.orderedAtUtc | appDate: false }}</span>
           </div>
 
           <div class="timeline-books">
@@ -117,7 +117,7 @@
               <mat-icon *ngIf="!item.book.imageUrl" class="book-icon">menu_book</mat-icon>
               <span class="book-title">{{ item.book.title }}</span>
               <span class="book-price">
-                {{ item.quantity }}x {{ item.unitPrice | number: '1.2-2' : 'en' }}
+                {{ item.quantity }}x {{ item.unitPrice | appNumber }}
                 {{ 'CURRENCY' | translate }}
               </span>
             </div>
@@ -125,7 +125,7 @@
 
           <div class="timeline-footer">
             <strong class="total"
-              >{{ order.totalAmount | number: '1.2-2' : 'en' }} {{ 'CURRENCY' | translate }}</strong
+              >{{ order.totalAmount | appNumber }} {{ 'CURRENCY' | translate }}</strong
             >
             <div class="footer-actions">
               <button
@@ -156,7 +156,7 @@
       </div>
 
       <div class="paginator-wrapper">
-        <app-fit-paginator-bar [vm]="$any(this)"></app-fit-paginator-bar>
+        <app-bookverse-paginator-bar [vm]="$any(this)"></app-bookverse-paginator-bar>
       </div>
     </div>
 
@@ -197,11 +197,11 @@
                 <div class="carousel-info">
                   <span class="carousel-title">{{ item.book.title }}</span>
                   <span class="carousel-meta">
-                    {{ item.quantity }} kom × {{ item.unitPrice | number: '1.2-2' : 'en' }}
+                    {{ item.quantity }} kom × {{ item.unitPrice | appNumber }}
                     {{ 'CURRENCY' | translate }}
                   </span>
                   <strong class="carousel-price">
-                    {{ item.quantity * item.unitPrice | number: '1.2-2' : 'en' }}
+                    {{ item.quantity * item.unitPrice | appNumber }}
                     {{ 'CURRENCY' | translate }}
                   </strong>
                 </div>
@@ -232,14 +232,14 @@
           <div class="price-row">
             <span>{{ 'CLIENT.USER_ORDERS.SUBTOTAL' | translate }}</span>
             <span
-              >{{ selectedOrder.subtotal | number: '1.2-2' : 'en' }}
+              >{{ selectedOrder.subtotal | appNumber }}
               {{ 'CURRENCY' | translate }}</span
             >
           </div>
           <div class="price-row" *ngIf="selectedOrder.shippingPriceAtTheTime > 0">
             <span>{{ 'CLIENT.USER_ORDERS.SHIPPING' | translate }}</span>
             <span
-              >{{ selectedOrder.shippingPriceAtTheTime | number: '1.2-2' : 'en' }}
+              >{{ selectedOrder.shippingPriceAtTheTime | appNumber }}
               {{ 'CURRENCY' | translate }}</span
             >
           </div>
@@ -249,14 +249,14 @@
           >
             <span>{{ 'CLIENT.USER_ORDERS.DISCOUNT' | translate }}</span>
             <span
-              >- {{ selectedOrder.discountAmount | number: '1.2-2' : 'en' }}
+              >- {{ selectedOrder.discountAmount | appNumber }}
               {{ 'CURRENCY' | translate }}</span
             >
           </div>
           <div class="price-row total-row">
             <strong>{{ 'CLIENT.USER_ORDERS.TOTAL' | translate }}</strong>
             <strong
-              >{{ selectedOrder.totalAmount | number: '1.2-2' : 'en' }}
+              >{{ selectedOrder.totalAmount | appNumber }}
               {{ 'CURRENCY' | translate }}</strong
             >
           </div>
@@ -267,7 +267,7 @@
             <mat-icon>payment</mat-icon>
             <span
               >{{ 'CLIENT.USER_ORDERS.PAID_AT' | translate }}
-              {{ selectedOrder.paidAtUtc | date: 'dd.MM.yyyy HH:mm' }}</span
+              {{ selectedOrder.paidAtUtc | appDate }}</span
             >
           </div>
         </div>

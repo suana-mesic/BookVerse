@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BookVerse.Application.Common.Interfaces;
 
 namespace BookVerse.Application.Modules.Statistics.Queries.CategoriesPopularity
 {
-    public class GetCategoriesPopularityQueryHandler(IAppDbContext context) : IRequestHandler<GetCategoriesPopularityQuery, List<GetCategoriesPopularityQueryDto>>
+    public class GetCategoriesPopularityQueryHandler(IAppDbContext context, ITranslationService translationService) : IRequestHandler<GetCategoriesPopularityQuery, List<GetCategoriesPopularityQueryDto>>
     {
         public async Task<List<GetCategoriesPopularityQueryDto>> Handle(GetCategoriesPopularityQuery request, CancellationToken ct)
         {
@@ -27,6 +22,15 @@ namespace BookVerse.Application.Modules.Statistics.Queries.CategoriesPopularity
                 })
                 .OrderByDescending(x=>x.TotalSold)
                 .ToListAsync(ct);
+
+            if (!string.IsNullOrWhiteSpace(request.Language) && request.Language != "bs")
+            {
+                await Task.WhenAll(data.Select(async d =>
+                {
+                    d.GenreName = await translationService.Translate(d.GenreName, request.Language);
+                }));
+            }
+
             return data;
         }
     }

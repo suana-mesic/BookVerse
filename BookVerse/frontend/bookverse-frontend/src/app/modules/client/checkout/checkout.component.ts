@@ -231,6 +231,10 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
   }
 
   proceedToPayment(): void {
+    this.submitOrder();
+  }
+
+  private submitOrder(): void {
     this.startLoading();
 
     const address = this.getDeliveryAddress();

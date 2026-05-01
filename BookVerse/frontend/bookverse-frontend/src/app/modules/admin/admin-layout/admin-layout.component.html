@@ -164,7 +164,7 @@
                   {{ 'NOTIFICATIONS.ORDER_PAID' | translate: { name: notif.customerName } }}
                 </div>
                 <div class="notif-time">
-                  {{ notif.paidAt | date: 'dd.MM.yyyy HH:mm' }}
+                  {{ notif.paidAt | appDate }}
                 </div>
               </div>
             </div>

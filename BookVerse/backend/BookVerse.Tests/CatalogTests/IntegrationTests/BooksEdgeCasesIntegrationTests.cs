@@ -32,15 +32,23 @@ public class BooksEdgeCasesIntegrationTests
     }
 
     [Theory]
-    [InlineData(0)]
-    [InlineData(-1)]
     [InlineData(999998)]
     [InlineData(999999)]
-    public async Task GetBookById_InvalidOrMissingIds_ReturnsNotFound(int bookId)
+    public async Task GetBookById_NonExistentIds_ReturnsNotFound(int bookId)
     {
         var response = await _client.GetAsync($"/Books/{bookId}");
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    public async Task GetBookById_InvalidIds_ReturnsBadRequest(int bookId)
+    {
+        var response = await _client.GetAsync($"/Books/{bookId}");
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
 
     [Fact]

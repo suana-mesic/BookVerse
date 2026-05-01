@@ -39,15 +39,15 @@ public class StatisticsController(ISender sender) : ControllerBase
 
 
     [HttpGet("categories-popularity")]
-    public async Task<List<GetCategoriesPopularityQueryDto>> GetCategoriesPopularity(CancellationToken ct)
+    public async Task<List<GetCategoriesPopularityQueryDto>> GetCategoriesPopularity([FromQuery] string? language, CancellationToken ct)
     {
-        return await sender.Send(new GetCategoriesPopularityQuery(), ct);
+        return await sender.Send(new GetCategoriesPopularityQuery { Language = language }, ct);
     }
 
     [HttpGet("revenue-by-month-and-category")]
-    public async Task<List<GetRevenueByMonthAndCategoryQueryDto>> GetRevenueByMonthAndCategory(CancellationToken ct)
+    public async Task<List<GetRevenueByMonthAndCategoryQueryDto>> GetRevenueByMonthAndCategory([FromQuery] string? language, CancellationToken ct)
     {
-        return await sender.Send(new GetRevenueByMonthAndCategoryQuery(), ct);
+        return await sender.Send(new GetRevenueByMonthAndCategoryQuery { Language = language }, ct);
     }
 
 

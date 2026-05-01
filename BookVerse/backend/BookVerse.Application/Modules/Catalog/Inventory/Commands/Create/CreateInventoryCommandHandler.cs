@@ -12,6 +12,22 @@ namespace BookVerse.Application.Modules.Catalog.Inventory.Commands.Create
     {
         public async Task<Unit> Handle(CreateInventoryCommand request, CancellationToken ct)
         {
+            var duplicateInBatch = request.InventoryInfo
+                .GroupBy(x => new { x.StoreId, x.BookId })
+                .FirstOrDefault(g => g.Count() > 1);
+
+            if (duplicateInBatch != null)
+            {
+                var dupBook = await context.Books
+                    .Where(x => x.Id == duplicateInBatch.Key.BookId)
+                    .FirstOrDefaultAsync(ct);
+                var dupStore = await context.Stores
+                    .Where(x => x.Id == duplicateInBatch.Key.StoreId)
+                    .FirstOrDefaultAsync(ct);
+                throw new BookVerseBusinessRuleException("123",
+                    $"Inventory already exists for the book {dupBook.Title} and store {dupStore.StoreName}.");
+            }
+
             foreach (var item in request.InventoryInfo)
             {
                 var existing = await context.StoreInventory

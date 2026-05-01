@@ -93,7 +93,7 @@ export class ProductCategoriesApiService {
   }
 
   getCategoriesFromApi(language?: string): Observable<Categories[]> {
-    const url = `https://localhost:7260/Categories`;
+    const url = this.baseUrl;
     let params = new HttpParams();
     if (language) {
       params = params.set('Language', language);

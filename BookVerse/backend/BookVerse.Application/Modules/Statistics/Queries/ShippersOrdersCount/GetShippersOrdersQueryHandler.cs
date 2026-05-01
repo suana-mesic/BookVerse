@@ -5,6 +5,7 @@
         public async Task<List<GetShippersOrdersQueryDto>> Handle(GetShippersOrdersQuery request, CancellationToken ct)
         {
             return await context.Orders
+                .Where(x => x.ShippingMethod != null)
                 .GroupBy(x => x.ShippingMethod.Name)
                 .Select(x => new GetShippersOrdersQueryDto
                 {

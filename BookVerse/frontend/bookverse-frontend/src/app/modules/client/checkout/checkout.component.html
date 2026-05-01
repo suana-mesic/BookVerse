@@ -236,7 +236,7 @@
                       <strong>{{ method.name }}</strong>
                       <p>{{ method.description }}</p>
                     </div>
-                    <div class="shipping-price">{{ method.price | number: '1.2-2' : 'en' }} {{ 'CURRENCY' | translate }}</div>
+                    <div class="shipping-price">{{ method.price | appNumber }} {{ 'CURRENCY' | translate }}</div>
                     <div class="radio-check"><mat-icon>check_circle</mat-icon></div>
                   </div>
                 </label>
@@ -336,7 +336,7 @@
                     </p>
                     <p>
                       {{ 'CLIENT.CHECKOUT.SHIPPING_PRICE' | translate }}
-                      {{ getSelectedShippingMethod()?.price | number: '1.2-2' : 'en' }} {{ 'CURRENCY' | translate }}
+                      {{ getSelectedShippingMethod()?.price | appNumber }} {{ 'CURRENCY' | translate }}
                     </p>
                   </div>
                   <div *ngIf="deliveryType === 'pickup'">
@@ -386,7 +386,7 @@
                   <span class="coupon-name">{{ coupon.name }}</span>
                   <span class="coupon-discount">
                     <ng-container *ngIf="coupon.amountOff"
-                      >- {{ coupon.amountOff | number: '1.2-2' : 'en' }} {{ 'CURRENCY' | translate }}</ng-container
+                      >- {{ coupon.amountOff | appNumber }} {{ 'CURRENCY' | translate }}</ng-container
                     >
                     <ng-container *ngIf="coupon.percentOff"
                       >- {{ coupon.percentOff }}%</ng-container
@@ -437,10 +437,8 @@
             </div>
             <div class="item-details">
               <span class="item-title">{{ item.bookTitle }}</span>
-              <span class="item-qty"
-                >{{ 'CLIENT.CHECKOUT.QUANTITY' | translate }} {{ item.quantity }} × {{ item.price | number: '1.2-2' : 'en' }} {{ 'CURRENCY' | translate }}</span
-              >
-              <span class="item-price">{{ item.subtotal | number: '1.2-2' : 'en' }} {{ 'CURRENCY' | translate }}</span>
+              <span class="item-qty">{{ item.quantity }} {{ 'UNIT' | translate }} × {{ item.price | appNumber }} {{ 'CURRENCY' | translate }}</span>
+              <span class="item-price">{{ item.subtotal | appNumber }} {{ 'CURRENCY' | translate }}</span>
             </div>
           </div>
         </div>
@@ -448,11 +446,11 @@
         <div class="sidebar-total">
           <div class="sidebar-total-row">
             <span>{{ 'CLIENT.CHECKOUT.SUBTOTAL' | translate }}</span>
-            <strong>{{ cart.totalPrice | number: '1.2-2' : 'en' }} {{ 'CURRENCY' | translate }}</strong>
+            <strong>{{ cart.totalPrice | appNumber }} {{ 'CURRENCY' | translate }}</strong>
           </div>
           <div class="sidebar-total-row" *ngIf="deliveryType === 'shipping' && getSelectedShippingMethod()">
             <span>{{ 'CLIENT.CHECKOUT.DELIVERY_PRICE' | translate }} ({{ getSelectedShippingMethod()?.name }})</span>
-            <strong>{{ getSelectedShippingMethod()?.price | number: '1.2-2' : 'en' }} {{ 'CURRENCY' | translate }}</strong>
+            <strong>{{ getSelectedShippingMethod()?.price | appNumber }} {{ 'CURRENCY' | translate }}</strong>
           </div>
           <div class="sidebar-total-row" *ngIf="deliveryType === 'pickup'">
             <span>{{ 'CLIENT.CHECKOUT.DELIVERY_PRICE' | translate }}</span>
@@ -460,12 +458,12 @@
           </div>
           <div class="sidebar-total-row discount" *ngIf="appliedCoupons.length > 0">
             <span>{{ 'CLIENT.CHECKOUT.DISCOUNT' | translate }}</span>
-            <strong>- {{ getDiscountAmount(cart.totalPrice) | number: '1.2-2' : 'en' }} {{ 'CURRENCY' | translate }}</strong>
+            <strong>- {{ getDiscountAmount(cart.totalPrice) | appNumber }} {{ 'CURRENCY' | translate }}</strong>
           </div>
           <div class="sidebar-total-divider" *ngIf="(deliveryType === 'shipping' && getSelectedShippingMethod()) || deliveryType === 'pickup' || appliedCoupons.length > 0"></div>
           <div class="sidebar-total-row total" *ngIf="(deliveryType === 'shipping' && getSelectedShippingMethod()) || deliveryType === 'pickup' || appliedCoupons.length > 0">
             <span>{{ 'CLIENT.CHECKOUT.TOTAL_TO_PAY' | translate }}</span>
-            <strong>{{ getFinalPrice() | number: '1.2-2' : 'en' }} {{ 'CURRENCY' | translate }}</strong>
+            <strong>{{ getFinalPrice() | appNumber }} {{ 'CURRENCY' | translate }}</strong>
           </div>
         </div>
       </aside>

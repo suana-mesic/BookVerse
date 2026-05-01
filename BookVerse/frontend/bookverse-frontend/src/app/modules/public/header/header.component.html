@@ -64,7 +64,7 @@
               <div class="notif-content">
                 <div class="notif-title">{{ notif.message }}</div>
                 <div class="notif-order">{{ notif.orderNumber }}</div>
-                <div class="notif-time">{{ notif.receivedAt | date: 'dd.MM.yyyy HH:mm' }}</div>
+                <div class="notif-time">{{ notif.receivedAt | appDate }}</div>
               </div>
             </div>
             <mat-divider></mat-divider>
@@ -83,7 +83,9 @@
     <div class="header__lang" (click)="toggleLangMenu($event)">
       <button class="header__lang-btn">
         <span class="lang-flag">{{ currentLang === 'bs' ? '🇧🇦' : '🇬🇧' }}</span>
-        <span class="lang-name">{{ (currentLang === 'bs' ? 'CLIENT.HEADER.LANG_BS' : 'CLIENT.HEADER.LANG_EN') | translate }}</span>
+        <span class="lang-name">{{
+          (currentLang === 'bs' ? 'CLIENT.HEADER.LANG_BS' : 'CLIENT.HEADER.LANG_EN') | translate
+        }}</span>
         <span class="lang-arrow">▾</span>
       </button>
       <ul class="lang-dropdown" [class.open]="langMenuOpen">
@@ -100,7 +102,7 @@
       <img src="icons/cart_white.png" class="header__cart-icon" alt="icon" />
     </button>
     <!--  (click)="showDropMenu()" -->
-    <button class="header__profile" (click)="prijavaIliDropDown()">
+    <button class="header__profile" (click)="loginOrDropDown()">
       @if (this.authFacadeService.isAuthenticated()) {
         <h2 #userName class="header__profile-name">
           {{ authFacadeService.currentUser()?.fullName }}

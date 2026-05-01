@@ -102,8 +102,6 @@ export class ProductCategoryUpsertComponent implements OnInit {
   }
 
   private updateCategory(): void {
-    // console.log('Is enabled');
-    // console.log(this.form.value.isEnabled);
     const command: UpdateProductCategoryCommand = {
       name: this.form.value.name.trim(),
       isEnabled: this.form.value.isEnabled,
@@ -115,7 +113,10 @@ export class ProductCategoryUpsertComponent implements OnInit {
       },
       error: (err) => {
         this.isLoading = false;
-        console.error('Update category error:', err);
+        const key = err.status === 409
+          ? 'GENRES.DIALOGS.ERROR_DUPLICATE'
+          : 'GENRES.DIALOGS.ERROR_UPDATE';
+        this.toaster.error(this.translate.instant(key));
       },
     });
   }

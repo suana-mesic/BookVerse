@@ -15,17 +15,17 @@ export class MapComponent implements AfterViewInit {
       attribution: '© OpenStreetMap',
     }).addTo(this.map);
 
-    // Marker 1 - Mostar (Stari most)
+    // Marker 1 - Mostar Old Bridge
     L.marker([43.337, 17.8156])
       .addTo(this.map)
       .bindPopup('<b>Central Bookstore<br>12 books</b><br><a>Contact</a>');
 
-    // Marker 2 - Mostar (Musala trg)
+    // Marker 2 - Mostar Musala Square
     L.marker([43.3438, 17.8078])
       .addTo(this.map)
       .bindPopup('<b>Fortica Books<br>14 books</b><br><a>Contact</a>');
 
-    // Marker 3 - Sarajevo (Bascarsija)
+    // Marker 3 - Sarajevo Old Bazaar
     L.marker([43.8593, 18.4301])
       .addTo(this.map)
       .bindPopup('<b>Space Bookstore<br>19 books</b><br><a>Contact</a>');

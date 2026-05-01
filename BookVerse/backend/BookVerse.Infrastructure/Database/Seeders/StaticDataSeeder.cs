@@ -145,7 +145,7 @@ public partial class StaticDataSeeder
         new BookFormat
         {
             Id = 2,
-            Format = "Tvrdi papirni uvez",
+            Format = "Meki uvez",
             IsDeleted = false,
             CreatedAtUtc = DateTime.UtcNow
         },

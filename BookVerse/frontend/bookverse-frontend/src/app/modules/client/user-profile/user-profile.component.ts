@@ -8,6 +8,7 @@ import { Location } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
 import { CountriesApiService } from '../../../api-services/rest-countries/countires-api.service';
 import { Subscription } from 'rxjs';
+import { AuthFacadeService } from '../../../core/services/auth/auth-facade.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -23,6 +24,7 @@ export class UserProfileComponent extends BaseComponent implements OnInit, OnDes
   private location = inject(Location);
   private translate = inject(TranslateService);
   private countriesService = inject(CountriesApiService);
+  private authFacade = inject(AuthFacadeService);
 
   countries: { name: string; countryCode: string; nameBs: string }[] = [];
   cities: string[] = [];
@@ -150,6 +152,7 @@ export class UserProfileComponent extends BaseComponent implements OnInit, OnDes
     this.api.updateMyProfile(payload).subscribe({
       next: () => {
         this.stopLoading();
+        this.authFacade.updateDisplayName(payload.firstName, payload.lastName);
         this.toaster.success(this.translate.instant('CLIENT.USER_PROFILE.SUCCESS_UPDATE'));
       },
       error: (err) => {

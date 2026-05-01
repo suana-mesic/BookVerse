@@ -1,4 +1,4 @@
-﻿import { Component, inject, OnInit } from '@angular/core';
+﻿import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BooksFormService } from '../services/book-form.service';
 import {
@@ -19,7 +19,9 @@ import { AuthorsApiService } from '../../../../../api-services/authors/authors-a
 import { BooksApiService } from '../../../../../api-services/books/books-api.service';
 import { LanguagesApiService } from '../../../../../api-services/languages/languages-api.service';
 import { ListLanguagesQueryDto } from '../../../../../api-services/languages/languages-api.model';
-import { TranslateService } from '@ngx-translate/core';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-products-add',
@@ -28,7 +30,7 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrl: './books-add.component.scss',
   providers: [BooksFormService],
 })
-export class BooksAddComponent extends BaseFormComponent<GetBookByIdQueryDto> implements OnInit {
+export class BooksAddComponent extends BaseFormComponent<GetBookByIdQueryDto> implements OnInit, OnDestroy {
   private api = inject(BooksApiService);
   private categoriesApi = inject(ProductCategoriesApiService);
   private publishersApi = inject(PublishersService);
@@ -46,6 +48,8 @@ export class BooksAddComponent extends BaseFormComponent<GetBookByIdQueryDto> im
   languages: ListLanguagesQueryDto[] = [];
   authors: ListAuthorsQueryDto[] = [];
 
+  private destroy$ = new Subject<void>();
+
   ngOnInit(): void {
     this.initForm(false); // Add mode
     this.loadCategories();
@@ -53,6 +57,19 @@ export class BooksAddComponent extends BaseFormComponent<GetBookByIdQueryDto> im
     this.loadBookFormats();
     this.loadLanguages();
     this.loadAuthors();
+
+    this.translate.onLangChange
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((event: LangChangeEvent) => {
+        this.loadCategories();
+        this.loadBookFormats();
+        this.loadLanguages();
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   protected loadData(): void {

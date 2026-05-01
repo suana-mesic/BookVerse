@@ -45,27 +45,6 @@
     </div>
 
     <div class="settings-section">
-      <h2>{{ 'SETTINGS.DATE_TIME' | translate }}</h2>
-      <div class="setting-item">
-        <span class="setting-label">{{ 'SETTINGS.DATE_FORMAT' | translate }}</span>
-        <mat-form-field appearance="fill">
-          <mat-select formControlName="dateFormat">
-            <mat-option value="dd.MM.yyyy">DD.MM.YYYY</mat-option>
-            <mat-option value="MM/dd/yyyy">MM/DD/YYYY</mat-option>
-            <mat-option value="yyyy-MM-dd">YYYY-MM-DD</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div class="setting-item">
-        <span class="setting-label">{{ 'SETTINGS.TIME_FORMAT' | translate }}</span>
-        <mat-button-toggle-group formControlName="timeFormat">
-          <mat-button-toggle value="24h">24h</mat-button-toggle>
-          <mat-button-toggle value="12h">12h</mat-button-toggle>
-        </mat-button-toggle-group>
-      </div>
-    </div>
-
-    <div class="settings-section">
       <h2>{{ 'SETTINGS.LANGUAGE' | translate }}</h2>
       <div class="setting-item">
         <span class="setting-label">{{ 'SETTINGS.LANGUAGE_LABEL' | translate }}</span>

@@ -288,6 +288,7 @@
       "ERROR_LOAD_CATEGORIES": "Error loading genres.",
       "ERROR_LOAD_PUBLISHERS": "Error loading publishers.",
       "ERROR_LOAD_FORMATS": "Error loading book formats.",
+      "ERROR_LOAD_LANGUAGES": "Error loading languages.",
       "ERROR_LOAD_AUTHORS": "Error loading authors.",
       "UNSAVED_CHANGES": "You have unsaved changes in the form.",
       "CONFIRM_CANCEL": "Do you want to cancel changes and go back?"
@@ -344,6 +345,21 @@
       "TITLE": "Inventory Details",
       "LOADING": "Loading inventory details..."
     },
+    "STATUS": {
+      "DRAFT": "Draft",
+      "PACKED": "Packed",
+      "PAID": "Paid",
+      "SHIPPED": "Shipped",
+      "CANCELLED": "Cancelled",
+      "UNKNOWN": "Unknown"
+    },
+    "STATUS_DESCRIPTION": {
+      "DRAFT": "Inventory created but not yet confirmed",
+      "CONFIRMED": "Inventory confirmed and awaiting payment",
+      "PAID": "Payment received and inventory is being processed",
+      "SHIPPED": "Inventory has been shipped",
+      "CANCELLED": "Inventory has been cancelled"
+    },
     "DIALOGS": {
       "DELETE_TITLE": "Delete Inventory",
       "DELETE_MESSAGE": "Are you sure you want to delete the inventory for store \"{{storeName}}\" and book \"{{title}}\"?",
@@ -353,7 +369,7 @@
       "SUCCESS_UPDATE": "Inventory successfully updated.",
       "SUCCESS_DELETE": "Inventory successfully deleted.",
       "ERROR_CREATE": "Error creating inventory.",
-      "DUPLICATE_INVENTORY": "Inventory for store {{storeName}} and book {{bookTitle}} has already been catalogued.",
+      "DUPLICATE_INVENTORY": "Cannot create inventory for the same book in the same store twice (store: {{storeName}}, book: {{bookTitle}}).",
       "ERROR_UPDATE": "Error updating inventory.",
       "ERROR_DELETE": "Error deleting inventory.",
       "ERROR_TOGGLE": "Error changing inventory status.",
@@ -430,12 +446,30 @@
       "NO_TRANSITIONS": "No status transitions available for this order",
       "CANCEL_WARNING": "Warning: Cancelling an order cannot be undone!"
     },
+    "DIALOGS": {
+      "CONFIRM_COMPLETE_TITLE": "Confirm Order Completion",
+      "CONFIRM_COMPLETE_MESSAGE": "Are you sure you want to mark order {{orderNumber}} as shipped? This action cannot be undone."
+    },
     "MESSAGES": {
       "STATUS_UPDATED": "Order status updated successfully",
       "CANNOT_CHANGE_STATUS": "This order status cannot be changed",
       "ERROR_LOAD": "Error loading orders.",
       "ERROR_UPDATE_STATUS": "Error updating order status."
     }
+  },
+  "MONTHS": {
+    "1": "January",
+    "2": "February",
+    "3": "March",
+    "4": "April",
+    "5": "May",
+    "6": "June",
+    "7": "July",
+    "8": "August",
+    "9": "September",
+    "10": "October",
+    "11": "November",
+    "12": "December"
   },
   "COMMON": {
     "YES": "Yes",
@@ -729,7 +763,7 @@
       "ORDERS": "Orders",
       "PROFILE": "Profile",
       "LOGOUT": "Logout",
-      "LANG_BS": "Bosanski",
+      "LANG_BS": "Bosnian",
       "LANG_EN": "English"
     },
     "PUBLIC_LAYOUT": {
@@ -834,6 +868,8 @@
       "TOTAL": "Total",
       "SUBTOTAL": "Subtotal:",
       "SHIPPING_PRICE": "Shipping price:",
+      "CONFIRM_PAYMENT_TITLE": "Confirm Order",
+      "CONFIRM_PAYMENT_MESSAGE": "Are you sure you want to place this order? The total amount of {{amount}} BAM will be charged. You can cancel the order later in the My Orders section.",
       "ORDER_CONFIRMED": "Order confirmed! Redirecting to payment...",
       "ERROR_LOAD_ADDRESS": "Error loading address.",
       "ERROR_CREATE_ORDER": "Error creating order",
@@ -1060,5 +1096,6 @@
     "SIGNALR_USER_CONNECTED": "SignalR user connection established",
     "SIGNALR_USER_CONNECTION_ERROR": "SignalR user connection error:"
   },
-  "CURRENCY": "BAM"
+  "CURRENCY": "BAM",
+  "UNIT": "pcs"
 }

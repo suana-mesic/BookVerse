@@ -3,6 +3,7 @@ import * as signalR from '@microsoft/signalr';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { OrderStatusType } from '../../../api-services/orders/orders-api.models';
+import { environment } from '../../../../environments/environment';
 
 export interface UserNotification {
   message: string;
@@ -74,7 +75,7 @@ export class SignalRService {
 
   startStaffConnection(token: string) {
     this.staffHubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('https://localhost:7260/hubs/orders', {
+      .withUrl(`${environment.apiUrl}/hubs/orders`, {
         accessTokenFactory: () => token,
       })
       .withAutomaticReconnect()
@@ -106,7 +107,7 @@ export class SignalRService {
 
   startUserConnection(token: string) {
     this.userHubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('https://localhost:7260/hubs/user-orders', {
+      .withUrl(`${environment.apiUrl}/hubs/user-orders`, {
         accessTokenFactory: () => token,
       })
       .withAutomaticReconnect()
