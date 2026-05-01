@@ -1,28 +1,30 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { FitPaginatorBarComponent } from './components/fit-paginator-bar/fit-paginator-bar.component';
+import { BookversePaginatorBarComponent } from './components/bookverse-paginator-bar/bookverse-paginator-bar.component';
 import { materialModules } from './material-modules';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
-import { FitConfirmDialogComponent } from './components/fit-confirm-dialog/fit-confirm-dialog.component';
+import { BookverseConfirmDialogComponent } from './components/bookverse-confirm-dialog/bookverse-confirm-dialog.component';
 import { DialogHelperService } from './services/dialog-helper.service';
-import { FitLoadingBarComponent } from './components/fit-loading-bar/fit-loading-bar.component';
-import { FitTableSkeletonComponent } from './components/fit-table-skeleton/fit-table-skeleton.component';
+import { BookverseLoadingBarComponent } from './components/bookverse-loading-bar/bookverse-loading-bar.component';
+import { BookverseTableSkeletonComponent } from './components/bookverse-table-skeleton/bookverse-table-skeleton.component';
 import { MatIconModule } from '@angular/material/icon';
 import { ImageUploadComponent } from './components/image-upload/image-upload.component';
 import { RouterModule } from '@angular/router';
 import { AppDatePipe } from './pipes/date-pipe';
+import { AppNumberPipe } from './pipes/number-pipe';
 import { ApiUrlPipe } from './pipes/api-url.pipe';
 import { DynamicDateAdapter } from './adapters/dynamic-date.adapter';
 import { DateFormatService } from './services/date-format.service';
 import { DateAdapter } from '@angular/material/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
-    FitPaginatorBarComponent,
-    FitConfirmDialogComponent,
-    FitLoadingBarComponent,
-    FitTableSkeletonComponent,
+    BookversePaginatorBarComponent,
+    BookverseConfirmDialogComponent,
+    BookverseLoadingBarComponent,
+    BookverseTableSkeletonComponent,
     ImageUploadComponent,
     AppDatePipe,
   ],
@@ -34,24 +36,26 @@ import { DateAdapter } from '@angular/material/core';
     TranslatePipe,
     RouterModule,
     ApiUrlPipe,
+    AppNumberPipe,
     ...materialModules,
   ],
   providers: [
     DialogHelperService,
     DatePipe,
-    { provide: DateAdapter, useClass: DynamicDateAdapter, deps: [DateFormatService] },
+    { provide: DateAdapter, useClass: DynamicDateAdapter, deps: [DateFormatService, TranslateService] },
   ],
   exports: [
-    FitPaginatorBarComponent,
+    BookversePaginatorBarComponent,
     CommonModule,
     ReactiveFormsModule,
     TranslatePipe,
     FormsModule,
-    FitLoadingBarComponent,
-    FitTableSkeletonComponent,
+    BookverseLoadingBarComponent,
+    BookverseTableSkeletonComponent,
     ImageUploadComponent,
     RouterModule,
     AppDatePipe,
+    AppNumberPipe,
     ApiUrlPipe,
     materialModules,
   ],

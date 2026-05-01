@@ -2,12 +2,12 @@
 import {LoadingBarService} from '../../../../core/services/loading-bar.service';
 
 @Component({
-  selector: 'app-fit-loading-bar',
+  selector: 'app-bookverse-loading-bar',
   standalone: false,
-  templateUrl: './fit-loading-bar.component.html',
-  styleUrl: './fit-loading-bar.component.scss',
+  templateUrl: './bookverse-loading-bar.component.html',
+  styleUrl: './bookverse-loading-bar.component.scss',
 })
-export class FitLoadingBarComponent {
+export class BookverseLoadingBarComponent {
   /**
    * Inject LoadingBarService to access loading state
    * Component subscribes to loading$ observable to show/hide bar

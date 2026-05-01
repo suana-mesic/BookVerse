@@ -7,8 +7,10 @@ import { loadStripe, Stripe, StripeElements, StripePaymentElement } from '@strip
 import { BaseComponent } from '../../../core/components/base-classes/base-component';
 import { CaptchaApiService } from '../../../api-services/captcha/captcha-api.service';
 import { CartApiService } from '../../../api-services/cart/cart-api.service';
-import { Location } from '@angular/common';
+import { formatNumber, Location } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
+import { DialogHelperService } from '../../shared/services/dialog-helper.service';
+import { DialogButton } from '../../shared/models/dialog-config.model';
 @Component({
   selector: 'app-payment',
   standalone: false,
@@ -23,6 +25,7 @@ export class PaymentComponent extends BaseComponent implements OnInit, OnDestroy
   private location = inject(Location);
   private translate = inject(TranslateService);
   private fb = inject(FormBuilder);
+  private dialogHelper = inject(DialogHelperService);
 
   private langSub: Subscription | null = null;
 
@@ -142,6 +145,16 @@ export class PaymentComponent extends BaseComponent implements OnInit, OnDestroy
     this.paymentFormComplete = false;
     paymentElement.on('change', (event) => {
       this.paymentFormComplete = event.complete === true;
+    });
+  }
+
+  confirmAndPay(): void {
+    const lang = this.translate.currentLang || this.translate.defaultLang || 'bs';
+    const locale = lang === 'en' ? 'en-US' : 'bs';
+    const amount = formatNumber(this.totalPrice, locale, '1.2-2');
+    this.dialogHelper.checkout.confirmPayment(amount).subscribe((result) => {
+      if (result?.button !== DialogButton.YES) return;
+      this.submitPayment();
     });
   }
 

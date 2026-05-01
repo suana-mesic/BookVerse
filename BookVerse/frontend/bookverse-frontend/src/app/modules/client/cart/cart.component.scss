@@ -164,6 +164,15 @@ h3 {
   flex-direction: column;
   gap: 6px;
   flex-shrink: 0;
+  align-items: flex-end;
+}
+
+.item-total {
+  font-size: 18px;
+  font-weight: 700;
+  color: $primary-dark;
+  text-align: right;
+  margin-bottom: 4px;
 }
 
 .btn-save,

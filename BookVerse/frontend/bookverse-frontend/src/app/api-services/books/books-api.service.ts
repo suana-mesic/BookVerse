@@ -83,19 +83,16 @@ export class BooksApiService {
   pageSize = signal(10);
 
   getBooksFromApi(language: string) {
-    const url = `https://localhost:7260/Books?Paging.Page=${this.page()}&Paging.PageSize=${this.pageSize()}&Language=${language}`;
-    //console.log(url);
+    const url = `${this.baseUrl}?Paging.Page=${this.page()}&Paging.PageSize=${this.pageSize()}&Language=${language}`;
     return this.http.get<Array<Book>>(url);
   }
 
   getBookDetailsFromApi(bookId: string, language: string = 'bs') {
-    const url = `https://localhost:7260/Books/${bookId}?language=${language}`;
-    //console.log(url);
+    const url = `${this.baseUrl}/${bookId}?language=${language}`;
     return this.http.get<Array<Book>>(url);
   }
 
-  apiUrl: string = '';
   createBook(book: CreateBookCommand): Observable<any> {
-    return this.http.post('https://localhost:7260/Books', book);
+    return this.http.post(this.baseUrl, book);
   }
 }

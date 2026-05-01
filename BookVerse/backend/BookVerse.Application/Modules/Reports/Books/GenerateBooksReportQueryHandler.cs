@@ -2,6 +2,7 @@
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
+using System.Globalization;
 
 namespace BookVerse.Application.Modules.Reports.Books
 {
@@ -25,6 +26,7 @@ namespace BookVerse.Application.Modules.Reports.Books
                 ["unit"] = "kom",
                 ["page"] = "Stranica",
                 ["of"] = "od",
+                ["currency"] = "KM",
             },
             ["en"] = new()
             {
@@ -41,6 +43,7 @@ namespace BookVerse.Application.Modules.Reports.Books
                 ["unit"] = "pcs",
                 ["page"] = "Page",
                 ["of"] = "of",
+                ["currency"] = "BAM",
             },
         };
 
@@ -55,6 +58,8 @@ namespace BookVerse.Application.Modules.Reports.Books
             QuestPDF.Settings.License = LicenseType.Community;
 
             var lang = string.IsNullOrWhiteSpace(request.Language) ? "bs" : request.Language;
+            var culture = lang == "en" ? new CultureInfo("en-US") : new CultureInfo("bs-BA");
+            var dateFormat = lang == "en" ? "MM/dd/yyyy" : "dd.MM.yyyy";
 
             var timeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
             var dateFromLocal = TimeZoneInfo.ConvertTimeFromUtc(request.DateFrom, timeZone);
@@ -108,7 +113,7 @@ namespace BookVerse.Application.Modules.Reports.Books
 
                     page.Header().Column(h =>
                     {
-                        h.Item().Text($"{translatePdf(lang, "reportTitle")}: {dateFromLocal:dd.MM.yyyy} - {dateToLocal:dd.MM.yyyy}")
+                        h.Item().Text($"{translatePdf(lang, "reportTitle")}: {dateFromLocal.ToString(dateFormat, culture)} - {dateToLocal.ToString(dateFormat, culture)}")
                               .SemiBold().FontSize(16).FontColor(Colors.Green.Medium);
                         h.Item().PaddingTop(4).Text($"{translatePdf(lang, "book")}: {bookTitle}")
                               .FontSize(12).FontColor(Colors.Grey.Darken2);
@@ -137,17 +142,17 @@ namespace BookVerse.Application.Modules.Reports.Books
                             foreach (var item in items)
                             {
                                 table.Cell().Padding(5).Text(item.OrderId.ToString());
-                                table.Cell().Padding(5).Text(item.OrderDate.ToString("dd.MM.yyyy"));
+                                table.Cell().Padding(5).Text(item.OrderDate.ToString(dateFormat, culture));
                                 table.Cell().Padding(5).Text(item.Quantity.ToString());
-                                table.Cell().Padding(5).Text(item.PriceAtTime.ToString("F2"));
-                                table.Cell().Padding(5).Text(item.Total.ToString("F2"));
+                                table.Cell().Padding(5).Text(item.PriceAtTime.ToString("N2", culture));
+                                table.Cell().Padding(5).Text(item.Total.ToString("N2", culture));
                             }
                         });
 
                         col.Item().PaddingTop(20).BorderTop(1).PaddingTop(10).Row(row =>
                         {
                             row.RelativeItem().Text($"{translatePdf(lang, "totalQty")}: {totalQuantity} {translatePdf(lang, "unit")}").SemiBold();
-                            row.RelativeItem().AlignRight().Text($"{translatePdf(lang, "totalRevenue")}: {totalRevenue:F2} KM").SemiBold();
+                            row.RelativeItem().AlignRight().Text($"{translatePdf(lang, "totalRevenue")}: {totalRevenue.ToString("N2", culture)} {translatePdf(lang, "currency")}").SemiBold();
                         });
                     });
 

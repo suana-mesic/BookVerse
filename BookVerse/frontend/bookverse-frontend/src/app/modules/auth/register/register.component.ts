@@ -8,6 +8,7 @@ import { DialogButton } from '../../shared/models/dialog-config.model';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { CountriesApiService } from '../../../api-services/rest-countries/countires-api.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-register',
@@ -138,7 +139,7 @@ export class RegisterComponent implements OnInit {
     // console.log(payload);
 
     this.http
-      .post<RegisterCommandDto>('https://localhost:7260/api/auth/register', payload, {
+      .post<RegisterCommandDto>(`${environment.apiUrl}/api/auth/register`, payload, {
         headers: { Accept: 'text/plain' },
       })
       .subscribe({

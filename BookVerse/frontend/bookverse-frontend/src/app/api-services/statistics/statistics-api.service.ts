@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { HttpParams } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import {
   GetCategoriesPopularityQueryDto,
@@ -35,15 +36,19 @@ export class StatisticsApiService {
     return this.http.get<GetShippersOrdersQueryDto[]>(`${this.baseUrl}/shipper-orders-count`);
   }
 
-  getCategoriesPopularity(): Observable<GetCategoriesPopularityQueryDto[]> {
+  getCategoriesPopularity(language?: string): Observable<GetCategoriesPopularityQueryDto[]> {
+    const params = language ? new HttpParams().set('language', language) : undefined;
     return this.http.get<GetCategoriesPopularityQueryDto[]>(
       `${this.baseUrl}/categories-popularity`,
+      { params },
     );
   }
 
-  getRevenueByMonthAndCategory(): Observable<GetRevenueByMonthAndCategoryQueryDto[]> {
+  getRevenueByMonthAndCategory(language?: string): Observable<GetRevenueByMonthAndCategoryQueryDto[]> {
+    const params = language ? new HttpParams().set('language', language) : undefined;
     return this.http.get<GetRevenueByMonthAndCategoryQueryDto[]>(
       `${this.baseUrl}/revenue-by-month-and-category`,
+      { params },
     );
   }
 

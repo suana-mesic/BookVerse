@@ -17,7 +17,6 @@ export class AuthorsApiService {
     return this.http.get<AuthorsListResponse>(this.baseUrl, { params });
   }
   getAuthorFromApi(authorId: number) {
-    const url = `https://localhost:7260/Authors/${authorId}`;
-    return this.http.get<Author>(url);
+    return this.http.get<Author>(`${this.baseUrl}/${authorId}`);
   }
 }

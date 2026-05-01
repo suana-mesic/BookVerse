@@ -266,7 +266,10 @@ export class ProductCategoriesComponent
         this.loadPagedData();
       },
       error: (err) => {
-        this.toaster.error(this.translate.instant('GENRES.DIALOGS.ERROR_UPDATE'));
+        const key = err.status === 409
+          ? 'GENRES.DIALOGS.ERROR_DUPLICATE'
+          : 'GENRES.DIALOGS.ERROR_UPDATE';
+        this.toaster.error(this.translate.instant(key));
         console.error(err);
       },
     });

@@ -8,5 +8,6 @@ namespace BookVerse.Application.Modules.Statistics.Queries.CategoriesPopularity
 {
     public class GetCategoriesPopularityQuery:IRequest<List<GetCategoriesPopularityQueryDto>>
     {
+        public string? Language { get; set; }
     }
 }

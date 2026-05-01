@@ -159,8 +159,16 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
 
   switchLanguage(langCode: string): void {
     this.currentLang = langCode;
-    this.translate.use(langCode);
     localStorage.setItem('lang', langCode);
+
+    const saved = localStorage.getItem('adminSettings');
+    if (saved) {
+      const settings = JSON.parse(saved);
+      settings.language = langCode;
+      localStorage.setItem('adminSettings', JSON.stringify(settings));
+    }
+
+    this.translate.use(langCode).subscribe();
   }
 
   getCurrentLanguage() {

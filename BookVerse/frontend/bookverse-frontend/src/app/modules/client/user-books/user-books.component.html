@@ -1,4 +1,4 @@
-<app-header></app-header>
+﻿<app-header></app-header>
 
 <div class="container">
   <div class="header-card">
@@ -80,12 +80,12 @@
   </div>
 
   <!-- Loading -->
-  <app-fit-table-skeleton
+  <app-bookverse-table-skeleton
     *ngIf="isLoading && !errorMessage"
     [rows]="5"
     [columns]="1"
     [showActions]="false"
-  ></app-fit-table-skeleton>
+  ></app-bookverse-table-skeleton>
 
   <!-- Error -->
   <div *ngIf="!isLoading && errorMessage" class="error-container">
@@ -114,7 +114,7 @@
             <div class="timeline-title">
               <span class="book-title-main">{{ book.title }}</span>
             </div>
-            <span class="book-price">{{ book.price | number: '1.2-2' : 'en' }} {{ 'CURRENCY' | translate }}</span>
+            <span class="book-price">{{ book.price | appNumber }} {{ 'CURRENCY' | translate }}</span>
           </div>
 
           <!-- Book image preview -->
@@ -168,10 +168,10 @@
               <!-- Date -->
               <p class="review-date">
                 {{ 'CLIENT.USER_BOOKS.PUBLISHED' | translate }}
-                {{ book.userReview.createdAt | date: 'dd.MM.yyyy HH:mm' : userTimezone }}
+                {{ book.userReview.createdAt | appDate: true : userTimezone }}
                 <span *ngIf="book.userReview.updatedAt">
                   ({{ 'CLIENT.USER_BOOKS.UPDATED' | translate }}
-                  {{ book.userReview.updatedAt | date: 'dd.MM.yyyy HH:mm' : userTimezone }})
+                  {{ book.userReview.updatedAt | appDate: true : userTimezone }})
                 </span>
               </p>
 
@@ -212,7 +212,7 @@
 
       <!-- Pagination -->
       <div class="paginator-wrapper">
-        <app-fit-paginator-bar [vm]="$any(this)"></app-fit-paginator-bar>
+        <app-bookverse-paginator-bar [vm]="$any(this)"></app-bookverse-paginator-bar>
       </div>
     </div>
 
@@ -250,7 +250,7 @@
           </div>
           <div class="detail-meta-row">
             <mat-icon>payments</mat-icon>
-            <span>{{ selectedBook.price | number: '1.2-2' : 'en' }} {{ 'CURRENCY' | translate }}</span>
+            <span>{{ selectedBook.price | appNumber }} {{ 'CURRENCY' | translate }}</span>
           </div>
         </div>
 

@@ -99,7 +99,7 @@
                 <span class="product-name">{{ item.book.title }}</span>
               </td>
               <td class="text-right">{{ item.quantity }}</td>
-              <td class="text-right">{{ item.unitPrice | number: '1.2-2' }} {{ 'CURRENCY' | translate }}</td>
+              <td class="text-right">{{ item.unitPrice | appNumber }} {{ 'CURRENCY' | translate }}</td>
             </tr>
           </tbody>
           <tfoot>
@@ -107,14 +107,14 @@
               <td colspan="2" class="text-right">
                 {{ 'ORDERS.DETAILS.SUBTOTAL' | translate }}
               </td>
-              <td class="text-right">{{ order.subtotal | number: '1.2-2' }} {{ 'CURRENCY' | translate }}</td>
+              <td class="text-right">{{ order.subtotal | appNumber }} {{ 'CURRENCY' | translate }}</td>
             </tr>
 
             <tr class="shipping-row" *ngIf="order.shippingPriceAtTheTime">
               <td colspan="2" class="text-right">
                 {{ 'ORDERS.DETAILS.SHIPPING' | translate }}
               </td>
-              <td class="text-right">{{ order.shippingPriceAtTheTime | number: '1.2-2' }} {{ 'CURRENCY' | translate }}</td>
+              <td class="text-right">{{ order.shippingPriceAtTheTime | appNumber }} {{ 'CURRENCY' | translate }}</td>
             </tr>
 
             <tr class="discount-row" *ngIf="order.discountAmount">
@@ -122,7 +122,7 @@
                 {{ 'ORDERS.DETAILS.DISCOUNT' | translate }}
               </td>
               <td class="text-right discount-amount">
-                - {{ order.discountAmount | number: '1.2-2' }} {{ 'CURRENCY' | translate }}
+                - {{ order.discountAmount | appNumber }} {{ 'CURRENCY' | translate }}
               </td>
             </tr>
 
@@ -131,7 +131,7 @@
                 <strong>{{ 'ORDERS.DETAILS.ORDER_TOTAL' | translate }}</strong>
               </td>
               <td class="text-right total-amount">
-                <strong>{{ order.totalAmount | number: '1.2-2' }} {{ 'CURRENCY' | translate }}</strong>
+                <strong>{{ order.totalAmount | appNumber }} {{ 'CURRENCY' | translate }}</strong>
               </td>
             </tr>
           </tfoot>

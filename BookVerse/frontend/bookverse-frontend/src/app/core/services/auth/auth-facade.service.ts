@@ -126,6 +126,12 @@ export class AuthFacadeService {
     }
   }
 
+  updateDisplayName(firstName: string, lastName: string): void {
+    const current = this._currentUser();
+    if (!current) return;
+    this._currentUser.set({ ...current, firstName, lastName, fullName: `${firstName} ${lastName}` });
+  }
+
   private clearUserState(): void {
     this._currentUser.set(null);
     this.storage.clear();

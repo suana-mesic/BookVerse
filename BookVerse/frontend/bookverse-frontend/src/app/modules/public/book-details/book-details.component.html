@@ -48,7 +48,7 @@
   </div>
   <div class="book__buy">
     <h1>
-      {{ 'CLIENT.BOOK_DETAILS.PRICE' | translate }} {{ book()?.price }} {{ 'CURRENCY' | translate }}
+      {{ 'CLIENT.BOOK_DETAILS.PRICE' | translate }} {{ book()?.price | appNumber }} {{ 'CURRENCY' | translate }}
     </h1>
     <div>
       <button (click)="addToCart(book()?.id)">
@@ -60,7 +60,9 @@
     @if (storeInfoOpened) {
       <div class="book__stores-info">
         <h1>{{ this.storeNameKey() | translate }}</h1>
-        <div class="book__stores-info--close" (click)="toggleStoreInfo()">X</div>
+        <div class="book__stores-info--close" (click)="toggleStoreInfo()">
+          <mat-icon>close</mat-icon>
+        </div>
         <h2>{{ 'CLIENT.BOOK_DETAILS.WORKING_HOURS' | translate }}</h2>
         <h3>{{ 'CLIENT.BOOK_DETAILS.MON_FRI' | translate }} {{ this.storeWorkTimeMonFri() }}</h3>
         <h3>{{ 'CLIENT.BOOK_DETAILS.SAT_SUN' | translate }} {{ this.storeWorkTimeSatSun() }}</h3>

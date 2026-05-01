@@ -2,12 +2,17 @@ import {
   NgModule,
   provideBrowserGlobalErrorListeners,
   provideZoneChangeDetection,
+  LOCALE_ID,
 } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
+import { registerLocaleData } from '@angular/common';
+import localeBs from '@angular/common/locales/bs';
 
 import { AppRoutingModule } from './app-routing-module';
+
+registerLocaleData(localeBs, 'bs');
 import { AppComponent } from './app.component';
 import { authInterceptor } from './core/interceptors/auth-interceptor.service';
 import { loadingBarInterceptor } from './core/interceptors/loading-bar-interceptor.service';
@@ -33,6 +38,13 @@ import { SharedModule } from './modules/shared/shared-module';
     materialModules,
   ],
   providers: [
+    {
+      provide: LOCALE_ID,
+      useFactory: () => {
+        const lang = localStorage.getItem('lang') ?? 'bs';
+        return lang === 'en' ? 'en-US' : 'bs';
+      },
+    },
     provideAnimations(),
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection(),

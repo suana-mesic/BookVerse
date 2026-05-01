@@ -10,9 +10,11 @@ export class CountriesApiService {
   private failedCityCountries = new Set<string>([
     'AX', 'AS', 'AQ', 'BV', 'HM', 'GS', 'TF', 'IO',
     'CC', 'CX', 'NU', 'PN', 'TK', 'UM', 'WF', 'YT',
-    'BL', 'MF', 'SX', 'BQ', 'AI', 'MS', 'VG', 'TC',
+    'BL', 'MF', 'SX', 'BQ', 'AI', 'MS', 'VG', 'VI', 'TC',
     'FK', 'NC', 'PF', 'TV', 'NR', 'PW', 'MH', 'FM',
     'KI', 'SH', 'EH', 'PM', 'NF', 'VA', 'GI',
+    'GF', 'GP', 'MQ', 'RE', 'GL', 'FO', 'CK', 'GU',
+    'MP', 'AW', 'CW', 'BM', 'KY', 'JE', 'GG', 'IM',
   ]);
 
   private get lang(): string {

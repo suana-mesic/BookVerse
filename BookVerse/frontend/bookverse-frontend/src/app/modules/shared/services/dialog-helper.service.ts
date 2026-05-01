@@ -10,7 +10,7 @@ import {
   DialogButton,
   DialogResult,
 } from '../models/dialog-config.model';
-import { FitConfirmDialogComponent } from '../components/fit-confirm-dialog/fit-confirm-dialog.component';
+import { BookverseConfirmDialogComponent } from '../components/bookverse-confirm-dialog/bookverse-confirm-dialog.component';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +25,7 @@ export class DialogHelperService {
    * Opens a custom dialog with full configuration
    */
   open(config: DialogConfig): Observable<DialogResult | undefined> {
-    const dialogRef = this.dialog.open(FitConfirmDialogComponent, {
+    const dialogRef = this.dialog.open(BookverseConfirmDialogComponent, {
       width: config.width || '450px',
       disableClose: config.disableClose || false,
       data: config,
@@ -264,6 +264,32 @@ export class DialogHelperService {
   user = {
     confirmGrantAdmin: (fullName: string) => {
       return this.confirm('DIALOGS.TITLES.CONFIRM_ACTION', 'USERS.DIALOGS.CONFIRM_GRANT_ADMIN', { name: fullName });
+    },
+  };
+
+  checkout = {
+    confirmPayment: (amount: string) => {
+      return this.open({
+        type: DialogType.QUESTION,
+        titleKey: 'CLIENT.CHECKOUT.CONFIRM_PAYMENT_TITLE',
+        messageKey: 'CLIENT.CHECKOUT.CONFIRM_PAYMENT_MESSAGE',
+        messageParams: { amount },
+        icon: 'shopping_cart_checkout',
+        buttons: [{ type: DialogButton.CANCEL }, { type: DialogButton.YES, color: 'primary' }],
+      });
+    },
+  };
+
+  order = {
+    confirmComplete: (orderNumber: string) => {
+      return this.open({
+        type: DialogType.WARNING,
+        titleKey: 'ORDERS.DIALOGS.CONFIRM_COMPLETE_TITLE',
+        messageKey: 'ORDERS.DIALOGS.CONFIRM_COMPLETE_MESSAGE',
+        messageParams: { orderNumber },
+        icon: 'done_all',
+        buttons: [{ type: DialogButton.CANCEL }, { type: DialogButton.YES, color: 'primary' }],
+      });
     },
   };
 

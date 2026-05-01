@@ -17,7 +17,7 @@
 
         <div class="cart-item-info">
           <h4>{{ item.bookTitle }}</h4>
-          <p class="price">{{ item.price | number: '1.2-2' }}</p>
+          <p class="price">{{ item.price | appNumber }}</p>
 
           <div class="quantity-control">
             <button (click)="updateQuantity(item.cartId, item.bookId, item.quantity - 1)">−</button>
@@ -25,10 +25,11 @@
             <button (click)="updateQuantity(item.cartId, item.bookId, item.quantity + 1)">+</button>
           </div>
 
-          <p class="subtotal">{{ 'CLIENT.CART.SUBTOTAL' | translate }} {{ item.subtotal | number: '1.2-2' }}</p>
+          <p class="subtotal">{{ item.quantity }} {{ 'UNIT' | translate }} × {{ item.price | appNumber }} {{ 'CURRENCY' | translate }}</p>
         </div>
 
         <div class="cart-item-actions">
+          <strong class="item-total">{{ item.subtotal | appNumber }} {{ 'CURRENCY' | translate }}</strong>
           <button class="btn-save" (click)="saveForLater(item.cartId, item.bookId)">
             {{ 'CLIENT.CART.SAVE_FOR_LATER' | translate }}
           </button>
@@ -39,7 +40,7 @@
       <!-- TOTAL -->
       <div class="cart-total">
         <span>{{ 'CLIENT.CART.TOTAL_TO_PAY' | translate }}</span>
-        <strong>{{ cart.totalPrice | number: '1.2-2' }}</strong>
+        <strong>{{ cart.totalPrice | appNumber }}</strong>
       </div>
 
       <button class="btn-checkout" routerLink="/client/checkout">{{ 'CLIENT.CART.CONTINUE_TO_CHECKOUT' | translate }}</button>
@@ -57,7 +58,7 @@
 
         <div class="cart-item-info">
           <h4>{{ item.bookTitle }}</h4>
-          <p class="price">{{ item.price | number: '1.2-2' }}</p>
+          <p class="price">{{ item.price | appNumber }}</p>
         </div>
 
         <div class="cart-item-actions">

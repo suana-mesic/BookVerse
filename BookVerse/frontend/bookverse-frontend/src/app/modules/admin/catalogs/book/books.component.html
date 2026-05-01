@@ -1,4 +1,4 @@
-<div class="container">
+﻿<div class="container">
   <!-- Header card -->
   <div class="header-card mat-elevation-z2">
     <div class="header-card-content">
@@ -61,7 +61,7 @@
           <th mat-header-cell *matHeaderCellDef>{{ 'BOOKS.TABLE.PRICE' | translate }}</th>
           <td mat-cell *matCellDef="let product">
             <span style="font-weight: 600; color: #4976b5"
-              >{{ product.price | number: '1.2-2' }} {{ 'CURRENCY' | translate }}</span
+              >{{ product.price | appNumber }} {{ 'CURRENCY' | translate }}</span
             >
           </td>
         </ng-container>
@@ -189,6 +189,6 @@
       </table>
     </div>
 
-    <app-fit-paginator-bar [vm]="this" />
+    <app-bookverse-paginator-bar [vm]="this" />
   </div>
 </div>

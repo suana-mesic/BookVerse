@@ -1,4 +1,4 @@
-﻿import { Component, inject, OnInit } from '@angular/core';
+﻿import { AfterViewInit, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { Chart } from 'chart.js/auto';
 import { StatisticsApiService } from '../../../api-services/statistics/statistics-api.service';
 import { ToasterService } from '../../../core/services/toaster.service';
@@ -6,12 +6,13 @@ import { GetDashboardCardSummaryDto } from '../../../api-services/statistics/sta
 import { ReportsApiServices } from '../../../api-services/reports/reports-api.service';
 import { UsersApiService } from '../../../api-services/users/users-api.service';
 import { AbstractControl, FormBuilder, FormControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { map, Observable, startWith } from 'rxjs';
+import { map, Observable, startWith, Subscription } from 'rxjs';
 import { ListUsersQueryDto } from '../../../api-services/users/users-api.model';
 import { BaseComponent } from '../../../core/components/base-classes/base-component';
 import { BooksApiService } from '../../../api-services/books/books-api.service';
 import { ListBooksForAutocompleteQueryDto } from '../../../api-services/books/books-api.models';
 import { TranslateService } from '@ngx-translate/core';
+import { AuthFacadeService } from '../../../core/services/auth/auth-facade.service';
 
 @Component({
   selector: 'app-admin-settings',
@@ -19,13 +20,14 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
-export class DashboardComponent extends BaseComponent implements OnInit {
+export class DashboardComponent extends BaseComponent implements OnInit, AfterViewInit, OnDestroy {
   private statisticsApi = inject(StatisticsApiService);
   private usersApi = inject(UsersApiService);
   private booksApi = inject(BooksApiService);
   private reportsApi = inject(ReportsApiServices);
   private toaster = inject(ToasterService);
   private translate = inject(TranslateService);
+  private authFacade = inject(AuthFacadeService);
   private fb = inject(FormBuilder);
 
   summary: GetDashboardCardSummaryDto | null = null;
@@ -64,6 +66,8 @@ export class DashboardComponent extends BaseComponent implements OnInit {
   allUsers: ListUsersQueryDto[] = [];
   allBooks: ListBooksForAutocompleteQueryDto[] = [];
 
+  private langChangeSub: Subscription | null = null;
+
   constructor() {
     super();
     this.setUsersFiltering();
@@ -72,15 +76,39 @@ export class DashboardComponent extends BaseComponent implements OnInit {
 
   ngOnInit(): void {
     this.startLoading();
+    this.getDashboardCardSummary();
+    this.getAllUsers();
+    this.getAllBooks();
+
+    this.langChangeSub = this.translate.onLangChange.subscribe(() => {
+      if (this.authFacade.isAuthenticated()) {
+        this.loadAllCharts();
+      }
+    });
+  }
+
+  ngAfterViewInit(): void {
+    this.loadAllCharts();
+  }
+
+  ngOnDestroy(): void {
+    this.langChangeSub?.unsubscribe();
+    this.langChangeSub = null;
+    Object.values(this.chartInstances).forEach((c) => c.destroy());
+    this.chartInstances = {};
+  }
+
+  private loadAllCharts(): void {
     this.getMonthlyRevenue();
     this.getMonthlyOrdersCount();
     this.getTop5Books();
     this.getShippersOrdersCount();
     this.getCategoriesPopularity();
     this.getRevenueByMonthAndCategory();
-    this.getDashboardCardSummary();
-    this.getAllUsers();
-    this.getAllBooks();
+  }
+
+  private get currentLang(): string {
+    return this.translate.currentLang || this.translate.defaultLang || 'bs';
   }
 
   setUsersFiltering() {
@@ -161,6 +189,17 @@ export class DashboardComponent extends BaseComponent implements OnInit {
     return document.body.classList.contains('dark-theme');
   }
 
+  private chartInstances: { [key: string]: Chart } = {};
+
+  private getNumberLocale(): string {
+    const lang = this.translate.currentLang || this.translate.defaultLang || 'bs';
+    return lang === 'en' ? 'en-US' : 'bs';
+  }
+
+  private translateMonth(monthNumber: number): string {
+    return this.translate.instant(`MONTHS.${monthNumber}`);
+  }
+
   makeChart(
     labels: string[],
     values: number[],
@@ -171,7 +210,10 @@ export class DashboardComponent extends BaseComponent implements OnInit {
     axis: 'x' | 'y' = 'x',
   ) {
     const labelColor = this.darkMode ? '#D8D8D8' : undefined;
-    new Chart(chartName, {
+    const locale = this.getNumberLocale();
+    if (!document.getElementById(chartName)) return;
+    if (this.chartInstances[chartName]) this.chartInstances[chartName].destroy();
+    this.chartInstances[chartName] = new Chart(chartName, {
       type: type,
       data: {
         labels: labels,
@@ -195,12 +237,22 @@ export class DashboardComponent extends BaseComponent implements OnInit {
             text: label2,
             color: labelColor,
           },
+          tooltip: {
+            callbacks: {
+              label: (ctx) => {
+                const v = ctx.parsed[axis === 'x' ? 'y' : 'x'];
+                return `${ctx.dataset.label}: ${typeof v === 'number' ? v.toLocaleString(locale) : v}`;
+              },
+            },
+          },
         },
         scales: {
           y: {
             ticks: {
               color: labelColor,
               precision: 0,
+              callback: (value) =>
+                typeof value === 'number' ? value.toLocaleString(locale) : value,
             },
           },
           x: {
@@ -216,7 +268,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
   getMonthlyRevenue() {
     this.statisticsApi.getMonthlyRevenue().subscribe({
       next: (data) => {
-        const labels = data.map((x) => x.monthName);
+        const labels = data.map((x) => this.translateMonth(x.month));
         const values = data.map((x) => x.totalRevenue);
         const label1 = this.translate.instant('STATISTICS.CHARTS.MONTHLY_REVENUE_LABEL');
         const label2 = this.translate.instant('STATISTICS.CHARTS.MONTHLY_REVENUE_TITLE');
@@ -231,7 +283,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
   getMonthlyOrdersCount() {
     this.statisticsApi.getMonthlyOrdersCount().subscribe({
       next: (data) => {
-        const labels = data.map((x) => x.monthName);
+        const labels = data.map((x) => this.translateMonth(x.month));
         const values = data.map((x) => x.ordersCount);
         const label1 = this.translate.instant('STATISTICS.CHARTS.MONTHLY_ORDERS_LABEL');
         this.makeChart(labels, values, 'ordersChart', label1, label1, 'line', 'x');
@@ -263,7 +315,9 @@ export class DashboardComponent extends BaseComponent implements OnInit {
         const labels = data.map((x) => x.shipperName);
         const values = data.map((x) => x.ordersCount);
 
-        new Chart('shippersChart', {
+        if (!document.getElementById('shippersChart')) return;
+        if (this.chartInstances['shippersChart']) this.chartInstances['shippersChart'].destroy();
+        this.chartInstances['shippersChart'] = new Chart('shippersChart', {
           type: 'doughnut',
           data: {
             labels: labels,
@@ -301,13 +355,15 @@ export class DashboardComponent extends BaseComponent implements OnInit {
     });
   }
   getCategoriesPopularity() {
-    this.statisticsApi.getCategoriesPopularity().subscribe({
+    this.statisticsApi.getCategoriesPopularity(this.currentLang).subscribe({
       next: (data) => {
         const labels = data.map((x) => x.genreName);
         const values = data.map((x) => x.totalSold);
 
         const catLabelColor = this.darkMode ? '#D8D8D8' : undefined;
-        new Chart('categoriesChart', {
+        if (!document.getElementById('categoriesChart')) return;
+        if (this.chartInstances['categoriesChart']) this.chartInstances['categoriesChart'].destroy();
+        this.chartInstances['categoriesChart'] = new Chart('categoriesChart', {
           type: 'radar',
           data: {
             labels: labels,
@@ -362,22 +418,25 @@ export class DashboardComponent extends BaseComponent implements OnInit {
       'rgba(75, 192, 192, 0.6)',
       'rgba(153, 102, 255, 0.6)',
     ];
-    this.statisticsApi.getRevenueByMonthAndCategory().subscribe({
+    this.statisticsApi.getRevenueByMonthAndCategory(this.currentLang).subscribe({
       next: (data) => {
-        const months = [...new Set(data.map((x) => x.monthName))];
+        const monthNumbers = [...new Set(data.map((x) => x.month))];
+        const months = monthNumbers.map((m) => this.translateMonth(m));
         const categories = [...new Set(data.map((x) => x.categoryName))];
-        // console.log(data);
         const datasets = categories.map((category, index) => ({
           label: category,
-          data: months.map((month) => {
-            const record = data.find((x) => x.monthName === month && x.categoryName === category);
+          data: monthNumbers.map((month) => {
+            const record = data.find((x) => x.month === month && x.categoryName === category);
             return record ? record.revenue : 0;
           }),
           backgroundColor: colors[index % colors.length],
         }));
 
         const revLabelColor = this.darkMode ? '#D8D8D8' : undefined;
-        new Chart('monthlyCategoryRevenueChart', {
+        if (!document.getElementById('monthlyCategoryRevenueChart')) return;
+        if (this.chartInstances['monthlyCategoryRevenueChart'])
+          this.chartInstances['monthlyCategoryRevenueChart'].destroy();
+        this.chartInstances['monthlyCategoryRevenueChart'] = new Chart('monthlyCategoryRevenueChart', {
           type: 'bar',
           data: {
             labels: months,

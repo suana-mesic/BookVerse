@@ -102,6 +102,10 @@ body.dark-theme {
   app-user-orders,
   app-user-books {
     background-color: #1a1f2e !important;
+
+    .book-price {
+      color: #e0e0e0 !important;
+    }
   }
 
 .mdc-text-field--filled:not(.mdc-text-field--disabled) {
@@ -357,7 +361,7 @@ body.dark-theme {
       background-color: var(--hover-color);
     }
 
-    app-fit-paginator-bar {
+    app-bookverse-paginator-bar {
       background: var(--primary-lighter) !important;
       border-top-color: var(--border-color) !important;
     }
@@ -1068,8 +1072,8 @@ app-user-books .container {
 
   .category-badge,
   .detail-category-badge {
-    background: var(--primary-lighter) !important;
-    color: #000 !important;
+    background: #3770BA !important;
+    color: #ffffff !important;
   }
 
   .review-section h4 {

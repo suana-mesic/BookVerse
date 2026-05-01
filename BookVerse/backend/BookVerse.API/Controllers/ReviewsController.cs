@@ -34,8 +34,8 @@ public class ReviewsController(ISender sender) : ControllerBase
     [Authorize(Policy = "Customer")]
     public async Task<ActionResult> Create(CreateReviewCommand command, CancellationToken ct)
     {
-        var poruka = await sender.Send(command, ct);
-        return Ok(poruka);
+        var result = await sender.Send(command, ct);
+        return Ok(result);
     }
 
     //Called when the user wants to edit an existing review

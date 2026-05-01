@@ -138,7 +138,7 @@
     }
   },
   "ADMIN_PANEL": {
-    "TITLE": "Admin Panel",
+    "TITLE": "Administratorski Panel",
     "ROLES": {
       "ADMIN": "Administrator",
       "MANAGER": "Menadžer",
@@ -288,6 +288,7 @@
       "ERROR_LOAD_CATEGORIES": "Greška pri učitavanju žanrova.",
       "ERROR_LOAD_PUBLISHERS": "Greška pri učitavanju izdavača.",
       "ERROR_LOAD_FORMATS": "Greška pri učitavanju formata knjiga.",
+      "ERROR_LOAD_LANGUAGES": "Greška pri učitavanju jezika.",
       "ERROR_LOAD_AUTHORS": "Greška pri učitavanju autora.",
       "UNSAVED_CHANGES": "Imate nesačuvane izmjene u formi.",
       "CONFIRM_CANCEL": "Da li želite otkazati izmjene i vratiti se nazad?"
@@ -368,7 +369,7 @@
       "SUCCESS_UPDATE": "Inventar uspješno ažuriran.",
       "SUCCESS_DELETE": "Inventar uspješno obrisan.",
       "ERROR_CREATE": "Greška pri kreiranju inventara.",
-      "DUPLICATE_INVENTORY": "Već je popisan inventar za prodavnicu {{storeName}} i knjigu {{bookTitle}}",
+      "DUPLICATE_INVENTORY": "Ne može se kreirati inventar za istu knjigu u istoj prodavnici dva puta (prodavnica: {{storeName}}, knjiga: {{bookTitle}}).",
       "ERROR_UPDATE": "Greška pri ažuriranju inventara.",
       "ERROR_DELETE": "Greška pri brisanju inventara.",
       "ERROR_TOGGLE": "Greška pri promjeni statusa inventara.",
@@ -445,12 +446,30 @@
       "NO_TRANSITIONS": "Nema dostupnih prijelaza statusa za ovu narudžbu",
       "CANCEL_WARNING": "Upozorenje: Otkazivanje narudžbe ne može se poništiti!"
     },
+    "DIALOGS": {
+      "CONFIRM_COMPLETE_TITLE": "Potvrda kompletiranja narudžbe",
+      "CONFIRM_COMPLETE_MESSAGE": "Da li ste sigurni da želite označiti narudžbu {{orderNumber}} kao poslanu? Ova akcija se ne može poništiti."
+    },
     "MESSAGES": {
       "STATUS_UPDATED": "Status narudžbe uspješno ažuriran",
       "CANNOT_CHANGE_STATUS": "Status ove narudžbe ne može se promijeniti",
       "ERROR_LOAD": "Greška pri učitavanju narudžbi.",
       "ERROR_UPDATE_STATUS": "Greška pri ažuriranju statusa narudžbe."
     }
+  },
+  "MONTHS": {
+    "1": "Januar",
+    "2": "Februar",
+    "3": "Mart",
+    "4": "April",
+    "5": "Maj",
+    "6": "Juni",
+    "7": "Juli",
+    "8": "Avgust",
+    "9": "Septembar",
+    "10": "Oktobar",
+    "11": "Novembar",
+    "12": "Decembar"
   },
   "COMMON": {
     "YES": "Da",
@@ -502,7 +521,7 @@
     "DESCRIPTION": "Opis",
     "PRICE": "Cijena",
     "TOTAL": "Ukupno",
-    "SUBTOTAL": "Međuzbroj",
+    "SUBTOTAL": "Suma stavki",
     "DISCOUNT": "Popust",
     "QUANTITY": "Količina",
     "DATE": "Datum",
@@ -745,7 +764,7 @@
       "PROFILE": "Profil",
       "LOGOUT": "Odjava",
       "LANG_BS": "Bosanski",
-      "LANG_EN": "English"
+      "LANG_EN": "Engleski"
     },
     "PUBLIC_LAYOUT": {
       "BRAND": "BookVerse",
@@ -791,7 +810,7 @@
       "LOADING": "Učitavanje...",
       "SAVE_FOR_LATER": "Sačuvaj za kasnije",
       "REMOVE": "Ukloni",
-      "SUBTOTAL": "Ukupno:",
+      "SUBTOTAL": "Suma stavki:",
       "TOTAL_TO_PAY": "Ukupno za plaćanje:",
       "CONTINUE_TO_CHECKOUT": "Nastavi na plaćanje",
       "EMPTY": "Vaša korpa je prazna",
@@ -849,6 +868,8 @@
       "TOTAL": "Ukupno",
       "SUBTOTAL": "Cijena svih stavki:",
       "SHIPPING_PRICE": "Cijena dostave:",
+      "CONFIRM_PAYMENT_TITLE": "Potvrda narudžbe",
+      "CONFIRM_PAYMENT_MESSAGE": "Da li ste sigurni da želite naručiti? Bit će naplaćen iznos od {{amount}} KM. Narudžbu možete kasnije otkazati u sekciji Moje narudžbe.",
       "ORDER_CONFIRMED": "Narudžba potvrđena! Preusmjeravamo na plaćanje...",
       "ERROR_LOAD_ADDRESS": "Greška pri učitavanju adrese.",
       "ERROR_CREATE_ORDER": "Greška prilikom kreiranje narudžbe",
@@ -947,7 +968,7 @@
       "SELECT_ORDER": "Odaberite narudžbu za pregled detalja",
       "BOOKS": "Knjige",
       "PRICE": "Cijena",
-      "SUBTOTAL": "Subtotal",
+      "SUBTOTAL": "Suma stavki",
       "SHIPPING": "Dostava",
       "DISCOUNT": "Popust",
       "TOTAL": "Ukupno",
@@ -1011,9 +1032,9 @@
       "BOOKS_WORD": "knjiga",
       "IMAGE_ALT": "slika knjige",
       "STORE_TOOLTIP": "Prikaži informacije",
-      "CENTRAL_BOOKSTORE": "Central bookstore",
-      "FORTICA_BOOKS": "Fortica books",
-      "SPACE_BOOKSTORE": "Space bookstore",
+      "CENTRAL_BOOKSTORE": "Centralna knjižara",
+      "FORTICA_BOOKS": "Fortica knjige",
+      "SPACE_BOOKSTORE": "Space knjižara",
       "MOSTAR": "Mostar",
       "SARAJEVO": "Sarajevo"
     },
@@ -1075,5 +1096,6 @@
     "SIGNALR_USER_CONNECTED": "SignalR korisnička konekcija je uspostavljena",
     "SIGNALR_USER_CONNECTION_ERROR": "Greška pri SignalR korisničkom povezivanju:"
   },
-  "CURRENCY": "KM"
+  "CURRENCY": "KM",
+  "UNIT": "kom"
 }

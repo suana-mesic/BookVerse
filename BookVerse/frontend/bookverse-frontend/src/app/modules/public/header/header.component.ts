@@ -18,6 +18,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
+import { SharedModule } from '../../shared/shared-module';
 
 @Component({
   selector: 'app-header',
@@ -30,6 +31,7 @@ import { CommonModule } from '@angular/common';
     MatButtonModule,
     MatDividerModule,
     CommonModule,
+    SharedModule,
   ],
   templateUrl: './header.component.html',
   styleUrl: 'header.component.css',
@@ -81,8 +83,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     event.stopPropagation();
     this.currentLang = lang;
     this.langMenuOpen = false;
-    this.translate.use(lang);
     localStorage.setItem('lang', lang);
+    this.translate.use(lang);
     const savedSettings = localStorage.getItem('userSettings');
     const settings = savedSettings ? JSON.parse(savedSettings) : {};
     settings.language = lang;
@@ -104,7 +106,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.dropMenuOpened = !this.dropMenuOpened;
   }
 
-  prijavaIliDropDown() {
+  loginOrDropDown() {
     // console.log(this.authFacadeService.isAuthenticated());
     if (!this.authFacadeService.isAuthenticated()) this.router.navigate(['/auth/login']);
     else {

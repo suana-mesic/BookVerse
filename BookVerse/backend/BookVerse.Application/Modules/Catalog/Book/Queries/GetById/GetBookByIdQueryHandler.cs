@@ -39,14 +39,12 @@ public class GetBookByIdQueryHandler(IAppDbContext context, ITranslationService 
             //starts all translations simultaneously
             var results = await Task.WhenAll(
                 translationService.Translate(book.Description, request.Language),
-                translationService.Translate(book.PublisherName, request.Language),
                 translationService.Translate(book.BookFormatName, request.Language),
                 translationService.Translate(book.Language, request.Language)
             );
             book.Description = results[0];
-            book.PublisherName = results[1];
-            book.BookFormatName = results[2];
-            book.Language = results[3];
+            book.BookFormatName = results[1];
+            book.Language = results[2];
         }
 
         return book;

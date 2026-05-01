@@ -4,6 +4,6 @@ public sealed class GetReviewsByIdQueryValidator : AbstractValidator<GetReviewsB
 {
     public GetReviewsByIdQueryValidator()
     {
-        RuleFor(x => x.BookId).GreaterThan(0).WithMessage("Book ID mora imati pozitivnu vrijednost.");
+        RuleFor(x => x.BookId).GreaterThan(0).WithMessage("Book ID must have a positive value.");
     }
 }

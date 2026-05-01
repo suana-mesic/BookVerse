@@ -32,6 +32,8 @@ export class LogoutComponent implements OnInit {
   }
 
   private clearSettings(): void {
+    const currentLang = localStorage.getItem('lang');
+    if (currentLang) localStorage.setItem('user_lang', currentLang);
     localStorage.setItem('lang', 'bs');
     document.body.classList.remove('dark-theme');
   }

@@ -42,8 +42,7 @@ public sealed class UpdateBookCommandHandler(IAppDbContext context)
             book.PageCount = request.PageCount.Value;
         if (request.QuantityInStockForOnlineOrders.HasValue)
             book.QuantityInStockForOnlineOrders = request.QuantityInStockForOnlineOrders.Value;
-        if (!string.IsNullOrEmpty(request.ImageUrl))
-            book.ImageUrl = request.ImageUrl;
+        book.ImageUrl = request.ImageUrl;
         if (request.PublishedDate.HasValue)
             book.PublishedDate = request.PublishedDate.Value;
         if (request.AuthorIds!= null && request.AuthorIds.Length != 0)

@@ -81,7 +81,7 @@ namespace BookVerse.Application.Modules.Shopping.OrdersOrderItems.Commands.Strip
                         if (inventoryDictionary.TryGetValue(item.BookId, out var inventoryForBook))
                             inventoryForBook.QuantityInStock -= item.Quantity;
                         else
-                            throw new Exception($"Book {item.BookId} nije u StoreInventory za Store {order.PickupStoreId}");
+                            throw new Exception($"Book {item.BookId} is not in StoreInventory for Store {order.PickupStoreId}");
                     }
 
                 }

@@ -9,7 +9,7 @@
   <div class="payment-container">
     <div class="order-summary">
       <strong>{{ 'CLIENT.PAYMENT.TOTAL_TO_PAY' | translate }}</strong>
-      <strong>{{ totalPrice | number: '1.2-2' : 'en' }} {{ 'CURRENCY' | translate }}</strong>
+      <strong>{{ totalPrice | appNumber }} {{ 'CURRENCY' | translate }}</strong>
     </div>
 
     <div id="payment-element"></div>
@@ -47,10 +47,10 @@
       <button
         mat-raised-button
         color="primary"
-        (click)="submitPayment()"
+        (click)="confirmAndPay()"
         [disabled]="isLoading || !captchaVerified || !paymentFormComplete"
       >
-        {{ isLoading ? ('CLIENT.PAYMENT.PROCESSING' | translate) : ('CLIENT.PAYMENT.PAY_AMOUNT' | translate: { amount: (totalPrice | number: '1.2-2' : 'en') }) }}
+        {{ isLoading ? ('CLIENT.PAYMENT.PROCESSING' | translate) : ('CLIENT.PAYMENT.PAY_AMOUNT' | translate: { amount: (totalPrice | appNumber) }) }}
       </button>
     </div>
   </div>
