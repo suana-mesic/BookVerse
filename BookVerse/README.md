@@ -1,10 +1,10 @@
-# BookVerse - Brzi Vodič
+# BookVerse - Quick Start Guide
 
-Online knjižara i tržište knjiga s administrativnim panelom i korisničkim sučeljem.
+Online bookstore and book marketplace with an administrative panel and a customer-facing user interface.
 
 ---
 
-## Preduvjeti
+## Prerequisites
 
 **Backend:**
 
@@ -17,23 +17,23 @@ Online knjižara i tržište knjiga s administrativnim panelom i korisničkim su
 
 ---
 
-## Konfiguracija tajni (.env)
+## Secrets configuration (.env)
 
-Tajne varijable (konekcijski string, JWT ključ, Stripe API ključevi, email i CAPTCHA podaci) se čuvaju u `.env` fajlu koji se **ne commituje** u repozitorij.
+Secret variables (connection string, JWT key, Stripe API keys, email and CAPTCHA settings) are stored in a `.env` file that is **not committed** to the repository.
 
-U repozitoriju se nalazi zipovani fajl:
-
-```
-BookVerse/Market.Backend/Market.API/.env-tajne.zip
-```
-
-Potrebno je raspakovati zip i postaviti `.env` fajl u direktorij. Lozinka za otvaranje zip arhiva se šalje putem e-maila na zahtjev — kontaktirajte autora projekta: suana.mesic@edu.fit.ba
+A zipped file is available in the repository:
 
 ```
-BookVerse/Market.Backend/Market.API/.env
+BookVerse/backend/BookVerse.API/.env-tajne.zip
 ```
 
-Struktura `.env` fajla:
+Extract the zip and place the `.env` file in the directory below. The password to open the zip archive is sent by email on request — contact the project author: suana.mesic@edu.fit.ba
+
+```
+BookVerse/backend/BookVerse.API/.env
+```
+
+`.env` file structure:
 
 ```
 ConnectionStrings__Main=...
@@ -49,155 +49,159 @@ CaptchaOptions__SecretKey=...
 
 ---
 
-## Pokretanje backenda
+## Running the backend
 
 ```bash
-cd BookVerse/Market.Backend
-dotnet run --project Market.API
+cd BookVerse/backend
+dotnet run --project BookVerse.API
 ```
 
-Backend se pokreće na: `https://localhost:7260`
+The backend runs at: `https://localhost:7260`
 
-Migracije se primjenjuju automatski pri pokretanju (`MigrateAsync`). Statički seed podaci (korisnici, knjige, kategorije...) su ugrađeni u migracije putem `HasData` i primjenjuju se zajedno s njima. Nema potrebe za ručnim pokretanjem `dotnet ef database update`.
+Migrations are applied automatically on startup (`MigrateAsync`). Static seed data (users, books, categories, etc.) is embedded in the migrations via `HasData` and is applied alongside them. There is no need to run `dotnet ef database update` manually.
 
 ---
 
-## Stripe webhookovi (lokalno testiranje plaćanja)
+## Stripe webhooks (local payment testing)
 
-Da bi plaćanja radila lokalno, potrebno je instalirati [Stripe CLI](https://stripe.com/docs/stripe-cli) i u zasebnom terminalu pokrenuti:
+For payments to work locally, install the [Stripe CLI](https://stripe.com/docs/stripe-cli) and run the following in a separate terminal:
 
 ```bash
 stripe listen --forward-to https://localhost:7260/OrdersOrderItems/stripe-webhook
 ```
 
-Stripe CLI pri pokretanju ispiše webhook secret (`whsec_...`) — taj ključ je potrebno upisati u `.env` kao `Stripe__WebhookSecret` i restartovati backend.
+When the Stripe CLI starts it prints a webhook secret (`whsec_...`) — that key needs to be added to `.env` as `Stripe__WebhookSecret`, and the backend must be restarted.
 
-Bez ovog koraka Stripe neće slati webhook evente na lokalni backend, pa narudžbe neće biti označene kao plaćene nakon uspješnog plaćanja u Stripe formi.
+Without this step Stripe will not deliver webhook events to the local backend, so orders will not be marked as paid after a successful payment in the Stripe form.
 
-Za testiranje plaćanja koriste se [test kartice](https://stripe.com/docs/testing#cards), npr. `4242 4242 4242 4242` (uspješno plaćanje), bilo koji datum u budućnosti i bilo koji CVC.
+For payment testing use [test cards](https://stripe.com/docs/testing#cards), e.g. `4242 4242 4242 4242` (successful payment), any future date, and any CVC.
 
 ---
 
-## Pokretanje frontenda
+## Running the frontend
 
 ```bash
-cd BookVerse/Market.Frontend/rs1-frontend-2025-26
+cd BookVerse/frontend/bookverse-frontend
 npm install
 npm start
 ```
 
-Frontend se otvara na: `http://localhost:4200`
+The frontend opens at: `http://localhost:4200`
 
 ---
 
-## Pristupni podaci
+## Login credentials
 
-| Email                  | Lozinka | Rola                |
-| ---------------------- | ------- | ------------------- |
-| admin@bookverse.com    | string  | Admin (sve ovlasti) |
-| manager@bookverse.com  | string  | Manager             |
-| employee@bookverse.com | string  | Zaposlenik          |
-| user@bookverse.com     | string  | Korisnik            |
+| Email                  | Password | Role                  |
+| ---------------------- | -------- | --------------------- |
+| admin@bookverse.com    | string   | Admin (full access)   |
+| manager@bookverse.com  | string   | Manager               |
+| employee@bookverse.com | string   | Employee              |
+| customer@bookverse.com | string   | Customer              |
 
-Swagger je dostupan na `https://localhost:7260/swagger` i može se koristiti s istim podacima.
+Swagger is available at `https://localhost:7260/swagger` and can be used with the same credentials.
 
 ---
 
-## Mogućnosti
+## Features
 
 **Admin panel:**
 
-- Upravljanje korisnicima (RBAC — admin, manager, zaposlenik)
-- Upravljanje knjigama, kategorijama, autorima, izdavacima, formatima i zalihama
-- Pregled i promjena statusa narudzbi
-- Izvjestaji (PDF, CSV)
-- Realtime notifikacije putem SignalR
+- User management (RBAC — admin, manager, employee)
+- Management of books, categories, authors, publishers, formats, and inventory
+- View and update order statuses
+- Reports (PDF, CSV)
+- Realtime notifications via SignalR
 
-**Korisničko sučelje:**
+**Customer interface:**
 
-- Pregled i pretraga knjiga s filterima (kategorije, autori, format)
-- Detaljna stranica knjige s recenzijama i mapom lokacija knjižara
-- Košarica, naplata putem Stripe-a
-- Praćenje statusa narudžbi
-- Upravljanje profilom i postavkama (tema, jezik)
-- Višejezičnost — bosanski i engleski (prijevod sadrzaja putem Google Translate API-ja)
-- reCAPTCHA zastita na registraciji
-
----
-
-## Arhitektura backenda
-
-Backend prati Clean Architecture s odvojenim slojevima:
-
-```
-Market.Domain       — domenske klase i entiteti
-Market.Application  — business logika, CQRS (MediatR), interfejsi
-Market.Infrastructure — EF Core, migracije, servisi (email, prijevod, Stripe)
-Market.API          — kontroleri, middleware, SignalR hubovi
-Market.Shared       — zajednicke konstante
-Market.Tests        — integracijski testovi
-```
+- Browse and search books with filters (categories, authors, format)
+- Detailed book page with reviews and a map of bookstore locations
+- Shopping cart, checkout via Stripe
+- Order status tracking
+- Profile and settings management (theme, language)
+- Multilingual — Bosnian and English (content translation via the Google Translate API)
+- reCAPTCHA protection on registration
 
 ---
 
-## Korištene tehnologije
+## Backend architecture
 
-**Backend:** ASP.NET Core 8, Entity Framework Core 8, SQL Server, MediatR (CQRS), SignalR, Stripe.net, JWT autentifikacija
+The backend follows Clean Architecture with separate layers:
+
+```
+BookVerse.Domain        — domain classes and entities
+BookVerse.Application   — business logic, CQRS (MediatR), interfaces
+BookVerse.Infrastructure — EF Core, migrations, services (email, translation, Stripe)
+BookVerse.API           — controllers, middleware, SignalR hubs
+BookVerse.Shared        — shared constants
+BookVerse.Tests         — integration tests
+```
+
+---
+
+## Technologies used
+
+**Backend:** ASP.NET Core 8, Entity Framework Core 8, SQL Server, MediatR (CQRS), SignalR, Stripe.net, JWT authentication
 
 **Frontend:** Angular 21, Angular Material, ngx-translate, Stripe.js, Leaflet
 
 ---
 
-## Screenshotovi
+## Screenshots
 
-### Prijava
+### Login
 
-![Prijava](screenshots/login.png)
+![Login](screenshots/login.png)
 
 ### Admin panel - dashboard
 
-![Dashboard](screenshots/admin_dahsboard.png)
+![Dashboard](screenshots/admin_dashboard.png)
 
-### Admin panel - knjige
+### Admin panel - books
 
-![Knjige](screenshots/admin_knjige.png)
+![Books](screenshots/admin_knjige.png)
 
-### Admin panel - narudžbe
+### Admin panel - orders
 
-![Narudžbe](screenshots/admin_narudzbe.png)
+![Orders](screenshots/admin_narudzbe.png)
 
-### Admin panel - narudžbe (dark)
+### Admin panel - orders (dark)
 
-![Narudžbe dark](screenshots/admin_narudzbe_dark.png)
+![Orders dark](screenshots/admin_narudzbe_dark.png)
 
-### Admin panel - inventar
+### Admin panel - inventory
 
-![Inventar](screenshots/admin_inventar.png)
+![Inventory](screenshots/admin_inventar.png)
 
-### Admin panel - korisnici
+### Admin panel - users
 
-![Korisnici](screenshots/admin_korisnici.png)
+![Users](screenshots/admin_korisnici.png)
 
-### Admin panel - postavke
+### Admin panel - settings
 
-![Postavke](screenshots/admin_postavke.png)
+![Settings](screenshots/admin_postavke.png)
 
-### Korisničko sučelje - pregled knjiga
+### Customer interface - book listing
 
-![Pregled knjiga](screenshots/pocetna.png)
+![Book listing](screenshots/pocetna.png)
 
-### Korisničko sučelje - košarica
+### Customer interface - book listing (dark)
 
-![Košarica](screenshots/kosarica.png)
+![Book listing dark](screenshots/pocetna_dark.png)
 
-### Korisničko sučelje - moje narudžbe
+### Customer interface - shopping cart
 
-![Moje narudžbe](screenshots/moje_narudzbe.png)
+![Shopping cart](screenshots/kosarica.png)
 
-### Korisničko sučelje - moje kupljene knjige
+### Customer interface - my orders
 
-![Moje kupljene knjige](screenshots/moje_kupljene_knjige.png)
+![My orders](screenshots/moje_narudzbe.png)
 
-### Korisničko sučelje - recenziranje (samo kupljenih knjiga)
+### Customer interface - my purchased books
 
-![Recenziranje](screenshots/recenziranje.png)
+![My purchased books](screenshots/moje_kupljene_knjige.png)
+
+### Customer interface - reviewing (only for purchased books)
+
+![Reviewing](screenshots/recenziranje.png)

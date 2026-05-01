@@ -1,0 +1,353 @@
+<app-header></app-header>
+
+<div class="container">
+  <div class="header-card">
+    <a class="back-nav" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+      <span>{{ 'CLIENT.USER_BOOKS.BACK' | translate }}</span>
+    </a>
+
+    <div class="header-card-content">
+      <div class="title-section">
+        <div class="title-icon">
+          <mat-icon>menu_book</mat-icon>
+        </div>
+        <h1>{{ 'CLIENT.USER_BOOKS.TITLE' | translate }}</h1>
+      </div>
+
+      <div class="actions-container">
+        <!-- Clear button -->
+        <button
+          mat-stroked-button
+          (click)="clearFilters()"
+          [disabled]="!searchControl.value && selectedCategoryIds.length === 0"
+        >
+          <mat-icon>clear_all</mat-icon>
+          {{ 'CLIENT.USER_BOOKS.CLEAR_FILTERS' | translate }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Filters Section -->
+    <div class="filters-section">
+      <!-- Search by title -->
+      <mat-form-field class="filter-input" appearance="outline">
+        <mat-label>{{ 'CLIENT.USER_BOOKS.SEARCH_BY_TITLE' | translate }}</mat-label>
+        <input matInput [formControl]="searchControl" [placeholder]="'CLIENT.USER_BOOKS.SEARCH_PLACEHOLDER' | translate" />
+        <mat-icon matPrefix>search</mat-icon>
+      </mat-form-field>
+
+      <!-- Category autocomplete -->
+      <mat-form-field class="filter-input" appearance="outline">
+        <mat-label>{{ 'CLIENT.USER_BOOKS.ADD_CATEGORY' | translate }}</mat-label>
+        <input
+          type="text"
+          matInput
+          [formControl]="categorySearchControl"
+          [matAutocomplete]="auto"
+          [placeholder]="'CLIENT.USER_BOOKS.SEARCH_CATEGORIES' | translate"
+        />
+        <mat-icon matPrefix>local_offer</mat-icon>
+        <mat-autocomplete
+          #auto="matAutocomplete"
+          (optionSelected)="addCategory($event.option.value); categorySearchControl.setValue('')"
+        >
+          <mat-option *ngFor="let category of filteredCategories" [value]="category.id">
+            {{ category.name }}
+          </mat-option>
+          <mat-option *ngIf="filteredCategories.length === 0" disabled> {{ 'CLIENT.USER_BOOKS.NO_RESULTS' | translate }} </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+
+    <!-- Selected Category Tags -->
+    <div class="selected-tags" *ngIf="selectedCategoryIds.length > 0">
+      <span class="tags-label">{{ 'CLIENT.USER_BOOKS.SELECTED_CATEGORIES' | translate }}</span>
+      <div class="tags-container">
+        <div *ngFor="let categoryId of selectedCategoryIds" class="tag">
+          <span class="tag-text">{{ getCategoryName(categoryId) }}</span>
+          <button
+            mat-icon-button
+            class="tag-remove"
+            (click)="removeCategory(categoryId)"
+            [attr.aria-label]="'CLIENT.USER_BOOKS.REMOVE' | translate"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <app-fit-table-skeleton
+    *ngIf="isLoading && !errorMessage"
+    [rows]="5"
+    [columns]="1"
+    [showActions]="false"
+  ></app-fit-table-skeleton>
+
+  <!-- Error -->
+  <div *ngIf="!isLoading && errorMessage" class="error-container">
+    <mat-icon>error_outline</mat-icon>
+    <p>{{ errorMessage }}</p>
+    <button mat-stroked-button (click)="loadPagedData()">{{ 'CLIENT.USER_BOOKS.RETRY' | translate }}</button>
+  </div>
+
+  <!-- Timeline + Details -->
+  <div class="timeline-wrapper" *ngIf="!isLoading && !errorMessage">
+    <!-- Left — Book timeline -->
+    <div class="timeline">
+      <div *ngIf="items.length === 0" class="no-data-content">
+        <mat-icon>menu_book</mat-icon>
+        <p>{{ 'CLIENT.USER_BOOKS.NO_BOOKS' | translate }}</p>
+      </div>
+
+      <div *ngFor="let book of items; let last = last" class="timeline-item">
+        <div class="timeline-line-container">
+          <div class="timeline-dot"></div>
+          <div class="timeline-line" *ngIf="!last"></div>
+        </div>
+
+        <div class="timeline-content" [class.selected]="selectedBook?.bookId === book.bookId">
+          <div class="timeline-header">
+            <div class="timeline-title">
+              <span class="book-title-main">{{ book.title }}</span>
+            </div>
+            <span class="book-price">{{ book.price | number: '1.2-2' : 'en' }} {{ 'CURRENCY' | translate }}</span>
+          </div>
+
+          <!-- Book image preview -->
+          <div class="timeline-book-preview">
+            <img
+              *ngIf="book.imageUrl"
+              [src]="book.imageUrl | apiUrl"
+              [alt]="book.title"
+              class="timeline-book-img"
+            />
+            <div *ngIf="!book.imageUrl" class="timeline-book-no-img">
+              <mat-icon>menu_book</mat-icon>
+            </div>
+
+            <div class="timeline-book-info">
+              <p class="book-language">{{ book.language }}</p>
+              <p class="book-description" *ngIf="book.description">
+                {{ book.description | slice: 0 : 150
+                }}{{ book.description.length > 150 ? '...' : '' }}
+              </p>
+
+              <!-- Categories -->
+              <div class="book-categories">
+                <span *ngFor="let category of book.categories" class="category-badge">
+                  {{ category.name }}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Review section -->
+          <div class="review-section">
+            <!-- Existing review -->
+            <div *ngIf="book.userReview" class="existing-review">
+              <h4>{{ 'CLIENT.USER_BOOKS.YOUR_REVIEW' | translate }}</h4>
+
+              <!-- Stars -->
+              <div class="stars">
+                <span
+                  *ngFor="let star of getStars(book.userReview.rating)"
+                  class="star"
+                  [class.filled]="star"
+                >
+                  ★
+                </span>
+              </div>
+
+              <!-- Comment -->
+              <p class="review-comment">{{ book.userReview.comment }}</p>
+
+              <!-- Date -->
+              <p class="review-date">
+                {{ 'CLIENT.USER_BOOKS.PUBLISHED' | translate }}
+                {{ book.userReview.createdAt | date: 'dd.MM.yyyy HH:mm' : userTimezone }}
+                <span *ngIf="book.userReview.updatedAt">
+                  ({{ 'CLIENT.USER_BOOKS.UPDATED' | translate }}
+                  {{ book.userReview.updatedAt | date: 'dd.MM.yyyy HH:mm' : userTimezone }})
+                </span>
+              </p>
+
+              <!-- Actions -->
+              <div class="review-actions">
+                <button mat-stroked-button class="edit-btn" (click)="openEditReviewModal(book)">
+                  <mat-icon>edit</mat-icon>
+                  {{ 'CLIENT.USER_BOOKS.EDIT_REVIEW' | translate }}
+                </button>
+                <button mat-stroked-button class="delete-btn" (click)="deleteReview(book)">
+                  <mat-icon>delete</mat-icon>
+                  {{ 'CLIENT.USER_BOOKS.DELETE_REVIEW' | translate }}
+                </button>
+              </div>
+            </div>
+
+            <!-- No review -->
+            <div *ngIf="!book.userReview" class="no-review">
+              <p>{{ 'CLIENT.USER_BOOKS.NO_REVIEW' | translate }}</p>
+              <button mat-raised-button color="primary" (click)="openCreateReviewModal(book)">
+                <mat-icon>rate_review</mat-icon>
+                {{ 'CLIENT.USER_BOOKS.WRITE_REVIEW' | translate }}
+              </button>
+            </div>
+          </div>
+
+          <!-- Details button -->
+          <div class="timeline-footer">
+            <button mat-stroked-button class="details-btn" (click)="selectBook(book)">
+              <mat-icon>{{
+                selectedBook?.bookId === book.bookId ? 'chevron_right' : 'info'
+              }}</mat-icon>
+              {{ 'CLIENT.USER_BOOKS.DETAILS' | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="paginator-wrapper">
+        <app-fit-paginator-bar [vm]="$any(this)"></app-fit-paginator-bar>
+      </div>
+    </div>
+
+    <!-- Right — Book Details Panel -->
+    <div class="book-details-panel" [class.empty]="!selectedBook">
+      <ng-container *ngIf="!selectedBook">
+        <mat-icon>info_outline</mat-icon>
+        <p>{{ 'CLIENT.USER_BOOKS.SELECT_BOOK' | translate }}</p>
+      </ng-container>
+
+      <ng-container *ngIf="selectedBook">
+        <div class="details-header">
+          <h3>{{ selectedBook.title }}</h3>
+        </div>
+
+        <!-- Book image -->
+        <div class="details-image-section">
+          <img
+            *ngIf="selectedBook.imageUrl"
+            [src]="selectedBook.imageUrl | apiUrl"
+            [alt]="selectedBook.title"
+            class="detail-book-img"
+          />
+          <div *ngIf="!selectedBook.imageUrl" class="detail-book-no-img">
+            <mat-icon>menu_book</mat-icon>
+          </div>
+        </div>
+
+        <!-- Book info -->
+        <div class="details-section">
+          <h4>{{ 'CLIENT.USER_BOOKS.INFO' | translate }}</h4>
+          <div class="detail-meta-row">
+            <mat-icon>language</mat-icon>
+            <span>{{ selectedBook.language }}</span>
+          </div>
+          <div class="detail-meta-row">
+            <mat-icon>payments</mat-icon>
+            <span>{{ selectedBook.price | number: '1.2-2' : 'en' }} {{ 'CURRENCY' | translate }}</span>
+          </div>
+        </div>
+
+        <!-- Categories -->
+        <div class="details-section" *ngIf="selectedBook.categories.length > 0">
+          <h4>{{ 'CLIENT.USER_BOOKS.CATEGORIES' | translate }}</h4>
+          <div class="detail-categories">
+            <span *ngFor="let category of selectedBook.categories" class="detail-category-badge">
+              {{ category.name }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="details-section" *ngIf="selectedBook.description">
+          <h4>{{ 'CLIENT.USER_BOOKS.DESCRIPTION' | translate }}</h4>
+          <p class="detail-description">{{ selectedBook.description }}</p>
+        </div>
+
+        <!-- Review status -->
+        <div class="details-section">
+          <h4>{{ 'CLIENT.USER_BOOKS.REVIEW_STATUS' | translate }}</h4>
+          <div *ngIf="selectedBook.userReview" class="detail-review-status">
+            <mat-icon class="check-icon">check_circle</mat-icon>
+            <span>{{ 'CLIENT.USER_BOOKS.REVIEWED' | translate }} ({{ selectedBook.userReview.rating }}/5)</span>
+          </div>
+          <div *ngIf="!selectedBook.userReview" class="detail-review-status">
+            <mat-icon class="pending-icon">pending</mat-icon>
+            <span>{{ 'CLIENT.USER_BOOKS.NOT_REVIEWED' | translate }}</span>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+<!-- Review modal -->
+<div *ngIf="showReviewModal" class="modal-overlay" (click)="closeReviewModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>{{ isEditMode ? ('CLIENT.USER_BOOKS.MODAL_EDIT_TITLE' | translate) : ('CLIENT.USER_BOOKS.MODAL_CREATE_TITLE' | translate) }}</h3>
+      <button mat-icon-button (click)="closeReviewModal()" class="close-btn">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <!-- Book title -->
+      <p class="book-title-modal">
+        <mat-icon>menu_book</mat-icon>
+        {{ selectedBook?.title }}
+      </p>
+
+      <form [formGroup]="reviewForm" (ngSubmit)="saveReview()">
+        <!-- Rating -->
+        <div class="rating-input">
+          <label>{{ 'CLIENT.USER_BOOKS.RATING_LABEL' | translate }}</label>
+          <div class="stars-input">
+            <span
+              *ngFor="let star of [1, 2, 3, 4, 5]"
+              class="star-input"
+              [class.filled]="(reviewForm.controls.rating.value ?? 0) >= star"
+              (click)="setReviewRating(star)"
+            >
+              ★
+            </span>
+          </div>
+        </div>
+
+        <!-- Comment -->
+        <mat-form-field class="comment-field" appearance="outline">
+          <mat-label>{{ 'CLIENT.USER_BOOKS.COMMENT_LABEL' | translate }}</mat-label>
+          <textarea
+            matInput
+            formControlName="comment"
+            rows="6"
+            maxlength="2000"
+            [placeholder]="'CLIENT.USER_BOOKS.COMMENT_PLACEHOLDER' | translate"
+          ></textarea>
+          <mat-hint align="end">{{ (reviewForm.controls.comment.value ?? '').length }} / 2000</mat-hint>
+        </mat-form-field>
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button mat-stroked-button (click)="closeReviewModal()" [disabled]="isSavingReview">
+        {{ 'CLIENT.USER_BOOKS.CANCEL' | translate }}
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="saveReview()"
+        [disabled]="isSavingReview || reviewForm.invalid"
+      >
+        <mat-spinner *ngIf="isSavingReview" diameter="20"></mat-spinner>
+        <span *ngIf="!isSavingReview">{{ isEditMode ? ('CLIENT.USER_BOOKS.UPDATE' | translate) : ('CLIENT.USER_BOOKS.SAVE' | translate) }}</span>
+      </button>
+    </div>
+  </div>
+</div>

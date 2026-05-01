@@ -1,0 +1,103 @@
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+
+import { AdminLayoutComponent } from './admin-layout/admin-layout.component';
+import { BooksComponent } from './catalogs/book/books.component';
+import { BooksAddComponent } from './catalogs/book/books-add/books-add.component';
+import { BooksEditComponent } from './catalogs/book/books-edit/books-edit.component';
+import { ProductCategoriesComponent } from './catalogs/product-categories/product-categories.component';
+import { AdminOrdersComponent } from './orders/admin-orders.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { CouponsDynamicFormAddComponent } from './coupons-dynamic-form/coupons-dynamic-form-add.component';
+import { InventoryComponent } from './inventory/inventory.component';
+import { InventoryAddComponent } from './inventory/inventory-add/inventory-add.component';
+import { InventoryEditComponent } from './inventory/inventory-edit/inventory-edit.component';
+import { UsersComponent } from './users/users.component';
+import { UsersEditComponent } from './users/users-edit/users-edit.component';
+import { AdminSettingsComponent } from './admin-settings/admin-settings.component';
+
+const routes: Routes = [
+  {
+    path: '',
+    component: AdminLayoutComponent,
+    children: [
+      // BOOKS
+      {
+        path: 'products',
+        component: BooksComponent,
+      },
+      {
+        path: 'products/add',
+        component: BooksAddComponent,
+      },
+      {
+        path: 'products/:id/edit',
+        component: BooksEditComponent,
+      },
+
+      // BOOKS CATEGORIES
+      {
+        path: 'product-categories',
+        component: ProductCategoriesComponent,
+      },
+
+      {
+        path: 'orders',
+        component: AdminOrdersComponent,
+      },
+
+      {
+        path: 'coupons',
+        component: CouponsDynamicFormAddComponent,
+      },
+      //inventory
+      {
+        path: 'inventory',
+        component: InventoryComponent,
+      },
+
+      {
+        path: 'inventory/add',
+        component: InventoryAddComponent,
+      },
+      {
+        path: 'inventory/edit/store/:storeId/book/:bookId',
+        component: InventoryEditComponent,
+      },
+
+      {
+        path: 'statistics',
+        component: DashboardComponent,
+      },
+
+      //users
+      {
+        path: 'users',
+        component: UsersComponent,
+      },
+      {
+        path: 'users/edit/:userId',
+        component: UsersEditComponent,
+      },
+
+      //settings
+      {
+        path: 'settings',
+        component: AdminSettingsComponent,
+      },
+
+      // default admin route → /admin/products
+      {
+        path: '',
+        redirectTo: 'products',
+        pathMatch: 'full',
+      },
+    ],
+  },
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule],
+})
+export class AdminRoutingModule {}

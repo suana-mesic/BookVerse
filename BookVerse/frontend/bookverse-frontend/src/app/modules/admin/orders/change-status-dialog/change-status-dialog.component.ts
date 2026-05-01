@@ -1,0 +1,91 @@
+import { Component, inject, Inject } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {
+  ListOrdersQueryDto,
+  OrderStatusType,
+} from '../../../../api-services/orders/orders-api.models';
+import { OrderStatusHelper } from '../../../../api-services/orders/order-status.helper';
+
+export interface ChangeStatusDialogData {
+  order: ListOrdersQueryDto;
+}
+
+@Component({
+  selector: 'app-change-status-dialog',
+  standalone: false,
+  templateUrl: './change-status-dialog.component.html',
+  styleUrl: './change-status-dialog.component.scss',
+})
+export class ChangeStatusDialogComponent {
+  private dialogRef = inject(MatDialogRef<ChangeStatusDialogComponent>);
+  private fb = inject(FormBuilder);
+
+  availableStatuses: OrderStatusType[] = [];
+
+  statusForm = this.fb.group({
+    selectedStatus: this.fb.control<OrderStatusType | null>(null, [Validators.required]),
+  });
+
+  get selectedStatus(): OrderStatusType | undefined {
+    const value = this.statusForm.value.selectedStatus;
+    return value ?? undefined;
+  }
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data: ChangeStatusDialogData) {
+    this.availableStatuses = OrderStatusHelper.getNextStatuses(data.order.statusNameEnum);
+
+    // Pre-select first available status
+    if (this.availableStatuses.length > 0) {
+      this.statusForm.patchValue({ selectedStatus: this.availableStatuses[0] });
+    }
+  }
+
+  // === Status Helpers ===
+
+  getStatusLabel(status: OrderStatusType): string {
+    return OrderStatusHelper.getLabel(status);
+  }
+
+  getStatusIcon(status: OrderStatusType): string {
+    return OrderStatusHelper.getIcon(status);
+  }
+
+  getStatusClass(status: OrderStatusType): string {
+    return OrderStatusHelper.getColorClass(status);
+  }
+
+  getCurrentStatusLabel(): string {
+    return OrderStatusHelper.getLabel(this.data.order.statusNameEnum);
+  }
+
+  getCurrentStatusIcon(): string {
+    return OrderStatusHelper.getIcon(this.data.order.statusNameEnum);
+  }
+
+  getCurrentStatusClass(): string {
+    return OrderStatusHelper.getColorClass(this.data.order.statusNameEnum);
+  }
+
+  // === Actions ===
+
+  onConfirm(): void {
+    if (this.statusForm.valid && this.selectedStatus !== undefined) {
+      this.dialogRef.close(this.selectedStatus);
+    }
+  }
+
+  onCancel(): void {
+    this.dialogRef.close(undefined);
+  }
+
+  canConfirm(): boolean {
+    return (
+      this.statusForm.valid &&
+      this.selectedStatus !== undefined &&
+      this.selectedStatus !== this.data.order.statusNameEnum
+    );
+  }
+
+  protected readonly OrderStatusType = OrderStatusType;
+}

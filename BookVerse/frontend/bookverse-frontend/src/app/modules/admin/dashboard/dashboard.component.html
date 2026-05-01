@@ -1,0 +1,235 @@
+<div class="statistics-page">
+  <!-- HEADER WITH REFRESH TIME -->
+  <div class="dashboard-header">
+    <h1>{{ 'STATISTICS.TITLE' | translate }}</h1>
+    <div class="refresh-timestamp" *ngIf="summary">
+      <mat-icon>schedule</mat-icon>
+      {{ summary.generatedAt | appDate }}
+    </div>
+  </div>
+
+  <!-- SUMMARY CARDS -->
+  <div class="summary-grid">
+    <div class="summary-card card-revenue">
+      <div class="card-header">
+        <div>
+          <div class="card-title">{{ 'STATISTICS.CARDS.TOTAL_REVENUE' | translate }}</div>
+          <div class="card-value">{{ summary?.totalRevenue | number: '1.2-2' }} {{ 'CURRENCY' | translate }}</div>
+        </div>
+        <div class="card-icon">
+          <mat-icon>attach_money</mat-icon>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span>{{ 'STATISTICS.CARDS.SINCE_YEAR_START' | translate }}</span>
+        <span class="trend up">
+          <mat-icon>trending_up</mat-icon>
+          {{ (summary?.revenueChangePercent ?? 0) >= 0 ? '+' : ''
+          }}{{ summary?.revenueChangePercent }} %
+        </span>
+      </div>
+    </div>
+
+    <div class="summary-card card-orders">
+      <div class="card-header">
+        <div>
+          <div class="card-title">{{ 'STATISTICS.CARDS.TOTAL_ORDERS' | translate }}</div>
+          <div class="card-value">{{ summary?.totalOrders }}+</div>
+        </div>
+        <div class="card-icon">
+          <mat-icon>shopping_cart</mat-icon>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span>{{ 'STATISTICS.CARDS.TOTAL' | translate }}</span>
+        <span class="trend up">
+          <mat-icon>trending_up</mat-icon>
+          {{ (summary?.ordersChangePercent ?? 0) >= 0 ? '+' : ''
+          }}{{ summary?.ordersChangePercent }} %
+        </span>
+      </div>
+    </div>
+
+    <div class="summary-card card-users">
+      <div class="card-header">
+        <div>
+          <div class="card-title">{{ 'STATISTICS.CARDS.TOTAL_USERS' | translate }}</div>
+          <div class="card-value">{{ summary?.totalUsers }}</div>
+        </div>
+        <div class="card-icon">
+          <mat-icon>people</mat-icon>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span>{{ 'STATISTICS.CARDS.ACTIVE' | translate }}</span>
+        <span class="trend down">
+          <mat-icon>trending_down</mat-icon> {{ (summary?.usersChangePercent ?? 0) >= 0 ? '+' : ''
+          }}{{ summary?.usersChangePercent }} %
+        </span>
+      </div>
+    </div>
+
+    <div class="summary-card card-books">
+      <div class="card-header">
+        <div>
+          <div class="card-title">{{ 'STATISTICS.CARDS.BOOKS_SOLD' | translate }}</div>
+          <div class="card-value">{{ summary?.totalBooksSold }}</div>
+        </div>
+        <div class="card-icon">
+          <mat-icon>menu_book</mat-icon>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span>{{ 'STATISTICS.CARDS.THIS_YEAR' | translate }}</span>
+        <span class="trend up">
+          <mat-icon>trending_up</mat-icon>
+          {{ (summary?.booksSoldChangePercent ?? 0) >= 0 ? '+' : ''
+          }}{{ summary?.booksSoldChangePercent }} %
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHARTS -->
+  <div class="charts-grid">
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>{{ 'STATISTICS.CHARTS.MONTHLY_REVENUE_HEADER' | translate }}</h3>
+        <div class="chart-actions"><mat-icon>bar_chart</mat-icon></div>
+      </div>
+      <canvas id="revenueChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>{{ 'STATISTICS.CHARTS.MONTHLY_ORDERS_HEADER' | translate }}</h3>
+        <div class="chart-actions"><mat-icon>show_chart</mat-icon></div>
+      </div>
+      <canvas id="ordersChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>{{ 'STATISTICS.CHARTS.TOP5_BOOKS_HEADER' | translate }}</h3>
+        <div class="chart-actions"><mat-icon>star</mat-icon></div>
+      </div>
+      <canvas id="topBooksChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>{{ 'STATISTICS.CHARTS.SHIPPERS_HEADER' | translate }}</h3>
+        <div class="chart-actions"><mat-icon>local_shipping</mat-icon></div>
+      </div>
+      <canvas id="shippersChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>{{ 'STATISTICS.CHARTS.CATEGORIES_HEADER' | translate }}</h3>
+        <div class="chart-actions"><mat-icon>category</mat-icon></div>
+      </div>
+      <canvas id="categoriesChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>{{ 'STATISTICS.CHARTS.MONTHLY_CATEGORY_HEADER' | translate }}</h3>
+        <div class="chart-actions"><mat-icon>stacked_bar_chart</mat-icon></div>
+      </div>
+      <canvas id="monthlyCategoryRevenueChart"></canvas>
+    </div>
+  </div>
+
+  <!-- PDF REPORT FOR ORDERS -->
+  <div class="report-section" *ngIf="!isLoading">
+    <h3><mat-icon>picture_as_pdf</mat-icon> {{ 'STATISTICS.REPORTS.ORDERS_TITLE' | translate }}</h3>
+
+    <div class="report-filters" [formGroup]="reportFiltersForm">
+      <mat-form-field appearance="outline" class="filter-item">
+        <mat-label>{{ 'STATISTICS.REPORTS.DATE_FROM' | translate }}</mat-label>
+        <input matInput [matDatepicker]="pickerOd" formControlName="dateFrom" required />
+        <mat-datepicker-toggle matIconSuffix [for]="pickerOd"></mat-datepicker-toggle>
+        <mat-datepicker #pickerOd></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filter-item">
+        <mat-label>{{ 'STATISTICS.REPORTS.DATE_TO' | translate }}</mat-label>
+        <input matInput [matDatepicker]="pickerDo" formControlName="dateTo" required />
+        <mat-datepicker-toggle matIconSuffix [for]="pickerDo"></mat-datepicker-toggle>
+        <mat-datepicker #pickerDo></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filter-item">
+        <mat-label>{{ 'STATISTICS.REPORTS.USER' | translate }}</mat-label>
+        <input
+          type="text"
+          [placeholder]="'STATISTICS.REPORTS.USER_PLACEHOLDER' | translate"
+          matInput
+          [formControl]="usersAutocompleteInput"
+          [matAutocomplete]="autoUsers"
+        />
+        <mat-autocomplete #autoUsers="matAutocomplete">
+          @for (user of filteredUsersOptions | async; track user.id) {
+            <mat-option [value]="user.fullName">{{ user.fullName }}</mat-option>
+          }
+        </mat-autocomplete>
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-error *ngIf="usersAutocompleteInput.hasError('required')">
+          {{ 'STATISTICS.REPORTS.USER_REQUIRED' | translate }}
+        </mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button (click)="downloadOrdersReport()" [disabled]="!dateFrom || !dateTo || usersAutocompleteInput.invalid">
+        {{ 'STATISTICS.REPORTS.DOWNLOAD_PDF' | translate }}
+      </button>
+    </div>
+  </div>
+
+  <br />
+
+  <!-- PDF REPORT ON BOOK SALES -->
+  <div class="report-section" *ngIf="!isLoading">
+    <h3><mat-icon>picture_as_pdf</mat-icon> {{ 'STATISTICS.REPORTS.BOOKS_TITLE' | translate }}</h3>
+
+    <div class="report-filters" [formGroup]="reportFiltersForm">
+      <mat-form-field appearance="outline" class="filter-item">
+        <mat-label>{{ 'STATISTICS.REPORTS.DATE_FROM' | translate }}</mat-label>
+        <input matInput [matDatepicker]="pickerOd" formControlName="dateFrom" />
+        <mat-datepicker-toggle matIconSuffix [for]="pickerOd"></mat-datepicker-toggle>
+        <mat-datepicker #pickerOd></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filter-item">
+        <mat-label>{{ 'STATISTICS.REPORTS.DATE_TO' | translate }}</mat-label>
+        <input matInput [matDatepicker]="pickerDo" formControlName="dateTo" />
+        <mat-datepicker-toggle matIconSuffix [for]="pickerDo"></mat-datepicker-toggle>
+        <mat-datepicker #pickerDo></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filter-item">
+        <mat-label>{{ 'STATISTICS.REPORTS.BOOK' | translate }}</mat-label>
+        <input
+          type="text"
+          [placeholder]="'STATISTICS.REPORTS.BOOK_PLACEHOLDER' | translate"
+          matInput
+          [formControl]="booksAutocompleteInput"
+          [matAutocomplete]="autoBooks"
+        />
+        <mat-autocomplete #autoBooks="matAutocomplete">
+          @for (book of filteredBooksOptions | async; track book.id) {
+            <mat-option [value]="book.title">{{ book.title }}</mat-option>
+          }
+        </mat-autocomplete>
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-error *ngIf="booksAutocompleteInput.hasError('required')">
+          {{ 'STATISTICS.REPORTS.BOOK_REQUIRED' | translate }}
+        </mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button (click)="downloadBooksReport()" [disabled]="!dateFrom || !dateTo || booksAutocompleteInput.invalid">
+        {{ 'STATISTICS.REPORTS.DOWNLOAD_PDF' | translate }}
+      </button>
+    </div>
+  </div>
+</div>

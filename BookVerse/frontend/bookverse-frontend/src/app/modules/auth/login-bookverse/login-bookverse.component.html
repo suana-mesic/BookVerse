@@ -1,0 +1,96 @@
+<app-header></app-header>
+<div class="parent">
+  <div class="signup-container">
+    @if (!requiresTwoFactor) {
+      <form id="signup-form" class="signup-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        @if (showLoginError) {
+          <div class="login-error-banner">
+            <mat-icon class="error-icon">error_outline</mat-icon>
+            <span class="error_message">
+              {{ 'AUTH.LOGIN.INVALID_CREDENTIALS' | translate }}
+            </span>
+          </div>
+        }
+        <h1>{{ 'AUTH.LOGIN.TITLE' | translate }}</h1>
+        <mat-form-field class="form-control" floatLabel="always">
+          <mat-label>{{ 'AUTH.LOGIN.EMAIL_LABEL' | translate }}</mat-label>
+          <input
+            type="text"
+            formControlName="email"
+            id="email"
+            name="email"
+            [placeholder]="'AUTH.LOGIN.EMAIL_LABEL' | translate"
+            matInput
+            required
+          />
+          <mat-error>{{ 'AUTH.LOGIN.EMAIL_ERROR' | translate }}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="form-control" floatLabel="always">
+          <mat-label>{{ 'AUTH.LOGIN.PASSWORD_LABEL' | translate }}</mat-label>
+          <input
+            type="password"
+            formControlName="password"
+            id="password"
+            name="password"
+            [placeholder]="'AUTH.LOGIN.PASSWORD_LABEL' | translate"
+            matInput
+            required
+          />
+          <mat-error>{{ 'AUTH.LOGIN.PASSWORD_ERROR' | translate }}</mat-error>
+        </mat-form-field>
+        <button type="submit" class="login-button" [disabled]="loginForm.invalid || isLoading">
+          {{ 'AUTH.LOGIN.BUTTON' | translate }}
+        </button>
+
+        <div class="login-link">
+          <p class="sign-up">
+            <a routerLink="/auth/forgot-password">{{ 'AUTH.LOGIN.FORGOT_PASSWORD' | translate }}</a>
+          </p>
+          <p class="sign-up">
+            {{ 'AUTH.LOGIN.NEW_HERE' | translate }}
+            <a routerLink="/auth/register">{{ 'AUTH.LOGIN.REGISTER_LINK' | translate }}</a>
+          </p>
+        </div>
+      </form>
+    }
+    @if (requiresTwoFactor) {
+      <form class="signup-form" [formGroup]="twoFactorForm" (ngSubmit)="onVerifyTwoFactor()">
+        <h1>{{ 'AUTH.LOGIN.TWO_FACTOR_TITLE' | translate }}</h1>
+
+        <p class="two-factor-info">
+          {{ 'AUTH.LOGIN.TWO_FACTOR_INFO_BEFORE' | translate }} <strong>{{ twoFactorEmail }}</strong
+          >. {{ 'AUTH.LOGIN.TWO_FACTOR_INFO_AFTER' | translate }}
+        </p>
+
+        @if (showTwoFactorError) {
+          <div class="login-error-banner">
+            <mat-icon class="error-icon">error_outline</mat-icon>
+            <span class="error_message">{{ 'AUTH.LOGIN.TWO_FACTOR_ERROR' | translate }}</span>
+          </div>
+        }
+
+        <mat-form-field class="form-control two-factor-field">
+          <input
+            matInput
+            formControlName="code"
+            [placeholder]="'AUTH.LOGIN.TWO_FACTOR_CODE_PLACEHOLDER' | translate"
+            maxlength="6"
+          />
+        </mat-form-field>
+
+        <button
+          type="submit"
+          class="login-button"
+          [disabled]="twoFactorForm.invalid || isLoading"
+        >
+          {{ 'AUTH.LOGIN.TWO_FACTOR_CONFIRM' | translate }}
+        </button>
+
+        <button type="button" class="back-button" (click)="requiresTwoFactor = false">
+          {{ 'AUTH.LOGIN.TWO_FACTOR_BACK' | translate }}
+        </button>
+      </form>
+    }
+  </div>
+</div>
