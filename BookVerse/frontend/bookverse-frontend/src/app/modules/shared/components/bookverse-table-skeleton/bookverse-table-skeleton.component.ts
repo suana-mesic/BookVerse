@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-bookverse-table-skeleton',
@@ -12,10 +12,14 @@ export class BookverseTableSkeletonComponent {
   @Input() showActions: boolean = true;
 
   get rowsArray(): number[] {
-    return Array(this.rows).fill(0).map((_, i) => i);
+    return Array(this.rows)
+      .fill(0)
+      .map((_, i) => i);
   }
 
   get columnsArray(): number[] {
-    return Array(this.columns).fill(0).map((_, i) => i);
+    return Array(this.columns)
+      .fill(0)
+      .map((_, i) => i);
   }
 }

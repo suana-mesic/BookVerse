@@ -44,7 +44,11 @@ import { TranslateService } from '@ngx-translate/core';
   providers: [
     DialogHelperService,
     DatePipe,
-    { provide: DateAdapter, useClass: DynamicDateAdapter, deps: [DateFormatService, TranslateService] },
+    {
+      provide: DateAdapter,
+      useClass: DynamicDateAdapter,
+      deps: [DateFormatService, TranslateService],
+    },
   ],
   exports: [
     BookversePaginatorBarComponent,

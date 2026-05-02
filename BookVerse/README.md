@@ -92,12 +92,12 @@ The frontend opens at: `http://localhost:4200`
 
 ## Login credentials
 
-| Email                  | Password | Role                  |
-| ---------------------- | -------- | --------------------- |
-| admin@bookverse.com    | string   | Admin (full access)   |
-| manager@bookverse.com  | string   | Manager               |
-| employee@bookverse.com | string   | Employee              |
-| customer@bookverse.com | string   | Customer              |
+| Email                  | Password | Role                |
+| ---------------------- | -------- | ------------------- |
+| admin@bookverse.com    | string   | Admin (full access) |
+| manager@bookverse.com  | string   | Manager             |
+| employee@bookverse.com | string   | Employee            |
+| customer@bookverse.com | string   | Customer            |
 
 Swagger is available at `https://localhost:7260/swagger` and can be used with the same credentials.
 
@@ -152,56 +152,56 @@ BookVerse.Tests         — integration tests
 
 ### Login
 
-![Login](screenshots/login.png)
+![Login](screenshots/logiranje.png)
 
 ### Admin panel - dashboard
 
-![Dashboard](screenshots/admin_dashboard.png)
+![Dashboard](screenshots/dashboard.png)
 
 ### Admin panel - books
 
-![Books](screenshots/admin_knjige.png)
+![Books](screenshots/knjige.png)
 
 ### Admin panel - orders
 
-![Orders](screenshots/admin_narudzbe.png)
+![Orders](screenshots/narudzbe.png)
 
 ### Admin panel - orders (dark)
 
-![Orders dark](screenshots/admin_narudzbe_dark.png)
+![Orders dark](screenshots/narudzbe_dark.png)
 
 ### Admin panel - inventory
 
-![Inventory](screenshots/admin_inventar.png)
+![Inventory](screenshots/inventar.png)
 
 ### Admin panel - users
 
-![Users](screenshots/admin_korisnici.png)
+![Users](screenshots/korisnici.png)
 
 ### Admin panel - settings
 
-![Settings](screenshots/admin_postavke.png)
+![Settings](screenshots/postavke.png)
 
 ### Customer interface - book listing
 
-![Book listing](screenshots/pocetna.png)
+![Book listing](screenshots/pocetna_stranica.png)
 
 ### Customer interface - book listing (dark)
 
-![Book listing dark](screenshots/pocetna_dark.png)
+![Book listing dark](screenshots/pocetna_stranica_dark.png)
 
 ### Customer interface - shopping cart
 
-![Shopping cart](screenshots/kosarica.png)
+![Shopping cart](screenshots/korpa.png)
 
 ### Customer interface - my orders
 
-![My orders](screenshots/moje_narudzbe.png)
+![My orders](screenshots/kupac_narudzbe.png)
 
 ### Customer interface - my purchased books
 
-![My purchased books](screenshots/moje_kupljene_knjige.png)
+![My purchased books](screenshots/kupljene_knjige.png)
 
 ### Customer interface - reviewing (only for purchased books)
 
-![Reviewing](screenshots/recenziranje.png)
+![Reviewing](screenshots/recenzije.png)
