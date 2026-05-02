@@ -269,7 +269,10 @@ export class UserBooksComponent
           this.reviewService.deleteReview(book.bookId).subscribe({
             next: () => {
               this.loadPagedData();
-              this.toaster.success(this.translate.instant('CLIENT.USER_BOOKS.REVIEW_DELETED'));
+              this.dialogHelper.showSuccess(
+                'DIALOGS.TITLES.SUCCESS',
+                'CLIENT.USER_BOOKS.REVIEW_DELETED',
+              );
             },
             error: () => {
               this.toaster.error(this.translate.instant('CLIENT.USER_BOOKS.ERROR_DELETE_REVIEW'));

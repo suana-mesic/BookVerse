@@ -72,7 +72,7 @@
                     <strong>{{ 'CLIENT.CHECKOUT.MY_SAVED_ADDRESS' | translate }}</strong>
                     <p>{{ userAddress?.line1 }}</p>
                     <p *ngIf="userAddress?.line2">{{ userAddress?.line2 }}</p>
-                    <p>{{ userAddress?.city }}, {{ userAddress?.country }}</p>
+                    <p>{{ userAddress?.city }}, {{ getDisplayCountry(userAddress?.country) }}</p>
                   </div>
                   <div class="radio-check"><mat-icon>check_circle</mat-icon></div>
                 </div>
@@ -164,11 +164,11 @@
         <div *ngIf="currentStep === 2" class="step-card">
           <div class="step-card-header">
             <div class="step-header-icon">
-              <mat-icon>local_shipping</mat-icon>
+              <mat-icon>{{ deliveryType === 'pickup' ? 'storefront' : 'local_shipping' }}</mat-icon>
             </div>
             <div>
-              <h2>{{ 'CLIENT.CHECKOUT.DELIVERY_TITLE' | translate }}</h2>
-              <p>{{ 'CLIENT.CHECKOUT.DELIVERY_SUBTITLE' | translate }}</p>
+              <h2>{{ (deliveryType === 'pickup' ? 'CLIENT.CHECKOUT.PICKUP' : 'CLIENT.CHECKOUT.DELIVERY_TITLE') | translate }}</h2>
+              <p>{{ (deliveryType === 'pickup' ? 'CLIENT.CHECKOUT.PICKUP_SUBTITLE' : 'CLIENT.CHECKOUT.DELIVERY_SUBTITLE') | translate }}</p>
             </div>
           </div>
 
@@ -267,7 +267,7 @@
                       <strong>{{ store.storeName }}</strong>
                       <p>{{ store.line1 }}, {{ store.city }}</p>
                       <p>📞 {{ store.phone }}</p>
-                      <p>🕐 {{ store.openingHours }}</p>
+                      <p>🕐 {{ store.openingHours | openingHours }}</p>
                       <p *ngIf="!isBookAvailableInStore(store.id)" class="unavailable-text">
                         ⚠️ {{ 'CLIENT.CHECKOUT.UNAVAILABLE' | translate }}
                         {{ getUnavailableBooksForStore(store.id).join(', ') }}
@@ -320,14 +320,14 @@
                 <div class="review-block-content">
                   <p>{{ getDeliveryAddress()?.line1 }}</p>
                   <p *ngIf="getDeliveryAddress()?.line2">{{ getDeliveryAddress()?.line2 }}</p>
-                  <p>{{ getDeliveryAddress()?.city }}, {{ getDeliveryAddress()?.country }}</p>
+                  <p>{{ getDeliveryAddress()?.city }}, {{ getDisplayCountry(getDeliveryAddress()?.country) }}</p>
                 </div>
               </div>
 
               <div class="review-block">
                 <div class="review-block-title">
-                  <mat-icon>local_shipping</mat-icon>
-                  <span>{{ 'CLIENT.CHECKOUT.DELIVERY_TITLE' | translate }}</span>
+                  <mat-icon>{{ deliveryType === 'pickup' ? 'storefront' : 'local_shipping' }}</mat-icon>
+                  <span>{{ (deliveryType === 'pickup' ? 'CLIENT.CHECKOUT.PICKUP' : 'CLIENT.CHECKOUT.DELIVERY_TITLE') | translate }}</span>
                 </div>
                 <div class="review-block-content">
                   <div *ngIf="deliveryType === 'shipping'">
@@ -383,7 +383,7 @@
               <div class="applied-coupons">
                 <div *ngFor="let coupon of appliedCoupons" class="applied-coupon">
                   <mat-icon>local_offer</mat-icon>
-                  <span class="coupon-name">{{ coupon.name }}</span>
+                  <span class="coupon-name">{{ coupon.promotionCode }}</span>
                   <span class="coupon-discount">
                     <ng-container *ngIf="coupon.amountOff"
                       >- {{ coupon.amountOff | appNumber }} {{ 'CURRENCY' | translate }}</ng-container

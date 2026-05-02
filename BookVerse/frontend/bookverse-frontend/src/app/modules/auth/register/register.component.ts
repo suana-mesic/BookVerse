@@ -180,6 +180,8 @@ export class RegisterComponent implements OnInit {
 
     if (passwordElement) {
       passwordElement.type = this.showPassword ? 'text' : 'password';
+    }
+    if (visibilityIcon) {
       visibilityIcon.style.color = this.showPassword ? '#3498db' : '#808080';
     }
   }

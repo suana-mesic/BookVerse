@@ -355,16 +355,20 @@ $hover-bg: rgba(73, 118, 181, 0.04);
         font-size: 14px;
       }
 
-      .subtotal-row td,
-      .shipping-row td {
+      .footer-label {
+        text-align: left;
         color: var(--text-secondary);
       }
 
-      .discount-row {
-        .discount-amount {
-          color: $error-color;
-          font-weight: 500;
-        }
+      .footer-price {
+        text-align: right;
+        white-space: nowrap;
+        color: var(--text-secondary);
+      }
+
+      .discount-amount {
+        color: $error-color;
+        font-weight: 500;
       }
 
       .total-row {
@@ -373,11 +377,11 @@ $hover-bg: rgba(73, 118, 181, 0.04);
         td {
           padding: 16px;
           font-size: 16px;
+        }
 
-          &.total-amount {
-            color: $success-color;
-            font-size: 18px;
-          }
+        .total-amount {
+          color: $success-color;
+          font-size: 18px;
         }
       }
     }

@@ -1,4 +1,4 @@
-﻿import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
   AsyncValidatorFn,
@@ -21,7 +21,7 @@ import { CouponsApiService } from '../../../api-services/coupons/coupons-api.ser
 import { CartApiService } from '../../../api-services/cart/cart-api.service';
 import { ListCartDto } from '../../../api-services/cart/cart-api.model';
 import { OrdersApiService } from '../../../api-services/orders/orders-api.service';
-import { catchError, map, Observable, of, switchMap, timer } from 'rxjs';
+import { catchError, map, Observable, of, Subscription, switchMap, timer } from 'rxjs';
 import { CountriesApiService } from '../../../api-services/rest-countries/countires-api.service';
 import { Location } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
@@ -31,7 +31,9 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.scss',
 })
-export class CheckoutComponent extends BaseComponent implements OnInit {
+export class CheckoutComponent extends BaseComponent implements OnInit, OnDestroy {
+  private subscriptions = new Subscription();
+
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private userService = inject(UsersApiService);
@@ -143,7 +145,9 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
       },
     });
 
-    this.shippingMethodsService.getShippingMethods().subscribe({
+    const lang = this.translate.currentLang || this.translate.defaultLang || 'bs';
+
+    this.shippingMethodsService.getShippingMethods(lang).subscribe({
       next: (methods) => (this.shippingMethods = methods),
     });
 
@@ -151,16 +155,23 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
       next: (stores) => (this.stores = stores.items),
     });
 
-    const lang = this.translate.currentLang || this.translate.defaultLang || 'bs';
     this.cartService.getCart(lang).subscribe({
       next: (cart) => (this.cart = cart),
     });
 
-    this.translate.onLangChange.subscribe((event) => {
-      this.cartService.getCart(event.lang).subscribe({
-        next: (cart) => (this.cart = cart),
-      });
-    });
+    this.subscriptions.add(
+      this.translate.onLangChange.subscribe((event) => {
+        this.cartService.getCart(event.lang).subscribe({
+          next: (cart) => (this.cart = cart),
+        });
+        this.shippingMethodsService.getShippingMethods(event.lang).subscribe({
+          next: (methods) => (this.shippingMethods = methods),
+        });
+        this.countriesService.getCountries().subscribe((countries) => {
+          this.countries = countries;
+        });
+      }),
+    );
 
     this.countriesService.getCountries().subscribe((countries) => {
       this.countries = countries;
@@ -170,6 +181,10 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
       this.enteredCoupon.markAsTouched();
       this.cdr.detectChanges();
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   private isRestoringState = false;
@@ -230,6 +245,12 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
     };
   }
 
+  getDisplayCountry(savedCountry: string | null | undefined): string {
+    if (!savedCountry) return '';
+    const match = this.countries.find((c) => c.nameBs === savedCountry);
+    return match?.name ?? savedCountry;
+  }
+
   proceedToPayment(): void {
     this.submitOrder();
   }
@@ -281,7 +302,7 @@ export class CheckoutComponent extends BaseComponent implements OnInit {
         this.appliedCoupons.push(coupon);
         this.enteredCoupon.setValue('');
         this.toaster.success(
-          this.translate.instant('CLIENT.CHECKOUT.COUPON_APPLIED', { name: coupon.name }),
+          this.translate.instant('CLIENT.CHECKOUT.COUPON_APPLIED', { code: coupon.promotionCode }),
         );
       },
       error: () => {

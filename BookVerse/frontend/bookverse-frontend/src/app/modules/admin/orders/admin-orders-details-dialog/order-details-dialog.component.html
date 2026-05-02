@@ -70,9 +70,33 @@
             <span class="info-label">{{ 'ORDERS.DETAILS.CUSTOMER_NAME' | translate }}</span>
             <span class="info-value">{{ getCustomerName() }}</span>
           </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Ship to Address Section -->
+    <mat-card class="info-card" *ngIf="getShipToAddress() as addr">
+      <mat-card-header>
+        <mat-icon mat-card-avatar>local_shipping</mat-icon>
+        <mat-card-title>{{ 'ORDERS.DETAILS.SHIP_TO_ADDRESS' | translate }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="info-grid">
           <div class="info-item">
-            <span class="info-label">{{ 'ORDERS.DETAILS.ADDRESS' | translate }}</span>
-            <span class="info-value">{{ getCustomerAddress() }}</span>
+            <span class="info-label">{{ 'ORDERS.DETAILS.SHIP_TO_LINE1' | translate }}</span>
+            <span class="info-value">{{ addr.line1 }}</span>
+          </div>
+          <div class="info-item" *ngIf="addr.line2">
+            <span class="info-label">{{ 'ORDERS.DETAILS.SHIP_TO_LINE2' | translate }}</span>
+            <span class="info-value">{{ addr.line2 }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">{{ 'ORDERS.DETAILS.SHIP_TO_CITY' | translate }}</span>
+            <span class="info-value">{{ addr.city }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">{{ 'ORDERS.DETAILS.SHIP_TO_COUNTRY' | translate }}</span>
+            <span class="info-value">{{ getDisplayCountry(addr.country) }}</span>
           </div>
         </div>
       </mat-card-content>
@@ -104,35 +128,23 @@
           </tbody>
           <tfoot>
             <tr class="subtotal-row">
-              <td colspan="2" class="text-right">
-                {{ 'ORDERS.DETAILS.SUBTOTAL' | translate }}
-              </td>
-              <td class="text-right">{{ order.subtotal | appNumber }} {{ 'CURRENCY' | translate }}</td>
+              <td colspan="2" class="footer-label">{{ 'ORDERS.DETAILS.SUBTOTAL' | translate }}</td>
+              <td class="footer-price">{{ order.subtotal | appNumber }} {{ 'CURRENCY' | translate }}</td>
             </tr>
 
             <tr class="shipping-row" *ngIf="order.shippingPriceAtTheTime">
-              <td colspan="2" class="text-right">
-                {{ 'ORDERS.DETAILS.SHIPPING' | translate }}
-              </td>
-              <td class="text-right">{{ order.shippingPriceAtTheTime | appNumber }} {{ 'CURRENCY' | translate }}</td>
+              <td colspan="2" class="footer-label">{{ 'ORDERS.DETAILS.SHIPPING' | translate }}</td>
+              <td class="footer-price">{{ order.shippingPriceAtTheTime | appNumber }} {{ 'CURRENCY' | translate }}</td>
             </tr>
 
             <tr class="discount-row" *ngIf="order.discountAmount">
-              <td colspan="2" class="text-right">
-                {{ 'ORDERS.DETAILS.DISCOUNT' | translate }}
-              </td>
-              <td class="text-right discount-amount">
-                - {{ order.discountAmount | appNumber }} {{ 'CURRENCY' | translate }}
-              </td>
+              <td colspan="2" class="footer-label">{{ 'ORDERS.DETAILS.DISCOUNT' | translate }}</td>
+              <td class="footer-price discount-amount">- {{ order.discountAmount | appNumber }} {{ 'CURRENCY' | translate }}</td>
             </tr>
 
             <tr class="total-row">
-              <td colspan="2" class="text-right">
-                <strong>{{ 'ORDERS.DETAILS.ORDER_TOTAL' | translate }}</strong>
-              </td>
-              <td class="text-right total-amount">
-                <strong>{{ order.totalAmount | appNumber }} {{ 'CURRENCY' | translate }}</strong>
-              </td>
+              <td colspan="2" class="footer-label"><strong>{{ 'ORDERS.DETAILS.ORDER_TOTAL' | translate }}</strong></td>
+              <td class="footer-price total-amount"><strong>{{ order.totalAmount | appNumber }} {{ 'CURRENCY' | translate }}</strong></td>
             </tr>
           </tfoot>
         </table>

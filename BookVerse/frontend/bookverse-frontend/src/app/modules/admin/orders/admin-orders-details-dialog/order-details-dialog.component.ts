@@ -1,4 +1,4 @@
-import { Component, inject, Inject } from '@angular/core';
+import { Component, inject, Inject, OnDestroy } from '@angular/core';
 import {
   GetOrderByIdQueryDto,
   OrderStatusType,
@@ -6,6 +6,9 @@ import {
 import { OrderStatusHelper } from '../../../../api-services/orders/order-status.helper';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { OrdersApiService } from '../../../../api-services/orders/orders-api.service';
+import { CountriesApiService } from '../../../../api-services/rest-countries/countires-api.service';
+import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 
 export interface OrderDetailsDialogData {
   orderId: number;
@@ -17,18 +20,34 @@ export interface OrderDetailsDialogData {
   templateUrl: './order-details-dialog.component.html',
   styleUrl: './order-details-dialog.component.scss',
 })
-export class OrderDetailsDialogComponent {
+export class OrderDetailsDialogComponent implements OnDestroy {
   private ordersApi = inject(OrdersApiService);
   private dialogRef = inject(MatDialogRef<OrderDetailsDialogComponent>);
+  private countriesService = inject(CountriesApiService);
+  private translate = inject(TranslateService);
 
   order?: GetOrderByIdQueryDto;
   isLoading = false;
   errorMessage: string | null = null;
+  countries: { name: string; countryCode: string; nameBs: string }[] = [];
+  private langChangeSub?: Subscription;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: OrderDetailsDialogData) {}
 
   ngOnInit(): void {
     this.loadOrderDetails();
+    this.loadCountries();
+    this.langChangeSub = this.translate.onLangChange.subscribe(() => this.loadCountries());
+  }
+
+  ngOnDestroy(): void {
+    this.langChangeSub?.unsubscribe();
+  }
+
+  private loadCountries(): void {
+    this.countriesService.getCountries().subscribe({
+      next: (countries) => (this.countries = countries),
+    });
   }
 
   private loadOrderDetails(): void {
@@ -76,9 +95,15 @@ export class OrderDetailsDialogComponent {
     return `${this.order.user.userFirstname} ${this.order.user.userLastname}`;
   }
 
-  getCustomerAddress(): string {
-    if (!this.order) return '';
-    return `${this.order.user.userAddress}, ${this.order.user.userCity}`;
+  getShipToAddress(): { line1: string; line2: string | null; city: string; country: string } | null {
+    if (!this.order?.shipToAddress) return null;
+    return this.order.shipToAddress;
+  }
+
+  getDisplayCountry(savedCountry: string | null | undefined): string {
+    if (!savedCountry) return '';
+    const match = this.countries.find((c) => c.nameBs === savedCountry);
+    return match?.name ?? savedCountry;
   }
 
   // === Actions ===

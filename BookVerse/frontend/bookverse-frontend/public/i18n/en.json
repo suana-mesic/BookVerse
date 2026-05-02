@@ -376,7 +376,7 @@
       "ERROR_LOAD": "Error loading inventory.",
       "ERROR_LOAD_BOOKS": "Error loading books.",
       "ERROR_LOAD_STORE_BOOK_PAIRS": "Error loading store-book pairs.",
-      "LOCATION_FORMAT": "Location must be in format \"Shelf Letter-number\""
+      "LOCATION_FORMAT": "Location must be in format \"Uppercase letter-number\" (e.g. A-5)"
     }
   },
   "ORDERS": {
@@ -428,6 +428,11 @@
       "CUSTOMER_INFO": "Customer Information",
       "CUSTOMER_NAME": "Name",
       "ADDRESS": "Address",
+      "SHIP_TO_ADDRESS": "Ship to Address",
+      "SHIP_TO_LINE1": "Street",
+      "SHIP_TO_LINE2": "Street (cont.)",
+      "SHIP_TO_CITY": "City",
+      "SHIP_TO_COUNTRY": "Country",
       "ORDER_ITEMS": "Order Items",
       "BOOKS": "Books",
       "QUANTITY": "Quantity",
@@ -760,7 +765,7 @@
       "WISHLIST": "Wishlist",
       "MY_BOOKS": "My Books",
       "USER_SETTINGS": "Settings",
-      "ORDERS": "Orders",
+      "MY_ORDERS": "My Orders",
       "PROFILE": "Profile",
       "LOGOUT": "Logout",
       "LANG_BS": "Bosnian",
@@ -873,7 +878,7 @@
       "ORDER_CONFIRMED": "Order confirmed! Redirecting to payment...",
       "ERROR_LOAD_ADDRESS": "Error loading address.",
       "ERROR_CREATE_ORDER": "Error creating order",
-      "COUPON_APPLIED": "Coupon \"{{name}}\" applied successfully!",
+      "COUPON_APPLIED": "Coupon \"{{code}}\" applied successfully!",
       "COUPON_NOT_FOUND": "Coupon not found or expired.",
       "COUPON_ALREADY_APPLIED": "This coupon has already been applied."
     },
@@ -1021,6 +1026,8 @@
       "WORKING_HOURS": "Working hours:",
       "MON_FRI": "Mon - Fri:",
       "SAT_SUN": "Sat - Sun:",
+      "OPENING_HOURS_MON_FRI": "Mon-Fri",
+      "OPENING_HOURS_SAT": "Sat",
       "EMAIL": "Email:",
       "ADDRESS": "Address:",
       "PHONE": "Contact phone:",
@@ -1032,9 +1039,6 @@
       "BOOKS_WORD": "books",
       "IMAGE_ALT": "book image",
       "STORE_TOOLTIP": "Show info",
-      "CENTRAL_BOOKSTORE": "Central bookstore",
-      "FORTICA_BOOKS": "Fortica books",
-      "SPACE_BOOKSTORE": "Space bookstore",
       "MOSTAR": "Mostar",
       "SARAJEVO": "Sarajevo"
     },

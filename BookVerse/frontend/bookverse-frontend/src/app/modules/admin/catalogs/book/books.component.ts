@@ -14,7 +14,7 @@ import { ToasterService } from '../../../../core/services/toaster.service';
 import { DialogHelperService } from '../../../shared/services/dialog-helper.service';
 import { DialogButton } from '../../../shared/models/dialog-config.model';
 import { BooksApiService } from '../../../../api-services/books/books-api.service';
-import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { AuthFacadeService } from '../../../../core/services/auth/auth-facade.service';
 
 @Component({
@@ -52,7 +52,6 @@ export class BooksComponent
   constructor() {
     super();
     this.request = new ListBooksRequest();
-    this.request.language = this.translate.currentLang || this.translate.defaultLang || 'bs';
     this.request.lookupsOnly = true;
   }
 
@@ -60,13 +59,6 @@ export class BooksComponent
     this.getPaginationSettings();
     this.initList();
     this.setupSearchDebounce();
-
-    this.translate.onLangChange
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((event: LangChangeEvent) => {
-        this.request.language = event.lang;
-        this.loadPagedData();
-      });
   }
 
   ngOnDestroy(): void {
