@@ -1,4 +1,4 @@
-﻿import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+﻿import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { BooksFormService } from '../services/book-form.service';
@@ -20,9 +20,7 @@ import { AuthorsApiService } from '../../../../../api-services/authors/authors-a
 import { BooksApiService } from '../../../../../api-services/books/books-api.service';
 import { LanguagesApiService } from '../../../../../api-services/languages/languages-api.service';
 import { ListLanguagesQueryDto } from '../../../../../api-services/languages/languages-api.model';
-import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-products-edit',
@@ -31,7 +29,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrl: './books-edit.component.scss',
   providers: [BooksFormService],
 })
-export class BooksEditComponent extends BaseFormComponent<GetBookByIdQueryDto> implements OnInit, OnDestroy {
+export class BooksEditComponent extends BaseFormComponent<GetBookByIdQueryDto> implements OnInit {
   private api = inject(BooksApiService);
   private categoriesApi = inject(ProductCategoriesApiService);
   private bookFormatsApi = inject(BookFormatApiService);
@@ -51,32 +49,19 @@ export class BooksEditComponent extends BaseFormComponent<GetBookByIdQueryDto> i
   authors: ListAuthorsQueryDto[] = [];
   publishers: ListPublishersQueryDto[] = [];
 
-  private destroy$ = new Subject<void>();
-
   ngOnInit(): void {
     this.productId = +this.route.snapshot.params['id'];
     this.initForm(true); // Edit mode
     this.startLoading();
-
-    this.translate.onLangChange
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((event: LangChangeEvent) => {
-        this.reloadTranslatableDropdowns(event.lang);
-      });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   protected loadData(): void {
     // Load product and categories in parallel
     forkJoin({
       product: this.api.getById(this.productId),
-      categories: this.categoriesApi.list({ language: this.translate.currentLang }),
-      bookFormats: this.bookFormatsApi.list({ onlyEnabled: true, paging: largePaging, language: this.translate.currentLang }),
-      languages: this.languagesApi.list({ language: this.translate.currentLang }),
+      categories: this.categoriesApi.list(),
+      bookFormats: this.bookFormatsApi.list({ onlyEnabled: true, paging: largePaging }),
+      languages: this.languagesApi.list(),
       authors: this.authorsApi.list({ onlyEnabled: true, paging: largePaging }),
       publishers: this.publishersApi.list({ onlyEnabled: true, paging: largePaging }),
     }).subscribe({
@@ -97,21 +82,6 @@ export class BooksEditComponent extends BaseFormComponent<GetBookByIdQueryDto> i
         this.stopLoading();
         this.router.navigate(['/admin/products']);
       },
-    });
-  }
-
-  private reloadTranslatableDropdowns(lang: string): void {
-    this.categoriesApi.list({ language: lang }).subscribe({
-      next: (response) => { this.categories = response; },
-      error: () => {},
-    });
-    this.bookFormatsApi.list({ onlyEnabled: true, paging: largePaging, language: lang }).subscribe({
-      next: (response) => { this.bookFormats = response.items; },
-      error: () => {},
-    });
-    this.languagesApi.list({ language: lang }).subscribe({
-      next: (response) => { this.languages = response; },
-      error: () => {},
     });
   }
 

@@ -243,7 +243,7 @@ $success: #56d39c;
   }
 
   .book-price {
-    color: #111;
+    color: var(--text-secondary);
     font-size: 15px;
     font-weight: 700;
     white-space: nowrap;

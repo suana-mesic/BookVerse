@@ -8,5 +8,6 @@ namespace BookVerse.Application.Modules.Shopping.ShippingMethods.Queries.List
 {
     public class ListShippingMethodsQuery:IRequest<List<ListShippingMethodsQueryDto>>
     {
+        public string? Language { get; set; }
     }
 }

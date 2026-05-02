@@ -9,7 +9,7 @@
                     .Include(x => x.OrderItems)
                     .ThenInclude(x => x.Book)
                     .Include(x => x.User)
-                    .ThenInclude(x => x.Address)
+                    .Include(x => x.ShipToAddress)
                     .Include(x => x.OrderStatus)
                     .Include(x => x.PaymentSummary)
                     .Where(x => x.Id == request.Id);
@@ -27,8 +27,13 @@
                     {
                         UserFirstname = x.User.FirstName,
                         UserLastname = x.User.LastName,
-                        UserAddress = $"{x.User.Address.Line1} {x.User.Address.Line2}",
-                        UserCity = x.User.Address.City
+                    },
+                    ShipToAddress = new GetByIdOrderQueryDtoShipToAddress
+                    {
+                        Line1 = x.ShipToAddress.Line1,
+                        Line2 = x.ShipToAddress.Line2,
+                        City = x.ShipToAddress.City,
+                        Country = x.ShipToAddress.Country,
                     },
                     OrderedAtUtc = x.OrderDate,
                     PaidAtUtc = x.PaidAt,

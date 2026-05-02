@@ -12,6 +12,7 @@ namespace BookVerse.Application.Modules.Shopping.OrdersOrderItems.Queries.GetByI
         public required int Id { get; init; }
         public required string TrackingNumber { get; init; }
         public required GetByIdOrderQueryDtoUser User { get; init; }
+        public required GetByIdOrderQueryDtoShipToAddress ShipToAddress { get; init; }
         public required DateTime OrderedAtUtc { get; set; }
         public required DateTime? PaidAtUtc { get; set; }
         public required OrderStatusType Status { get; set; }
@@ -25,8 +26,14 @@ namespace BookVerse.Application.Modules.Shopping.OrdersOrderItems.Queries.GetByI
     {
         public required string UserFirstname { get; set; }
         public required string UserLastname { get; set; }
-        public required string UserAddress { get; set; }//todo
-        public required string UserCity { get; set; }//todo
+    }
+
+    public sealed class GetByIdOrderQueryDtoShipToAddress
+    {
+        public required string Line1 { get; set; }
+        public string? Line2 { get; set; }
+        public required string City { get; set; }
+        public required string Country { get; set; }
     }
     public class GetByIdOrderQueryDtoItem
     {

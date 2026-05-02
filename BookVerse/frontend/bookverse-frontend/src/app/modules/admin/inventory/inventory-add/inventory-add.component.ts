@@ -265,7 +265,7 @@ export class InventoryAddComponent extends BaseComponent implements OnInit {
     return (control: AbstractControl): ValidationErrors | null => {
       if (!control || !control.value || control.value === '') return null;
 
-      let regexRule = /^Polica [A-Z]-[0-9]{1,}$/;
+      let regexRule = /^[A-Z]-[0-9]{1,}$/;
       return regexRule.test(control.value) ? null : { nevalidnaLokacija: true };
     };
   }

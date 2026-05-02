@@ -20,6 +20,8 @@ import { AuthorsApiService } from '../../../api-services/authors/authors-api.ser
 import { BooksApiService } from '../../../api-services/books/books-api.service';
 import { Book } from '../../../api-services/books/books-api.models';
 import { Author } from '../../../api-services/authors/authors-api.model';
+import { StoresApiService } from '../../../api-services/stores/stores-api.service';
+import { ListStoresQueryDto } from '../../../api-services/stores/stores-api.model';
 
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 
@@ -68,45 +70,18 @@ export class BookDetailsComponent implements OnDestroy {
   }
 
   // Stores info
-  storeNameKey = signal('');
-  storeWorkTimeMonFri = signal('');
-  storeWorkTimeSatSun = signal('');
-  storeEmail = signal('');
-  storeAddress = signal('');
-  storePhone = signal('');
-
-  setCentralBookstore() {
-    this.storeNameKey.set('CLIENT.BOOK_DETAILS.CENTRAL_BOOKSTORE');
-    this.storeWorkTimeMonFri.set('09-19h');
-    this.storeWorkTimeSatSun.set('09-14h');
-    this.storeEmail.set('centralbookstore@bookverse.ba');
-    this.storeAddress.set('Maršala Tita, Mostar');
-    this.storePhone.set('061/062-063');
-    this.toggleStoreInfo();
-  }
-  setForticaBooks() {
-    this.storeNameKey.set('CLIENT.BOOK_DETAILS.FORTICA_BOOKS');
-    this.storeWorkTimeMonFri.set('09-19h');
-    this.storeWorkTimeSatSun.set('09-14h');
-    this.storeEmail.set('forticabooks@bookverse.ba');
-    this.storeAddress.set('Maršala Tita, Mostar');
-    this.storePhone.set('061/062-063');
-    this.toggleStoreInfo();
-  }
-  setSpaceBookstore() {
-    this.storeNameKey.set('CLIENT.BOOK_DETAILS.SPACE_BOOKSTORE');
-    this.storeWorkTimeMonFri.set('09-19h');
-    this.storeWorkTimeSatSun.set('09-14h');
-    this.storeEmail.set('spacebookstore@bookverse.ba');
-    this.storeAddress.set('Maršala Tita, Mostar');
-    this.storePhone.set('061/062-063');
-    this.toggleStoreInfo();
-  }
-
+  storesService = inject(StoresApiService);
+  stores = signal<ListStoresQueryDto[]>([]);
+  selectedStore = signal<ListStoresQueryDto | null>(null);
   storeInfoOpened = false;
 
-  toggleStoreInfo() {
-    this.storeInfoOpened = !this.storeInfoOpened;
+  selectStore(store: ListStoresQueryDto) {
+    this.selectedStore.set(store);
+    this.storeInfoOpened = true;
+  }
+
+  closeStoreInfo() {
+    this.storeInfoOpened = false;
   }
 
   private loadBookDetails(): void {
@@ -128,6 +103,10 @@ export class BookDetailsComponent implements OnDestroy {
   ngOnInit() {
     this.bookId = this.route.snapshot.paramMap.get('id')!;
     this.loadBookDetails();
+
+    this.storesService.list().subscribe({
+      next: (response) => this.stores.set(response.items),
+    });
 
     this.langChangeSub = this.translate.onLangChange.subscribe(() => {
       this.loadBookDetails();

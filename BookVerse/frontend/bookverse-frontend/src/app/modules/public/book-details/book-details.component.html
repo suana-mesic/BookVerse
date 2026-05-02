@@ -57,34 +57,29 @@
     </div>
   </div>
   <div class="book__stores">
-    @if (storeInfoOpened) {
+    @if (storeInfoOpened && selectedStore()) {
       <div class="book__stores-info">
-        <h1>{{ this.storeNameKey() | translate }}</h1>
-        <div class="book__stores-info--close" (click)="toggleStoreInfo()">
+        <h1>{{ selectedStore()!.storeName }}</h1>
+        <div class="book__stores-info--close" (click)="closeStoreInfo()">
           <mat-icon>close</mat-icon>
         </div>
         <h2>{{ 'CLIENT.BOOK_DETAILS.WORKING_HOURS' | translate }}</h2>
-        <h3>{{ 'CLIENT.BOOK_DETAILS.MON_FRI' | translate }} {{ this.storeWorkTimeMonFri() }}</h3>
-        <h3>{{ 'CLIENT.BOOK_DETAILS.SAT_SUN' | translate }} {{ this.storeWorkTimeSatSun() }}</h3>
+        <h3>{{ selectedStore()!.openingHours | openingHours }}</h3>
         <h2>{{ 'CLIENT.BOOK_DETAILS.EMAIL' | translate }}</h2>
-        <h3>{{ this.storeEmail() }}</h3>
+        <h3>{{ selectedStore()!.email }}</h3>
         <h2>{{ 'CLIENT.BOOK_DETAILS.ADDRESS' | translate }}</h2>
-        <h3>{{ this.storeAddress() }}</h3>
+        <h3>{{ selectedStore()!.line1 }}, {{ selectedStore()!.city }}</h3>
         <h2>{{ 'CLIENT.BOOK_DETAILS.PHONE' | translate }}</h2>
-        <h3>{{ this.storePhone() }}</h3>
+        <h3>{{ selectedStore()!.phone }}</h3>
       </div>
     }
     <span>
       <h2>{{ 'CLIENT.BOOK_DETAILS.AVAILABLE_IN_STORES' | translate }}</h2>
-      <h3 [title]="'CLIENT.BOOK_DETAILS.STORE_TOOLTIP' | translate" (click)="setCentralBookstore()">
-        {{ 'CLIENT.BOOK_DETAILS.CENTRAL_BOOKSTORE' | translate }} ({{ 'CLIENT.BOOK_DETAILS.MOSTAR' | translate }}): 12 {{ 'CLIENT.BOOK_DETAILS.BOOKS_WORD' | translate }}
-      </h3>
-      <h3 [title]="'CLIENT.BOOK_DETAILS.STORE_TOOLTIP' | translate" (click)="setForticaBooks()">
-        {{ 'CLIENT.BOOK_DETAILS.FORTICA_BOOKS' | translate }} ({{ 'CLIENT.BOOK_DETAILS.MOSTAR' | translate }}): 14 {{ 'CLIENT.BOOK_DETAILS.BOOKS_WORD' | translate }}
-      </h3>
-      <h3 [title]="'CLIENT.BOOK_DETAILS.STORE_TOOLTIP' | translate" (click)="setSpaceBookstore()">
-        {{ 'CLIENT.BOOK_DETAILS.SPACE_BOOKSTORE' | translate }} ({{ 'CLIENT.BOOK_DETAILS.SARAJEVO' | translate }}): 19 {{ 'CLIENT.BOOK_DETAILS.BOOKS_WORD' | translate }}
-      </h3>
+      @for (store of stores(); track store.id) {
+        <h3 [title]="'CLIENT.BOOK_DETAILS.STORE_TOOLTIP' | translate" (click)="selectStore(store)">
+          {{ store.storeName }} ({{ store.city }})
+        </h3>
+      }
     </span>
     <app-map class="book__stores-map"></app-map>
   </div>

@@ -11,7 +11,8 @@ export class ShippingMethodsApiService {
   private readonly baseUrl = `${environment.apiUrl}/shippingmethods`;
   private http = inject(HttpClient);
 
-  getShippingMethods(): Observable<ShippingMethodDto[]> {
-    return this.http.get<ShippingMethodDto[]>(this.baseUrl);
+  getShippingMethods(language?: string): Observable<ShippingMethodDto[]> {
+    const params = language ? { language } : undefined;
+    return this.http.get<ShippingMethodDto[]>(this.baseUrl, { params });
   }
 }

@@ -1,12 +1,5 @@
-﻿using BookVerse.Domain.Entities.Catalog;
-using BookVerse.Domain.Entities.Shopping;
+﻿using BookVerse.Domain.Entities.Shopping;
 using BookVerse.Domain.Entities.UserReviews;
-using BookVerse.Infrastructure.Database.Configurations.Shopping;
-using System.Collections.Generic;
-using System.Diagnostics.Metrics;
-using System.Net;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
 
 namespace BookVerse.Infrastructure.Database.Seeders;
 
@@ -276,7 +269,7 @@ public partial class StaticDataSeeder
                Id = 1,
                Line1="Maršala Tita",
                City="Mostar",
-               Country="BiH",
+               Country="Bosna i Hercegovina",
                IsDeleted=false,
                CreatedAtUtc = DateTime.UtcNow
             },
@@ -284,15 +277,15 @@ public partial class StaticDataSeeder
                Id = 2,
                Line1="Vrbanja 1",
                City="Sarajevo",
-               Country="BiH",
+               Country="Bosna i Hercegovina",
                IsDeleted=false,
                CreatedAtUtc = DateTime.UtcNow
             },
              new Address{
                Id = 3,
-               Line1 = "Gornja Kolonija SP 100",
+               Line1 = "Meše Selimovića 8",
                City ="Jablanica",
-               Country = "BiH",
+               Country = "Bosna i Hercegovina",
                IsDeleted = false,
                CreatedAtUtc = DateTime.UtcNow
             }
@@ -306,29 +299,29 @@ public partial class StaticDataSeeder
             new Store
             {
                 Id = 1,
-                StoreName="Central Bookstore",
+                StoreName="BookVerse M-1",
                 AddressId=1,
-                Phone = "123-456-7890",
-                Email = "test@bookverse.ba",
-                OpeningHours = "Mon-Fri 9am-9pm; Sat-Sun 10am-6pm"
+                Phone = "123-456-780",
+                Email = "pj-m1@bookverse.ba",
+                OpeningHours = "Ponedjeljak-Petak 9:00-21:00; Subota 10:00-16:00"
             },
             new Store
             {
                 Id = 2,
-                StoreName="Fortica Books",
+                StoreName="BookVerse S-1",
                 AddressId=2,
-                Phone = "123-456-7890",
-                Email = "test2@bookverse.ba",
-                OpeningHours = "Mon-Fri 9am-9pm; Sat-Sun 10am-6pm"
+                Phone = "123-567-780",
+                Email = "pj-s1@bookverse.ba",
+                OpeningHours = "Ponedjeljak-Petak 9:00-21:00; Subota 10:00-16:00"
             },
             new Store
             {
                 Id = 3,
-                StoreName="Space Bookstore",
+                StoreName="BookVerse J-1",
                 AddressId=3,
-                Phone = "123-456-7890",
-                Email = "test3@bookverse.ba",
-                OpeningHours = "Mon-Fri 9am-9pm; Sat-Sun 10am-6pm"
+                Phone = "123-534-780",
+                Email = "pj-j1@bookverse.ba",
+                OpeningHours = "Ponedjeljak-Petak 9:00-21:00; Subota 10:00-16:00"
             }
         });
     }
@@ -341,7 +334,7 @@ public partial class StaticDataSeeder
                FirstName = "Meša",
                LastName = "Selimović",
                Biography = "Meša Selimović bio je jedan od najvećih bosanskohercegovačkih i jugoslovenskih pisaca 20. stoljeća, rođen 1910. godine u Tuzli. Završio je Filozofski fakultet u Beogradu, a veći dio života proveo je radeći kao profesor, urednik i kulturni radnik u Sarajevu. Njegovo stvaralaštvo obilježeno je dubokim filozofskim promišljanjima o slobodi, vlasti i smislu ljudskog postojanja. Svjetsku slavu stekao je romanom \"Derviš i smrt\", koji se smatra jednim od najznačajnijih djela napisanim na ovim prostorima. Drugi njegov veliki roman, \"Tvrđava\", nastavlja istraživati psihološku dubinu čovjeka u sukobu s društvom i samim sobom. Njegov stil pisanja je izuzetno misaon, prožet mudrošću i elegancijom koja i danas fascinira čitaoce širom svijeta. Dobitnik je brojnih nagrada, uključujući Njegoševu nagradu i nagradu AVNOJ-a. Umro je 1982. godine u Beogradu, ostavivši iza sebe neprolazna književna remek-djela.",
-               Country="BiH",
+               Country="Bosna i Hercegovina",
                IsDeleted=false,
                CreatedAtUtc = DateTime.UtcNow
             },
@@ -350,7 +343,7 @@ public partial class StaticDataSeeder
                FirstName = "Ivo",
                LastName = "Andrić",
                Biography = "Ivo Andrić bio je jedini književnik s prostora bivše Jugoslavije koji je dobio Nobelovu nagradu za književnost 1961. godine. Rođen je 1892. godine u Docu kod Travnika, a djetinjstvo je proveo u Višegradu, što je snažno oblikovalo njegov književni svijet. Školovao se u Sarajevu, Zagrebu, Beču i Krakovu, dok je doktorat stekao u Grazu. Osim književnošću, uspješno se bavio diplomacijom, služeći u velikim evropskim centrima poput Rima, Bukurešta i Berlina. Njegova najpoznatija djela, poput romana \"Na Drini ćuprija\" i \"Travnička hronika\", bave se sudbinom Bosne kao raskrsnice kultura i religija. Andrićev stil odlikuje se dubokom psihološkom analizom likova i smirenim, epskim pripovijedanjem. Svojim radom povezao je lokalne teme s univerzalnim ljudskim dilemama, stekavši svjetsku slavu. Umro je 1975. godine u Beogradu, ostavivši iza sebe neprocjenjivo kulturno naslijeđe.",
-               Country="BiH",
+               Country="Bosna i Hercegovina",
                IsDeleted=false,
                CreatedAtUtc = DateTime.UtcNow
             },
@@ -358,8 +351,8 @@ public partial class StaticDataSeeder
                Id = 3,
                FirstName = "Branko",
                LastName = "Ćopić",
-               Biography = "Branko Ćopić bio je jedan od najomiljenijih i najčitanijih pisaca s ovih prostora, rođen 1915. godine u Hašanima. Školovao se u Bihaću, Banjoj Luci i Sarajevu, dok je Filozofski fakultet završio u Beogradu. Njegov književni rad obilježen je jedinstvenim spojem vedrog humora i duboke tuge za djetinjstvom i zavičajem. Tokom Drugog svjetskog rata bio je borac i ratni dopisnik, što je snažno utjecalo na teme njegovih najpoznatijih djela. Stvorio je nezaboravne likove poput Nikoletine Bursaća i dječaka iz \"Orlova rano lete\", koji su postali dio djetinjstva brojnih generacija. Bio je plodan autor romana, pripovijedaka i poezije, podjednako cijenjen među djecom i odraslima. Za svoj rad dobio je brojna priznanja, uključujući Njegoševu nagradu, te je postao član Srpske akademije nauka i umetnosti. Tragično je okončao život 1984. godine u Beogradu, ostavivši iza sebe neizbrisiv trag u jugoslavenskoj književnosti.",
-               Country = "BiH",
+               Biography = "Branko Ćopić bio je jedan od najomiljenijih i najčitanijih pisaca s ovih prostora, rođen 1915. godine u Hašanima. Školovao se u Bosna i Hercegovinaaću, Banjoj Luci i Sarajevu, dok je Filozofski fakultet završio u Beogradu. Njegov književni rad obilježen je jedinstvenim spojem vedrog humora i duboke tuge za djetinjstvom i zavičajem. Tokom Drugog svjetskog rata bio je borac i ratni dopisnik, što je snažno utjecalo na teme njegovih najpoznatijih djela. Stvorio je nezaboravne likove poput Nikoletine Bursaća i dječaka iz \"Orlova rano lete\", koji su postali dio djetinjstva brojnih generacija. Bio je plodan autor romana, pripovijedaka i poezije, podjednako cijenjen među djecom i odraslima. Za svoj rad dobio je brojna priznanja, uključujući Njegoševu nagradu, te je postao član Srpske akademije nauka i umetnosti. Tragično je okončao život 1984. godine u Beogradu, ostavivši iza sebe neizbrisiv trag u jugoslavenskoj književnosti.",
+               Country = "Bosna i Hercegovina",
                IsDeleted = false,
                CreatedAtUtc = DateTime.UtcNow
             },
@@ -368,7 +361,7 @@ public partial class StaticDataSeeder
                FirstName = "Nura",
                LastName = "Bazdulj-Hubijar",
                Biography = "Nura Bazdulj-Hubijar jedna je od najčitanijih savremenih bosanskohercegovačkih književnica. Rođena je 1951. godine u Mrđenovićima kod Foče, a veći dio života i radnog vijeka provela je u Travniku. Po zanimanju je ljekarka, specijalista medicinske mikrobiologije, što je profesija kojom se bavila do penzionisanja. Njen književni opus je izuzetno bogat i obuhvata romane, pjesme, drame te književnost za djecu. Dobitnica je brojnih prestižnih priznanja, uključujući nagrade za najbolje romane i radio-drame. Njeni tekstovi su prepoznatljivi po emotivnosti i neposrednosti, zbog čega su omiljeni među različitim generacijama čitalaca. Neka od njenih najpoznatijih djela su \"Ljubav je sihirbaz babo\", \"Ruža\" i \"Kad je bio juli\". Danas uživa status kultne autorice čija su djela uvrštena u školsku lektiru.\r\n",
-               Country = "BiH",
+               Country = "Bosna i Hercegovina",
                IsDeleted = false,
                CreatedAtUtc = DateTime.UtcNow
             },
@@ -377,7 +370,7 @@ public partial class StaticDataSeeder
                FirstName = "Artur",
                LastName = "Klark",
                Biography = "Sir Arthur C. Clarke bio je kultni britanski pisac znanstvene fantastike, izumitelj i podvodni istraživač. Svjetsku slavu stekao je scenarijem za film \"2001.: Odiseja u svemiru\", koji je razvio zajedno s redateljem Stanleyjem Kubrickom. Njegov književni opus, u kojem se ističu romani poput \"Kraj djetinjstva\" i \"Susret s Ramom\", spaja strogu znanstvenu točnost s filozofskim temama. Osim po književnosti, poznat je po vizionarskom radu na konceptu geostacionarnih satelita koji su omogućili modernu telekomunikaciju. Veći dio života proveo je na Šri Lanki, gdje se aktivno bavio ronjenjem i promoviranjem znanosti. Autor je čuvenih \"Clarkeovih zakona\", od kojih treći kaže da se svaka dovoljno napredna tehnologija ne razlikuje od magije. Tijekom života primio je brojna priznanja, uključujući titulu viteza i nominaciju za Nobelovu nagradu za mir. Umro je 2008. godine, ostavivši neizbrisiv trag na modernu znanost i popularnu kulturu.",
-               Country = "UK",
+               Country = "Ujedinjeno Kraljvstvo",
                IsDeleted = false,
                CreatedAtUtc = DateTime.UtcNow
             }
@@ -448,7 +441,7 @@ public partial class StaticDataSeeder
         new ShippingMethods{
             Id=1,
             Name = "Express One",
-            Description = "Domaća kurirska služba sa brzom dostavom na području cijele BiH (1–2 radna dana). Pogodno za pakete i dokumente.",
+            Description = "Domaća kurirska služba sa brzom dostavom na području cijele Bosna i Hercegovina (1–2 radna dana). Pogodno za pakete i dokumente.",
             Price = 9.50m
         },
         new ShippingMethods{
@@ -460,7 +453,7 @@ public partial class StaticDataSeeder
         new ShippingMethods{
             Id=3,
             Name = "EuroExpress",
-            Description = "Kurirska služba sa dostavom na području cijele BiH u roku 24–48h, uz mogućnost plaćanja pouzećem.",
+            Description = "Kurirska služba sa dostavom na području cijele Bosna i Hercegovina u roku 24–48h, uz mogućnost plaćanja pouzećem.",
             Price = 9.00m
         }
       });
@@ -503,7 +496,7 @@ public partial class StaticDataSeeder
             QuantityInStock=50,
             LastRestocked=DateTime.UtcNow,
             ReorderTreshold=5,
-            Location="Polica A-5",
+            Location="A-5",
             IsDeleted=false,
         },
         new StoreInventory{
@@ -512,7 +505,7 @@ public partial class StaticDataSeeder
             QuantityInStock=90,
             LastRestocked=DateTime.UtcNow,
             ReorderTreshold=5,
-            Location="Polica A-12",
+            Location="A-12",
             IsDeleted=false,
         },
         new StoreInventory{
@@ -521,7 +514,7 @@ public partial class StaticDataSeeder
             QuantityInStock=40,
             LastRestocked=DateTime.UtcNow,
             ReorderTreshold=5,
-            Location="Polica A-15",
+            Location="A-15",
             IsDeleted=false,
         },
          new StoreInventory{
@@ -530,7 +523,7 @@ public partial class StaticDataSeeder
             QuantityInStock=200,
             LastRestocked=DateTime.UtcNow,
             ReorderTreshold=5,
-            Location="Polica A-21",
+            Location="A-21",
             IsDeleted=false,
         },
         new StoreInventory{
@@ -539,7 +532,7 @@ public partial class StaticDataSeeder
             QuantityInStock=210,
             LastRestocked=DateTime.UtcNow,
             ReorderTreshold=5,
-            Location="Polica A-22",
+            Location="A-22",
             IsDeleted=false,
         },
         new StoreInventory{
@@ -548,7 +541,7 @@ public partial class StaticDataSeeder
             QuantityInStock=240,
             LastRestocked=DateTime.UtcNow,
             ReorderTreshold=5,
-            Location="Polica A-23",
+            Location="A-23",
             IsDeleted=false,
         },
         new StoreInventory{
@@ -557,7 +550,7 @@ public partial class StaticDataSeeder
             QuantityInStock=70,
             LastRestocked=DateTime.UtcNow,
             ReorderTreshold=5,
-            Location="Polica A-31",
+            Location="A-31",
             IsDeleted=false,
         },
         new StoreInventory{
@@ -566,7 +559,7 @@ public partial class StaticDataSeeder
             QuantityInStock=90,
             LastRestocked=DateTime.UtcNow,
             ReorderTreshold=5,
-            Location="Polica A-32",
+            Location="A-32",
             IsDeleted=false,
         },
         new StoreInventory{
@@ -575,7 +568,7 @@ public partial class StaticDataSeeder
             QuantityInStock=80,
             LastRestocked=DateTime.UtcNow,
             ReorderTreshold=5,
-            Location="Polica A-33",
+            Location="A-33",
             IsDeleted=false,
         },
       });
@@ -588,8 +581,8 @@ public partial class StaticDataSeeder
         {
         new Coupons{
             Id = 1,
-            Name = "Welcome discount",
-            Description= "Welcome discount with amountoff 10",
+            Name = "Popust dobrodošlice",
+            Description= "Popust dobrodošlice, -10 KM",
             AmountOff = 10,
             StartDate = DateTime.UtcNow,
             EndDate = DateTime.UtcNow.AddDays(365),
@@ -597,8 +590,8 @@ public partial class StaticDataSeeder
         },
         new Coupons{
             Id = 2,
-            Name = "Summer discount ",
-            Description = "Summer discount with percentoff 20",
+            Name = "Ljetni popust",
+            Description = "Ljetni popust, -20%",
             PercentOff = 20,
             StartDate = DateTime.UtcNow,
             EndDate = DateTime.UtcNow.AddDays(365),
@@ -611,11 +604,11 @@ public partial class StaticDataSeeder
     {
         modelBuilder.Entity<Address>().HasData(new List<Address>
         {
-            new Address { Id = 4, Line1 = "Šetalište 1. maja 5", City = "Banja Luka", Country = "BiH", IsDeleted = false, CreatedAtUtc = DateTime.UtcNow },
-            new Address { Id = 5, Line1 = "Ferhadija 22", City = "Sarajevo", Country = "BiH", IsDeleted = false, CreatedAtUtc = DateTime.UtcNow },
-            new Address { Id = 6, Line1 = "Bulevar Kralja Tvrtka 7", City = "Zenica", Country = "BiH", IsDeleted = false, CreatedAtUtc = DateTime.UtcNow },
-            new Address { Id = 7, Line1 = "Franje Leđića 12", City = "Tuzla", Country = "BiH", IsDeleted = false, CreatedAtUtc = DateTime.UtcNow },
-            new Address { Id = 8, Line1 = "Bijeljinska cesta 3", City = "Brčko", Country = "BiH", IsDeleted = false, CreatedAtUtc = DateTime.UtcNow },
+            new Address { Id = 4, Line1 = "Šetalište 1. maja 5", City = "Banja Luka", Country = "Bosna i Hercegovina", IsDeleted = false, CreatedAtUtc = DateTime.UtcNow },
+            new Address { Id = 5, Line1 = "Ferhadija 22", City = "Sarajevo", Country = "Bosna i Hercegovina", IsDeleted = false, CreatedAtUtc = DateTime.UtcNow },
+            new Address { Id = 6, Line1 = "Bulevar Kralja Tvrtka 7", City = "Zenica", Country = "Bosna i Hercegovina", IsDeleted = false, CreatedAtUtc = DateTime.UtcNow },
+            new Address { Id = 7, Line1 = "Franje Leđića 12", City = "Tuzla", Country = "Bosna i Hercegovina", IsDeleted = false, CreatedAtUtc = DateTime.UtcNow },
+            new Address { Id = 8, Line1 = "Bijeljinska cesta 3", City = "Brčko", Country = "Bosna i Hercegovina", IsDeleted = false, CreatedAtUtc = DateTime.UtcNow },
         });
     }
 
@@ -648,19 +641,19 @@ public partial class StaticDataSeeder
     {
         modelBuilder.Entity<Author>().HasData(new List<Author>
         {
-            new Author { Id = 6, FirstName = "Abdulah", LastName = "Sidran", Biography = "Bosanskohercegovački pisac, poeta i scenarist.", Country = "BiH", IsDeleted = false, CreatedAtUtc = DateTime.UtcNow },
-            new Author { Id = 7, FirstName = "Derviš", LastName = "Sušić", Biography = "Bosanskohercegovački pisac i novinar, poznat po partizanskoj tematici.", Country = "BiH", IsDeleted = false, CreatedAtUtc = DateTime.UtcNow },
-            new Author { Id = 8, FirstName = "Nedžad", LastName = "Ibrišimović", Biography = "Bosanskohercegovački pisac i akademik, autor brojnih romana i priča.", Country = "BiH", IsDeleted = false, CreatedAtUtc = DateTime.UtcNow },
-            new Author { Id = 9, FirstName = "Semezdin", LastName = "Mehmedinović", Biography = "Bosanskohercegovački pisac i pjesnik, poznat po zbirci Sarajevo Blues.", Country = "BiH", IsDeleted = false, CreatedAtUtc = DateTime.UtcNow },
-             new Author { Id = 10, FirstName = "Aleksa", LastName = "Šantić", Biography = "Aleksa Šantić je rođen 1868. godine u Mostaru, gdje je proveo najveći dio svog života i stvaralaštva. Bio je jedan od najvažnijih predstavnika hercegovačke i južnoslavenske lirike, poznat po pjesmama o ljubavi, zavičaju i socijalnoj nepravdi. Umro je 1924. godine u Mostaru, ostavivši iza sebe bogat poetski opus koji je postao dio klasične književnosti ovih prostora.", Country = "BiH", IsDeleted = false, CreatedAtUtc = DateTime.UtcNow },
-             new Author { Id = 11, FirstName = "Amer", LastName = "Kapetanović", Biography = "Amer Kapetanović je savremeni bosanskohercegovački autor i javni djelatnik poznat po svom radu u oblasti književnosti, diplomatije i društvenih nauka. Kroz svoj profesionalni i književni angažman bavi se temama kulture, identiteta i savremenih društvenih tokova u Bosni i Hercegovini i regiji. Njegov rad doprinosi promociji bosanskohercegovačke kulture i jačanju međunarodne saradnje.", Country = "BiH", IsDeleted = false, CreatedAtUtc = DateTime.UtcNow },
-             new Author { Id = 12, FirstName = "Senad", LastName = "Švraka", Biography = "Senad Švraka je bosanskohercegovački autor i istraživač koji se bavi pisanjem i stručnim radovima iz oblasti kulture i društvenih nauka. Njegov rad često obuhvata teme vezane za savremena društvena pitanja, obrazovanje i razvoj lokalne zajednice. Kroz svoje djelovanje doprinosi promociji znanja i kulturnog stvaralaštva u Bosni i Hercegovini.", Country = "BiH", IsDeleted = false, CreatedAtUtc = DateTime.UtcNow },
-             new Author { Id = 13, FirstName = "Henry", LastName = "James", Biography = "Henry James je bio američki pisac i kritičar rođen 1843. godine u New Yorku, koji je veći dio života proveo između SAD-a i Evrope, posebno u Engleskoj. Smatra se jednim od ključnih autora realizma i preteča modernističke književnosti, poznat po psihološkoj dubini svojih likova i složenom stilu pripovijedanja. Umro je 1916. godine u Londonu, ostavivši iza sebe značajan književni opus koji uključuje romane poput Portret jedne dame i Okretaj zavrtnja.", Country = "SAD", IsDeleted = false, CreatedAtUtc = DateTime.UtcNow },
-              new Author { Id = 14, FirstName = "Isak", LastName = "Samokovlija", Biography = "Isak Samokovlija bio je bosanskohercegovački književnik i ljekar jevrejskog porijekla. Rođen je 1889. godine u Goraždu, a u svojim djelima često je opisivao život običnih ljudi u Bosni, posebno u seoskim i malim gradskim sredinama. Smatra se jednim od najvažnijih predstavnika bosanskohercegovačke književnosti 20. stoljeća.", Country = "BiH", IsDeleted = false, CreatedAtUtc = DateTime.UtcNow },
-              new Author { Id = 15, FirstName = "Hamza", LastName = "Humo", Biography = "Hamza Humo bio je bosanskohercegovački književnik, pjesnik i prozni pisac. Rođen je 1895. godine u Mostaru, a bio je jedan od istaknutih predstavnika bošnjačke moderne književnosti. Njegova djela često su obilježena lirskim izrazom i motivima Hercegovine, prirode i ljubavi.", Country = "BiH", IsDeleted = false, CreatedAtUtc = DateTime.UtcNow },
-              new Author { Id = 16, FirstName = "Bisera", LastName = "Alikadić", Biography = "Biser Alichadić (češće: Biser Alikadić) je bosanskohercegovačka književnica i pjesnikinja. Rođena je 1939. godine u Mostaru, a u književnosti je poznata po emotivnoj i introspektivnoj poeziji koja često obrađuje teme ljubavi, intime i ženske perspektive. Smatra se jednom od značajnih savremenih autorica u bosanskohercegovačkoj književnosti.", Country = "BiH", IsDeleted = false, CreatedAtUtc = DateTime.UtcNow },
-              new Author { Id = 17, FirstName = "Henry-Beyle", LastName = "Stendhal", Biography = "Marie-Henri Beyle, poznatiji kao Stendhal, bio je jedan od najznačajnijih francuskih romanopisaca 19. vijeka i začetnik književnog realizma. Tokom života služio je u Napoleonovoj vojsci i proputovao veliki dio Evrope, a duga razdoblja boravka u Italiji duboko su utjecala na njegovu strast prema umjetnosti i historiji. Njegova najpoznatija djela, Crveno i crno te Parmski kartuzijanski samostan, ističu se po dubokoj psihološkoj analizi likova i kritici društvenog poretka tog vremena.", Country = "FRA", IsDeleted = false, CreatedAtUtc = DateTime.UtcNow },
-              new Author { Id = 18, FirstName = "Fjodor Mihajlovič", LastName = "Dostojevski", Biography = "Fjodor Mihajlovič Dostojevski bio je jedan od najvećih ruskih pisaca i mislilaca, čija su djela duboko istraživala ljudsku psihu, moral i religiju. Zbog učešća u revolucionarnom krugu bio je osuđen na smrt, ali mu je kazna u zadnji čas preinačena na višegodišnji prisilni rad u Sibiru. Njegovi romani, poput Zločina i kazne i Braće Karamazovih, postali su temelji moderne svjetske književnosti i egzistencijalizma.\r\n", Country = "RUS", IsDeleted = false, CreatedAtUtc = DateTime.UtcNow },
+            new Author { Id = 6, FirstName = "Abdulah", LastName = "Sidran", Biography = "Bosanskohercegovački pisac, poeta i scenarist.", Country = "Bosna i Hercegovina", IsDeleted = false, CreatedAtUtc = DateTime.UtcNow },
+            new Author { Id = 7, FirstName = "Derviš", LastName = "Sušić", Biography = "Bosanskohercegovački pisac i novinar, poznat po partizanskoj tematici.", Country = "Bosna i Hercegovina", IsDeleted = false, CreatedAtUtc = DateTime.UtcNow },
+            new Author { Id = 8, FirstName = "Nedžad", LastName = "Ibrišimović", Biography = "Bosanskohercegovački pisac i akademik, autor brojnih romana i priča.", Country = "Bosna i Hercegovina", IsDeleted = false, CreatedAtUtc = DateTime.UtcNow },
+            new Author { Id = 9, FirstName = "Semezdin", LastName = "Mehmedinović", Biography = "Bosanskohercegovački pisac i pjesnik, poznat po zbirci Sarajevo Blues.", Country = "Bosna i Hercegovina", IsDeleted = false, CreatedAtUtc = DateTime.UtcNow },
+             new Author { Id = 10, FirstName = "Aleksa", LastName = "Šantić", Biography = "Aleksa Šantić je rođen 1868. godine u Mostaru, gdje je proveo najveći dio svog života i stvaralaštva. Bio je jedan od najvažnijih predstavnika hercegovačke i južnoslavenske lirike, poznat po pjesmama o ljubavi, zavičaju i socijalnoj nepravdi. Umro je 1924. godine u Mostaru, ostavivši iza sebe bogat poetski opus koji je postao dio klasične književnosti ovih prostora.", Country = "Bosna i Hercegovina", IsDeleted = false, CreatedAtUtc = DateTime.UtcNow },
+             new Author { Id = 11, FirstName = "Amer", LastName = "Kapetanović", Biography = "Amer Kapetanović je savremeni bosanskohercegovački autor i javni djelatnik poznat po svom radu u oblasti književnosti, diplomatije i društvenih nauka. Kroz svoj profesionalni i književni angažman bavi se temama kulture, identiteta i savremenih društvenih tokova u Bosni i Hercegovini i regiji. Njegov rad doprinosi promociji bosanskohercegovačke kulture i jačanju međunarodne saradnje.", Country = "Bosna i Hercegovina", IsDeleted = false, CreatedAtUtc = DateTime.UtcNow },
+             new Author { Id = 12, FirstName = "Senad", LastName = "Švraka", Biography = "Senad Švraka je bosanskohercegovački autor i istraživač koji se bavi pisanjem i stručnim radovima iz oblasti kulture i društvenih nauka. Njegov rad često obuhvata teme vezane za savremena društvena pitanja, obrazovanje i razvoj lokalne zajednice. Kroz svoje djelovanje doprinosi promociji znanja i kulturnog stvaralaštva u Bosni i Hercegovini.", Country = "Bosna i Hercegovina", IsDeleted = false, CreatedAtUtc = DateTime.UtcNow },
+             new Author { Id = 13, FirstName = "Henry", LastName = "James", Biography = "Henry James je bio američki pisac i kritičar rođen 1843. godine u New Yorku, koji je veći dio života proveo između SAD-a i Evrope, posebno u Engleskoj. Smatra se jednim od ključnih autora realizma i preteča modernističke književnosti, poznat po psihološkoj dubini svojih likova i složenom stilu pripovijedanja. Umro je 1916. godine u Londonu, ostavivši iza sebe značajan književni opus koji uključuje romane poput Portret jedne dame i Okretaj zavrtnja.", Country = "Sjedinjene Američke Države", IsDeleted = false, CreatedAtUtc = DateTime.UtcNow },
+              new Author { Id = 14, FirstName = "Isak", LastName = "Samokovlija", Biography = "Isak Samokovlija bio je bosanskohercegovački književnik i ljekar jevrejskog porijekla. Rođen je 1889. godine u Goraždu, a u svojim djelima često je opisivao život običnih ljudi u Bosni, posebno u seoskim i malim gradskim sredinama. Smatra se jednim od najvažnijih predstavnika bosanskohercegovačke književnosti 20. stoljeća.", Country = "Bosna i Hercegovina", IsDeleted = false, CreatedAtUtc = DateTime.UtcNow },
+              new Author { Id = 15, FirstName = "Hamza", LastName = "Humo", Biography = "Hamza Humo bio je bosanskohercegovački književnik, pjesnik i prozni pisac. Rođen je 1895. godine u Mostaru, a bio je jedan od istaknutih predstavnika bošnjačke moderne književnosti. Njegova djela često su obilježena lirskim izrazom i motivima Hercegovine, prirode i ljubavi.", Country = "Bosna i Hercegovina", IsDeleted = false, CreatedAtUtc = DateTime.UtcNow },
+              new Author { Id = 16, FirstName = "Bisera", LastName = "Alikadić", Biography = "Biser Alichadić (češće: Biser Alikadić) je bosanskohercegovačka književnica i pjesnikinja. Rođena je 1939. godine u Mostaru, a u književnosti je poznata po emotivnoj i introspektivnoj poeziji koja često obrađuje teme ljubavi, intime i ženske perspektive. Smatra se jednom od značajnih savremenih autorica u bosanskohercegovačkoj književnosti.", Country = "Bosna i Hercegovina", IsDeleted = false, CreatedAtUtc = DateTime.UtcNow },
+              new Author { Id = 17, FirstName = "Henry-Beyle", LastName = "Stendhal", Biography = "Marie-Henri Beyle, poznatiji kao Stendhal, bio je jedan od najznačajnijih francuskih romanopisaca 19. vijeka i začetnik književnog realizma. Tokom života služio je u Napoleonovoj vojsci i proputovao veliki dio Evrope, a duga razdoblja boravka u Italiji duboko su utjecala na njegovu strast prema umjetnosti i historiji. Njegova najpoznatija djela, Crveno i crno te Parmski kartuzijanski samostan, ističu se po dubokoj psihološkoj analizi likova i kritici društvenog poretka tog vremena.", Country = "Francuska", IsDeleted = false, CreatedAtUtc = DateTime.UtcNow },
+              new Author { Id = 18, FirstName = "Fjodor Mihajlovič", LastName = "Dostojevski", Biography = "Fjodor Mihajlovič Dostojevski bio je jedan od najvećih ruskih pisaca i mislilaca, čija su djela duboko istraživala ljudsku psihu, moral i religiju. Zbog učešća u revolucionarnom krugu bio je osuđen na smrt, ali mu je kazna u zadnji čas preinačena na višegodišnji prisilni rad u Sibiru. Njegovi romani, poput Zločina i kazne i Braće Karamazovih, postali su temelji moderne svjetske književnosti i egzistencijalizma.\r\n", Country = "Rusija", IsDeleted = false, CreatedAtUtc = DateTime.UtcNow },
         });
     }
 
@@ -1002,60 +995,60 @@ public partial class StaticDataSeeder
     {
         modelBuilder.Entity<StoreInventory>().HasData(new List<StoreInventory>
         {
-            new StoreInventory { StoreId = 1, BookId = 4, QuantityInStock = 30, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica A-41", IsDeleted = false },
-            new StoreInventory { StoreId = 2, BookId = 4, QuantityInStock = 25, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica A-42", IsDeleted = false },
-            new StoreInventory { StoreId = 3, BookId = 4, QuantityInStock = 20, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica A-43", IsDeleted = false },
-            new StoreInventory { StoreId = 1, BookId = 5, QuantityInStock = 40, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica A-51", IsDeleted = false },
-            new StoreInventory { StoreId = 2, BookId = 5, QuantityInStock = 35, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica A-52", IsDeleted = false },
-            new StoreInventory { StoreId = 3, BookId = 5, QuantityInStock = 30, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica A-53", IsDeleted = false },
-            new StoreInventory { StoreId = 1, BookId = 6, QuantityInStock = 35, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica A-61", IsDeleted = false },
-            new StoreInventory { StoreId = 2, BookId = 6, QuantityInStock = 45, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica A-62", IsDeleted = false },
-            new StoreInventory { StoreId = 3, BookId = 6, QuantityInStock = 28, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica A-63", IsDeleted = false },
-            new StoreInventory { StoreId = 1, BookId = 7, QuantityInStock = 50, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica A-71", IsDeleted = false },
-            new StoreInventory { StoreId = 2, BookId = 7, QuantityInStock = 40, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica A-72", IsDeleted = false },
-            new StoreInventory { StoreId = 3, BookId = 7, QuantityInStock = 35, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica A-73", IsDeleted = false },
-            new StoreInventory { StoreId = 1, BookId = 8, QuantityInStock = 60, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica A-81", IsDeleted = false },
-            new StoreInventory { StoreId = 2, BookId = 8, QuantityInStock = 55, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica A-82", IsDeleted = false },
-            new StoreInventory { StoreId = 3, BookId = 8, QuantityInStock = 45, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica A-83", IsDeleted = false },
-            new StoreInventory { StoreId = 1, BookId = 9, QuantityInStock = 45, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica B-91", IsDeleted = false },
-            new StoreInventory { StoreId = 2, BookId = 9, QuantityInStock = 38, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica B-92", IsDeleted = false },
-            new StoreInventory { StoreId = 3, BookId = 9, QuantityInStock = 32, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica B-93", IsDeleted = false },
-            new StoreInventory { StoreId = 1, BookId = 10, QuantityInStock = 28, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica B-101", IsDeleted = false },
-            new StoreInventory { StoreId = 2, BookId = 10, QuantityInStock = 33, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica B-102", IsDeleted = false },
-            new StoreInventory { StoreId = 3, BookId = 10, QuantityInStock = 22, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica B-103", IsDeleted = false },
-            new StoreInventory { StoreId = 1, BookId = 11, QuantityInStock = 50, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica B-111", IsDeleted = false },
-            new StoreInventory { StoreId = 2, BookId = 11, QuantityInStock = 42, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica B-112", IsDeleted = false },
-            new StoreInventory { StoreId = 3, BookId = 11, QuantityInStock = 36, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica B-113", IsDeleted = false },
-            new StoreInventory { StoreId = 1, BookId = 12, QuantityInStock = 20, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica B-121", IsDeleted = false },
-            new StoreInventory { StoreId = 2, BookId = 12, QuantityInStock = 18, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica B-122", IsDeleted = false },
-            new StoreInventory { StoreId = 3, BookId = 12, QuantityInStock = 25, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica B-123", IsDeleted = false },
-            new StoreInventory { StoreId = 1, BookId = 13, QuantityInStock = 37, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica B-131", IsDeleted = false },
-            new StoreInventory { StoreId = 2, BookId = 13, QuantityInStock = 29, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica B-132", IsDeleted = false },
-            new StoreInventory { StoreId = 3, BookId = 13, QuantityInStock = 41, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica B-133", IsDeleted = false },
-            new StoreInventory { StoreId = 1, BookId = 14, QuantityInStock = 55, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica B-141", IsDeleted = false },
-            new StoreInventory { StoreId = 2, BookId = 14, QuantityInStock = 48, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica B-142", IsDeleted = false },
-            new StoreInventory { StoreId = 3, BookId = 14, QuantityInStock = 30, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica B-143", IsDeleted = false },
-            new StoreInventory { StoreId = 1, BookId = 15, QuantityInStock = 24, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica B-151", IsDeleted = false },
-            new StoreInventory { StoreId = 2, BookId = 15, QuantityInStock = 19, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica B-152", IsDeleted = false },
-            new StoreInventory { StoreId = 3, BookId = 15, QuantityInStock = 27, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica B-153", IsDeleted = false },
-            new StoreInventory { StoreId = 1, BookId = 16, QuantityInStock = 43, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica C-161", IsDeleted = false },
-            new StoreInventory { StoreId = 2, BookId = 16, QuantityInStock = 36, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica C-162", IsDeleted = false },
-            new StoreInventory { StoreId = 3, BookId = 16, QuantityInStock = 31, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica C-163", IsDeleted = false },
-            new StoreInventory { StoreId = 1, BookId = 17, QuantityInStock = 26, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica C-171", IsDeleted = false },
-            new StoreInventory { StoreId = 2, BookId = 17, QuantityInStock = 34, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica C-172", IsDeleted = false },
-            new StoreInventory { StoreId = 3, BookId = 17, QuantityInStock = 21, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica C-173", IsDeleted = false },
-            new StoreInventory { StoreId = 1, BookId = 18, QuantityInStock = 47, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica C-181", IsDeleted = false },
-            new StoreInventory { StoreId = 2, BookId = 18, QuantityInStock = 39, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica C-182", IsDeleted = false },
-            new StoreInventory { StoreId = 3, BookId = 18, QuantityInStock = 52, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica C-183", IsDeleted = false },
-            new StoreInventory { StoreId = 1, BookId = 19, QuantityInStock = 33, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica C-191", IsDeleted = false },
-            new StoreInventory { StoreId = 2, BookId = 19, QuantityInStock = 28, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica C-192", IsDeleted = false },
-            new StoreInventory { StoreId = 3, BookId = 19, QuantityInStock = 44, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica C-193", IsDeleted = false },
-            new StoreInventory { StoreId = 1, BookId = 20, QuantityInStock = 16, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica C-201", IsDeleted = false },
-            new StoreInventory { StoreId = 2, BookId = 20, QuantityInStock = 23, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica C-202", IsDeleted = false },
-            new StoreInventory { StoreId = 3, BookId = 20, QuantityInStock = 19, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica C-203", IsDeleted = false },
-            new StoreInventory { StoreId = 1, BookId = 21, QuantityInStock = 58, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica C-211", IsDeleted = false },
-            new StoreInventory { StoreId = 2, BookId = 21, QuantityInStock = 46, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica C-212", IsDeleted = false },
-            new StoreInventory { StoreId = 3, BookId = 21, QuantityInStock = 37, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "Polica C-213", IsDeleted = false },
+            new StoreInventory { StoreId = 1, BookId = 4, QuantityInStock = 30, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "A-41", IsDeleted = false },
+            new StoreInventory { StoreId = 2, BookId = 4, QuantityInStock = 25, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "A-42", IsDeleted = false },
+            new StoreInventory { StoreId = 3, BookId = 4, QuantityInStock = 20, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "A-43", IsDeleted = false },
+            new StoreInventory { StoreId = 1, BookId = 5, QuantityInStock = 40, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "A-51", IsDeleted = false },
+            new StoreInventory { StoreId = 2, BookId = 5, QuantityInStock = 35, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "A-52", IsDeleted = false },
+            new StoreInventory { StoreId = 3, BookId = 5, QuantityInStock = 30, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "A-53", IsDeleted = false },
+            new StoreInventory { StoreId = 1, BookId = 6, QuantityInStock = 35, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "A-61", IsDeleted = false },
+            new StoreInventory { StoreId = 2, BookId = 6, QuantityInStock = 45, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "A-62", IsDeleted = false },
+            new StoreInventory { StoreId = 3, BookId = 6, QuantityInStock = 28, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "A-63", IsDeleted = false },
+            new StoreInventory { StoreId = 1, BookId = 7, QuantityInStock = 50, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "A-71", IsDeleted = false },
+            new StoreInventory { StoreId = 2, BookId = 7, QuantityInStock = 40, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "A-72", IsDeleted = false },
+            new StoreInventory { StoreId = 3, BookId = 7, QuantityInStock = 35, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "A-73", IsDeleted = false },
+            new StoreInventory { StoreId = 1, BookId = 8, QuantityInStock = 60, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "A-81", IsDeleted = false },
+            new StoreInventory { StoreId = 2, BookId = 8, QuantityInStock = 55, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "A-82", IsDeleted = false },
+            new StoreInventory { StoreId = 3, BookId = 8, QuantityInStock = 45, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "A-83", IsDeleted = false },
+            new StoreInventory { StoreId = 1, BookId = 9, QuantityInStock = 45, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "B-91", IsDeleted = false },
+            new StoreInventory { StoreId = 2, BookId = 9, QuantityInStock = 38, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "B-92", IsDeleted = false },
+            new StoreInventory { StoreId = 3, BookId = 9, QuantityInStock = 32, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "B-93", IsDeleted = false },
+            new StoreInventory { StoreId = 1, BookId = 10, QuantityInStock = 28, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "B-101", IsDeleted = false },
+            new StoreInventory { StoreId = 2, BookId = 10, QuantityInStock = 33, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "B-102", IsDeleted = false },
+            new StoreInventory { StoreId = 3, BookId = 10, QuantityInStock = 22, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "B-103", IsDeleted = false },
+            new StoreInventory { StoreId = 1, BookId = 11, QuantityInStock = 50, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "B-111", IsDeleted = false },
+            new StoreInventory { StoreId = 2, BookId = 11, QuantityInStock = 42, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "B-112", IsDeleted = false },
+            new StoreInventory { StoreId = 3, BookId = 11, QuantityInStock = 36, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "B-113", IsDeleted = false },
+            new StoreInventory { StoreId = 1, BookId = 12, QuantityInStock = 20, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "B-121", IsDeleted = false },
+            new StoreInventory { StoreId = 2, BookId = 12, QuantityInStock = 18, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "B-122", IsDeleted = false },
+            new StoreInventory { StoreId = 3, BookId = 12, QuantityInStock = 25, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "B-123", IsDeleted = false },
+            new StoreInventory { StoreId = 1, BookId = 13, QuantityInStock = 37, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "B-131", IsDeleted = false },
+            new StoreInventory { StoreId = 2, BookId = 13, QuantityInStock = 29, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "B-132", IsDeleted = false },
+            new StoreInventory { StoreId = 3, BookId = 13, QuantityInStock = 41, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "B-133", IsDeleted = false },
+            new StoreInventory { StoreId = 1, BookId = 14, QuantityInStock = 55, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "B-141", IsDeleted = false },
+            new StoreInventory { StoreId = 2, BookId = 14, QuantityInStock = 48, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "B-142", IsDeleted = false },
+            new StoreInventory { StoreId = 3, BookId = 14, QuantityInStock = 30, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "B-143", IsDeleted = false },
+            new StoreInventory { StoreId = 1, BookId = 15, QuantityInStock = 24, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "B-151", IsDeleted = false },
+            new StoreInventory { StoreId = 2, BookId = 15, QuantityInStock = 19, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "B-152", IsDeleted = false },
+            new StoreInventory { StoreId = 3, BookId = 15, QuantityInStock = 27, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "B-153", IsDeleted = false },
+            new StoreInventory { StoreId = 1, BookId = 16, QuantityInStock = 43, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "C-161", IsDeleted = false },
+            new StoreInventory { StoreId = 2, BookId = 16, QuantityInStock = 36, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "C-162", IsDeleted = false },
+            new StoreInventory { StoreId = 3, BookId = 16, QuantityInStock = 31, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "C-163", IsDeleted = false },
+            new StoreInventory { StoreId = 1, BookId = 17, QuantityInStock = 26, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "C-171", IsDeleted = false },
+            new StoreInventory { StoreId = 2, BookId = 17, QuantityInStock = 34, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "C-172", IsDeleted = false },
+            new StoreInventory { StoreId = 3, BookId = 17, QuantityInStock = 21, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "C-173", IsDeleted = false },
+            new StoreInventory { StoreId = 1, BookId = 18, QuantityInStock = 47, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "C-181", IsDeleted = false },
+            new StoreInventory { StoreId = 2, BookId = 18, QuantityInStock = 39, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "C-182", IsDeleted = false },
+            new StoreInventory { StoreId = 3, BookId = 18, QuantityInStock = 52, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "C-183", IsDeleted = false },
+            new StoreInventory { StoreId = 1, BookId = 19, QuantityInStock = 33, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "C-191", IsDeleted = false },
+            new StoreInventory { StoreId = 2, BookId = 19, QuantityInStock = 28, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "C-192", IsDeleted = false },
+            new StoreInventory { StoreId = 3, BookId = 19, QuantityInStock = 44, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "C-193", IsDeleted = false },
+            new StoreInventory { StoreId = 1, BookId = 20, QuantityInStock = 16, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "C-201", IsDeleted = false },
+            new StoreInventory { StoreId = 2, BookId = 20, QuantityInStock = 23, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "C-202", IsDeleted = false },
+            new StoreInventory { StoreId = 3, BookId = 20, QuantityInStock = 19, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "C-203", IsDeleted = false },
+            new StoreInventory { StoreId = 1, BookId = 21, QuantityInStock = 58, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "C-211", IsDeleted = false },
+            new StoreInventory { StoreId = 2, BookId = 21, QuantityInStock = 46, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "C-212", IsDeleted = false },
+            new StoreInventory { StoreId = 3, BookId = 21, QuantityInStock = 37, LastRestocked = DateTime.UtcNow, ReorderTreshold = 5, Location = "C-213", IsDeleted = false },
         });
     }
 }

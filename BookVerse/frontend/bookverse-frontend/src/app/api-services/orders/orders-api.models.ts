@@ -185,6 +185,7 @@ export interface GetOrderByIdQueryDto {
   id: number;
   trackingNumber: string | null;
   user: GetByIdOrderQueryDtoUser;
+  shipToAddress: GetByIdOrderQueryDtoShipToAddress;
   orderedAtUtc: string;
   paidAtUtc: string | null;
   status: OrderStatusType;
@@ -198,8 +199,13 @@ export interface GetOrderByIdQueryDto {
 export interface GetByIdOrderQueryDtoUser {
   userFirstname: string | null;
   userLastname: string | null;
-  userAddress: string | null;
-  userCity: string | null;
+}
+
+export interface GetByIdOrderQueryDtoShipToAddress {
+  line1: string;
+  line2: string | null;
+  city: string;
+  country: string;
 }
 
 export interface GetByIdOrderQueryDtoItem {

@@ -8,9 +8,9 @@ namespace BookVerse.API.Controllers;
 public class ShippingMethodsController(ISender sender) : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> GetShippingMethods(CancellationToken ct)
+    public async Task<IActionResult> GetShippingMethods([FromQuery] string? language, CancellationToken ct)
     {
-        var result = await sender.Send(new ListShippingMethodsQuery(), ct);
+        var result = await sender.Send(new ListShippingMethodsQuery { Language = language }, ct);
         return Ok(result);
     }
 }

@@ -14,6 +14,7 @@ import { RouterModule } from '@angular/router';
 import { AppDatePipe } from './pipes/date-pipe';
 import { AppNumberPipe } from './pipes/number-pipe';
 import { ApiUrlPipe } from './pipes/api-url.pipe';
+import { OpeningHoursPipe } from './pipes/opening-hours.pipe';
 import { DynamicDateAdapter } from './adapters/dynamic-date.adapter';
 import { DateFormatService } from './services/date-format.service';
 import { DateAdapter } from '@angular/material/core';
@@ -37,6 +38,7 @@ import { TranslateService } from '@ngx-translate/core';
     RouterModule,
     ApiUrlPipe,
     AppNumberPipe,
+    OpeningHoursPipe,
     ...materialModules,
   ],
   providers: [
@@ -57,6 +59,7 @@ import { TranslateService } from '@ngx-translate/core';
     AppDatePipe,
     AppNumberPipe,
     ApiUrlPipe,
+    OpeningHoursPipe,
     materialModules,
   ],
 })
