@@ -6,7 +6,7 @@ using BookVerse.Application.Modules.Shopping.Coupons.Queries.ValidateCoupon;
 namespace BookVerse.API.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/coupons")]
 public class CouponsController(ISender sender) : ControllerBase
 {
     [HttpGet("validate-coupon/{code}")]

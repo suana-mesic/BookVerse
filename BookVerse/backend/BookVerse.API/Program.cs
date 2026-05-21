@@ -1,5 +1,5 @@
 ﻿using BookVerse.API;
-using BookVerse.API.Converters;
+using BookVerse.API.BackgroundServices;
 using BookVerse.API.Hubs;
 using BookVerse.API.Middleware;
 using BookVerse.Application;
@@ -70,15 +70,47 @@ public partial class Program
             StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
             builder.Services.AddSingleton<IStripeSettings>(sp => sp.GetRequiredService<IOptions<StripeSettings>>().Value);
 
-            builder.Services.AddControllers()
-                .AddJsonOptions(options =>
-                {
-                    options.JsonSerializerOptions.Converters.Add(new UtcDateTimeConverter());
-                });
+            // Bind the "Payment" section of appsettings.json to PaymentOptions.
+            // ValidateDataAnnotations() runs the [Required]/[StringLength] checks from PaymentOptions.cs.
+            // ValidateOnStart() forces those checks to run at application startup, so if Currency is
+            // missing or wrong length the app fails fast with a clear error instead of breaking later
+            // on the first Stripe call.
+            builder.Services
+                .AddOptions<PaymentOptions>()
+                .Bind(builder.Configuration.GetSection("Payment"))
+                .ValidateDataAnnotations()
+                .ValidateOnStart();
+
+            // Expose the validated options through IPaymentOptions so handlers can inject the
+            // interface (lighter dependency) instead of IOptions<PaymentOptions>.
+            builder.Services.AddSingleton<IPaymentOptions>(sp => sp.GetRequiredService<IOptions<PaymentOptions>>().Value);
+
+            // AddControllers (with JSON converter and uniform BadRequest behavior) is registered
+            // in DependencyInjection.AddAPI - calling it again here would leave a duplicate filter
+            // configuration in the DI container.
 
             builder.Services.AddSignalR();
             builder.Services.AddScoped<IOrderNotificationService, OrderNotificationService>();
-            builder.Services.AddHttpClient<ITranslationService, TranslationService>();
+
+            // IMemoryCache is what TranslationService uses to remember already-translated
+            // strings between calls. Without this registration TranslationService cannot
+            // be constructed (DI would fail at startup).
+            builder.Services.AddMemoryCache();
+
+            // 5 seconds is enough for a normal Google reply. Without an explicit timeout
+            // HttpClient defaults to 100 seconds, so a hanging Google call could block a
+            // listing request that long. Combined with the CancellationToken inside the
+            // service, this guarantees a single translation call never hangs forever.
+            builder.Services.AddHttpClient<ITranslationService, TranslationService>(client =>
+            {
+                client.Timeout = TimeSpan.FromSeconds(5);
+            });
+
+            //Queue is a singleton (single Channel instance shared by all webhook invocations) and the
+            //background service drains it for the lifetime of the process.
+            builder.Services.AddSingleton<IPaidOrderNotificationQueue, PaidOrderNotificationQueue>();
+            builder.Services.AddHostedService<PaidOrderNotificationBackgroundService>();
+            builder.Services.AddHostedService<OrderCleanupBackgroundService>();
 
             var app = builder.Build();
 

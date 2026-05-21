@@ -1,17 +1,15 @@
 import { OrderStatusType } from './orders-api.models';
 
 /**
- * Helper class for working with Order Status
+ * Helper class for working with Order Status.
  *
- * Provides human-readable labels and styling information
- * for order statuses throughout the application.
+ * Covers all 8 backend statuses (Draft, Packed, Paid, Shipped, Cancelled,
+ * PaymentPending, PaymentFailed, Expired). Labels point to i18n keys under
+ * ORDERS.STATUS.*, so the UI is automatically localized.
  */
 export class OrderStatusHelper {
   /**
-   * Get human-readable label for order status
-   *
-   * @param status - Order status enum value
-   * @returns Translated label key or default label
+   * Returns the i18n key for a status label.
    */
   static getLabel(status: OrderStatusType): string {
     switch (status) {
@@ -25,80 +23,87 @@ export class OrderStatusHelper {
         return 'ORDERS.STATUS.SHIPPED';
       case OrderStatusType.Cancelled:
         return 'ORDERS.STATUS.CANCELLED';
+      case OrderStatusType.PaymentPending:
+        return 'ORDERS.STATUS.PAYMENT_PENDING';
+      case OrderStatusType.PaymentFailed:
+        return 'ORDERS.STATUS.PAYMENT_FAILED';
+      case OrderStatusType.Expired:
+        return 'ORDERS.STATUS.EXPIRED';
       default:
         return 'ORDERS.STATUS.UNKNOWN';
     }
   }
 
   /**
-   * Get color class for order status badge
-   *
-   * Use these classes with your badge/chip component
-   *
-   * @param status - Order status enum value
-   * @returns CSS class name for status color
+   * CSS class used by the status badge in tables, dialogs and timelines.
    */
   static getColorClass(status: OrderStatusType): string {
     switch (status) {
       case OrderStatusType.Draft:
-        return 'status-draft'; // Gray
+        return 'status-draft';
       case OrderStatusType.Packed:
-        return 'status-packed'; // Blue
+        return 'status-packed';
       case OrderStatusType.Paid:
-        return 'status-paid'; // Green
+        return 'status-paid';
       case OrderStatusType.Shipped:
-        return 'status-shipped'; // Dark Green
+        return 'status-shipped';
       case OrderStatusType.Cancelled:
-        return 'status-cancelled'; // Red
+        return 'status-cancelled';
+      case OrderStatusType.PaymentPending:
+        return 'status-payment-pending';
+      case OrderStatusType.PaymentFailed:
+        return 'status-payment-failed';
+      case OrderStatusType.Expired:
+        return 'status-expired';
       default:
-        return 'status-unknown'; // Gray
+        return 'status-unknown';
     }
   }
 
   /**
-   * Get Material icon name for order status
-   *
-   * @param status - Order status enum value
-   * @returns Material icon name
+   * Material icon for the status badge.
    */
   static getIcon(status: OrderStatusType): string {
     switch (status) {
       case OrderStatusType.Draft:
-        return 'edit_note'; // Draft/note icon
+        return 'edit_note';
       case OrderStatusType.Packed:
-        return 'check_circle'; // Check circle
+        return 'check_circle';
       case OrderStatusType.Paid:
-        return 'payment'; // Payment icon
+        return 'payment';
       case OrderStatusType.Shipped:
-        return 'done_all'; // Double check
+        return 'done_all';
       case OrderStatusType.Cancelled:
-        return 'cancel'; // Cancel X icon
+        return 'cancel';
+      case OrderStatusType.PaymentPending:
+        return 'hourglass_top';
+      case OrderStatusType.PaymentFailed:
+        return 'error_outline';
+      case OrderStatusType.Expired:
+        return 'schedule';
       default:
-        return 'help_outline'; // Question mark
+        return 'help_outline';
     }
   }
 
   /**
-   * Get all available statuses
-   *
-   * Useful for dropdowns/filters
-   *
-   * @returns Array of all order statuses
+   * All statuses, in display order. Used to build filter dropdowns.
    */
   static getAllStatuses(): OrderStatusType[] {
     return [
       OrderStatusType.Draft,
-      OrderStatusType.Packed,
+      OrderStatusType.PaymentPending,
       OrderStatusType.Paid,
+      OrderStatusType.Packed,
       OrderStatusType.Shipped,
       OrderStatusType.Cancelled,
+      OrderStatusType.PaymentFailed,
+      OrderStatusType.Expired,
     ];
   }
 
   /**
-   * Get status options for dropdown
-   *
-   * @returns Array of status options with label and value
+   * Filter dropdown options (label + icon + enum value).
    */
   static getStatusOptions(): Array<{ label: string; value: OrderStatusType; icon: string }> {
     return this.getAllStatuses().map((status) => ({
@@ -108,51 +113,38 @@ export class OrderStatusHelper {
     }));
   }
 
-  /**
-   * Check if status allows editing
-   *
-   * @param status - Order status enum value
-   * @returns true if order can be edited
-   */
   static canEdit(status: OrderStatusType): boolean {
-    // Only Draft and Packed orders can be edited
     return status === OrderStatusType.Draft || status === OrderStatusType.Packed;
   }
 
   /**
-   * Check if status allows cancellation
-   *
-   * @param status - Order status enum value
-   * @returns true if order can be cancelled
+   * Customer-cancellable statuses. Mirrors CancelOrderCommandHandler on the backend:
+   * Draft / PaymentPending: cancelled before payment lands.
+   * Paid / Packed: refund + inventory restore happens on the backend side.
+   * Shipped / Cancelled / PaymentFailed / Expired are terminal.
    */
   static canCancel(status: OrderStatusType): boolean {
-    // Can cancel Draft, Packed, and Paid orders
-    // Cannot cancel Shipped or already Cancelled orders
     return (
       status === OrderStatusType.Draft ||
-      status === OrderStatusType.Packed ||
-      status === OrderStatusType.Paid
+      status === OrderStatusType.PaymentPending ||
+      status === OrderStatusType.Paid ||
+      status === OrderStatusType.Packed
     );
   }
 
   /**
-   * Get next possible status transitions
-   *
-   * @param currentStatus - Current order status
-   * @returns Array of possible next statuses
+   * Staff workflow transitions, matching ChangeOrderStatusCommandHandler.
+   * Cancelled is intentionally NOT listed - that path runs through CancelOrderCommandHandler
+   * (refund + inventory restore), not through change-status. Draft / PaymentPending are
+   * managed by the Stripe webhook and the cleanup background service, so staff has no outlet
+   * there.
    */
   static getNextStatuses(currentStatus: OrderStatusType): OrderStatusType[] {
     switch (currentStatus) {
-      case OrderStatusType.Draft:
-        return [OrderStatusType.Cancelled];
       case OrderStatusType.Paid:
-        return [OrderStatusType.Packed, OrderStatusType.Cancelled];
+        return [OrderStatusType.Packed];
       case OrderStatusType.Packed:
-        return [OrderStatusType.Shipped, OrderStatusType.Cancelled];
-      case OrderStatusType.Shipped:
-        return [];
-      case OrderStatusType.Cancelled:
-        return [];
+        return [OrderStatusType.Shipped];
       default:
         return [];
     }

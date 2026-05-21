@@ -1,9 +1,12 @@
-﻿using BookVerse.Domain.Entities.UserReviews;
+using BookVerse.Domain.Entities.UserReviews;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookVerse.Application.Modules.Reviews.Commands.Create;
 
-public class CreateReviewCommandHandler(IAppDbContext context, IAppCurrentUser currentUser)
+public class CreateReviewCommandHandler(
+    IAppDbContext context,
+    IAppCurrentUser currentUser,
+    TimeProvider time)
     : IRequestHandler<CreateReviewCommand, Unit>
 {
     public async Task<Unit> Handle(CreateReviewCommand request, CancellationToken cancellationToken)
@@ -37,12 +40,13 @@ public class CreateReviewCommandHandler(IAppDbContext context, IAppCurrentUser c
 
         var review = new Review
         {
-            UserId = userId, 
+            UserId = userId,
             BookId = request.BookId,
             Rating = request.Rating,
             Comment = request.Comment,
             IsDeleted = false,
-            DatePosted = DateTime.UtcNow
+            // TimeProvider so unit tests can pin DatePosted and verify ordering behavior.
+            DatePosted = time.GetUtcNow().UtcDateTime
         };
 
         context.Reviews.Add(review);

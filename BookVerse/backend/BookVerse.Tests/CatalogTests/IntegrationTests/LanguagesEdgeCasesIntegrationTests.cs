@@ -17,7 +17,7 @@ public class LanguagesEdgeCasesIntegrationTests
     [Fact]
     public async Task GetLanguages_AllIdsAreUnique()
     {
-        var response = await _client.GetAsync("/Languages");
+        var response = await _client.GetAsync("/api/languages");
 
         var body = await response.Content.ReadFromJsonAsync<List<ListLanguagesQueryDto>>();
         Assert.NotNull(body);
@@ -28,7 +28,7 @@ public class LanguagesEdgeCasesIntegrationTests
     [Fact]
     public async Task GetLanguages_AllNamesAreUnique()
     {
-        var response = await _client.GetAsync("/Languages");
+        var response = await _client.GetAsync("/api/languages");
 
         var body = await response.Content.ReadFromJsonAsync<List<ListLanguagesQueryDto>>();
         Assert.NotNull(body);
@@ -39,7 +39,7 @@ public class LanguagesEdgeCasesIntegrationTests
     [Fact]
     public async Task GetLanguages_ContainsBosanski()
     {
-        var response = await _client.GetAsync("/Languages");
+        var response = await _client.GetAsync("/api/languages");
 
         var body = await response.Content.ReadFromJsonAsync<List<ListLanguagesQueryDto>>();
         Assert.NotNull(body);
@@ -49,7 +49,7 @@ public class LanguagesEdgeCasesIntegrationTests
     [Fact]
     public async Task GetLanguages_ContainsEngleski()
     {
-        var response = await _client.GetAsync("/Languages");
+        var response = await _client.GetAsync("/api/languages");
 
         var body = await response.Content.ReadFromJsonAsync<List<ListLanguagesQueryDto>>();
         Assert.NotNull(body);
@@ -59,7 +59,7 @@ public class LanguagesEdgeCasesIntegrationTests
     [Fact]
     public async Task GetLanguages_ReturnsCorrectContentType()
     {
-        var response = await _client.GetAsync("/Languages");
+        var response = await _client.GetAsync("/api/languages");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.Equal("application/json", response.Content.Headers.ContentType?.MediaType);

@@ -20,7 +20,8 @@
                 matInput
                 required
               />
-              <mat-error>{{ 'AUTH.REGISTER.FIRST_NAME_ERROR' | translate }}</mat-error>
+              <!-- Show backend per-field message when present, else fall back to the i18n key. -->
+              <mat-error>{{ serverError('firstName') ?? ('AUTH.REGISTER.FIRST_NAME_ERROR' | translate) }}</mat-error>
             </mat-form-field>
             <mat-form-field class="form-control" floatLabel="always">
               <mat-label>{{ 'AUTH.REGISTER.LAST_NAME' | translate }}</mat-label>
@@ -33,7 +34,7 @@
                 matInput
                 required
               />
-              <mat-error>{{ 'AUTH.REGISTER.LAST_NAME_ERROR' | translate }}</mat-error>
+              <mat-error>{{ serverError('lastName') ?? ('AUTH.REGISTER.LAST_NAME_ERROR' | translate) }}</mat-error>
             </mat-form-field>
           </div>
         </div>
@@ -64,7 +65,7 @@
                 matInput
                 required
               />
-              <mat-error>{{ 'AUTH.REGISTER.EMAIL_ERROR' | translate }}</mat-error>
+              <mat-error>{{ serverError('email') ?? ('AUTH.REGISTER.EMAIL_ERROR' | translate) }}</mat-error>
             </mat-form-field>
 
             <mat-form-field class="form-control fc-password" floatLabel="always">
@@ -97,7 +98,7 @@
                 <div id="strength-bar" #strengthBar></div>
               </div>
               <mat-hint #strengthMessage>{{ messageStrength }}</mat-hint>
-              <mat-error>{{ 'AUTH.REGISTER.PASSWORD_ERROR' | translate }}</mat-error>
+              <mat-error>{{ serverError('password') ?? ('AUTH.REGISTER.PASSWORD_ERROR' | translate) }}</mat-error>
             </mat-form-field>
 
             <mat-form-field class="form-control fc-password" floatLabel="always">
@@ -145,6 +146,14 @@
         <div class="steps-container">
           <div class="step">
             <h3>{{ 'AUTH.REGISTER.STEP3_TITLE' | translate }}</h3>
+            <!-- Banner shows the server-side error from the previous submit attempt
+                 (e.g. CAPTCHA_INVALID). Same look as the login form's banner. -->
+            @if (registerErrorMessage) {
+              <div class="login-error-banner">
+                <mat-icon class="error-icon">error_outline</mat-icon>
+                <span class="error_message">{{ registerErrorMessage }}</span>
+              </div>
+            }
             <mat-form-field class="form-control" floatLabel="always">
               <mat-label>{{ 'AUTH.REGISTER.LINE1' | translate }}</mat-label>
               <input
@@ -156,7 +165,7 @@
                 matInput
                 required
               />
-              <mat-error>{{ 'AUTH.REGISTER.LINE1_ERROR' | translate }}</mat-error>
+              <mat-error>{{ serverError('line1') ?? ('AUTH.REGISTER.LINE1_ERROR' | translate) }}</mat-error>
             </mat-form-field>
             <mat-form-field class="form-control" floatLabel="always">
               <mat-label>{{ 'AUTH.REGISTER.LINE2' | translate }}</mat-label>
@@ -181,7 +190,7 @@
                   {{ country.name }}
                 </mat-option>
               </mat-select>
-              <mat-error>{{ 'AUTH.REGISTER.COUNTRY_ERROR' | translate }}</mat-error>
+              <mat-error>{{ serverError('country') ?? ('AUTH.REGISTER.COUNTRY_ERROR' | translate) }}</mat-error>
             </mat-form-field>
 
             <mat-form-field class="form-control" floatLabel="always">
@@ -194,8 +203,13 @@
                   {{ city }}
                 </mat-option>
               </mat-select>
-              <mat-error>{{ 'AUTH.REGISTER.CITY_ERROR' | translate }}</mat-error>
+              <mat-error>{{ serverError('city') ?? ('AUTH.REGISTER.CITY_ERROR' | translate) }}</mat-error>
             </mat-form-field>
+
+            <!-- Captcha widget on the last step (just before submit). The #captcha template
+                 variable lets register.component.ts read (token, answer) and call refresh()
+                 on failure. -->
+            <app-captcha-input #captcha></app-captcha-input>
           </div>
         </div>
         <div class="prev-next">
@@ -206,7 +220,7 @@
             type="button"
             class="next-btn"
             (click)="onRegister()"
-            [disabled]="!isThirdStepValid"
+            [disabled]="!isThirdStepValid || !captcha.isValid"
           >
             {{ 'AUTH.REGISTER.SUBMIT' | translate }}
           </button>

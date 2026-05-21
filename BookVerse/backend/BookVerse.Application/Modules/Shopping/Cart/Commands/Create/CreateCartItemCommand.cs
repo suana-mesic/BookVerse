@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace BookVerse.Application.Modules.Shopping.Cart.Commands.Create
 {
-    public class CreateCartItemCommand:IRequest<string>
+    // The command no longer returns a string. Response shape (status code, body) is the API layer's
+    // job, so the handler returns Unit and the controller answers with 204 NoContent.
+    public class CreateCartItemCommand:IRequest<Unit>
     {
         public int BookId { get; set; }
         public int Quantity { get; set; } = 1;

@@ -115,6 +115,7 @@ export class InventoryAddComponent extends BaseComponent implements OnInit {
       // E.g., for a store with id=2, availableBooks would be { 11: "Crime and Punishment", 12: "The Red and the Black" }.
       const availableBooks = this.storeBookPairs?.[store.id];
       // Third check (double):
+      // !! operator -> converts into boolean
       // !!availableBooks — does that store exist at all in storeBookPairs (TRUE means there are books without inventory in it)?
       // !!availableBooks[selectedBookId] — does that store have exactly the selected book? (TRUE means it has it, i.e., no inventory recorded for it)
       // So, a store will be shown IF AND ONLY IF there are books without inventory in it and selectedBookId has no inventory in it

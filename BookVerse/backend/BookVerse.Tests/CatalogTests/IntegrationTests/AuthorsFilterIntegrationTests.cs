@@ -18,7 +18,7 @@ public class AuthorsFilterIntegrationTests
     [Fact]
     public async Task GetAuthors_WithPageSizeOne_ReturnsSingleItem()
     {
-        var response = await _client.GetAsync("/Authors?Paging.PageSize=1");
+        var response = await _client.GetAsync("/api/authors?Paging.PageSize=1");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -30,7 +30,7 @@ public class AuthorsFilterIntegrationTests
     [Fact]
     public async Task GetAuthors_WithSearchTerm_ReturnsMatchingAuthors()
     {
-        var response = await _client.GetAsync("/Authors?search=Meša");
+        var response = await _client.GetAsync("/api/authors?search=Meša");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -42,7 +42,7 @@ public class AuthorsFilterIntegrationTests
     [Fact]
     public async Task GetAuthors_WithNonExistentSearch_ReturnsEmptyList()
     {
-        var response = await _client.GetAsync("/Authors?search=ZZZNikoNe");
+        var response = await _client.GetAsync("/api/authors?search=ZZZNikoNe");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -54,7 +54,7 @@ public class AuthorsFilterIntegrationTests
     [Fact]
     public async Task GetAuthors_SecondPage_ReturnsCorrectPageNumber()
     {
-        var response = await _client.GetAsync("/Authors?Paging.Page=2&Paging.PageSize=1");
+        var response = await _client.GetAsync("/api/authors?Paging.Page=2&Paging.PageSize=1");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -66,7 +66,7 @@ public class AuthorsFilterIntegrationTests
     [Fact]
     public async Task GetAuthors_ItemsHaveFirstAndLastName()
     {
-        var response = await _client.GetAsync("/Authors");
+        var response = await _client.GetAsync("/api/authors");
 
         var body = await response.Content.ReadFromJsonAsync<PageResult<ListAuthorsQueryDto>>();
         Assert.NotNull(body);
@@ -80,9 +80,9 @@ public class AuthorsFilterIntegrationTests
     [Fact]
     public async Task GetAuthors_TotalItemsConsistentAcrossPageSizes()
     {
-        var r1 = await (await _client.GetAsync("/Authors?Paging.PageSize=1")).Content
+        var r1 = await (await _client.GetAsync("/api/authors?Paging.PageSize=1")).Content
             .ReadFromJsonAsync<PageResult<ListAuthorsQueryDto>>();
-        var r2 = await (await _client.GetAsync("/Authors?Paging.PageSize=50")).Content
+        var r2 = await (await _client.GetAsync("/api/authors?Paging.PageSize=50")).Content
             .ReadFromJsonAsync<PageResult<ListAuthorsQueryDto>>();
 
         Assert.NotNull(r1);

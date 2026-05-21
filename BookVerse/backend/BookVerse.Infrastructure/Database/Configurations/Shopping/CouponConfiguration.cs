@@ -25,6 +25,10 @@ public class CouponConfiguration : IEntityTypeConfiguration<Coupons>
             .IsRequired()
             .HasMaxLength(Coupons.Constraints.PromotionCodeMaxLength);
 
+        builder
+            .Property(x => x.MinOrderAmount)
+            .HasPrecision(18, 2);
+
 
     }
 }

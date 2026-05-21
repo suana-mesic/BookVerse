@@ -21,6 +21,14 @@ namespace BookVerse.Application.Modules.Shopping.Coupons.Commands
             RuleFor(x => x)
                 .Must(x => x.StartDate < x.EndDate)
                 .WithMessage("Start date must be before end date.");
+
+            RuleFor(x => x.MinOrderAmount)
+                .GreaterThan(0).WithMessage("Minimum order amount must be greater than zero.")
+                .When(x => x.MinOrderAmount.HasValue);
+
+            RuleFor(x => x.MaxUses)
+                .GreaterThan(0).WithMessage("Maximum uses must be greater than zero.")
+                .When(x => x.MaxUses.HasValue);
         }
     }
 }

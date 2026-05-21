@@ -24,4 +24,11 @@ public sealed class ErrorDto
     /// Detailed stack trace, included only in Development environment. (optional)
     /// </summary>
     public string? Details { get; set; }
+
+    /// <summary>
+    /// Per-field validation errors. Populated for ValidationException so the frontend
+    /// can highlight the specific input that failed instead of parsing a single string.
+    /// Null for non-validation errors.
+    /// </summary>
+    public List<FieldErrorDto>? FieldErrors { get; set; }
 }

@@ -18,7 +18,7 @@ public class BookFormatsIntegrationTests
     [Fact]
     public async Task GetBookFormats_Anonymous_ReturnsOkWithSeededFormats()
     {
-        var response = await _client.GetAsync("/BookFormats");
+        var response = await _client.GetAsync("/api/bookformats");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -31,7 +31,7 @@ public class BookFormatsIntegrationTests
     [Fact]
     public async Task GetBookFormats_ReturnsAtLeastThreeFormats()
     {
-        var response = await _client.GetAsync("/BookFormats");
+        var response = await _client.GetAsync("/api/bookformats");
 
         var body = await response.Content.ReadFromJsonAsync<PageResult<ListBookFormatsQueryDto>>();
         Assert.NotNull(body);
@@ -41,7 +41,7 @@ public class BookFormatsIntegrationTests
     [Fact]
     public async Task GetBookFormats_EachItemHasFormatName()
     {
-        var response = await _client.GetAsync("/BookFormats");
+        var response = await _client.GetAsync("/api/bookformats");
 
         var body = await response.Content.ReadFromJsonAsync<PageResult<ListBookFormatsQueryDto>>();
         Assert.NotNull(body);

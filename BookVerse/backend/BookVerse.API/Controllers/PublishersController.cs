@@ -6,7 +6,7 @@ using BookVerse.Application.Modules.Catalog.Publishers.Queries.List;
 namespace BookVerse.API.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/publishers")]
 public class PublisherController(ISender sender) : ControllerBase
 {
     [HttpGet]

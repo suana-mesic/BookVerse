@@ -18,7 +18,7 @@ import { buildHttpParams } from '../../core/models/build-http-params';
   providedIn: 'root',
 })
 export class ProductCategoriesApiService {
-  private readonly baseUrl = `${environment.apiUrl}/Categories`;
+  private readonly baseUrl = `${environment.apiUrl}/api/categories`;
   private http = inject(HttpClient);
 
   /**

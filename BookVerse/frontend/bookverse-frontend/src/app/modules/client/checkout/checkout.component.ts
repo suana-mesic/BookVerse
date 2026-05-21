@@ -25,6 +25,8 @@ import { catchError, map, Observable, of, Subscription, switchMap, timer } from 
 import { CountriesApiService } from '../../../api-services/rest-countries/countires-api.service';
 import { Location } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
+import { getBusinessRuleMessage } from '../../../core/services/business-rule-error.helper';
+import { getBackendErrorMessage } from '../../../core/services/backend-error-message.helper';
 @Component({
   selector: 'app-checkout',
   standalone: false,
@@ -97,6 +99,10 @@ export class CheckoutComponent extends BaseComponent implements OnInit, OnDestro
   appliedCoupons: CouponDto[] = [];
   couponError = '';
 
+  // Business cap from the backend (CouponValidationService.MaxCouponsPerOrder). Kept in sync
+  // here so the user gets an inline error before submit, instead of a 409 after submit.
+  readonly maxCouponsPerOrder = 2;
+
   addressForm = this.fb.group({
     line1: ['', Validators.required],
     line2: [''],
@@ -119,7 +125,21 @@ export class CheckoutComponent extends BaseComponent implements OnInit, OnDestro
       return timer(500).pipe(
         switchMap(() => this.couponService.validateCoupon(control.value)),
         map(() => null), //coupon exists -> return null
-        catchError(() => of({ couponDoesNotExist: true })), // coupon does not exist
+        catchError((err) => {
+          // If the backend rejected with a known business-rule code (e.g. COUPON_MAX_USES_REACHED
+          // when the user has already redeemed this coupon their personal MaxUses times), surface
+          // the localized message via the validator error so <mat-error> can show the correct
+          // reason instead of the generic "coupon does not exist or has expired". When the backend
+          // returns a non-business-rule message we still try the known-message map so e.g. the
+          // localized "user not signed in" surfaces in place of the generic 404 fallback.
+          const businessRuleMsg = getBusinessRuleMessage(err, this.translate);
+          const backendMsg = getBackendErrorMessage(err, this.translate);
+          const message = businessRuleMsg ?? backendMsg;
+          if (message) {
+            return of({ couponBusinessRule: message });
+          }
+          return of({ couponDoesNotExist: true });
+        }),
       );
     };
   }
@@ -156,13 +176,19 @@ export class CheckoutComponent extends BaseComponent implements OnInit, OnDestro
     });
 
     this.cartService.getCart(lang).subscribe({
-      next: (cart) => (this.cart = cart),
+      next: (cart) => {
+        this.cart = cart;
+        this.revalidateAppliedCoupons();
+      },
     });
 
     this.subscriptions.add(
       this.translate.onLangChange.subscribe((event) => {
         this.cartService.getCart(event.lang).subscribe({
-          next: (cart) => (this.cart = cart),
+          next: (cart) => {
+            this.cart = cart;
+            this.revalidateAppliedCoupons();
+          },
         });
         this.shippingMethodsService.getShippingMethods(event.lang).subscribe({
           next: (methods) => (this.shippingMethods = methods),
@@ -262,14 +288,22 @@ export class CheckoutComponent extends BaseComponent implements OnInit, OnDestro
     const rawCountry = this.addressForm.getRawValue().country as any;
 
     const request = {
-      shippingMethodId: this.selectedShippingMethodId ?? null,
+      // Send only the id matching the chosen delivery mode. The backend validator enforces
+      // a strict XOR between shippingMethodId and storeId, so sending both (which happened
+      // when the user toggled pickup but selectedShippingMethodId still held a leftover value)
+      // gets rejected with "Choose either shipping method or pickup store, not both."
+      shippingMethodId: this.deliveryType === 'shipping' ? (this.selectedShippingMethodId ?? null) : null,
       storeId: this.deliveryType === 'pickup' ? this.selectedStoreId : null,
       useExistingAddress: this.useExistingAddress,
       line1: this.useExistingAddress ? null : address.line1,
       line2: this.useExistingAddress ? null : address.line2,
       city: this.useExistingAddress ? null : address.city,
       country: this.useExistingAddress ? null : (rawCountry?.nameBs ?? rawCountry?.name ?? null),
-      couponIds: this.appliedCoupons.map((c) => c.id),
+      // Defense-in-depth: dedupe by id when building the payload. The two anti-duplicate
+      // checks in applyCoupon() should already keep appliedCoupons unique, but if a duplicate
+      // ever slips through (race condition, manual state restore from session storage) we
+      // strip it here so the backend never sees the same coupon id twice.
+      couponIds: [...new Set(this.appliedCoupons.map((c) => c.id))],
     };
 
     this.ordersService.createOrder(request).subscribe({
@@ -277,42 +311,138 @@ export class CheckoutComponent extends BaseComponent implements OnInit, OnDestro
         this.saveCheckoutState();
         this.stopLoading();
         this.toaster.success(this.translate.instant('CLIENT.CHECKOUT.ORDER_CONFIRMED'));
+
+        // Free-order flow: backend returns an empty clientSecret when coupons brought totalPrice to zero.
+        // No Stripe payment step is required, so we skip the payment screen and go straight to the success page.
+        if (!response?.clientSecret) {
+          this.router.navigate(['/client/order-success']);
+          return;
+        }
+
         this.router.navigate(['/client/payment'], {
           state: { orderData: response },
         });
       },
       error: (err) => {
         this.stopLoading();
-        this.toaster.error(this.translate.instant('CLIENT.CHECKOUT.ERROR_CREATE_ORDER'));
+        // Priority: business-rule code (localized via i18n key) > known backend English message
+        // (mapped to ERRORS.BACKEND_MESSAGES.* i18n key) > generic "could not create order" fallback.
+        const businessRuleMsg = getBusinessRuleMessage(err, this.translate);
+        const backendMsg = getBackendErrorMessage(err, this.translate);
+        this.toaster.error(
+          businessRuleMsg
+            ?? backendMsg
+            ?? this.translate.instant('CLIENT.CHECKOUT.ERROR_CREATE_ORDER'),
+        );
       },
     });
   }
 
   applyCoupon(): void {
-    if (!this.enteredCoupon.value.trim()) return;
+    // Normalize once: trim whitespace and lowercase so duplicate detection works regardless of
+    // how the user typed the code ("WELCOME10A" vs "welcome10a" must be treated as identical).
+    const entered = (this.enteredCoupon.value ?? '').trim();
+    if (!entered) return;
     this.couponError = '';
 
-    if (this.appliedCoupons.some((c) => c.promotionCode === this.enteredCoupon.value)) {
-      this.couponError = this.translate.instant('CLIENT.CHECKOUT.COUPON_ALREADY_APPLIED');
+    const enteredLower = entered.toLowerCase();
+
+    // Hard cap on number of coupons per order. Same limit lives in the backend
+    // (CouponValidationService.MaxCouponsPerOrder); enforcing it here too saves a round
+    // trip and lets the user see the error inline instead of on submit.
+    if (this.appliedCoupons.length >= this.maxCouponsPerOrder) {
+      this.couponError = this.translate.instant('CLIENT.CHECKOUT.COUPON_MAX_REACHED', {
+        max: this.maxCouponsPerOrder,
+      });
       return;
     }
 
-    this.couponService.validateCoupon(this.enteredCoupon.value).subscribe({
+    // Anti-duplicate check, part 1: compare by promotionCode case-insensitively before we hit
+    // the network. Without toLowerCase the user could re-submit the same code in different
+    // casing and we would fire a needless backend call.
+    if (this.appliedCoupons.some((c) => c.promotionCode.toLowerCase() === enteredLower)) {
+      const message = this.translate.instant('CLIENT.CHECKOUT.COUPON_ALREADY_APPLIED');
+      // Inline error stays under the input AND toaster fires for extra visibility, so the
+      // user notices the duplicate even if they were not looking at the coupon field.
+      this.couponError = message;
+      this.toaster.error(message);
+      return;
+    }
+
+    this.couponService.validateCoupon(entered).subscribe({
       next: (coupon) => {
+        // Anti-duplicate check, part 2: after the backend returns the canonical coupon,
+        // make sure its id is not already in the applied list. This catches the edge case
+        // where two different-looking codes resolved to the same coupon record.
+        if (this.appliedCoupons.some((c) => c.id === coupon.id)) {
+          const message = this.translate.instant('CLIENT.CHECKOUT.COUPON_ALREADY_APPLIED');
+          this.couponError = message;
+          this.toaster.error(message);
+          return;
+        }
+
+        // MinOrderAmount check: the same rule lives on the backend
+        // (CouponValidationService) and would return 409 on order submit. We do it here
+        // too so the user sees the reason inline immediately, without a round-trip.
+        if (coupon.minOrderAmount != null && this.cart.totalPrice < coupon.minOrderAmount) {
+          const message = this.translate.instant('CLIENT.CHECKOUT.COUPON_MIN_ORDER_AMOUNT', {
+            code: coupon.promotionCode,
+            min: coupon.minOrderAmount,
+          });
+          this.couponError = message;
+          this.toaster.error(message);
+          return;
+        }
+
         this.appliedCoupons.push(coupon);
         this.enteredCoupon.setValue('');
         this.toaster.success(
           this.translate.instant('CLIENT.CHECKOUT.COUPON_APPLIED', { code: coupon.promotionCode }),
         );
       },
-      error: () => {
-        this.couponError = this.translate.instant('CLIENT.CHECKOUT.COUPON_NOT_FOUND');
+      error: (err) => {
+        // Priority for inline coupon error: business-rule code (e.g. COUPON_MAX_USES_REACHED) >
+        // known backend English message > generic "not found" fallback.
+        const businessRuleMsg = getBusinessRuleMessage(err, this.translate);
+        const backendMsg = getBackendErrorMessage(err, this.translate);
+        this.couponError = businessRuleMsg
+          ?? backendMsg
+          ?? this.translate.instant('CLIENT.CHECKOUT.COUPON_NOT_FOUND');
       },
     });
   }
 
   removeCoupon(id: number): void {
     this.appliedCoupons = this.appliedCoupons.filter((c) => c.id !== id);
+  }
+
+  // Re-checks every previously applied coupon against the current cart subtotal. Coupons
+  // whose MinOrderAmount is no longer met by the cart get removed from this.appliedCoupons
+  // and the user gets a localized toast - that way the backend won't reject the order at
+  // submit time with a raw English "requires a minimum order amount" message. Triggered
+  // after every cart reload (initial load and language change).
+  private revalidateAppliedCoupons(): void {
+    if (!this.appliedCoupons.length) return;
+
+    const keptCoupons: CouponDto[] = [];
+    const droppedCodes: string[] = [];
+
+    for (const coupon of this.appliedCoupons) {
+      if (coupon.minOrderAmount != null && this.cart.totalPrice < coupon.minOrderAmount) {
+        droppedCodes.push(coupon.promotionCode);
+        continue;
+      }
+      keptCoupons.push(coupon);
+    }
+
+    if (droppedCodes.length === 0) return;
+
+    this.appliedCoupons = keptCoupons;
+    this.toaster.error(
+      this.translate.instant('CLIENT.CHECKOUT.COUPONS_DROPPED_AFTER_CART_CHANGE', {
+        codes: droppedCodes.join(', '),
+      }),
+    );
   }
 
   getDiscountAmount(totalPrice: number): number {

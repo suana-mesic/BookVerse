@@ -5,8 +5,9 @@ public class DeleteReviewCommandHandler(IAppDbContext context, IAppCurrentUser c
 {
     public async Task<Unit> Handle(DeleteReviewCommand request, CancellationToken ct)
     {
+        // BusinessRuleCodes.USER_NOT_AUTHENTICATED lets the frontend show a localized message.
         if (currentUser.UserId is null)
-            throw new BookVerseBusinessRuleException("123", "User is not authenticated.");
+            throw new BookVerseBusinessRuleException(BusinessRuleCodes.USER_NOT_AUTHENTICATED, "User is not authenticated.");
 
         var review = await context.Reviews
             .FirstOrDefaultAsync(x => x.UserId == currentUser.UserId && x.BookId == request.BookId, ct);

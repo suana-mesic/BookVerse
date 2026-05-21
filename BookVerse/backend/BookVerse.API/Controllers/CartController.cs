@@ -7,7 +7,7 @@ using BookVerse.Application.Modules.Shopping.Cart.Queries.List;
 namespace BookVerse.API.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/cart")]
 [Authorize(Policy = "Customer")]
 public class CartController(IMediator mediator) : ControllerBase
 {
@@ -23,8 +23,11 @@ public class CartController(IMediator mediator) : ControllerBase
 
     public async Task<IActionResult> AddToCart([FromBody] CreateCartItemCommand command, CancellationToken ct)
     {
-        var result = await mediator.Send(command, ct);
-        return Ok(result);
+        // Handler returns Unit (no payload); 204 NoContent is the right status for a successful
+        // mutation that has nothing to say back. Picking the response shape is the API layer's job,
+        // not the handler's.
+        await mediator.Send(command, ct);
+        return NoContent();
     }
 
     [HttpPut("quantity")]

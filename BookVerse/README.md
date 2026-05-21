@@ -67,7 +67,7 @@ Migrations are applied automatically on startup (`MigrateAsync`). Static seed da
 For payments to work locally, install the [Stripe CLI](https://stripe.com/docs/stripe-cli) and run the following in a separate terminal:
 
 ```bash
-stripe listen --forward-to https://localhost:7260/OrdersOrderItems/stripe-webhook
+stripe listen --forward-to https://localhost:7260/api/orders/stripe-webhook
 ```
 
 When the Stripe CLI starts it prints a webhook secret (`whsec_...`) — that key needs to be added to `.env` as `Stripe__WebhookSecret`, and the backend must be restarted.

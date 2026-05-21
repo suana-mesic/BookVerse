@@ -26,17 +26,16 @@ public class ChangeOrderStatusCommandHandler(IAppDbContext db, IOrderNotificatio
 
         if (request.NewStatus == OrderStatusType.Shipped)
         {
-            var trkNumbers = await db.Orders
-                .Where(o => o.TrackingNumber.StartsWith("TRK"))
-                .Select(o => o.TrackingNumber)
-                .ToListAsync(ct);
-
-            int nextNumber = trkNumbers
-                .Select(t => int.TryParse(t[3..], out int n) ? n : 0)
-                .DefaultIfEmpty(0)
-                .Max() + 1;
-
-            order.TrackingNumber = $"TRK{nextNumber:D4}";
+            // The old generator loaded every "TRK..." row from Orders into memory, parsed the
+            // numeric suffix and took the max. That gets slower with every shipment and is also
+            // racy: two staff members marking orders Shipped at the same time can pick the same
+            // next number.
+            //
+            // Replacement: a GUID's first 12 hex characters. "N" format strips dashes, so the
+            // result is plain hex like "9b1deb4d3b7d". 12 hex chars = 48 bits of randomness,
+            // which gives effectively no chance of a collision in this app's volume, and we
+            // never have to query the DB to generate one.
+            order.TrackingNumber = $"TRK{Guid.NewGuid().ToString("N").Substring(0, 12).ToUpperInvariant()}";
         }
 
         await db.SaveChangesAsync(ct);
@@ -47,23 +46,44 @@ public class ChangeOrderStatusCommandHandler(IAppDbContext db, IOrderNotificatio
 
     private static void ValidateStatusTransition(OrderStatusType current, OrderStatusType next)
     {
-        // Define valid transitions
+        // Allowed staff status transitions.
+        //
+        // IMPORTANT: Cancelled is intentionally NOT in this list, even though the order workflow
+        // does have a Cancelled state. The reason: a proper cancellation must also issue a Stripe
+        // refund and restore the inventory that was decremented on payment. That logic currently
+        // lives ONLY in CancelOrderCommandHandler (the customer endpoint). If we let staff cancel
+        // here, the money would stay at Stripe and stock would stay decremented, leaving the system
+        // in an inconsistent state.
+        //
+        // Until that logic is extracted into a shared service that both handlers can call,
+        // staff cannot cancel via this endpoint. Customers can still cancel their own orders
+        // through CancelOrderCommandHandler, which does the refund + restore correctly.
+        //
+        // Draft and PaymentPending have no manual outlet at all - they are managed by the webhook
+        // (payment success/failure) and by OrderCleanupBackgroundService (expiry sweep).
+        // PaymentFailed, Expired and Cancelled are terminal: no transitions out.
         var validTransitions = new Dictionary<OrderStatusType, OrderStatusType[]>
         {
-            { OrderStatusType.Draft, new[] { OrderStatusType.Cancelled } },
-            { OrderStatusType.Paid, new[] { OrderStatusType.Packed, OrderStatusType.Cancelled } },
-            { OrderStatusType.Packed, new[] { OrderStatusType.Shipped, OrderStatusType.Cancelled } },
-            { OrderStatusType.Cancelled, Array.Empty<OrderStatusType>() }
+            { OrderStatusType.Draft, Array.Empty<OrderStatusType>() },
+            { OrderStatusType.PaymentPending, Array.Empty<OrderStatusType>() },
+            { OrderStatusType.Paid, new[] { OrderStatusType.Packed } },
+            { OrderStatusType.Packed, new[] { OrderStatusType.Shipped } },
+            { OrderStatusType.Shipped, Array.Empty<OrderStatusType>() },
+            { OrderStatusType.Cancelled, Array.Empty<OrderStatusType>() },
+            { OrderStatusType.PaymentFailed, Array.Empty<OrderStatusType>() },
+            { OrderStatusType.Expired, Array.Empty<OrderStatusType>() }
         };
 
+        // BusinessRuleCodes give the frontend a stable identifier to look up the localized
+        // message; the English text below is the fallback (and what shows up in logs).
         if (!validTransitions.ContainsKey(current))
         {
-            throw new BookVerseBusinessRuleException("123", $"Unknown current status: {current}");
+            throw new BookVerseBusinessRuleException(BusinessRuleCodes.ORDER_STATUS_UNKNOWN, $"Unknown current status: {current}");
         }
 
         if (!validTransitions[current].Contains(next))
         {
-            throw new BookVerseBusinessRuleException("323",
+            throw new BookVerseBusinessRuleException(BusinessRuleCodes.ORDER_STATUS_TRANSITION_INVALID,
                 $"Invalid status transition from {current} to {next}. " +
                 $"Allowed transitions: {string.Join(", ", validTransitions[current])}");
         }

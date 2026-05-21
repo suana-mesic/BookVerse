@@ -70,6 +70,8 @@ h1 {
   width: 93%;
   font-weight: 600;
   box-sizing: border-box;
+  // Small breathing room above the button so it does not sit right against the captcha input.
+  margin-top: 16px;
 
   &:hover:not(:disabled) {
     background-color: #2980b9;
@@ -220,7 +222,12 @@ h1 {
   color: #f44336;
 }
 
-mat-label {
+// `::ng-deep` so the rule pierces view encapsulation and styles BOTH the form's own
+// mat-labels/errors (Email, Lozinka) AND those inside the captcha child component.
+// Without ::ng-deep the Captcha label and error stayed at Material's default font-size
+// and looked smaller than the rest of the form.
+:host ::ng-deep mat-label,
+:host ::ng-deep mat-error {
   font-size: larger !important;
 }
 

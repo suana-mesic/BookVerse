@@ -105,6 +105,8 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
 
     const filtered = this.allNavSections
       .map((section) => ({
+        //spread operator - copies each section
+        //role - that the original sections do not mutate
         ...section,
         items: section.items.filter((item) =>
           item.roles.some((role) => activeRoles.includes(role)),

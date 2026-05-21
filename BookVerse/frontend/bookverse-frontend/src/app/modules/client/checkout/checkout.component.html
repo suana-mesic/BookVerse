@@ -366,18 +366,35 @@
                   @if (enteredCoupon.pending) {
                     <mat-hint>{{ 'CLIENT.CHECKOUT.CHECKING_COUPON' | translate }}</mat-hint>
                   }
-                  <mat-error>{{ 'CLIENT.CHECKOUT.COUPON_INVALID' | translate }}</mat-error>
+                  <mat-error *ngIf="enteredCoupon.hasError('couponBusinessRule')">
+                    {{ enteredCoupon.errors?.['couponBusinessRule'] }}
+                  </mat-error>
+                  <mat-error *ngIf="enteredCoupon.hasError('couponDoesNotExist')">
+                    {{ 'CLIENT.CHECKOUT.COUPON_INVALID' | translate }}
+                  </mat-error>
                 </mat-form-field>
                 <button
                   mat-raised-button
                   color="accent"
                   class="btn-coupon"
                   (click)="applyCoupon()"
-                  [disabled]="!enteredCoupon.valid || !enteredCoupon.value || enteredCoupon.pending"
+                  [disabled]="!enteredCoupon.valid || !enteredCoupon.value || enteredCoupon.pending || appliedCoupons.length >= maxCouponsPerOrder"
                 >
                   <mat-icon>add</mat-icon>
                   {{ 'CLIENT.CHECKOUT.APPLY_COUPON' | translate }}
                 </button>
+              </div>
+              <!-- Inline message for client-side coupon errors that don't flow through the async
+                   validator (duplicate-by-id check, MinOrderAmount client check). Keeps feedback
+                   under the input in addition to the toaster, matching the <mat-error> UX for
+                   validator failures. -->
+              <div class="coupon-inline-error" *ngIf="couponError">
+                {{ couponError }}
+              </div>
+              <!-- Hint shown once the user already has the maximum number of coupons applied.
+                   Mirrors the backend cap (CouponValidationService.MaxCouponsPerOrder). -->
+              <div class="coupon-max-hint" *ngIf="appliedCoupons.length >= maxCouponsPerOrder">
+                {{ 'CLIENT.CHECKOUT.COUPON_MAX_REACHED' | translate: { max: maxCouponsPerOrder } }}
               </div>
 
               <div class="applied-coupons">

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BookVerse.Application.Modules.Catalog.Inventory.Commands.Create
 {
-    public class CreateInventoryCommandHandler(IAppDbContext context) : IRequestHandler<CreateInventoryCommand, Unit>
+    public class CreateInventoryCommandHandler(IAppDbContext context, TimeProvider time) : IRequestHandler<CreateInventoryCommand, Unit>
     {
         public async Task<Unit> Handle(CreateInventoryCommand request, CancellationToken ct)
         {
@@ -24,7 +24,8 @@ namespace BookVerse.Application.Modules.Catalog.Inventory.Commands.Create
                 var dupStore = await context.Stores
                     .Where(x => x.Id == duplicateInBatch.Key.StoreId)
                     .FirstOrDefaultAsync(ct);
-                throw new BookVerseBusinessRuleException("123",
+                // BusinessRuleCodes.INVENTORY_DUPLICATE lets the frontend show a localized message.
+                throw new BookVerseBusinessRuleException(BusinessRuleCodes.INVENTORY_DUPLICATE,
                     $"Inventory already exists for the book {dupBook.Title} and store {dupStore.StoreName}.");
             }
 
@@ -38,7 +39,7 @@ namespace BookVerse.Application.Modules.Catalog.Inventory.Commands.Create
                 var store = await context.Stores.Where(x => x.Id == item.StoreId).FirstOrDefaultAsync(ct);
 
                 if (existing != null && existing.IsDeleted == false)
-                    throw new BookVerseBusinessRuleException("123", $"Inventory already exists for the book {book.Title} and store {store.StoreName}.");
+                    throw new BookVerseBusinessRuleException(BusinessRuleCodes.INVENTORY_DUPLICATE, $"Inventory already exists for the book {book.Title} and store {store.StoreName}.");
 
                 if (existing != null && existing.IsDeleted == true)
                 {
@@ -46,7 +47,8 @@ namespace BookVerse.Application.Modules.Catalog.Inventory.Commands.Create
                     existing.QuantityInStock = item.QuantityInStock;
                     existing.ReorderTreshold = item.ReorderTreshold;
                     existing.Location = item.Location;
-                    existing.LastRestocked = DateTime.UtcNow;
+                    // TimeProvider so unit tests can pin the LastRestocked stamp.
+                    existing.LastRestocked = time.GetUtcNow().UtcDateTime;
                 }
                 if (existing == null)
                 {
@@ -57,7 +59,8 @@ namespace BookVerse.Application.Modules.Catalog.Inventory.Commands.Create
                         QuantityInStock = item.QuantityInStock,
                         ReorderTreshold = item.ReorderTreshold,
                         Location = item.Location,
-                        LastRestocked = DateTime.UtcNow
+                        // TimeProvider so unit tests can pin the LastRestocked stamp.
+                        LastRestocked = time.GetUtcNow().UtcDateTime
                     };
                     context.StoreInventory.Add(storeInventory);
                 }

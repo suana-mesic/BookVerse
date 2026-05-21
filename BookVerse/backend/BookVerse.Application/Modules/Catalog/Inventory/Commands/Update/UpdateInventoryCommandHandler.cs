@@ -1,9 +1,11 @@
 ﻿namespace BookVerse.Application.Modules.Catalog.Inventory.Commands.Update
 {
-    public class UpdateInventoryCommandHandler(IAppDbContext context) : IRequestHandler<UpdateInventoryCommand, Unit>
+    public class UpdateInventoryCommandHandler(IAppDbContext context, TimeProvider time) : IRequestHandler<UpdateInventoryCommand, Unit>
     {
         public async Task<Unit> Handle(UpdateInventoryCommand request, CancellationToken ct)
         {
+            // Single "now" snapshot so every row touched in this handler shares the exact same timestamp.
+            var nowUtc = time.GetUtcNow().UtcDateTime;
             var zapisZaUpdate = await context.StoreInventory
                 .IgnoreQueryFilters()
                 .Where(x => x.StoreId == request.OldStoreId && x.BookId == request.OldBookId)
@@ -31,7 +33,7 @@
                     vecPostoji.QuantityInStock = request.QuantityInStock;
                     vecPostoji.ReorderTreshold = request.ReorderTreshold;
                     vecPostoji.Location = request.Location;
-                    vecPostoji.LastRestocked = DateTime.UtcNow;
+                    vecPostoji.LastRestocked = nowUtc;
                 }
                 else
                 {
@@ -42,7 +44,7 @@
                         QuantityInStock = request.QuantityInStock,
                         ReorderTreshold = request.ReorderTreshold,
                         Location = request.Location,
-                        LastRestocked = DateTime.UtcNow,
+                        LastRestocked = nowUtc,
                         IsDeleted = false
                     });
                 }

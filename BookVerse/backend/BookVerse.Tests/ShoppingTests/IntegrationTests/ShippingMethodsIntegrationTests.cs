@@ -17,7 +17,7 @@ public class ShippingMethodsIntegrationTests
     [Fact]
     public async Task GetShippingMethods_Anonymous_ReturnsOk()
     {
-        var response = await _client.GetAsync("/ShippingMethods");
+        var response = await _client.GetAsync("/api/shippingmethods");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
@@ -25,7 +25,7 @@ public class ShippingMethodsIntegrationTests
     [Fact]
     public async Task GetShippingMethods_ReturnsSeededMethods()
     {
-        var response = await _client.GetAsync("/ShippingMethods");
+        var response = await _client.GetAsync("/api/shippingmethods");
 
         var body = await response.Content.ReadFromJsonAsync<List<ListShippingMethodsQueryDto>>();
         Assert.NotNull(body);
@@ -35,7 +35,7 @@ public class ShippingMethodsIntegrationTests
     [Fact]
     public async Task GetShippingMethods_EachMethodHasNameAndPrice()
     {
-        var response = await _client.GetAsync("/ShippingMethods");
+        var response = await _client.GetAsync("/api/shippingmethods");
 
         var body = await response.Content.ReadFromJsonAsync<List<ListShippingMethodsQueryDto>>();
         Assert.NotNull(body);

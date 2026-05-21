@@ -18,6 +18,9 @@
       <div class="actions-container">
         <mat-form-field class="filter-field" appearance="outline">
           <mat-label>{{ 'CLIENT.USER_ORDERS.STATUS' | translate }}</mat-label>
+          <!-- Filter dropdown now driven by OrderStatusHelper.getStatusOptions(), so it
+               picks up every backend status (PaymentPending, PaymentFailed, Expired
+               were missing before) automatically. -->
           <mat-select
             [formControl]="statusFilterControl"
             (selectionChange)="onStatusFilterChange($event.value)"
@@ -25,21 +28,9 @@
             <mat-option [value]="null">{{
               'CLIENT.USER_ORDERS.ALL_STATUSES' | translate
             }}</mat-option>
-            <mat-option [value]="OrderStatusType.Draft">{{
-              'CLIENT.USER_ORDERS.STATUS_DRAFT' | translate
-            }}</mat-option>
-            <mat-option [value]="OrderStatusType.Paid">{{
-              'CLIENT.USER_ORDERS.STATUS_PAID' | translate
-            }}</mat-option>
-            <mat-option [value]="OrderStatusType.Packed">{{
-              'CLIENT.USER_ORDERS.STATUS_PACKED' | translate
-            }}</mat-option>
-            <mat-option [value]="OrderStatusType.Shipped">{{
-              'CLIENT.USER_ORDERS.STATUS_SHIPPED' | translate
-            }}</mat-option>
-            <mat-option [value]="OrderStatusType.Cancelled">{{
-              'CLIENT.USER_ORDERS.STATUS_CANCELLED' | translate
-            }}</mat-option>
+            @for (option of statusOptions; track option.value) {
+              <mat-option [value]="option.value">{{ option.label | translate }}</mat-option>
+            }
           </mat-select>
         </mat-form-field>
 
@@ -137,8 +128,12 @@
                 <mat-icon>cancel</mat-icon>
                 {{ 'CLIENT.USER_ORDERS.CANCEL_ORDER' | translate }}
               </button>
+              <!-- Pay button shows for PaymentPending: that is when the order has a
+                   Stripe PaymentIntent waiting to be completed (user closed the tab,
+                   came back, etc.). Draft no longer reaches this list under the current
+                   transactional flow, so the old Draft check would never fire. -->
               <button
-                *ngIf="order.status === OrderStatusType.Draft"
+                *ngIf="order.status === OrderStatusType.PaymentPending"
                 mat-stroked-button
                 class="pay-btn"
                 (click)="payOrder(order)"

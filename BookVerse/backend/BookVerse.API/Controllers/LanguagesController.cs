@@ -3,7 +3,7 @@
 namespace BookVerse.API.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/languages")]
 public class LanguagesController(ISender sender) : Controller
 {
     [HttpGet]

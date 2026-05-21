@@ -33,9 +33,11 @@ export class SignalRService {
   private staffHubConnection: signalR.HubConnection | null = null;
   private userHubConnection: signalR.HubConnection | null = null;
 
+  // Private Subject – only the service can emit the value
   private newPaidOrderSubject = new Subject<OrderNotification>();
   private orderStatusChangedSubject = new Subject<OrderStatusNotification>();
 
+  // Public Observable - components are subscribed to, but cannot emit
   newPaidOrder$ = this.newPaidOrderSubject.asObservable();
   orderStatusChanged$ = this.orderStatusChangedSubject.asObservable();
 

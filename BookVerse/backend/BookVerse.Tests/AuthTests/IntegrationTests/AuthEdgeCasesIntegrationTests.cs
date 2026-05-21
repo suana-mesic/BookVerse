@@ -113,8 +113,12 @@ public class AuthEdgeCasesIntegrationTests
     [Fact]
     public async Task Register_WithMultipleUniqueEmails_AllReturnOk()
     {
+        // Each iteration is a real register call that has to pass captcha verification,
+        // so we fetch a fresh captcha challenge before each one. The captcha endpoint is
+        // anonymous and cheap (in-memory image + HMAC), so doing it 3 times is fine.
         for (int i = 0; i < 3; i++)
         {
+            var (captchaToken, captchaAnswer) = await CustomWebApplicationFactory<Program>.FetchCaptchaAsync(_client);
             var request = new RegisterCommand
             {
                 FirstName = "Test",
@@ -123,7 +127,9 @@ public class AuthEdgeCasesIntegrationTests
                 Password = "password123",
                 Line1 = "Street 1",
                 City = "Sarajevo",
-                Country = "Bosnia and Herzegovina"
+                Country = "Bosnia and Herzegovina",
+                CaptchaToken = captchaToken,
+                CaptchaAnswer = captchaAnswer
             };
 
             var response = await _client.PostAsJsonAsync("api/auth/register", request);

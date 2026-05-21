@@ -9,7 +9,7 @@ namespace BookVerse.API.Controllers;
 
 [ApiController]
 [Authorize(Policy = "Management")]
-[Route("[controller]")]
+[Route("api/statistics")]
 public class StatisticsController(ISender sender) : ControllerBase
 {
 

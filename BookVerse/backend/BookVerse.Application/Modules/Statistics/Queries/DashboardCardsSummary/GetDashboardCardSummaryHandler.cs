@@ -2,12 +2,16 @@
 
 namespace BookVerse.Application.Modules.Statistics.Queries.DashboardCardsSummary
 {
-    public class GetDashboardCardSummaryHandler(IAppDbContext context) : IRequestHandler<GetDashboardCardSummary, GetDashboardCardSummaryDto>
+    public class GetDashboardCardSummaryHandler(IAppDbContext context, TimeProvider time) : IRequestHandler<GetDashboardCardSummary, GetDashboardCardSummaryDto>
     {
         public async Task<GetDashboardCardSummaryDto> Handle(GetDashboardCardSummary request, CancellationToken ct)
         {
-            var thisMonth = DateTime.UtcNow.Month;
-            var thisYear = DateTime.UtcNow.Year;
+            // Single "now" snapshot so the month/year used across all four KPI calculations
+            // (revenue, orders, users, books) is internally consistent. TimeProvider also lets
+            // unit tests pin "now" and assert the resulting percentages deterministically.
+            var nowUtc = time.GetUtcNow().UtcDateTime;
+            var thisMonth = nowUtc.Month;
+            var thisYear = nowUtc.Year;
             var lastMonth = thisMonth == 1 ? 12 : thisMonth - 1;
             var lastMonthYear = thisMonth == 1 ? thisYear - 1 : thisYear; //the year in which last month falls
 

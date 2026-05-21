@@ -9,7 +9,7 @@ import { buildHttpParams } from '../../core/models/build-http-params';
   providedIn: 'root',
 })
 export class AuthorsApiService {
-  private readonly baseUrl = `${environment.apiUrl}/Authors`;
+  private readonly baseUrl = `${environment.apiUrl}/api/authors`;
   private http = inject(HttpClient);
 
   list(request: AuthorsListRequest): Observable<AuthorsListResponse> {

@@ -1,6 +1,7 @@
 ﻿using BookVerse.Domain.Entities.UserReviews;
 using BookVerse.Domain.Entities.Shopping;
 using BookVerse.Domain.Entities.Whishlist;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace BookVerse.Application.Abstractions;
 
@@ -34,7 +35,12 @@ public interface IAppDbContext
     DbSet<Refunds> Refunds { get; }
     DbSet<InventoryLog> InventoryLog { get; }
     DbSet<ChangeTypes> ChangeTypes { get; }
+    DbSet<StripeEvent> StripeEvents { get; }
 
 
     Task<int> SaveChangesAsync(CancellationToken ct);
+
+    //Exposes EF Core transactions so handlers (e.g. StripeWebhookCommandHandler) can wrap
+    //multi-step mutations in an explicit transaction and only commit when everything succeeds.
+    Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken ct);
 }

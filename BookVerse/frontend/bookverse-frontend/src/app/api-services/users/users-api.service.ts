@@ -18,7 +18,7 @@ import { buildHttpParams } from '../../core/models/build-http-params';
   providedIn: 'root',
 })
 export class UsersApiService {
-  private readonly baseUrl = `${environment.apiUrl}/users`;
+  private readonly baseUrl = `${environment.apiUrl}/api/users`;
   private http = inject(HttpClient);
 
   getMyProfile(): Observable<GetMyProfileQueryDto> {

@@ -5,12 +5,17 @@ using BookVerse.Application.Modules.Shopping.OrdersOrderItems.Commands.Update.Ch
 using BookVerse.Application.Modules.Shopping.OrdersOrderItems.Queries.GetById;
 using BookVerse.Application.Modules.Shopping.OrdersOrderItems.Queries.List;
 using BookVerse.Application.Modules.Shopping.OrdersOrderItems.Queries.ListOrdersForUser;
-using BookVerse.Application.Modules.Shopping.OrdersOrderItems.Queries.PaymentIntentForOrder;
+using BookVerse.Application.Modules.Shopping.OrdersOrderItems.Commands.EnsurePaymentIntent;
 using BookVerse.Domain.Entities.Shopping;
+using System.IO.Pipelines;
+using System.Text;
 namespace BookVerse.API.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+// Renamed from "/OrdersOrderItems" to the cleaner public path "/api/orders".
+// The class name still says OrdersOrderItems because it handles both Orders and OrderItems
+// internally, but the URL no longer leaks that internal split.
+[Route("api/orders")]
 public class OrdersOrderItemsController(ISender sender) : ControllerBase
 {
     // When the user wants to view their own orders -> DONE
@@ -59,16 +64,15 @@ public class OrdersOrderItemsController(ISender sender) : ControllerBase
         await sender.Send(new ChangeOrderStatusCommand { Id = id, NewStatus = request.NewStatus }, ct);
     }
 
-    // Called when the order is already in Draft status and the user wants to pay for it
-    // from the user orders module (user-orders.component.ts)
-    // this endpoint returns: PublishableKey, ClientSecret and TotalPrice
-    // these are required for the Stripe form on the frontend to open at all
-    // without them, it cannot be displayed
-    [HttpGet("{id}/payment-intent")]
+    // Called from user-orders.component.ts when the user wants to (re)pay an order that is in PaymentPending.
+    // Returns PublishableKey, ClientSecret and TotalPrice so the Stripe form on the frontend can open.
+    // POST because the handler may create a new PaymentIntent on Stripe and persist its id on the order
+    // (state-changing operation, not a pure read), which is why it lives in Commands now and not Queries.
+    [HttpPost("{id}/payment-intent")]
     [Authorize(Policy = "Customer")]
-    public async Task<IActionResult> GetPaymentIntent(int id)
+    public async Task<IActionResult> EnsurePaymentIntent(int id)
     {
-        var result = await sender.Send(new GetPaymentIntentForOrderQuery { OrderId = id });
+        var result = await sender.Send(new EnsurePaymentIntentForOrderCommand { OrderId = id });
         return Ok(result);
     }
     
@@ -78,8 +82,14 @@ public class OrdersOrderItemsController(ISender sender) : ControllerBase
     [AllowAnonymous] // this must be enabled because Stripe does not send JWT tokens
     public async Task<IActionResult> StripeWebhook(CancellationToken ct)
     {
-        using var reader = new StreamReader(Request.Body);
-        var payload = await reader.ReadToEndAsync(ct);
+        // We need the EXACT raw bytes Stripe sent, because the Stripe-Signature header is an
+        // HMAC over those bytes. A StreamReader runs the body through UTF-8 decoding first,
+        // which would silently mangle anything that isn't valid UTF-8 and break signature
+        // verification. Request.BodyReader (PipeReader) hands us the raw bytes directly,
+        // and the request-logging middleware already enabled buffering so we can re-read
+        // from position 0.
+        var bodyBytes = await ReadRequestBodyBytesAsync(Request.Body, ct);
+        var payload = Encoding.UTF8.GetString(bodyBytes);
         var signature = Request.Headers["Stripe-Signature"].ToString();
 
         await sender.Send(new StripeWebhookCommand
@@ -89,6 +99,29 @@ public class OrdersOrderItemsController(ISender sender) : ControllerBase
         }, ct);
 
         return Ok();
+    }
+
+    // Reads the request body into a byte[] via PipeReader. We loop until ReadResult.IsCompleted
+    // because a single ReadAsync call is NOT guaranteed to return the full body in one shot.
+    // The returned array contains the bytes exactly as Stripe sent them, which is what the
+    // signature check needs.
+    private static async Task<byte[]> ReadRequestBodyBytesAsync(Stream body, CancellationToken ct)
+    {
+        var reader = PipeReader.Create(body);
+        using var buffer = new MemoryStream();
+        while (true)
+        {
+            var result = await reader.ReadAsync(ct);
+            foreach (var segment in result.Buffer)
+                buffer.Write(segment.Span);
+
+            reader.AdvanceTo(result.Buffer.End);
+
+            if (result.IsCompleted)
+                break;
+        }
+        await reader.CompleteAsync();
+        return buffer.ToArray();
     }
 
     // Called when the user wants to cancel an order

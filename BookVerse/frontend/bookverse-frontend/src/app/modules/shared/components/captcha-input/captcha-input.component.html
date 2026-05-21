@@ -1,0 +1,44 @@
+<!--
+  Captcha input layout:
+    - Row 1: the captcha image with a refresh button next to it.
+    - Row 2: a Material text field where the user types the answer they read off the image.
+  The component owns the form control; parents only need to call getValue() at submit time.
+-->
+<div class="captcha-block">
+  <div class="captcha-image-row">
+    <!-- imageSrc is a data URL produced by the backend, so it loads instantly without a second request. -->
+    <img
+      *ngIf="imageSrc"
+      class="captcha-image"
+      [src]="imageSrc"
+      alt="captcha challenge"
+    />
+    <!-- Refresh button: fetches a new captcha and resets the answer input. -->
+    <button
+      type="button"
+      class="captcha-refresh"
+      (click)="refresh()"
+      [disabled]="loading"
+      [attr.aria-label]="'AUTH.CAPTCHA.REFRESH' | translate"
+      [title]="'AUTH.CAPTCHA.REFRESH' | translate"
+    >
+      <mat-icon>refresh</mat-icon>
+    </button>
+  </div>
+
+  <mat-form-field class="form-control captcha-field" floatLabel="always">
+    <mat-label>{{ 'AUTH.CAPTCHA.LABEL' | translate }}</mat-label>
+    <input
+      matInput
+      type="text"
+      [formControl]="answerControl"
+      maxlength="5"
+      autocomplete="off"
+      [placeholder]="'AUTH.CAPTCHA.PLACEHOLDER' | translate"
+    />
+    <!-- Generic error - shown only when the user has interacted with the input. -->
+    <mat-error *ngIf="answerControl.invalid && answerControl.touched">
+      {{ 'AUTH.CAPTCHA.ERROR' | translate }}
+    </mat-error>
+  </mat-form-field>
+</div>

@@ -19,5 +19,10 @@ public class RefundConfiguration : IEntityTypeConfiguration<Refunds>
            .IsRequired()
            .HasMaxLength(Refunds.Constraints.ReasonMaxLength);
 
+        builder
+            .Property(x => x.StripeRefundId)
+            .IsRequired()
+            .HasMaxLength(Refunds.Constraints.StripeRefundIdMaxLength);
+
     }
 }

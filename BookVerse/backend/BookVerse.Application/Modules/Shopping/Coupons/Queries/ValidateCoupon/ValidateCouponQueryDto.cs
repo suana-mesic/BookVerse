@@ -14,5 +14,6 @@ namespace BookVerse.Application.Modules.Shopping.Coupons.Queries.ValidateCoupon
         public decimal? AmountOff { get; set; }
         public decimal? PercentOff { get; set; }
         public string? Description { get; set; }
+        public decimal? MinOrderAmount { get; set; }
     }
 }

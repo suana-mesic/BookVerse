@@ -44,7 +44,10 @@ export class BooksFormService {
       bookFormatId: [product?.bookFormatId ?? null, [Validators.required]],
       languageId: [product?.languageId ?? null, [Validators.required]],
       pageCount: [product?.pageCount ?? null, [Validators.required]],
-      quantityInStockForOnlineOrders: [product?.quantityInStockForOnlineOrders ?? null],
+      // GetBookByIdQueryDto no longer exposes stock (public endpoint, see tačka 29),
+      // so the edit form always starts empty here. Admin types a new value to update it,
+      // or manages stock through the Inventory module for per-store counts.
+      quantityInStockForOnlineOrders: [null],
       publishedDate: [
         product?.publishedDate ? new Date(product.publishedDate) : null,
         [Validators.required],

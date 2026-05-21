@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BookVerse.Application.Modules.Catalog.Authors.Commands.Create
 {
-    public class CreateAuthorCommandHandler(IAppDbContext context)
+    public class CreateAuthorCommandHandler(IAppDbContext context, TimeProvider time)
         : IRequestHandler<CreateAuthorCommand, int>
     {
         public async Task<int> Handle(CreateAuthorCommand request, CancellationToken cancellationToken)
@@ -22,7 +22,8 @@ namespace BookVerse.Application.Modules.Catalog.Authors.Commands.Create
                 Biography = request.Biography ?? "",
                 Country = request.Country,
                 IsDeleted = false,
-                CreatedAtUtc = DateTime.UtcNow
+                // TimeProvider so unit tests can pin CreatedAtUtc deterministically.
+                CreatedAtUtc = time.GetUtcNow().UtcDateTime
             };
 
             context.Authors.Add(author);

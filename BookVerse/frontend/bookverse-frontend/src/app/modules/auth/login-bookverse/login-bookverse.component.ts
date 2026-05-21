@@ -1,4 +1,4 @@
-﻿import { Component, inject } from '@angular/core';
+﻿import { Component, ViewChild, inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { BaseComponent } from '../../../core/components/base-classes/base-component';
 import { Router } from '@angular/router';
@@ -11,6 +11,13 @@ import {
 import { AuthFacadeService } from '../../../core/services/auth/auth-facade.service';
 import { CartApiService } from '../../../api-services/cart/cart-api.service';
 import { TranslateService } from '@ngx-translate/core';
+import { CaptchaInputComponent } from '../../shared/components/captcha-input/captcha-input.component';
+import {
+  applyFieldErrorsToForm,
+  clearServerErrors,
+  extractFieldErrors,
+} from '../../../core/services/field-errors.helper';
+import { getBusinessRuleMessage } from '../../../core/services/business-rule-error.helper';
 
 @Component({
   selector: 'app-login-bookverse',
@@ -27,7 +34,14 @@ export class LoginBookverseComponent extends BaseComponent {
   private translate = inject(TranslateService);
 
   hidePassword = true;
-  showLoginError: boolean = false;
+  // Banner shown at the top of the form. Null = hidden. We store the localized text directly
+  // so different errors (wrong credentials, wrong CAPTCHA, etc.) can use the same banner with
+  // their own message instead of a generic line.
+  loginErrorMessage: string | null = null;
+
+  // Reference to the captcha widget in the template. We read its token + answer when submitting
+  // and call refresh() on it after a server-side failure so the user gets a fresh challenge.
+  @ViewChild('captcha') captcha?: CaptchaInputComponent;
 
   // 2FA state
   requiresTwoFactor: boolean = false;
@@ -54,14 +68,27 @@ export class LoginBookverseComponent extends BaseComponent {
   });
 
   onSubmit(): void {
-    if (this.loginForm.invalid || this.isLoading) return;
+    // Block submit until BOTH the email/password form AND the captcha answer field are valid.
+    if (this.loginForm.invalid || !this.captcha?.isValid || this.isLoading) return;
+
+    // Clear stale errors from the previous attempt: per-field server errors AND the
+    // top-of-form banner. If the new attempt fails for a different reason, the error
+    // handler will set the appropriate message again.
+    clearServerErrors(this.loginForm);
+    this.loginErrorMessage = null;
 
     this.startLoading();
+
+    // Read the captcha pair from the shared widget and include it in the login payload.
+    // The backend re-verifies the pair before checking credentials.
+    const captchaValue = this.captcha?.getValue() ?? { token: '', answer: '' };
 
     const payload: LoginCommand = {
       email: this.loginForm.value.email ?? '',
       password: this.loginForm.value.password ?? '',
       fingerprint: null,
+      captchaToken: captchaValue.token,
+      captchaAnswer: captchaValue.answer,
     };
 
     this.auth.login(payload).subscribe({
@@ -78,10 +105,39 @@ export class LoginBookverseComponent extends BaseComponent {
       },
       error: (err) => {
         this.stopLoading();
-        this.showLoginError = true;
+        // Always refresh the captcha after any failure. If the captcha itself was wrong the
+        // old one is now consumed; if credentials were wrong, refreshing also stops an attacker
+        // from re-using a single solved captcha across many login attempts.
+        this.captcha?.refresh();
+
+        // CAPTCHA_INVALID (and any other business-rule code) shows in the same red banner at
+        // the top of the form, but with its OWN localized message so the user knows the
+        // captcha was the problem - not the credentials.
+        const businessRuleMsg = getBusinessRuleMessage(err, this.translate);
+        if (businessRuleMsg) {
+          this.loginErrorMessage = businessRuleMsg;
+          return;
+        }
+
+        // Per-field validation errors paint inline on the inputs instead of the banner.
+        const fieldErrors = extractFieldErrors(err);
+        const handled = applyFieldErrorsToForm(this.loginForm, fieldErrors);
+        // Fall back to the generic "invalid credentials" message in the banner.
+        this.loginErrorMessage = handled
+          ? null
+          : this.translate.instant('AUTH.LOGIN.INVALID_CREDENTIALS');
         console.error('Login error:', err);
       },
     });
+  }
+
+  /**
+   * Returns the server-side error message attached to `controlName`, or null when the field
+   * has only client-side errors. The template uses this to render the backend's message in the
+   * existing mat-error slot, falling back to the i18n key when no server error is present.
+   */
+  serverError(controlName: string): string | null {
+    return (this.loginForm.get(controlName)?.errors?.['serverError'] as string) ?? null;
   }
 
   get validMailPass() {

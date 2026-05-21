@@ -5,7 +5,6 @@ namespace BookVerse.Application.Modules.Shopping.Coupons.Commands
     {
         public async Task<int> Handle(CreateCouponCommand request, CancellationToken ct)
         {
-            Console.WriteLine(request.StartDate);
             var cleanCode = request.PromotionCode.ToLower();
             var exists = await context.Coupons
                 .AnyAsync(c => c.PromotionCode.ToLower() == cleanCode && !c.IsDeleted, ct);
@@ -13,8 +12,9 @@ namespace BookVerse.Application.Modules.Shopping.Coupons.Commands
             if (exists)
                 throw new BookVerseConflictException("A coupon with this promotion code already exists.");
 
+            // BusinessRuleCodes.COUPON_MULTIPLE_DISCOUNT_TYPES lets the frontend show a localized message.
             if (request.AmountOff.HasValue && request.PercentOff.HasValue)
-                throw new BookVerseBusinessRuleException("123", "A coupon can only have one discount type.");
+                throw new BookVerseBusinessRuleException(BusinessRuleCodes.COUPON_MULTIPLE_DISCOUNT_TYPES, "A coupon can only have one discount type.");
 
             var coupon = new BookVerse.Domain.Entities.Shopping.Coupons
             {
@@ -24,7 +24,9 @@ namespace BookVerse.Application.Modules.Shopping.Coupons.Commands
                 PromotionCode = request.PromotionCode,
                 Description = request.Description,
                 StartDate = request.StartDate,
-                EndDate = request.EndDate
+                EndDate = request.EndDate,
+                MinOrderAmount = request.MinOrderAmount,
+                MaxUses = request.MaxUses
             };
 
             context.Coupons.Add(coupon);

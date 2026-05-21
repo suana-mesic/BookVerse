@@ -7,7 +7,7 @@ using BookVerse.Application.Modules.Users.Queries.ListForAdmin;
 namespace BookVerse.API.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/users")]
 [Authorize]
 public class UsersController(ISender sender) : ControllerBase
 {

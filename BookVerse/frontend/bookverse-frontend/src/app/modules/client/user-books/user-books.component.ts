@@ -18,6 +18,7 @@ import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { ProductCategoriesApiService } from '../../../api-services/product-categories/product-categories-api.service';
 import { SignalRService } from '../../../core/services/signal-r/signal-r.service';
 import { Categories } from '../../../api-services/product-categories/product-categories-api.model';
+import { getBusinessRuleMessage } from '../../../core/services/business-rule-error.helper';
 @Component({
   selector: 'app-my-books',
   standalone: false,
@@ -274,8 +275,12 @@ export class UserBooksComponent
                 'CLIENT.USER_BOOKS.REVIEW_DELETED',
               );
             },
-            error: () => {
-              this.toaster.error(this.translate.instant('CLIENT.USER_BOOKS.ERROR_DELETE_REVIEW'));
+            error: (err) => {
+              // USER_NOT_AUTHENTICATED is the business-rule code thrown by DeleteReviewCommandHandler.
+              const businessRuleMsg = getBusinessRuleMessage(err, this.translate);
+              this.toaster.error(
+                businessRuleMsg ?? this.translate.instant('CLIENT.USER_BOOKS.ERROR_DELETE_REVIEW'),
+              );
             },
           });
         }

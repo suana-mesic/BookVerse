@@ -17,7 +17,7 @@ public class ShippingMethodsEdgeCasesIntegrationTests
     [Fact]
     public async Task GetShippingMethods_ReturnsAtLeastThreeMethods()
     {
-        var response = await _client.GetAsync("/ShippingMethods");
+        var response = await _client.GetAsync("/api/shippingmethods");
 
         var body = await response.Content.ReadFromJsonAsync<List<ListShippingMethodsQueryDto>>();
         Assert.NotNull(body);
@@ -27,7 +27,7 @@ public class ShippingMethodsEdgeCasesIntegrationTests
     [Fact]
     public async Task GetShippingMethods_AllMethodsHavePositivePrice()
     {
-        var response = await _client.GetAsync("/ShippingMethods");
+        var response = await _client.GetAsync("/api/shippingmethods");
 
         var body = await response.Content.ReadFromJsonAsync<List<ListShippingMethodsQueryDto>>();
         Assert.NotNull(body);
@@ -37,7 +37,7 @@ public class ShippingMethodsEdgeCasesIntegrationTests
     [Fact]
     public async Task GetShippingMethods_AllMethodsHaveDescription()
     {
-        var response = await _client.GetAsync("/ShippingMethods");
+        var response = await _client.GetAsync("/api/shippingmethods");
 
         var body = await response.Content.ReadFromJsonAsync<List<ListShippingMethodsQueryDto>>();
         Assert.NotNull(body);
@@ -47,7 +47,7 @@ public class ShippingMethodsEdgeCasesIntegrationTests
     [Fact]
     public async Task GetShippingMethods_AllIdsAreUnique()
     {
-        var response = await _client.GetAsync("/ShippingMethods");
+        var response = await _client.GetAsync("/api/shippingmethods");
 
         var body = await response.Content.ReadFromJsonAsync<List<ListShippingMethodsQueryDto>>();
         Assert.NotNull(body);
