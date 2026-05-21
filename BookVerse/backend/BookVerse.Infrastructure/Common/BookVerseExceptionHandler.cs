@@ -41,6 +41,9 @@ public sealed class BookVerseExceptionHandler(
         ctx.Response.StatusCode = ex switch
         {
             BookVerseNotFoundException => StatusCodes.Status404NotFound,
+            // 401 is mapped FIRST so it wins over 409 for auth failures.
+            // This lets the frontend auth-interceptor pick up the response and trigger refresh/logout.
+            BookVerseUnauthorizedException => StatusCodes.Status401Unauthorized,
             BookVerseConflictException or BookVerseBusinessRuleException => StatusCodes.Status409Conflict,
             ValidationException => StatusCodes.Status400BadRequest,
             _ => StatusCodes.Status500InternalServerError
@@ -56,20 +59,46 @@ public sealed class BookVerseExceptionHandler(
     {
         string code = "internal.error";
         string message = "An error occurred. Please try again.";
+        List<FieldErrorDto>? fieldErrors = null;
 
         switch (ex)
         {
             case BookVerseNotFoundException:
             case BookVerseConflictException:
-            case BookVerseBusinessRuleException:
                 code = "entity.error";
+                message = ex.Message;
+                break;
+
+            // Business-rule errors carry a meaningful Code (see BusinessRuleCodes) which the
+            // frontend uses as an i18n key. Propagate it AS-IS instead of replacing it with
+            // the generic "entity.error" so the localization lookup actually works.
+            case BookVerseBusinessRuleException brex:
+                code = brex.Code;
+                message = ex.Message;
+                break;
+
+            case BookVerseUnauthorizedException:
+                // Dedicated "auth.error" code so the frontend can distinguish auth failures
+                // from generic business errors in the response payload.
+                code = "auth.error";
                 message = ex.Message;
                 break;
 
             case ValidationException vex:
                 code = "validation.error";
-                message = "Validation failed: " +
-                          string.Join("; ", vex.Errors.Select(e => $"{e.PropertyName}: {e.ErrorMessage}"));
+                // Keep a short top-level message for callers (logs, generic toasts) and put the
+                // per-field detail in FieldErrors so the frontend can highlight inputs inline.
+                message = "Validation failed.";
+                // PropertyName is camelCased so it matches the form-control names the frontend uses
+                // (Angular form controls are camelCase like "firstName", FluentValidation reports "FirstName").
+                fieldErrors = vex.Errors
+                    .Select(e => new FieldErrorDto
+                    {
+                        Field = ToCamelCase(e.PropertyName),
+                        Message = e.ErrorMessage,
+                        ErrorCode = e.ErrorCode
+                    })
+                    .ToList();
                 break;
         }
 
@@ -78,7 +107,17 @@ public sealed class BookVerseExceptionHandler(
             Code = code,
             Message = message,
             TraceId = traceId,
-            Details = isDev ? ex.ToString() : null // stack trace only in Development environment
+            Details = isDev ? ex.ToString() : null, // stack trace only in Development environment
+            FieldErrors = fieldErrors
         };
+    }
+
+    // FluentValidation reports PascalCase property names ("FirstName"). Angular form controls are
+    // camelCase ("firstName"). We lower-case the first character so the frontend can look up the
+    // matching control directly without doing the conversion on every form.
+    private static string ToCamelCase(string propertyName)
+    {
+        if (string.IsNullOrEmpty(propertyName)) return propertyName;
+        return char.ToLowerInvariant(propertyName[0]) + propertyName.Substring(1);
     }
 }

@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { CaptchaInputComponent } from '../../shared/components/captcha-input/captcha-input.component';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { FloatLabelType } from '@angular/material/form-field';
 import { RegisterCommandDto } from '../../../api-services/auth/auth-api.model';
@@ -9,6 +10,12 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { CountriesApiService } from '../../../api-services/rest-countries/countires-api.service';
 import { environment } from '../../../../environments/environment';
+import {
+  applyFieldErrorsToForm,
+  clearServerErrors,
+  extractFieldErrors,
+} from '../../../core/services/field-errors.helper';
+import { getBusinessRuleMessage } from '../../../core/services/business-rule-error.helper';
 
 @Component({
   selector: 'app-register',
@@ -31,6 +38,10 @@ export class RegisterComponent implements OnInit {
   router = inject(Router);
   translate = inject(TranslateService);
 
+  // Banner shown at the top of the form when the server rejects the submit
+  // (CAPTCHA_INVALID, network error, etc.). Null = banner hidden.
+  registerErrorMessage: string | null = null;
+
   countries: { name: string; countryCode: string; nameBs: string }[] = [];
   cities: string[] = [];
   loadingCities = false;
@@ -40,6 +51,10 @@ export class RegisterComponent implements OnInit {
   @ViewChild('strengthBar') strengthBar!: ElementRef;
   @ViewChild('strengthMessage') strengthMessage!: ElementRef;
   @ViewChild('confirmedPasswordInput') confirmedPasswordInput!: ElementRef;
+
+  // Reference to the captcha widget. We read (token, answer) from it at submit time
+  // and call refresh() if the server rejects the registration.
+  @ViewChild('captcha') captcha?: CaptchaInputComponent;
 
   parameters = {
     count: false,
@@ -128,12 +143,26 @@ export class RegisterComponent implements OnInit {
   }
 
   onRegister() {
-    // console.log('Submit button clicked');
+    // Don't submit if the captcha widget hasn't loaded yet or the user hasn't filled in
+    // a 5-character answer. The backend will reject the request anyway, so we save a round trip.
+    if (!this.captcha?.isValid) return;
+
+    // Clear stale errors from the previous attempt: per-field server errors AND the
+    // top-of-form banner. If the new attempt fails, the error handler sets them again.
+    clearServerErrors(this.registerForm);
+    this.registerErrorMessage = null;
+
     const formData = this.registerForm.value;
+
+    // Pull the (token, answer) pair from the shared captcha widget and add it to the request.
+    // The backend re-verifies them in RegisterCommandHandler before creating the user.
+    const captchaValue = this.captcha.getValue();
 
     const payload = {
       ...formData,
       country: formData.country?.nameBs ?? '',
+      captchaToken: captchaValue.token,
+      captchaAnswer: captchaValue.answer,
     };
     delete payload.confirmedPassword;
     // console.log(payload);
@@ -150,9 +179,34 @@ export class RegisterComponent implements OnInit {
           this.router.navigate(['/auth/login']);
         },
         error: (error) => {
+          // Refresh the captcha so the user gets a fresh challenge after any failure.
+          this.captcha?.refresh();
+
+          // CAPTCHA_INVALID (and any other business-rule code) shows up in the red
+          // banner at the top of the form, with its OWN localized message.
+          const businessRuleMsg = getBusinessRuleMessage(error, this.translate);
+          if (businessRuleMsg) {
+            this.registerErrorMessage = businessRuleMsg;
+            return;
+          }
+
+          // Paint per-field validation messages from the backend onto the matching controls.
+          // For non-validation errors (409 conflict, network, etc.) nothing is applied and
+          // the existing console log remains the only feedback.
+          const fieldErrors = extractFieldErrors(error);
+          applyFieldErrorsToForm(this.registerForm, fieldErrors);
           console.log(error.error.message);
         },
       });
+  }
+
+  /**
+   * Returns the server-side error message attached to `controlName`, or null when the field
+   * has only client-side errors. The template uses this in each mat-error slot to render the
+   * backend's per-field message, falling back to the i18n key when nothing is set.
+   */
+  serverError(controlName: string): string | null {
+    return (this.registerForm.get(controlName)?.errors?.['serverError'] as string) ?? null;
   }
 
   private showMessage() {

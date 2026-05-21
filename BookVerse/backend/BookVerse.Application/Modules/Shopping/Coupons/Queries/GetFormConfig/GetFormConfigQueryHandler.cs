@@ -16,7 +16,9 @@ public class GetFormConfigQueryHandler
             new() { Name = "promotionCode", Label = "Promotion code", Type = "text", Required = true },
             new() { Name = "startDate", Label = "Start date", Type = "date", Required = true },
             new() { Name = "endDate", Label = "Expiration date", Type = "date", Required = true },
-            new() { Name = "description", Label = "Description", Type = "text", Required = false }
+            new() { Name = "description", Label = "Description", Type = "text", Required = false },
+            new() { Name = "minOrderAmount", Label = "Minimum order amount (BAM)", Type = "number", Required = false },
+            new() { Name = "maxUses", Label = "Maximum uses", Type = "number", Required = false }
         };
 
         return Task.FromResult(fields);

@@ -18,7 +18,7 @@ public class BooksFilterIntegrationTests
     [Fact]
     public async Task GetBooks_WithPageSizeOne_ReturnsSingleItem()
     {
-        var response = await _client.GetAsync("/Books?Paging.PageSize=1");
+        var response = await _client.GetAsync("/api/books?Paging.PageSize=1");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -30,7 +30,7 @@ public class BooksFilterIntegrationTests
     [Fact]
     public async Task GetBooks_WithPageSizeTwo_ReturnsAtMostTwoItems()
     {
-        var response = await _client.GetAsync("/Books?Paging.PageSize=2");
+        var response = await _client.GetAsync("/api/books?Paging.PageSize=2");
 
         var body = await response.Content.ReadFromJsonAsync<PageResult<ListBooksQueryDto>>();
         Assert.NotNull(body);
@@ -40,7 +40,7 @@ public class BooksFilterIntegrationTests
     [Fact]
     public async Task GetBooks_WithSearchTerm_ReturnsMatchingBooks()
     {
-        var response = await _client.GetAsync("/Books?search=Derviš");
+        var response = await _client.GetAsync("/api/books?search=Derviš");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -52,7 +52,7 @@ public class BooksFilterIntegrationTests
     [Fact]
     public async Task GetBooks_WithNonExistentSearch_ReturnsEmptyList()
     {
-        var response = await _client.GetAsync("/Books?search=XYZ999NonExistent");
+        var response = await _client.GetAsync("/api/books?search=XYZ999NonExistent");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -64,7 +64,7 @@ public class BooksFilterIntegrationTests
     [Fact]
     public async Task GetBooks_SecondPage_ReturnsCorrectPage()
     {
-        var response = await _client.GetAsync("/Books?Paging.Page=2&Paging.PageSize=2");
+        var response = await _client.GetAsync("/api/books?Paging.Page=2&Paging.PageSize=2");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -76,10 +76,10 @@ public class BooksFilterIntegrationTests
     [Fact]
     public async Task GetBooks_TotalItemsMatchesAcrossPages()
     {
-        var page1 = await _client.GetAsync("/Books?Paging.PageSize=100");
+        var page1 = await _client.GetAsync("/api/books?Paging.PageSize=100");
         var body1 = await page1.Content.ReadFromJsonAsync<PageResult<ListBooksQueryDto>>();
 
-        var page2 = await _client.GetAsync("/Books?Paging.PageSize=2");
+        var page2 = await _client.GetAsync("/api/books?Paging.PageSize=2");
         var body2 = await page2.Content.ReadFromJsonAsync<PageResult<ListBooksQueryDto>>();
 
         Assert.NotNull(body1);
@@ -90,7 +90,7 @@ public class BooksFilterIntegrationTests
     [Fact]
     public async Task GetBooks_WithLanguageFilter_ReturnsOk()
     {
-        var response = await _client.GetAsync("/Books?language=Bosanski");
+        var response = await _client.GetAsync("/api/books?language=Bosanski");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -101,7 +101,7 @@ public class BooksFilterIntegrationTests
     [Fact]
     public async Task GetBooks_ItemsHaveRequiredFields()
     {
-        var response = await _client.GetAsync("/Books");
+        var response = await _client.GetAsync("/api/books");
 
         var body = await response.Content.ReadFromJsonAsync<PageResult<ListBooksQueryDto>>();
         Assert.NotNull(body);

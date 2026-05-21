@@ -19,7 +19,7 @@ public class AuthorsIntegrationTests
     [Fact]
     public async Task GetAuthors_Anonymous_ReturnsOkWithSeededAuthors()
     {
-        var response = await _client.GetAsync("/Authors");
+        var response = await _client.GetAsync("/api/authors");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -32,7 +32,7 @@ public class AuthorsIntegrationTests
     [Fact]
     public async Task GetAuthors_ReturnsPagedResult()
     {
-        var response = await _client.GetAsync("/Authors");
+        var response = await _client.GetAsync("/api/authors");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -45,7 +45,7 @@ public class AuthorsIntegrationTests
     [Fact]
     public async Task GetAuthorById_ExistingId_ReturnsOkWithAuthor()
     {
-        var response = await _client.GetAsync("/Authors/1");
+        var response = await _client.GetAsync("/api/authors/1");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -58,7 +58,7 @@ public class AuthorsIntegrationTests
     [Fact]
     public async Task GetAuthorById_NonExistingId_ReturnsNotFound()
     {
-        var response = await _client.GetAsync("/Authors/999999");
+        var response = await _client.GetAsync("/api/authors/999999");
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }

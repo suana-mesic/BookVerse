@@ -15,7 +15,7 @@ public class ProtectedEndpointsTests
     [Fact]
     public async Task GetCart_WithoutAuth_ReturnsUnauthorized()
     {
-        var response = await _client.GetAsync("/Cart");
+        var response = await _client.GetAsync("/api/cart");
 
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
@@ -23,7 +23,7 @@ public class ProtectedEndpointsTests
     [Fact]
     public async Task GetMyOrders_WithoutAuth_ReturnsUnauthorized()
     {
-        var response = await _client.GetAsync("/OrdersOrderItems/my-orders");
+        var response = await _client.GetAsync("/api/orders/my-orders");
 
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
@@ -31,7 +31,7 @@ public class ProtectedEndpointsTests
     [Fact]
     public async Task GetMyProfile_WithoutAuth_ReturnsUnauthorized()
     {
-        var response = await _client.GetAsync("/Users/my-profile");
+        var response = await _client.GetAsync("/api/users/my-profile");
 
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
@@ -39,7 +39,7 @@ public class ProtectedEndpointsTests
     [Fact]
     public async Task GetAllUsers_WithoutAuth_ReturnsUnauthorized()
     {
-        var response = await _client.GetAsync("/Users/all-users");
+        var response = await _client.GetAsync("/api/users/all-users");
 
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
@@ -47,7 +47,7 @@ public class ProtectedEndpointsTests
     [Fact]
     public async Task GetReviewForBook_WithoutAuth_ReturnsUnauthorized()
     {
-        var response = await _client.GetAsync("/Reviews/1");
+        var response = await _client.GetAsync("/api/reviews/1");
 
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
@@ -55,7 +55,7 @@ public class ProtectedEndpointsTests
     [Fact]
     public async Task GetAdminOrders_WithoutAuth_ReturnsUnauthorized()
     {
-        var response = await _client.GetAsync("/OrdersOrderItems");
+        var response = await _client.GetAsync("/api/orders");
 
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
@@ -63,16 +63,19 @@ public class ProtectedEndpointsTests
     [Fact]
     public async Task GetUserAddress_WithoutAuth_ReturnsUnauthorized()
     {
-        var response = await _client.GetAsync("/Users/user-address");
+        var response = await _client.GetAsync("/api/users/user-address");
 
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
 
     [Fact]
-    public async Task GenerateCaptcha_WithoutAuth_ReturnsUnauthorized()
+    public async Task GenerateCaptcha_WithoutAuth_ReturnsOk()
     {
-        var response = await _client.GetAsync("/Captcha/generate");
+        // Captcha is INTENTIONALLY anonymous now: it protects login/register/forgot-password,
+        // all of which are themselves anonymous. Requiring a logged-in user to fetch a captcha
+        // would defeat the whole purpose, so /api/captcha/generate must return 200 to everyone.
+        var response = await _client.GetAsync("/api/captcha/generate");
 
-        Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 }

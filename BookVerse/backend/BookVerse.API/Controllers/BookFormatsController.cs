@@ -3,7 +3,7 @@
 namespace BookVerse.API.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/bookformats")]
 public class BookFormatsController(ISender sender) : Controller
 {
     [HttpGet]

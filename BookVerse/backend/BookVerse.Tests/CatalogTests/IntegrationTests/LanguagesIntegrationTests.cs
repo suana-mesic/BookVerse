@@ -17,7 +17,7 @@ public class LanguagesIntegrationTests
     [Fact]
     public async Task GetLanguages_Anonymous_ReturnsOkWithSeededLanguages()
     {
-        var response = await _client.GetAsync("/Languages");
+        var response = await _client.GetAsync("/api/languages");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -29,7 +29,7 @@ public class LanguagesIntegrationTests
     [Fact]
     public async Task GetLanguages_ReturnsAtLeastNineLanguages()
     {
-        var response = await _client.GetAsync("/Languages");
+        var response = await _client.GetAsync("/api/languages");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -41,7 +41,7 @@ public class LanguagesIntegrationTests
     [Fact]
     public async Task GetLanguages_EachItemHasNameAndId()
     {
-        var response = await _client.GetAsync("/Languages");
+        var response = await _client.GetAsync("/api/languages");
         var body = await response.Content.ReadFromJsonAsync<List<ListLanguagesQueryDto>>();
 
         Assert.NotNull(body);

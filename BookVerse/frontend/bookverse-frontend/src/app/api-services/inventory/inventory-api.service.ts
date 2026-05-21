@@ -9,7 +9,7 @@ import { CreateInventoryCommand, GetInventoryByIdQueryDto, ListInventoryRequest,
   providedIn: 'root',
 })
 export class InventoryApiService {
-  private readonly baseUrl = `${environment.apiUrl}/Inventory`;
+  private readonly baseUrl = `${environment.apiUrl}/api/inventory`;
   private http = inject(HttpClient);
 
     list(request?: ListInventoryRequest): Observable<ListInventoryResponse> {

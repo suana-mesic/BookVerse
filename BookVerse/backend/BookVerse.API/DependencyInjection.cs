@@ -1,4 +1,5 @@
-﻿using BookVerse.Infrastructure.Common;
+﻿using BookVerse.API.Converters;
+using BookVerse.Infrastructure.Common;
 using BookVerse.Shared.Dtos;
 using BookVerse.Shared.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -15,7 +16,13 @@ public static class DependencyInjection
         IConfiguration configuration,
         IHostEnvironment env)
     {
-        // Controllers + uniform BadRequest
+        // Controllers registered ONCE, with both behaviors chained:
+        //   - ConfigureApiBehaviorOptions: turns model-binding failures into a uniform ErrorDto.
+        //   - AddJsonOptions: plugs in UtcDateTimeConverter so DateTime values are always serialized
+        //     as UTC, matching what we store in the DB.
+        // Calling AddControllers more than once would silently keep a duplicate filter
+        // configuration in the DI container, so the second call lived in Program.cs before
+        // and has been removed.
         services.AddControllers()
             .ConfigureApiBehaviorOptions(opts =>
             {
@@ -32,6 +39,10 @@ public static class DependencyInjection
                         Message = msg
                     });
                 };
+            })
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new UtcDateTimeConverter());
             });
 
         // Typed options + validation on startup

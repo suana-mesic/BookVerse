@@ -222,6 +222,9 @@ public static class DynamicDataSeeder
                 RefundDate = order.OrderDate.AddDays(3),
                 Reason = "Narudžba otkazana na zahtjev kupca",
                 Status = "Odobreno",
+                // Seeded refunds were never actually processed by Stripe, so we use a placeholder ID.
+                // Real refunds created at runtime will store the real Stripe refund ID (re_...).
+                StripeRefundId = $"seed_refund_{order.Id}_{firstBook}"
             });
         }
 

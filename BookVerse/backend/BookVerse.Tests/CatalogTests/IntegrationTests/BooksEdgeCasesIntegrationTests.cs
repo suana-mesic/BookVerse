@@ -22,7 +22,7 @@ public class BooksEdgeCasesIntegrationTests
     [InlineData(3)]
     public async Task GetBookById_SeededBooks_AllReturnOk(int bookId)
     {
-        var response = await _client.GetAsync($"/Books/{bookId}");
+        var response = await _client.GetAsync($"/api/books/{bookId}");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -36,7 +36,7 @@ public class BooksEdgeCasesIntegrationTests
     [InlineData(999999)]
     public async Task GetBookById_NonExistentIds_ReturnsNotFound(int bookId)
     {
-        var response = await _client.GetAsync($"/Books/{bookId}");
+        var response = await _client.GetAsync($"/api/books/{bookId}");
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
@@ -46,7 +46,7 @@ public class BooksEdgeCasesIntegrationTests
     [InlineData(-1)]
     public async Task GetBookById_InvalidIds_ReturnsBadRequest(int bookId)
     {
-        var response = await _client.GetAsync($"/Books/{bookId}");
+        var response = await _client.GetAsync($"/api/books/{bookId}");
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
@@ -54,7 +54,7 @@ public class BooksEdgeCasesIntegrationTests
     [Fact]
     public async Task GetBooks_DefaultPage_IsPageOne()
     {
-        var response = await _client.GetAsync("/Books");
+        var response = await _client.GetAsync("/api/books");
 
         var body = await response.Content.ReadFromJsonAsync<PageResult<ListBooksQueryDto>>();
         Assert.NotNull(body);
@@ -64,7 +64,7 @@ public class BooksEdgeCasesIntegrationTests
     [Fact]
     public async Task GetBooks_AllItemsHavePositivePrice()
     {
-        var response = await _client.GetAsync("/Books?Paging.PageSize=100");
+        var response = await _client.GetAsync("/api/books?Paging.PageSize=100");
 
         var body = await response.Content.ReadFromJsonAsync<PageResult<ListBooksQueryDto>>();
         Assert.NotNull(body);
@@ -74,7 +74,7 @@ public class BooksEdgeCasesIntegrationTests
     [Fact]
     public async Task GetBooks_AllItemsHavePositiveId()
     {
-        var response = await _client.GetAsync("/Books?Paging.PageSize=100");
+        var response = await _client.GetAsync("/api/books?Paging.PageSize=100");
 
         var body = await response.Content.ReadFromJsonAsync<PageResult<ListBooksQueryDto>>();
         Assert.NotNull(body);
@@ -84,9 +84,9 @@ public class BooksEdgeCasesIntegrationTests
     [Fact]
     public async Task GetBooks_SearchIsCaseInsensitive()
     {
-        var lower = await (await _client.GetAsync("/Books?search=derviš")).Content
+        var lower = await (await _client.GetAsync("/api/books?search=derviš")).Content
             .ReadFromJsonAsync<PageResult<ListBooksQueryDto>>();
-        var upper = await (await _client.GetAsync("/Books?search=DERVIŠ")).Content
+        var upper = await (await _client.GetAsync("/api/books?search=DERVIŠ")).Content
             .ReadFromJsonAsync<PageResult<ListBooksQueryDto>>();
 
         Assert.NotNull(lower);

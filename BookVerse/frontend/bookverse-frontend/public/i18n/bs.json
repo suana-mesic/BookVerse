@@ -33,6 +33,12 @@
     "ORDER_STATUS_CHANGED": "Novi status vaše narudžbe: {{status}}"
   },
   "AUTH": {
+    "CAPTCHA": {
+      "LABEL": "Captcha",
+      "PLACEHOLDER": "Unesite slova sa slike",
+      "ERROR": "Captcha mora imati 5 karaktera.",
+      "REFRESH": "Osvježi captcha"
+    },
     "LOGIN": {
       "TITLE": "Prijava",
       "TAGLINE": "Dobrodošli nazad",
@@ -398,6 +404,9 @@
       "PAID": "Plaćena",
       "SHIPPED": "Poslana",
       "CANCELLED": "Otkazana",
+      "PAYMENT_PENDING": "Čeka plaćanje",
+      "PAYMENT_FAILED": "Neuspjelo plaćanje",
+      "EXPIRED": "Istekla",
       "UNKNOWN": "Nepoznato"
     },
     "STATUS_DESCRIPTION": {
@@ -405,7 +414,10 @@
       "PACKED": "Narudžba je zapakovana",
       "PAID": "Plaćanje primljeno i narudžba se procesira",
       "SHIPPED": "Narudžba poslana",
-      "CANCELLED": "Narudžba otkazana"
+      "CANCELLED": "Narudžba otkazana",
+      "PAYMENT_PENDING": "Čeka se završetak plaćanja",
+      "PAYMENT_FAILED": "Plaćanje nije uspjelo",
+      "EXPIRED": "Narudžba je istekla jer nije plaćena na vrijeme"
     },
     "TABLE": {
       "ORDER_NUMBER": "Broj Narudžbe",
@@ -637,7 +649,42 @@
     "BAD_REQUEST": "Neispravan zahtjev.",
     "CONFLICT": "Ova akcija je u konfliktu sa postojećim podacima.",
     "VALIDATION": "Provjerite formu za greške.",
-    "UNKNOWN": "Nepoznata greška."
+    "UNKNOWN": "Nepoznata greška.",
+    "BUSINESS_RULES": {
+      "ORDER_NOT_CANCELLABLE": "Narudžba se ne može otkazati u trenutnom statusu.",
+      "ORDER_STATUS_UNKNOWN": "Trenutni status narudžbe nije prepoznat.",
+      "ORDER_STATUS_TRANSITION_INVALID": "Ova promjena statusa nije dozvoljena iz trenutnog statusa.",
+      "ORDER_NOT_PAYABLE": "Plaćanje nije dostupno za ovu narudžbu u trenutnom statusu.",
+      "INVENTORY_BOOK_OR_STORE_INVALID": "Odabrana knjiga ili prodavnica nije ispravna.",
+      "INVENTORY_DUPLICATE": "Inventar za ovu knjigu i prodavnicu već postoji.",
+      "USER_NOT_AUTHENTICATED": "Morate biti prijavljeni da biste izvršili ovu akciju.",
+      "COUPON_MULTIPLE_DISCOUNT_TYPES": "Kupon može imati samo jedan tip popusta (iznos ili postotak).",
+      "CAPTCHA_INVALID": "Pogrešna CAPTCHA. Pokušajte ponovo.",
+      "COUPON_MAX_USES_REACHED": "Već ste iskoristili ovaj kupon maksimalan broj puta."
+    },
+    "BACKEND_MESSAGES": {
+      "ORDER_CART_NOT_FOUND": "Korpa nije pronađena.",
+      "ORDER_CART_EMPTY": "Korpa je prazna.",
+      "ORDER_SHIPPING_NOT_FOUND": "Odabrani način dostave nije pronađen.",
+      "ORDER_STORE_NOT_FOUND": "Odabrana prodavnica nije pronađena.",
+      "ORDER_DELIVERY_BOTH": "Možete odabrati ili dostavu ili preuzimanje u prodavnici, ne oboje.",
+      "ORDER_DELIVERY_NEITHER": "Morate odabrati način dostave ili prodavnicu za preuzimanje.",
+      "ORDER_NOT_FOUND": "Narudžba nije pronađena.",
+      "ORDER_PAYMENT_INTENT_MISSING": "Identifikator plaćanja nije pronađen za ovu narudžbu.",
+      "ORDER_CHARGE_MISSING": "Naplata nije pronađena za ovo plaćanje.",
+      "ORDER_STRIPE_REFUND_FAILED": "Povraćaj sredstava preko Stripe-a nije uspio.",
+      "CART_BOOK_NOT_FOUND": "Knjiga ne postoji.",
+      "CART_BOOK_UNAVAILABLE": "Knjiga trenutno nije dostupna za kupovinu.",
+      "CART_OUT_OF_STOCK": "Tražena količina nije dostupna na zalihama.",
+      "USER_NOT_LOGGED_IN": "Niste prijavljeni. Molimo prijavite se.",
+      "USER_NOT_FOUND": "Korisnik nije pronađen.",
+      "COUPON_MAX_PER_ORDER": "Po jednoj narudžbi se može primijeniti najviše dva kupona.",
+      "COUPON_DUPLICATE": "Isti kupon se ne može primijeniti više puta.",
+      "COUPON_NOT_EXIST": "Jedan ili više kupona ne postoje.",
+      "COUPON_EXPIRED": "Jedan ili više kupona je istekao ili još uvijek nije aktivan.",
+      "COUPON_MIN_ORDER_AMOUNT": "Jedan od kupona zahtijeva veći minimalni iznos narudžbe od trenutnog.",
+      "COUPON_DISCOUNT_EXCEEDS": "Ukupan popust kupona ne može biti veći od iznosa narudžbe."
+    }
   },
   "USERS": {
     "TITLE": "Upravljanje korisnicima",
@@ -754,7 +801,9 @@
     "START_DATE": "Datum početka",
     "END_DATE": "Datum isteka",
     "PERCENT_OFF": "Popust (%)",
-    "AMOUNT_OFF": "Fiksni iznos"
+    "AMOUNT_OFF": "Fiksni iznos",
+    "MIN_ORDER_AMOUNT": "Minimalni iznos narudžbe (KM)",
+    "MAX_USES": "Maksimalan broj upotreba"
   },
   "CLIENT": {
     "HEADER": {
@@ -880,7 +929,10 @@
       "ERROR_CREATE_ORDER": "Greška prilikom kreiranje narudžbe",
       "COUPON_APPLIED": "Kupon \"{{code}}\" uspješno primijenjen!",
       "COUPON_NOT_FOUND": "Kupon nije pronađen ili je istekao.",
-      "COUPON_ALREADY_APPLIED": "Ovaj kupon je već primijenjen."
+      "COUPON_ALREADY_APPLIED": "Ne možete primijeniti isti kupon više puta.",
+      "COUPON_MAX_REACHED": "Po jednoj narudžbi možete primijeniti najviše {{ max }} kupona.",
+      "COUPON_MIN_ORDER_AMOUNT": "Kupon \"{{code}}\" zahtijeva minimalni iznos narudžbe od {{min}}.",
+      "COUPONS_DROPPED_AFTER_CART_CHANGE": "Sljedeći kuponi su uklonjeni jer trenutni iznos narudžbe više ne zadovoljava njihove uslove: {{codes}}."
     },
     "ORDER_SUCCESS": {
       "TITLE": "Plaćanje uspješno!",

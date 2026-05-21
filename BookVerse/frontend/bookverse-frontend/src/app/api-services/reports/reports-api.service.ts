@@ -6,7 +6,7 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root',
 })
 export class ReportsApiServices {
-  private readonly baseUrl = `${environment.apiUrl}/Reports`;
+  private readonly baseUrl = `${environment.apiUrl}/api/reports`;
   private http = inject(HttpClient);
 
   generateOrdersReport(

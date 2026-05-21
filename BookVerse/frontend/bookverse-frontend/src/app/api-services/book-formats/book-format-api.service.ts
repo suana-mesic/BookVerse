@@ -10,7 +10,7 @@ import { ListBookFormatsRequest, ListBookFormatsResponse } from './book-format-a
   providedIn: 'root',
 })
 export class BookFormatApiService {
-  private readonly baseUrl = `${environment.apiUrl}/BookFormats`;
+  private readonly baseUrl = `${environment.apiUrl}/api/bookformats`;
   private http = inject(HttpClient);
 
 

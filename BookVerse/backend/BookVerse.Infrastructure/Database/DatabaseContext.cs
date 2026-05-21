@@ -3,6 +3,7 @@ using BookVerse.Domain.Entities.UserReviews;
 using BookVerse.Domain.Entities.Shopping;
 using BookVerse.Domain.Entities.Whishlist;
 using BookVerse.Infrastructure.Database.Configurations.Shopping;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace BookVerse.Infrastructure.Database;
 
@@ -35,6 +36,7 @@ public partial class DatabaseContext : DbContext, IAppDbContext
     public DbSet<Refunds> Refunds => Set<Refunds>();
     public DbSet<InventoryLog> InventoryLog => Set<InventoryLog>();
     public DbSet<ChangeTypes> ChangeTypes => Set<ChangeTypes>();
+    public DbSet<StripeEvent> StripeEvents => Set<StripeEvent>();
 
 
 
@@ -55,4 +57,7 @@ public partial class DatabaseContext : DbContext, IAppDbContext
     {
         _clock = clock;
     }
+
+    public Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken ct)
+        => Database.BeginTransactionAsync(ct);
 }

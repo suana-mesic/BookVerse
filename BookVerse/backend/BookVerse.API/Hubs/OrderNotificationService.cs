@@ -1,4 +1,4 @@
-﻿using BookVerse.Application.Common.Interfaces;
+using BookVerse.Application.Common.Interfaces;
 using BookVerse.Domain.Entities.Shopping;
 using Microsoft.AspNetCore.SignalR;
 
@@ -6,7 +6,8 @@ namespace BookVerse.API.Hubs
 {
     public class OrderNotificationService(
         IHubContext<StaffOrderHub> staffOrderHub,
-        IHubContext<UserOrderHub> userOrderHub) : IOrderNotificationService
+        IHubContext<UserOrderHub> userOrderHub,
+        TimeProvider time) : IOrderNotificationService
     {
         public async Task NotifyNewPaidOrderAsync(int orderId, string orderNumber, string customerName, CancellationToken ct)
         {
@@ -15,7 +16,8 @@ namespace BookVerse.API.Hubs
                 orderId,
                 orderNumber,
                 customerName,
-                paidAt = DateTime.UtcNow
+                // TimeProvider so unit tests can pin the notification timestamp.
+                paidAt = time.GetUtcNow().UtcDateTime
             }, ct);
         }
 
@@ -28,7 +30,8 @@ namespace BookVerse.API.Hubs
                 orderId,
                 orderNumber,
                 newStatus,
-                updatedAt = DateTime.UtcNow
+                // TimeProvider so unit tests can pin the notification timestamp.
+                updatedAt = time.GetUtcNow().UtcDateTime
             }, ct);
         }
     }

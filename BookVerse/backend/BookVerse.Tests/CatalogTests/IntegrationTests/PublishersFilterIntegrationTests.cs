@@ -18,7 +18,7 @@ public class PublishersFilterIntegrationTests
     [Fact]
     public async Task GetPublishers_WithPageSizeOne_ReturnsSingleItem()
     {
-        var response = await _client.GetAsync("/Publisher?Paging.PageSize=1");
+        var response = await _client.GetAsync("/api/publishers?Paging.PageSize=1");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -30,7 +30,7 @@ public class PublishersFilterIntegrationTests
     [Fact]
     public async Task GetPublishers_SecondPage_ReturnsCorrectPageNumber()
     {
-        var response = await _client.GetAsync("/Publisher?Paging.Page=2&Paging.PageSize=1");
+        var response = await _client.GetAsync("/api/publishers?Paging.Page=2&Paging.PageSize=1");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -42,7 +42,7 @@ public class PublishersFilterIntegrationTests
     [Fact]
     public async Task GetPublishers_ItemsHaveRequiredFields()
     {
-        var response = await _client.GetAsync("/Publisher");
+        var response = await _client.GetAsync("/api/publishers");
 
         var body = await response.Content.ReadFromJsonAsync<PageResult<ListPublishersQueryDto>>();
         Assert.NotNull(body);
@@ -56,9 +56,9 @@ public class PublishersFilterIntegrationTests
     [Fact]
     public async Task GetPublishers_TotalItemsConsistentAcrossPageSizes()
     {
-        var r1 = await (await _client.GetAsync("/Publisher?Paging.PageSize=1")).Content
+        var r1 = await (await _client.GetAsync("/api/publishers?Paging.PageSize=1")).Content
             .ReadFromJsonAsync<PageResult<ListPublishersQueryDto>>();
-        var r2 = await (await _client.GetAsync("/Publisher?Paging.PageSize=100")).Content
+        var r2 = await (await _client.GetAsync("/api/publishers?Paging.PageSize=100")).Content
             .ReadFromJsonAsync<PageResult<ListPublishersQueryDto>>();
 
         Assert.NotNull(r1);

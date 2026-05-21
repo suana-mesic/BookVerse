@@ -37,6 +37,10 @@ export class BooksComponent
   private destroy$ = new Subject<void>();
   searchControl = new FormControl('');
 
+  // stockQuantity and isDeleted columns are intentionally not displayed here.
+  // The public /Books endpoint no longer returns these fields (security: don't leak
+  // inventory or internal state to anonymous scrapers). Admins manage stock via the
+  // dedicated inventory module.
   displayedColumns: string[] = [
     'title',
     'categoryName',
@@ -44,8 +48,6 @@ export class BooksComponent
     'authors',
     'publisherName',
     'format',
-    'stockQuantity',
-    'isDeleted',
     'actions',
   ];
 

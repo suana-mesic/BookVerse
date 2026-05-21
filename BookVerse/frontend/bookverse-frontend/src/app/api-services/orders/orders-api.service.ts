@@ -5,11 +5,7 @@ import { environment } from '../../../environments/environment';
 import {
   ListOrdersRequest,
   ListOrdersResponse,
-  ListOrdersWithItemsRequest,
-  ListOrdersWithItemsResponse,
   GetOrderByIdQueryDto,
-  CreateOrderCommand,
-  UpdateOrderCommand,
   OrderStatusType,
   CreateOrderWithItemsQuery,
   CreateOrderWithItemsQueryDto,
@@ -23,13 +19,12 @@ import { PageResult } from '../../core/models/paging/page-result';
   providedIn: 'root',
 })
 export class OrdersApiService {
-  private readonly baseUrl = `${environment.apiUrl}/OrdersOrderItems`;
+  private readonly baseUrl = `${environment.apiUrl}/api/orders`;
   private http = inject(HttpClient);
 
   /**
-   * GET /Orders
-   * List orders with optional query parameters.
-   * Returns basic order info without items.
+   * GET /api/orders
+   * List orders for the admin table. Returns basic order info without items.
    */
   list(request?: ListOrdersRequest): Observable<ListOrdersResponse> {
     const params = request ? buildHttpParams(request as any) : undefined;
@@ -40,20 +35,7 @@ export class OrdersApiService {
   }
 
   /**
-   * GET /Orders/with-items
-   * List orders with items included.
-   * Use this when you need to display order items in the list.
-   */
-  listWithItems(request?: ListOrdersWithItemsRequest): Observable<ListOrdersWithItemsResponse> {
-    const params = request ? buildHttpParams(request as any) : undefined;
-
-    return this.http.get<ListOrdersWithItemsResponse>(`${this.baseUrl}/with-items`, {
-      params,
-    });
-  }
-
-  /**
-   * GET /Orders/{id}
+   * GET /api/orders/{id}
    * Get a single order by ID with full details including items.
    */
   getById(id: number): Observable<GetOrderByIdQueryDto> {
@@ -61,27 +43,8 @@ export class OrdersApiService {
   }
 
   /**
-   * POST /Orders
-   * Create a new order.
-   * @returns ID of the newly created order
-   */
-  create(payload: CreateOrderCommand): Observable<number> {
-    return this.http.post<number>(this.baseUrl, payload);
-  }
-
-  /**
-   * PUT /Orders/{id}
-   * Update an existing order.
-   * Can update order note and items.
-   */
-  update(id: number, payload: UpdateOrderCommand): Observable<void> {
-    return this.http.put<void>(`${this.baseUrl}/${id}`, payload);
-  }
-
-  /**
-   * PUT /Orders/{id}/change-status
-   * Change order status.
-   * Validates status transitions on backend.
+   * PUT /api/orders/{id}/change-status
+   * Change order status. Validates status transitions on backend.
    */
   changeStatus(id: number, newStatus: OrderStatusType): Observable<void> {
     return this.http.put<void>(`${this.baseUrl}/${id}/change-status`, {
@@ -115,6 +78,8 @@ export class OrdersApiService {
     publishableKey: string;
     totalPrice: number;
   }> {
-    return this.http.get<any>(`${this.baseUrl}/${orderId}/payment-intent`);
+    // POST because the backend may create a new Stripe PaymentIntent and update the order with its id.
+    // No body is needed - the order id is in the URL.
+    return this.http.post<any>(`${this.baseUrl}/${orderId}/payment-intent`, {});
   }
 }

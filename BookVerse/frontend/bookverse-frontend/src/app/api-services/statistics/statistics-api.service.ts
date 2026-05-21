@@ -17,7 +17,7 @@ import {
   providedIn: 'root',
 })
 export class StatisticsApiService {
-  private readonly baseUrl = `${environment.apiUrl}/statistics`;
+  private readonly baseUrl = `${environment.apiUrl}/api/statistics`;
   private http = inject(HttpClient);
 
   getMonthlyRevenue(): Observable<GetMonthlyRevenueQueryDto[]> {

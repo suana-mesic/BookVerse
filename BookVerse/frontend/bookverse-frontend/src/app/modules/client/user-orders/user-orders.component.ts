@@ -15,6 +15,9 @@ import { DialogButton } from '../../shared/models/dialog-config.model';
 import { Location } from '@angular/common';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { SignalRService } from '../../../core/services/signal-r/signal-r.service';
+import { getBusinessRuleMessage } from '../../../core/services/business-rule-error.helper';
+import { getBackendErrorMessage } from '../../../core/services/backend-error-message.helper';
+import { OrderStatusHelper } from '../../../api-services/orders/order-status.helper';
 @Component({
   selector: 'app-user-orders',
   standalone: false,
@@ -44,7 +47,22 @@ export class UserOrdersComponent
   selectedOrder: ListOrdersForUserQueryDto | null = null;
   currentSlide = 0;
 
-  cancellableStatuses = [OrderStatusType.Draft, OrderStatusType.Paid, OrderStatusType.Packed];
+  // Filter dropdown options. Draft is filtered out because the order only sits in
+  // Draft inside the transaction during CreateOrder - by the time the row is visible
+  // to the customer it has already moved to PaymentPending (or Paid for free orders).
+  // So showing Draft in the customer filter would always return zero results.
+  statusOptions = OrderStatusHelper.getStatusOptions().filter(
+    (o) => o.value !== OrderStatusType.Draft,
+  );
+
+  // Aligned with backend CancelOrderCommandHandler - PaymentPending also added so the
+  // user can abandon checkout cleanly without waiting for the expiry sweep.
+  cancellableStatuses = [
+    OrderStatusType.Draft,
+    OrderStatusType.PaymentPending,
+    OrderStatusType.Paid,
+    OrderStatusType.Packed,
+  ];
 
   constructor() {
     super();
@@ -132,8 +150,18 @@ export class UserOrdersComponent
               this.toaster.success(this.translate.instant('CLIENT.USER_ORDERS.ORDER_CANCELLED'));
               this.loadPagedData();
             },
-            error: () => {
-              this.toaster.error(this.translate.instant('CLIENT.USER_ORDERS.ERROR_CANCEL'));
+            error: (err) => {
+              // Prefer the localized business-rule message (e.g. ORDER_NOT_CANCELLABLE), then
+              // fall back to known backend English messages (Stripe refund failure, missing
+              // PaymentIntent, etc.) which we map to ERRORS.BACKEND_MESSAGES.* i18n keys, and
+              // finally to the generic cancellation error for network/500/unknown shapes.
+              const businessRuleMsg = getBusinessRuleMessage(err, this.translate);
+              const backendMsg = getBackendErrorMessage(err, this.translate);
+              this.toaster.error(
+                businessRuleMsg
+                  ?? backendMsg
+                  ?? this.translate.instant('CLIENT.USER_ORDERS.ERROR_CANCEL'),
+              );
             },
           });
         }
@@ -143,26 +171,15 @@ export class UserOrdersComponent
   canCancel(status: OrderStatusType): boolean {
     return this.cancellableStatuses.includes(status);
   }
+
+  // Delegated to OrderStatusHelper so all 8 backend statuses get a label and color.
+  // The helper returns an i18n key (ORDERS.STATUS.*) which we resolve via TranslateService.
   getStatusLabel(status: OrderStatusType): string {
-    const labels: Record<OrderStatusType, string> = {
-      [OrderStatusType.Draft]: this.translate.instant('CLIENT.USER_ORDERS.STATUS_DRAFT'),
-      [OrderStatusType.Paid]: this.translate.instant('CLIENT.USER_ORDERS.STATUS_PAID'),
-      [OrderStatusType.Packed]: this.translate.instant('CLIENT.USER_ORDERS.STATUS_PACKED'),
-      [OrderStatusType.Shipped]: this.translate.instant('CLIENT.USER_ORDERS.STATUS_SHIPPED'),
-      [OrderStatusType.Cancelled]: this.translate.instant('CLIENT.USER_ORDERS.STATUS_CANCELLED'),
-    };
-    return labels[status] ?? this.translate.instant('CLIENT.USER_ORDERS.STATUS_UNKNOWN');
+    return this.translate.instant(OrderStatusHelper.getLabel(status));
   }
 
   getStatusClass(status: OrderStatusType): string {
-    const classes: Record<OrderStatusType, string> = {
-      [OrderStatusType.Draft]: 'status-draft',
-      [OrderStatusType.Paid]: 'status-paid',
-      [OrderStatusType.Packed]: 'status-packed',
-      [OrderStatusType.Shipped]: 'status-shipped',
-      [OrderStatusType.Cancelled]: 'status-cancelled',
-    };
-    return classes[status] ?? '';
+    return OrderStatusHelper.getColorClass(status);
   }
 
   selectOrder(order: ListOrdersForUserQueryDto): void {
@@ -200,8 +217,17 @@ export class UserOrdersComponent
           },
         });
       },
-      error: () => {
-        this.toaster.error(this.translate.instant('CLIENT.USER_ORDERS.ERROR_PAY'));
+      error: (err) => {
+        // ORDER_NOT_PAYABLE comes back when the order is no longer in PaymentPending
+        // (e.g. it was expired by the cleanup sweep). Show the localized reason; fall back
+        // to known backend English messages before the generic "error paying" toast.
+        const businessRuleMsg = getBusinessRuleMessage(err, this.translate);
+        const backendMsg = getBackendErrorMessage(err, this.translate);
+        this.toaster.error(
+          businessRuleMsg
+            ?? backendMsg
+            ?? this.translate.instant('CLIENT.USER_ORDERS.ERROR_PAY'),
+        );
       },
     });
   }

@@ -22,6 +22,7 @@ import { Book } from '../../../api-services/books/books-api.models';
 import { Author } from '../../../api-services/authors/authors-api.model';
 import { StoresApiService } from '../../../api-services/stores/stores-api.service';
 import { ListStoresQueryDto } from '../../../api-services/stores/stores-api.model';
+import { getBackendErrorMessage } from '../../../core/services/backend-error-message.helper';
 
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 
@@ -157,7 +158,12 @@ export class BookDetailsComponent implements OnDestroy {
         this.toaster.success(this.translate.instant('CLIENT.BOOK_DETAILS.ADDED_TO_CART'));
       },
       error: (err) => {
-        this.toaster.error(this.translate.instant('CLIENT.BOOK_DETAILS.ERROR_ADD_TO_CART'));
+        // Map known backend messages (out-of-stock, book unavailable, etc.) to the localized
+        // ERRORS.BACKEND_MESSAGES.* entries; fall back to the generic add-to-cart error.
+        const backendMsg = getBackendErrorMessage(err, this.translate);
+        this.toaster.error(
+          backendMsg ?? this.translate.instant('CLIENT.BOOK_DETAILS.ERROR_ADD_TO_CART'),
+        );
       },
     });
   }

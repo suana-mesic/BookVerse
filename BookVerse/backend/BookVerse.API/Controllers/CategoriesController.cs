@@ -10,7 +10,7 @@ using BookVerse.Application.Modules.Catalog.Categories.Queries.ListPaged;
 namespace BookVerse.API.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/categories")]
 public class CategoriesController(ISender sender) : ControllerBase
 {
     //Only enabled categories -> used for adding books

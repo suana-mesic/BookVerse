@@ -14,7 +14,7 @@ import {
   providedIn: 'root',
 })
 export class CartApiService {
-  private readonly baseUrl = `${environment.apiUrl}/cart`;
+  private readonly baseUrl = `${environment.apiUrl}/api/cart`;
 
   constructor(private http: HttpClient) {}
 
@@ -24,8 +24,10 @@ export class CartApiService {
     return this.http.get<ListCartDto>(this.baseUrl, { params });
   }
 
-  addToCart(request: CreateCartItemRequest): Observable<string> {
-    return this.http.post(this.baseUrl, request, { responseType: 'text' });
+  addToCart(request: CreateCartItemRequest): Observable<void> {
+    // Backend returns 204 NoContent on success - we only care that the request succeeded,
+    // not about a response body. The component shows its own localized success toast.
+    return this.http.post<void>(this.baseUrl, request);
   }
 
   updateQuantity(request: UpdateCartItemRequest): Observable<string> {

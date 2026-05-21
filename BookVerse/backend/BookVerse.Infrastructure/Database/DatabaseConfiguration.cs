@@ -104,16 +104,24 @@ public partial class DatabaseContext
                 new { BooksId = 21, CategoriesId = 1 }
             ));
 
+        // Review filter MUST include !x.IsDeleted on the review itself. Without it,
+        // CreateReviewCommandHandler's "alreadyReviewed" check still sees rows the user
+        // soft-deleted, so a user who deletes their own review could never write a new one.
         modelBuilder.Entity<Review>().HasKey(x => new { x.BookId, x.UserId });
-        modelBuilder.Entity<Review>().HasQueryFilter(x => !x.Book.IsDeleted && !x.User.IsDeleted);
+        modelBuilder.Entity<Review>().HasQueryFilter(x => !x.IsDeleted && !x.Book.IsDeleted && !x.User.IsDeleted);
 
 
+        // WishlistItems has no own IsDeleted column, so we only hide rows whose Book or User
+        // has been soft-deleted.
         modelBuilder.Entity<WishlistItems>().HasKey(x => new { x.UserId, x.BookId });
         modelBuilder.Entity<WishlistItems>().HasQueryFilter(x => !x.Book.IsDeleted && !x.User.IsDeleted);
 
+        // StoreInventory already checks its own IsDeleted plus related entities.
         modelBuilder.Entity<StoreInventory>().HasKey(x => new { x.StoreId, x.BookId });
         modelBuilder.Entity<StoreInventory>().HasQueryFilter(x => !x.IsDeleted && !x.Book.IsDeleted && !x.Store.IsDeleted);
 
+        // CartItems has no own IsDeleted; we hide rows whose Book was soft-deleted so the
+        // cart never shows entries the user could never actually order.
         modelBuilder.Entity<CartItems>()
             .HasQueryFilter(x => !x.Book.IsDeleted)
             .HasKey(x => new { x.CartId, x.BookId });
@@ -124,6 +132,8 @@ public partial class DatabaseContext
             .WithOne(ci => ci.Cart)
             .HasForeignKey(ci => ci.CartId);
 
+        // OrderItems has no own IsDeleted; the filter hides items whose parent order or book
+        // has been soft-deleted.
         modelBuilder.Entity<OrderItems>().HasKey(x => new { x.OrderId, x.BookId });
         modelBuilder.Entity<OrderItems>().HasQueryFilter(x => !x.Order.IsDeleted && !x.Book.IsDeleted);
 
@@ -158,12 +168,12 @@ public partial class DatabaseContext
 
         base.OnModelCreating(modelBuilder);
 
-        ApplyGlobalFielters(modelBuilder);
+        ApplyGlobalFilters(modelBuilder);
 
         StaticDataSeeder.Seed(modelBuilder); // static data
     }
 
-    private void ApplyGlobalFielters(ModelBuilder modelBuilder)
+    private void ApplyGlobalFilters(ModelBuilder modelBuilder)
     {
         // Apply a global filter to all entities inheriting from BaseEntity
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())
@@ -184,14 +194,87 @@ public partial class DatabaseContext
     public override int SaveChanges()
     {
         ApplyAuditAndSoftDelete();
+        CascadeSoftDeleteForBooks();
 
         return base.SaveChanges();
     }
 
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
         ApplyAuditAndSoftDelete();
+        await CascadeSoftDeleteForBooksAsync(cancellationToken);
 
-        return base.SaveChangesAsync(cancellationToken);
+        return await base.SaveChangesAsync(cancellationToken);
+    }
+
+    // Soft-delete on a Book does NOT automatically reach related rows in EF Core, so without
+    // this method a "deleted" book would still have orphan Reviews and StoreInventory records
+    // visible if anyone bypassed the global query filters.
+    //
+    // We only cascade to entities that have their OWN IsDeleted column:
+    //   - Review          (has IsDeleted)
+    //   - StoreInventory  (has IsDeleted)
+    // CartItems and OrderItems have NO IsDeleted - their global query filter (!x.Book.IsDeleted)
+    // already hides them, so nothing to do there.
+    private async Task CascadeSoftDeleteForBooksAsync(CancellationToken ct)
+    {
+        var bookIds = GetBookIdsBeingSoftDeleted();
+        if (bookIds.Count == 0) return;
+
+        // Reviews: find every active review for these books and mark it deleted.
+        // IgnoreQueryFilters() so the Review filter (!x.IsDeleted && !x.Book.IsDeleted ...)
+        // doesn't already hide rows we still need to update.
+        var reviewsToDelete = await Set<Review>()
+            .IgnoreQueryFilters()
+            .Where(r => bookIds.Contains(r.BookId) && !r.IsDeleted)
+            .ToListAsync(ct);
+        foreach (var review in reviewsToDelete)
+            review.IsDeleted = true;
+
+        // StoreInventory: same idea, mark all active inventory rows for these books as deleted.
+        var inventoriesToDelete = await Set<StoreInventory>()
+            .IgnoreQueryFilters()
+            .Where(si => bookIds.Contains(si.BookId) && !si.IsDeleted)
+            .ToListAsync(ct);
+        foreach (var inv in inventoriesToDelete)
+            inv.IsDeleted = true;
+    }
+
+    // Sync counterpart used by the sync SaveChanges override.
+    private void CascadeSoftDeleteForBooks()
+    {
+        var bookIds = GetBookIdsBeingSoftDeleted();
+        if (bookIds.Count == 0) return;
+
+        var reviewsToDelete = Set<Review>()
+            .IgnoreQueryFilters()
+            .Where(r => bookIds.Contains(r.BookId) && !r.IsDeleted)
+            .ToList();
+        foreach (var review in reviewsToDelete)
+            review.IsDeleted = true;
+
+        var inventoriesToDelete = Set<StoreInventory>()
+            .IgnoreQueryFilters()
+            .Where(si => bookIds.Contains(si.BookId) && !si.IsDeleted)
+            .ToList();
+        foreach (var inv in inventoriesToDelete)
+            inv.IsDeleted = true;
+    }
+
+    // Returns ids of Books that were JUST soft-deleted in this SaveChanges batch.
+    // We require BOTH:
+    //   - the entity's IsDeleted property is currently true, AND
+    //   - that property was actually changed in this transaction (IsModified)
+    // so we don't keep re-cascading every time anyone touches an already-deleted Book.
+    private List<int> GetBookIdsBeingSoftDeleted()
+    {
+        return ChangeTracker.Entries<Books>()
+            .Where(e => e.State == EntityState.Modified
+                && e.Entity.IsDeleted
+                // Use BaseEntity.IsDeleted (not Books.IsDeleted) because in this partial class
+                // "Books" already refers to the DbSet<Books> property, not the entity type.
+                && e.Property(nameof(BaseEntity.IsDeleted)).IsModified)
+            .Select(e => e.Entity.Id)
+            .ToList();
     }
 }

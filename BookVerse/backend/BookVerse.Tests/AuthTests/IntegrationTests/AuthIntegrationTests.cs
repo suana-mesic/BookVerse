@@ -18,7 +18,16 @@ public class AuthIntegrationTests
     [Fact]
     public async Task Login_WithValidCredentials_ReturnsOkWithToken()
     {
-        var request = new { Email = "admin@bookverse.com", Password = "string" };
+        // Captcha is required server-side, so every test that wants to exercise the login
+        // path (and not be stopped at the captcha check) must fetch a real challenge first.
+        var (captchaToken, captchaAnswer) = await CustomWebApplicationFactory<Program>.FetchCaptchaAsync(_client);
+        var request = new
+        {
+            Email = "admin@bookverse.com",
+            Password = "string",
+            CaptchaToken = captchaToken,
+            CaptchaAnswer = captchaAnswer
+        };
 
         var response = await _client.PostAsJsonAsync("api/auth/login", request);
 
@@ -31,19 +40,36 @@ public class AuthIntegrationTests
     }
 
     [Fact]
-    public async Task Login_WithInvalidPassword_ReturnsConflict()
+    public async Task Login_WithInvalidPassword_ReturnsUnauthorized()
     {
-        var request = new { Email = "admin@bookverse.com", Password = "wrong_password" };
+        // Per tačka 21, auth failures now map to 401 instead of 409 so the frontend
+        // interceptor can distinguish auth issues from generic business conflicts.
+        var (captchaToken, captchaAnswer) = await CustomWebApplicationFactory<Program>.FetchCaptchaAsync(_client);
+        var request = new
+        {
+            Email = "admin@bookverse.com",
+            Password = "wrong_password",
+            CaptchaToken = captchaToken,
+            CaptchaAnswer = captchaAnswer
+        };
 
         var response = await _client.PostAsJsonAsync("api/auth/login", request);
 
-        Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
+        Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
 
     [Fact]
     public async Task Login_WithNonExistingUser_ReturnsNotFound()
     {
-        var request = new { Email = "doesnotexist@bookverse.com", Password = "string" };
+        // Captcha must pass before the handler ever runs the "does this user exist" check.
+        var (captchaToken, captchaAnswer) = await CustomWebApplicationFactory<Program>.FetchCaptchaAsync(_client);
+        var request = new
+        {
+            Email = "doesnotexist@bookverse.com",
+            Password = "string",
+            CaptchaToken = captchaToken,
+            CaptchaAnswer = captchaAnswer
+        };
 
         var response = await _client.PostAsJsonAsync("api/auth/login", request);
 
@@ -53,6 +79,8 @@ public class AuthIntegrationTests
     [Fact]
     public async Task Login_WithEmptyEmail_ReturnsBadRequest()
     {
+        // No captcha needed: FluentValidation rejects the empty email BEFORE the handler runs,
+        // so we never reach the captcha check.
         var request = new { Email = "", Password = "string" };
 
         var response = await _client.PostAsJsonAsync("api/auth/login", request);
@@ -64,6 +92,7 @@ public class AuthIntegrationTests
     public async Task Register_WithValidData_ReturnsOk()
     {
         var uniqueEmail = $"test-{Guid.NewGuid():N}@bookverse.com";
+        var (captchaToken, captchaAnswer) = await CustomWebApplicationFactory<Program>.FetchCaptchaAsync(_client);
 
         var request = new RegisterCommand
         {
@@ -73,7 +102,9 @@ public class AuthIntegrationTests
             Password  = "password123",
             Line1     = "Test Street 1",
             City      = "Sarajevo",
-            Country   = "Bosnia and Herzegovina"
+            Country   = "Bosnia and Herzegovina",
+            CaptchaToken = captchaToken,
+            CaptchaAnswer = captchaAnswer
         };
 
         var response = await _client.PostAsJsonAsync("api/auth/register", request);
@@ -84,6 +115,8 @@ public class AuthIntegrationTests
     [Fact]
     public async Task Register_WithDuplicateEmail_ReturnsConflict()
     {
+        // Captcha must pass first; the "email already taken" check then runs inside the handler.
+        var (captchaToken, captchaAnswer) = await CustomWebApplicationFactory<Program>.FetchCaptchaAsync(_client);
         var request = new RegisterCommand
         {
             FirstName = "Admin",
@@ -92,7 +125,9 @@ public class AuthIntegrationTests
             Password  = "password123",
             Line1     = "Test Street 1",
             City      = "Sarajevo",
-            Country   = "Bosnia and Herzegovina"
+            Country   = "Bosnia and Herzegovina",
+            CaptchaToken = captchaToken,
+            CaptchaAnswer = captchaAnswer
         };
 
         var response = await _client.PostAsJsonAsync("api/auth/register", request);

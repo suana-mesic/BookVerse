@@ -8,7 +8,7 @@ import { ShippingMethodDto } from './shipping-methods-api.model';
   providedIn: 'root'
 })
 export class ShippingMethodsApiService {
-  private readonly baseUrl = `${environment.apiUrl}/shippingmethods`;
+  private readonly baseUrl = `${environment.apiUrl}/api/shippingmethods`;
   private http = inject(HttpClient);
 
   getShippingMethods(language?: string): Observable<ShippingMethodDto[]> {

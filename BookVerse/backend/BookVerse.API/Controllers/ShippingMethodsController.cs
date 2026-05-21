@@ -4,7 +4,7 @@ namespace BookVerse.API.Controllers;
 
 [ApiController]
 [AllowAnonymous]
-[Route("[controller]")]
+[Route("api/shippingmethods")]
 public class ShippingMethodsController(ISender sender) : ControllerBase
 {
     [HttpGet]

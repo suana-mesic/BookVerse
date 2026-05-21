@@ -16,7 +16,7 @@ import { buildHttpParams } from '../../core/models/build-http-params';
   providedIn: 'root',
 })
 export class ReviewsApiService {
-  private readonly baseUrl = `${environment.apiUrl}/Reviews`;
+  private readonly baseUrl = `${environment.apiUrl}/api/reviews`;
   private http = inject(HttpClient);
 
   //todo: delete later and add an endpoint that fetches all reviews

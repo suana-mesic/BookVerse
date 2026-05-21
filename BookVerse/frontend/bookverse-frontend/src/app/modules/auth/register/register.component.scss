@@ -106,6 +106,34 @@ p:hover {
   align-items: center;
   gap: 8px;
   width: 89%;
+  // Push the Prethodni korak / Potvrdi buttons down so they don't sit right against
+  // the captcha input. Matches the breathing room the login button has below its captcha.
+  margin-top: 24px;
+}
+
+// Red banner shown at the top of step 3 when the server rejects the submit
+// (CAPTCHA_INVALID, network error, etc.). Same look as the login form's banner.
+.login-error-banner {
+  background: #ffebee;
+  color: #c62828;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  .error-icon {
+    color: #c62828;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  .error_message {
+    font-size: 14px;
+    font-weight: 500;
+  }
 }
 
 .prev-next button {
@@ -133,7 +161,11 @@ p:hover {
   box-sizing: border-box !important;
 }
 
-input {
+// `::ng-deep input.mat-mdc-input-element` so the rule pierces view encapsulation and
+// also reaches the captcha component's input (which lives in its own child view scope).
+// Without ::ng-deep the captcha input was missing the blue rounded border that the
+// other register inputs (Ulica i broj, Email, etc.) have.
+::ng-deep input.mat-mdc-input-element {
   margin-top: 10px !important;
   height: 50px !important;
   border: solid #3498dbd3 2px !important;
@@ -281,7 +313,11 @@ form {
 
 }
 
-mat-label {
+// `::ng-deep` so the same enlarged label/error style reaches the captcha component's
+// mat-label and mat-error (which sit in their own view scope). Without it the captcha
+// label and error looked smaller than the rest of the form.
+:host ::ng-deep mat-label,
+:host ::ng-deep mat-error {
   font-size: larger !important;
 }
 

@@ -7,7 +7,7 @@ using BookVerse.Application.Modules.Reviews.Queries.ListForBook;
 namespace BookVerse.API.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/reviews")]
 public class ReviewsController(ISender sender) : ControllerBase
 {
     //Review for a book but only for the current user

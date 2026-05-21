@@ -22,19 +22,20 @@ public sealed class RefreshTokenCommandHandler(
         var nowUtc = timeProvider.GetUtcNow().UtcDateTime;
 
         if (rt is null || rt.ExpiresAtUtc <= nowUtc)
-            throw new BookVerseConflictException("Refresh token is invalid or expired.");
+            // 401 so the frontend interceptor treats this as an auth failure and clears the session.
+            throw new BookVerseUnauthorizedException("Refresh token is invalid or expired.");
 
         // (optional) Fingerprint check
         if (rt.Fingerprint is not null &&
             request.Fingerprint is not null &&
             rt.Fingerprint != request.Fingerprint)
         {
-            throw new BookVerseConflictException("Invalid client fingerprint.");
+            throw new BookVerseUnauthorizedException("Invalid client fingerprint.");
         }
 
         var user = rt.User;
         if (user is null || !user.IsEnabled || user.IsDeleted)
-            throw new BookVerseConflictException("User account is invalid.");
+            throw new BookVerseUnauthorizedException("User account is invalid.");
 
         // 3) Rotation: revoke the old one
         rt.IsRevoked = true;

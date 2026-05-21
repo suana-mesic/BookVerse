@@ -6,7 +6,7 @@ import { ListLanguagesQueryDto, ListLanguagesRequest } from './languages-api.mod
 
 @Injectable({ providedIn: 'root' })
 export class LanguagesApiService {
-  private readonly baseUrl = `${environment.apiUrl}/Languages`;
+  private readonly baseUrl = `${environment.apiUrl}/api/languages`;
   private http = inject(HttpClient);
 
   list(request?: ListLanguagesRequest): Observable<ListLanguagesQueryDto[]> {

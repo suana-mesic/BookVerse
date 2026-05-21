@@ -8,7 +8,7 @@ import { CaptchaGenerateDto } from './captcha-api.model';
   providedIn: 'root',
 })
 export class CaptchaApiService {
-  private readonly baseUrl = `${environment.apiUrl}/captcha`;
+  private readonly baseUrl = `${environment.apiUrl}/api/captcha`;
   private http = inject(HttpClient);
 
   //generates a new image for captcha verification; this endpoint returns the image and a token with the correct answer

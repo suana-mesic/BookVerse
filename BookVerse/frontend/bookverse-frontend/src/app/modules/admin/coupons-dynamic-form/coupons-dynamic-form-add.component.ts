@@ -9,6 +9,8 @@ import {
 import { ToasterService } from '../../../core/services/toaster.service';
 import { DialogHelperService } from '../../shared/services/dialog-helper.service';
 import { TranslateService } from '@ngx-translate/core';
+import { getBusinessRuleMessage } from '../../../core/services/business-rule-error.helper';
+import { applyFieldErrorsToForm, clearServerErrors, extractFieldErrors } from '../../../core/services/field-errors.helper';
 
 @Component({
   selector: 'app-coupons-dynamic-form',
@@ -29,6 +31,9 @@ export class CouponsDynamicFormAddComponent {
   submitted = false;
   formValues: any = null;
 
+  // Maps each backend field name (FormConfig.Name) to its i18n key. Without entries here
+  // the template falls back to the raw camelCase name ("minOrderAmount", "maxUses")
+  // because of the `?? fieldName` guard in getFieldLabel.
   private readonly fieldLabelMap: Record<string, string> = {
     percentOff: 'COUPONS.PERCENT_OFF',
     amountOff: 'COUPONS.AMOUNT_OFF',
@@ -37,6 +42,8 @@ export class CouponsDynamicFormAddComponent {
     startDate: 'COUPONS.START_DATE',
     endDate: 'COUPONS.END_DATE',
     description: 'COMMON.DESCRIPTION',
+    minOrderAmount: 'COUPONS.MIN_ORDER_AMOUNT',
+    maxUses: 'COUPONS.MAX_USES',
   };
 
   private readonly fieldMaxLengthMap: Record<string, number> = {
@@ -105,6 +112,8 @@ export class CouponsDynamicFormAddComponent {
 
   onSubmit(): void {
     if (this.dynamicForm.invalid) return;
+    // Clear any stale per-field server errors from a previous submit attempt.
+    clearServerErrors(this.dynamicForm);
     const formData = this.dynamicForm.value;
 
     const command: CreateCouponCommand = {
@@ -115,6 +124,12 @@ export class CouponsDynamicFormAddComponent {
       endDate: this.toDateOnly(formData.endDate),
       amountOff: this.selectedType == 'amount' ? formData.amountOff : null,
       percentOff: this.selectedType == 'percent' ? formData.percentOff : null,
+      // Optional caps. The dynamic form returns empty string when the admin leaves them
+      // blank - coerce to null so the backend stores NULL instead of crashing on parse.
+      // Without these two lines both fields were being dropped from the payload and every
+      // new coupon ended up with NULL in both columns regardless of what was typed.
+      minOrderAmount: this.toNullableNumber(formData.minOrderAmount),
+      maxUses: this.toNullableNumber(formData.maxUses),
     };
 
     this.couponsService.createCoupon(command).subscribe({
@@ -123,6 +138,18 @@ export class CouponsDynamicFormAddComponent {
         this.clearForm();
       },
       error: (err) => {
+        // COUPON_MULTIPLE_DISCOUNT_TYPES is the only business-rule the backend can return
+        // here; the existing duplicate-code path comes back as plain Conflict and stays as-is.
+        const businessRuleMsg = getBusinessRuleMessage(err, this.translate);
+        if (businessRuleMsg) {
+          this.toaster.error(businessRuleMsg);
+          return;
+        }
+        // FluentValidation per-field errors (e.g. PromotionCode too long, EndDate <= StartDate)
+        // get painted onto the matching controls so the admin sees the message inline.
+        const fieldErrors = extractFieldErrors(err);
+        if (applyFieldErrorsToForm(this.dynamicForm, fieldErrors)) return;
+
         const key = err.status === 409
           ? 'COUPONS.DIALOGS.ERROR_DUPLICATE_CODE'
           : 'COUPONS.DIALOGS.ERROR_CREATE';
@@ -137,6 +164,15 @@ export class CouponsDynamicFormAddComponent {
     this.selectedType = null;
     this.submitted = false;
     this.formValues = null;
+  }
+
+  // Optional number fields come back from the dynamic form as either a string (when
+  // typed), an empty string (when left blank), null or undefined. Backend wants a real
+  // number or null - not "" - otherwise the cast fails or stores NULL silently.
+  private toNullableNumber(value: unknown): number | null {
+    if (value === null || value === undefined || value === '') return null;
+    const n = Number(value);
+    return Number.isFinite(n) ? n : null;
   }
 
   private toDateOnly(date: Date): string {

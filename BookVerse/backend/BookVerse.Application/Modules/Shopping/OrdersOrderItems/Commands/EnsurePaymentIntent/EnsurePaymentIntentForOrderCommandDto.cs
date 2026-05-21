@@ -1,6 +1,6 @@
-﻿namespace BookVerse.Application.Modules.Shopping.OrdersOrderItems.Queries.PaymentIntentForOrder
+namespace BookVerse.Application.Modules.Shopping.OrdersOrderItems.Commands.EnsurePaymentIntent
 {
-    public class GetPaymentIntentForOrderQueryDto
+    public class EnsurePaymentIntentForOrderCommandDto
     {
         public string ClientSecret { get; set; } = string.Empty;
         public string PublishableKey { get; set; } = string.Empty;

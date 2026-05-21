@@ -1,66 +1,50 @@
-﻿using MailKit.Net.Smtp;
-using MailKit.Security;
 using BookVerse.Application.Abstractions;
-using Microsoft.Extensions.Options;
-using MimeKit;
+using BookVerse.Application.Common.Interfaces;
 
 namespace BookVerse.Infrastructure.Common;
 
+// IEmailService used to do the SMTP work directly on the request thread, which made
+// login (with 2FA) and forgot-password hang whenever SMTP was slow or down. Now it
+// only builds the message and drops it on IEmailQueue, so the HTTP request returns
+// immediately. EmailSenderBackgroundService picks the message up and does the SMTP
+// part outside the request pipeline.
 public class EmailService : IEmailService
 {
-    private readonly EmailSettings _settings;
+    private readonly IEmailQueue _queue;
 
-    public EmailService(IOptions<EmailSettings> settings)
+    public EmailService(IEmailQueue queue)
     {
-        _settings = settings.Value;
+        _queue = queue;
     }
 
-    public async Task SendPasswordResetAsync(string toEmail, string resetLink, CancellationToken ct = default)
+    public Task SendPasswordResetAsync(string toEmail, string resetLink, CancellationToken ct = default)
     {
-        var message = new MimeMessage();
-        message.From.Add(new MailboxAddress(_settings.FromName, _settings.FromEmail));
-        message.To.Add(MailboxAddress.Parse(toEmail));
-        message.Subject = "Password reset";
+        var body = $"""
+            <h2>Password reset</h2>
+            <p>Click the link below to reset your password:</p>
+            <p><a href="{resetLink}" style="background:#1976d2;color:white;padding:12px 24px;text-decoration:none;border-radius:4px;display:inline-block;">Reset password</a></p>
+            <p>This link is valid for 1 hour.</p>
+            <p>If you did not request a password reset, please ignore this email.</p>
+            """;
 
-        message.Body = new TextPart("html")
-        {
-            Text = $"""
-                <h2>Password reset</h2>
-                <p>Click the link below to reset your password:</p>
-                <p><a href="{resetLink}" style="background:#1976d2;color:white;padding:12px 24px;text-decoration:none;border-radius:4px;display:inline-block;">Reset password</a></p>
-                <p>This link is valid for 1 hour.</p>
-                <p>If you did not request a password reset, please ignore this email.</p>
-                """
-        };
+        _queue.Enqueue(new EmailMessage(toEmail, "Password reset", body));
 
-        using var smtp = new SmtpClient();
-        await smtp.ConnectAsync(_settings.Host, _settings.Port, SecureSocketOptions.StartTls, ct);
-        await smtp.AuthenticateAsync(_settings.Username, _settings.Password, ct);
-        await smtp.SendAsync(message, ct);
-        await smtp.DisconnectAsync(true, ct);
+        // Returning a completed task because the caller only needs to know we accepted
+        // the request - the actual SMTP send happens later in the background.
+        return Task.CompletedTask;
     }
 
-    public async Task SendTwoFactorCodeAsync(string toEmail, string code, CancellationToken ct = default)
+    public Task SendTwoFactorCodeAsync(string toEmail, string code, CancellationToken ct = default)
     {
-        var message = new MimeMessage();
-        message.From.Add(new MailboxAddress(_settings.FromName, _settings.FromEmail));
-        message.To.Add(MailboxAddress.Parse(toEmail));
-        message.Subject = "Your login code";
+        var body = $"""
+            <h2>Two-factor authentication code</h2>
+            <p>Your login code is:</p>
+            <h1 style="letter-spacing: 8px; color: #1976d2;">{code}</h1>
+            <p>The code is valid for 10 minutes.</p>
+            """;
 
-        message.Body = new TextPart("html")
-        {
-            Text = $"""
-                <h2>Two-factor authentication code</h2>
-                <p>Your login code is:</p>
-                <h1 style="letter-spacing: 8px; color: #1976d2;">{code}</h1>
-                <p>The code is valid for 10 minutes.</p>
-                """
-        };
+        _queue.Enqueue(new EmailMessage(toEmail, "Your login code", body));
 
-        using var smtp = new SmtpClient();
-        await smtp.ConnectAsync(_settings.Host, _settings.Port, SecureSocketOptions.StartTls, ct);
-        await smtp.AuthenticateAsync(_settings.Username, _settings.Password, ct);
-        await smtp.SendAsync(message, ct);
-        await smtp.DisconnectAsync(true, ct);
+        return Task.CompletedTask;
     }
 }

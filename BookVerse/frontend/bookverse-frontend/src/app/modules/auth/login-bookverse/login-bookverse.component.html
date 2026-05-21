@@ -3,12 +3,12 @@
   <div class="signup-container">
     @if (!requiresTwoFactor) {
       <form id="signup-form" class="signup-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        @if (showLoginError) {
+        <!-- Banner shows whichever error the submit produced: wrong credentials, wrong
+             CAPTCHA, etc. The message itself is localized text already, so no | translate. -->
+        @if (loginErrorMessage) {
           <div class="login-error-banner">
             <mat-icon class="error-icon">error_outline</mat-icon>
-            <span class="error_message">
-              {{ 'AUTH.LOGIN.INVALID_CREDENTIALS' | translate }}
-            </span>
+            <span class="error_message">{{ loginErrorMessage }}</span>
           </div>
         }
         <h1>{{ 'AUTH.LOGIN.TITLE' | translate }}</h1>
@@ -23,7 +23,9 @@
             matInput
             required
           />
-          <mat-error>{{ 'AUTH.LOGIN.EMAIL_ERROR' | translate }}</mat-error>
+          <!-- Show the backend's per-field message when present (set by applyFieldErrorsToForm),
+               otherwise fall back to the generic client-side error text. -->
+          <mat-error>{{ serverError('email') ?? ('AUTH.LOGIN.EMAIL_ERROR' | translate) }}</mat-error>
         </mat-form-field>
 
         <mat-form-field class="form-control" floatLabel="always">
@@ -37,9 +39,18 @@
             matInput
             required
           />
-          <mat-error>{{ 'AUTH.LOGIN.PASSWORD_ERROR' | translate }}</mat-error>
+          <mat-error>{{ serverError('password') ?? ('AUTH.LOGIN.PASSWORD_ERROR' | translate) }}</mat-error>
         </mat-form-field>
-        <button type="submit" class="login-button" [disabled]="loginForm.invalid || isLoading">
+
+        <!-- Captcha widget: the #captcha template variable lets the component read the
+             current (token, answer) pair via getValue() and call refresh() on failure. -->
+        <app-captcha-input #captcha></app-captcha-input>
+
+        <button
+          type="submit"
+          class="login-button"
+          [disabled]="loginForm.invalid || !captcha.isValid || isLoading"
+        >
           {{ 'AUTH.LOGIN.BUTTON' | translate }}
         </button>
 

@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace BookVerse.Application.Modules.Catalog.Book.Commands.Update;
 
-public sealed class UpdateBookCommandHandler(IAppDbContext context)
+public sealed class UpdateBookCommandHandler(IAppDbContext context, TimeProvider time)
             : IRequestHandler<UpdateBookCommand, Unit>
 {
     public async Task<Unit> Handle(UpdateBookCommand request, CancellationToken ct)
@@ -64,7 +64,8 @@ public sealed class UpdateBookCommandHandler(IAppDbContext context)
             }
         }
 
-        book.ModifiedAtUtc = DateTime.UtcNow;
+        // TimeProvider so unit tests can pin ModifiedAtUtc deterministically.
+        book.ModifiedAtUtc = time.GetUtcNow().UtcDateTime;
 
         await context.SaveChangesAsync(ct);
 

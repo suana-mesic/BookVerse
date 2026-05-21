@@ -9,7 +9,7 @@ import { buildHttpParams } from '../../core/models/build-http-params';
   providedIn: 'root'
 })
 export class StoresApiService {
-  private readonly baseUrl = `${environment.apiUrl}/stores`;
+  private readonly baseUrl = `${environment.apiUrl}/api/stores`;
   private http = inject(HttpClient);
 
   list(request?: ListStoresRequest): Observable<ListStoresResponse> {
