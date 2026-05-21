@@ -4,7 +4,7 @@ namespace BookVerse.API.Controllers;
 
 [ApiController]
 [Authorize(Policy = "Management")] // admin and manager
-[Route("[controller]")]
+[Route("api/reports")]
 public class ReportsController(ISender sender) : ControllerBase
 {
     [HttpGet("orders-report")]

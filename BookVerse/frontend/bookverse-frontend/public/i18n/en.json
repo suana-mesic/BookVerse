@@ -33,6 +33,12 @@
     "ORDER_STATUS_CHANGED": "Your order status updated: {{status}}"
   },
   "AUTH": {
+    "CAPTCHA": {
+      "LABEL": "Captcha",
+      "PLACEHOLDER": "Enter the characters from the image",
+      "ERROR": "Captcha must be 5 characters long.",
+      "REFRESH": "Refresh captcha"
+    },
     "LOGIN": {
       "TITLE": "Login",
       "TAGLINE": "Welcome back",
@@ -398,6 +404,9 @@
       "PAID": "Paid",
       "SHIPPED": "Shipped",
       "CANCELLED": "Cancelled",
+      "PAYMENT_PENDING": "Payment pending",
+      "PAYMENT_FAILED": "Payment failed",
+      "EXPIRED": "Expired",
       "UNKNOWN": "Unknown"
     },
     "STATUS_DESCRIPTION": {
@@ -405,7 +414,10 @@
       "PACKED": "Order is packed",
       "PAID": "Payment received and order is being processed",
       "SHIPPED": "Order has been shipped or delivered",
-      "CANCELLED": "Order has been cancelled"
+      "CANCELLED": "Order has been cancelled",
+      "PAYMENT_PENDING": "Waiting for payment to complete",
+      "PAYMENT_FAILED": "Payment was not successful",
+      "EXPIRED": "Order expired because it was not paid in time"
     },
     "TABLE": {
       "ORDER_NUMBER": "Order #",
@@ -637,7 +649,42 @@
     "BAD_REQUEST": "Invalid request.",
     "CONFLICT": "This action conflicts with existing data.",
     "VALIDATION": "Please check the form for errors.",
-    "UNKNOWN": "Unknown error occurred."
+    "UNKNOWN": "Unknown error occurred.",
+    "BUSINESS_RULES": {
+      "ORDER_NOT_CANCELLABLE": "The order cannot be cancelled in its current status.",
+      "ORDER_STATUS_UNKNOWN": "The current order status is not recognized.",
+      "ORDER_STATUS_TRANSITION_INVALID": "This status change is not allowed from the current status.",
+      "ORDER_NOT_PAYABLE": "Payment is not available for this order in its current status.",
+      "INVENTORY_BOOK_OR_STORE_INVALID": "The selected book or store is not valid.",
+      "INVENTORY_DUPLICATE": "Inventory already exists for this book and store.",
+      "USER_NOT_AUTHENTICATED": "You must be signed in to perform this action.",
+      "COUPON_MULTIPLE_DISCOUNT_TYPES": "A coupon can only have one discount type (amount or percent).",
+      "CAPTCHA_INVALID": "Invalid CAPTCHA. Please try again.",
+      "COUPON_MAX_USES_REACHED": "You have already used this coupon the maximum number of times allowed."
+    },
+    "BACKEND_MESSAGES": {
+      "ORDER_CART_NOT_FOUND": "Your cart could not be found.",
+      "ORDER_CART_EMPTY": "Your cart is empty.",
+      "ORDER_SHIPPING_NOT_FOUND": "The selected shipping method was not found.",
+      "ORDER_STORE_NOT_FOUND": "The selected pickup store was not found.",
+      "ORDER_DELIVERY_BOTH": "Choose either a shipping method or a pickup store, not both.",
+      "ORDER_DELIVERY_NEITHER": "You must select a shipping method or a pickup store.",
+      "ORDER_NOT_FOUND": "Order not found.",
+      "ORDER_PAYMENT_INTENT_MISSING": "Payment identifier was not found for this order.",
+      "ORDER_CHARGE_MISSING": "Charge was not found for this payment.",
+      "ORDER_STRIPE_REFUND_FAILED": "The Stripe refund could not be completed.",
+      "CART_BOOK_NOT_FOUND": "This book does not exist.",
+      "CART_BOOK_UNAVAILABLE": "This book is not available for purchase.",
+      "CART_OUT_OF_STOCK": "The requested quantity is not available in stock.",
+      "USER_NOT_LOGGED_IN": "You are not signed in. Please sign in to continue.",
+      "USER_NOT_FOUND": "User not found.",
+      "COUPON_MAX_PER_ORDER": "At most two coupons can be applied per order.",
+      "COUPON_DUPLICATE": "The same coupon cannot be applied more than once.",
+      "COUPON_NOT_EXIST": "One or more coupons do not exist.",
+      "COUPON_EXPIRED": "One or more coupons are expired or not yet active.",
+      "COUPON_MIN_ORDER_AMOUNT": "One of the coupons requires a higher minimum order amount than the current total.",
+      "COUPON_DISCOUNT_EXCEEDS": "Combined coupon discount cannot exceed the order amount."
+    }
   },
   "USERS": {
     "TITLE": "User Management",
@@ -754,7 +801,9 @@
     "START_DATE": "Start date",
     "END_DATE": "End date",
     "PERCENT_OFF": "Discount (%)",
-    "AMOUNT_OFF": "Fixed amount"
+    "AMOUNT_OFF": "Fixed amount",
+    "MIN_ORDER_AMOUNT": "Minimum order amount (BAM)",
+    "MAX_USES": "Maximum uses"
   },
   "CLIENT": {
     "HEADER": {
@@ -880,7 +929,10 @@
       "ERROR_CREATE_ORDER": "Error creating order",
       "COUPON_APPLIED": "Coupon \"{{code}}\" applied successfully!",
       "COUPON_NOT_FOUND": "Coupon not found or expired.",
-      "COUPON_ALREADY_APPLIED": "This coupon has already been applied."
+      "COUPON_ALREADY_APPLIED": "You cannot apply the same coupon more than once.",
+      "COUPON_MAX_REACHED": "You can apply at most {{ max }} coupons per order.",
+      "COUPON_MIN_ORDER_AMOUNT": "Coupon \"{{code}}\" requires a minimum order amount of {{min}}.",
+      "COUPONS_DROPPED_AFTER_CART_CHANGE": "The following coupons were removed because the current order amount no longer meets their conditions: {{codes}}."
     },
     "ORDER_SUCCESS": {
       "TITLE": "Payment successful!",

@@ -37,6 +37,11 @@
           <input matInput [type]="field.type" [formControlName]="field.name" />
         </ng-template>
 
+        <!-- Backend FluentValidation errors take priority - if the user types something the
+             server rejects (e.g. EndDate <= StartDate), show that exact message inline -->
+        <mat-error *ngIf="dynamicForm.get(field.name)?.hasError('serverError')">
+          {{ dynamicForm.get(field.name)?.errors?.['serverError'] }}
+        </mat-error>
         <mat-error *ngIf="dynamicForm.get(field.name)?.hasError('required')">
           {{ getRequiredError(field.name) }}
         </mat-error>

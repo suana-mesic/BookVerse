@@ -482,6 +482,18 @@ public partial class StaticDataSeeder
         new OrderStatus{
             Id = 5,
             StatusName = OrderStatusType.Cancelled
+        },
+        new OrderStatus{
+            Id = 6,
+            StatusName = OrderStatusType.PaymentPending
+        },
+        new OrderStatus{
+            Id = 7,
+            StatusName = OrderStatusType.PaymentFailed
+        },
+        new OrderStatus{
+            Id = 8,
+            StatusName = OrderStatusType.Expired
         }
       });
     }
@@ -586,7 +598,9 @@ public partial class StaticDataSeeder
             AmountOff = 10,
             StartDate = DateTime.UtcNow,
             EndDate = DateTime.UtcNow.AddDays(365),
-            PromotionCode = "WELCOME10A"
+            PromotionCode = "WELCOME10A",
+            MinOrderAmount = 20,
+            MaxUses = 100
         },
         new Coupons{
             Id = 2,
@@ -595,7 +609,9 @@ public partial class StaticDataSeeder
             PercentOff = 20,
             StartDate = DateTime.UtcNow,
             EndDate = DateTime.UtcNow.AddDays(365),
-            PromotionCode = "WELCOME20P"
+            PromotionCode = "WELCOME20P",
+            MinOrderAmount = 50,
+            MaxUses = 50
         },
       });
     }

@@ -1,8 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿namespace BookVerse.Application.Modules.Catalog.Book.Commands.Create;
 
-namespace BookVerse.Application.Modules.Catalog.Book.Commands.Create;
-
-public class CreateBookCommandHandler(IAppDbContext context)
+public class CreateBookCommandHandler(IAppDbContext context, TimeProvider time)
     : IRequestHandler<CreateBookCommand, int>
 {
     public async Task<int> Handle(CreateBookCommand request, CancellationToken cancellationToken)
@@ -40,7 +38,8 @@ public class CreateBookCommandHandler(IAppDbContext context)
             ImageUrl = request.ImageUrl??"",
             PublishedDate = request.PublishedDate,
             IsDeleted = false,
-            CreatedAtUtc = DateTime.UtcNow
+            // TimeProvider so unit tests can pin CreatedAtUtc deterministically.
+            CreatedAtUtc = time.GetUtcNow().UtcDateTime
         };
 
         context.Books.Add(book);

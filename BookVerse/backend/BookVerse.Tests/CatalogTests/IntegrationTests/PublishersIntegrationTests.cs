@@ -19,7 +19,7 @@ public class PublishersIntegrationTests
     [Fact]
     public async Task GetPublishers_Anonymous_ReturnsOkWithSeededPublishers()
     {
-        var response = await _client.GetAsync("/Publisher");
+        var response = await _client.GetAsync("/api/publishers");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -32,7 +32,7 @@ public class PublishersIntegrationTests
     [Fact]
     public async Task GetPublishers_ReturnsPagedResult()
     {
-        var response = await _client.GetAsync("/Publisher");
+        var response = await _client.GetAsync("/api/publishers");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -44,7 +44,7 @@ public class PublishersIntegrationTests
     [Fact]
     public async Task GetPublisherById_ExistingId_ReturnsOkWithPublisher()
     {
-        var response = await _client.GetAsync("/Publisher/1");
+        var response = await _client.GetAsync("/api/publishers/1");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -57,7 +57,7 @@ public class PublishersIntegrationTests
     [Fact]
     public async Task GetPublisherById_NonExistingId_ReturnsNotFound()
     {
-        var response = await _client.GetAsync("/Publisher/999999");
+        var response = await _client.GetAsync("/api/publishers/999999");
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }

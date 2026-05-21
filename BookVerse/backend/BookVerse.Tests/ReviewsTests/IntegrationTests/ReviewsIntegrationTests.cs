@@ -18,7 +18,7 @@ public class ReviewsIntegrationTests
     [Fact]
     public async Task GetAllReviewsForBook_SeededBook_ReturnsOkWithReviews()
     {
-        var response = await _client.GetAsync("/Reviews/1/all");
+        var response = await _client.GetAsync("/api/reviews/1/all");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -30,7 +30,7 @@ public class ReviewsIntegrationTests
     [Fact]
     public async Task GetAllReviewsForBook_NonExistingBook_ReturnsOkWithEmptyList()
     {
-        var response = await _client.GetAsync("/Reviews/999999/all");
+        var response = await _client.GetAsync("/api/reviews/999999/all");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 

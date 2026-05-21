@@ -19,7 +19,7 @@ public class CategoriesExtendedIntegrationTests
     [Fact]
     public async Task GetCategoryById_ExistingId_ReturnsOkWithCategory()
     {
-        var response = await _client.GetAsync("/Categories/1");
+        var response = await _client.GetAsync("/api/categories/1");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -32,7 +32,7 @@ public class CategoriesExtendedIntegrationTests
     [Fact]
     public async Task GetCategoryById_NonExistingId_ReturnsNotFound()
     {
-        var response = await _client.GetAsync("/Categories/999999");
+        var response = await _client.GetAsync("/api/categories/999999");
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
@@ -40,7 +40,7 @@ public class CategoriesExtendedIntegrationTests
     [Fact]
     public async Task GetCategoriesPaged_ReturnsOkWithPagedResult()
     {
-        var response = await _client.GetAsync("/Categories/list-paged");
+        var response = await _client.GetAsync("/api/categories/list-paged");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -52,7 +52,7 @@ public class CategoriesExtendedIntegrationTests
     [Fact]
     public async Task GetCategoriesPaged_EachItemHasName()
     {
-        var response = await _client.GetAsync("/Categories/list-paged");
+        var response = await _client.GetAsync("/api/categories/list-paged");
 
         var body = await response.Content.ReadFromJsonAsync<PageResult<ListCategoriesPagedQueryDto>>();
         Assert.NotNull(body);

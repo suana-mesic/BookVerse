@@ -7,6 +7,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace BookVerse.Application.Modules.Catalog.Book.Queries.List;
+
+// DTO returned by GET /Books (anonymous endpoint).
+// IMPORTANT: this is a PUBLIC payload, so it intentionally does NOT include:
+//   - QuantityInStockForOnlineOrders : leaking exact stock would let competitors scrape inventory.
+//   - IsDeleted                      : a public listing should never even know that flag exists.
+// Staff/admin views that need those fields must call a dedicated, authenticated endpoint.
 public sealed class ListBooksQueryDto
     {
     public int Id { get; set; }
@@ -21,10 +27,8 @@ public sealed class ListBooksQueryDto
     public string Language { get; set; }
     public string? Description { get; set; }
     public int PageCount { get; set; }
-    public int? QuantityInStockForOnlineOrders { get; set; }
     public string? ImageUrl { get; set; }
     public DateTime PublishedDate { get; set; }
-    public bool IsDeleted { get; set; }
 
 }
 

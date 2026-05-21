@@ -54,7 +54,10 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
  * Check if URL is an auth endpoint that should not be intercepted.
  */
 function isAuthEndpoint(url: string): boolean {
-  return url.includes('/Auth/');
+  // Case-insensitive match: the backend now routes everything under lowercase
+  // `/api/auth/...`, but we still toLowerCase here so a future case mismatch
+  // (proxy rewrite, manual mixed-case call) can never break the refresh-skip rule.
+  return url.toLowerCase().includes('/auth/');
 }
 
 /**

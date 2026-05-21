@@ -1,0 +1,83 @@
+// Custom elements are inline by default, which made `.captcha-block { width: 100% }` resolve
+// to the content width instead of the form width - so centering the row inside had nothing
+// to push against. Forcing the host to block layout fixes it for every parent form.
+//
+// `font: inherit` makes the host (and any non-Material child) take the parent form's font.
+// Without this the captcha was using the browser default while the auth forms use "Outfit".
+:host {
+  display: block;
+  width: 100%;
+  font: inherit;
+}
+
+// Angular Material components (mat-label, the input inside mat-form-field, mat-error) carry
+// their own typography in .mat-mdc-* classes, so they ignore CSS inheritance unless we
+// explicitly tell them otherwise. Using `::ng-deep` lets us reach those internal classes
+// from this scoped stylesheet, so the captcha label and input use the SAME font as the
+// parent form's other fields - the captcha never imposes its own font.
+:host ::ng-deep {
+  .mat-mdc-form-field,
+  .mat-mdc-floating-label,
+  .mdc-floating-label,
+  .mat-mdc-input-element,
+  .mdc-text-field__input,
+  .mat-mdc-form-field-infix,
+  .mat-mdc-form-field-error,
+  .mdc-form-field {
+    font-family: inherit;
+  }
+}
+
+.captcha-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.captcha-image-row {
+  display: flex;
+  align-items: center;
+  // Center the image + refresh button as a pair inside the captcha block.
+  // Because this lives in the shared captcha component, every form that uses it
+  // (login, register, forgot-password) picks up the centering automatically.
+  justify-content: center;
+  gap: 8px;
+}
+
+.captcha-image {
+  // The backend renders the captcha at 200x70 px. We keep that ratio but let it shrink
+  // a bit on narrow viewports so it never overflows the form column.
+  width: 200px;
+  height: 70px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #fff;
+  object-fit: contain;
+}
+
+.captcha-refresh {
+  // Plain icon button - no background, just a refresh glyph next to the image.
+  background: transparent;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 6px;
+  cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
+
+.captcha-field {
+  width: 100%;
+}
+
+// Pull the captcha's error message a bit closer to the input so it matches the visual
+// rhythm of the Email / Lozinka errors. Just a small negative margin on the subscript
+// wrapper - the rest of the layout (button visibility, outline border, label position)
+// is untouched.
+:host ::ng-deep .captcha-field .mat-mdc-form-field-subscript-wrapper {
+  margin-top: -10px;
+}

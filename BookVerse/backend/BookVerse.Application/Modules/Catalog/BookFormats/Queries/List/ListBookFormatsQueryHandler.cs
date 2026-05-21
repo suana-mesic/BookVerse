@@ -25,8 +25,8 @@ namespace BookVerse.Application.Modules.Catalog.BookFormats.Queries.List
                 new ListBookFormatsQueryDto
                 {
                     Id = x.Id,
-                    Format = x.Format,
-                    IsDeleted = x.IsDeleted
+                    Format = x.Format
+                    // IsDeleted deliberately omitted - public DTO must not leak internal state.
                 });
 
             return await PageResult<ListBookFormatsQueryDto>.FromQueryableAsync(

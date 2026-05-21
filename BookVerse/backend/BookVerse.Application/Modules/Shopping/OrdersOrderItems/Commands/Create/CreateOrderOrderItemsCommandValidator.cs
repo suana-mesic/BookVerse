@@ -4,8 +4,19 @@ public sealed class CreateOrderOrderItemsCommandValidator : AbstractValidator<Cr
 {
     public CreateOrderOrderItemsCommandValidator()
     {
+        // XOR rule for delivery mode: the order must use shipping OR pickup, never both and never neither.
+        // The handler supports two delivery modes:
+        //   - Shipping: user provides ShippingMethodId
+        //   - Pickup:   user provides StoreId
+        // The old rule required ShippingMethodId to always be set, which broke the pickup flow before the
+        // handler even saw the request. The ^ operator (XOR) returns true only when exactly one of the two
+        // values is present, so this single rule rejects both "neither" and "both" cases at the validator level.
+        RuleFor(x => x)
+            .Must(x => x.ShippingMethodId.HasValue ^ x.StoreId.HasValue)
+            .WithMessage("Choose either shipping method or pickup store, not both.");
+
+        // Independent value checks: if either id is provided, it must be a positive integer.
         RuleFor(x => x.ShippingMethodId)
-            .NotNull().WithMessage("Shipping method is required.")
             .GreaterThan(0).When(x => x.ShippingMethodId.HasValue);
 
         RuleFor(x => x.StoreId)

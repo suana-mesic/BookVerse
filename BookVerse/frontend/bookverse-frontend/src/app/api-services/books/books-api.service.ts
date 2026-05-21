@@ -19,7 +19,7 @@ import { ListMyBooksRequest } from '../reviews/reviews-api.model';
   providedIn: 'root',
 })
 export class BooksApiService {
-  private readonly baseUrl = `${environment.apiUrl}/Books`;
+  private readonly baseUrl = `${environment.apiUrl}/api/books`;
   private http = inject(HttpClient);
 
   /**

@@ -14,8 +14,12 @@ export class ListBooksRequest extends BasePagedQuery {
 }
 
 /**
- * Response item for GET /Books
+ * Response item for GET /Books (public endpoint).
  * Corresponds to: ListBooksQueryDto.cs
+ *
+ * NOTE: This DTO intentionally does NOT include quantityInStockForOnlineOrders or isDeleted -
+ * those would leak inventory levels and internal state to anonymous scrapers. Staff views that
+ * need that information should fetch it from a dedicated, authenticated endpoint.
  */
 export interface ListBooksQueryDto {
   id: number;
@@ -30,13 +34,8 @@ export interface ListBooksQueryDto {
   language: string;
   description?: string | null;
   pageCount: number;
-  quantityInStockForOnlineOrders: number;
   imageUrl: string;
   publishedDate: string;
-  isDeleted: boolean;
-  // stockQuantity: number;
-  // categoryName: string;
-  // isEnabled: boolean;
 }
 
 export interface Author {
@@ -53,14 +52,21 @@ export interface Category {
 }
 
 /**
- * Response for GET /Books/{id}
+ * Response for GET /api/books/{id} (anonymous endpoint).
  * Corresponds to: GetBookByIdQueryDto.cs
+ *
+ * NOTE: same security rule as ListBooksQueryDto - this is a PUBLIC payload, so
+ * quantityInStockForOnlineOrders is NOT returned. Admin forms that need it must
+ * load stock from a dedicated authenticated endpoint (e.g. the Inventory module).
  */
 export interface GetBookByIdQueryDto {
+  id: number;
   isbn: string;
   title: string;
   publisherId: number;
+  publisherName: string;
   bookFormatId: number;
+  bookFormatName: string;
   authorIds: number[];
   categoryIds: number[];
   price: number;
@@ -68,7 +74,6 @@ export interface GetBookByIdQueryDto {
   language: string;
   description: string;
   pageCount: number;
-  quantityInStockForOnlineOrders: number;
   imageUrl: string;
   publishedDate: Date;
 }

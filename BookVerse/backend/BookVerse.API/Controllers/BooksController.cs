@@ -8,7 +8,7 @@ using BookVerse.Application.Modules.Catalog.Book.Queries.ListMyBooks;
 namespace BookVerse.API.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/books")]
 public class BooksController(ISender sender) : ControllerBase
 {
     [HttpGet]

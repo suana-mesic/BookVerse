@@ -10,6 +10,7 @@ import { BookverseLoadingBarComponent } from './components/bookverse-loading-bar
 import { BookverseTableSkeletonComponent } from './components/bookverse-table-skeleton/bookverse-table-skeleton.component';
 import { MatIconModule } from '@angular/material/icon';
 import { ImageUploadComponent } from './components/image-upload/image-upload.component';
+import { CaptchaInputComponent } from './components/captcha-input/captcha-input.component';
 import { RouterModule } from '@angular/router';
 import { AppDatePipe } from './pipes/date-pipe';
 import { AppNumberPipe } from './pipes/number-pipe';
@@ -27,6 +28,7 @@ import { TranslateService } from '@ngx-translate/core';
     BookverseLoadingBarComponent,
     BookverseTableSkeletonComponent,
     ImageUploadComponent,
+    CaptchaInputComponent,
     AppDatePipe,
   ],
   imports: [
@@ -59,6 +61,7 @@ import { TranslateService } from '@ngx-translate/core';
     BookverseLoadingBarComponent,
     BookverseTableSkeletonComponent,
     ImageUploadComponent,
+    CaptchaInputComponent,
     RouterModule,
     AppDatePipe,
     AppNumberPipe,

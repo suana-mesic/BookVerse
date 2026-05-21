@@ -18,7 +18,7 @@ public class StoresFilterIntegrationTests
     [Fact]
     public async Task GetStores_WithPageSizeOne_ReturnsSingleItem()
     {
-        var response = await _client.GetAsync("/Stores?Paging.PageSize=1");
+        var response = await _client.GetAsync("/api/stores?Paging.PageSize=1");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -30,7 +30,7 @@ public class StoresFilterIntegrationTests
     [Fact]
     public async Task GetStores_SecondPage_ReturnsPageTwo()
     {
-        var response = await _client.GetAsync("/Stores?Paging.Page=2&Paging.PageSize=1");
+        var response = await _client.GetAsync("/api/stores?Paging.Page=2&Paging.PageSize=1");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -42,9 +42,9 @@ public class StoresFilterIntegrationTests
     [Fact]
     public async Task GetStores_TotalItemsConsistentAcrossPageSizes()
     {
-        var r1 = await (await _client.GetAsync("/Stores?Paging.PageSize=1")).Content
+        var r1 = await (await _client.GetAsync("/api/stores?Paging.PageSize=1")).Content
             .ReadFromJsonAsync<PageResult<ListStoresQueryDto>>();
-        var r2 = await (await _client.GetAsync("/Stores?Paging.PageSize=100")).Content
+        var r2 = await (await _client.GetAsync("/api/stores?Paging.PageSize=100")).Content
             .ReadFromJsonAsync<PageResult<ListStoresQueryDto>>();
 
         Assert.NotNull(r1);
@@ -55,7 +55,7 @@ public class StoresFilterIntegrationTests
     [Fact]
     public async Task GetStores_ItemsContainContactInfo()
     {
-        var response = await _client.GetAsync("/Stores");
+        var response = await _client.GetAsync("/api/stores");
 
         var body = await response.Content.ReadFromJsonAsync<PageResult<ListStoresQueryDto>>();
         Assert.NotNull(body);
@@ -70,7 +70,7 @@ public class StoresFilterIntegrationTests
     [Fact]
     public async Task GetStoreById_Two_ReturnsOk()
     {
-        var response = await _client.GetAsync("/Stores/2");
+        var response = await _client.GetAsync("/api/stores/2");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }

@@ -19,7 +19,7 @@ public class BooksIntegrationTests
     [Fact]
     public async Task GetBooks_Anonymous_ReturnsOkWithSeededBooks()
     {
-        var response = await _client.GetAsync("/Books");
+        var response = await _client.GetAsync("/api/books");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -32,7 +32,7 @@ public class BooksIntegrationTests
     [Fact]
     public async Task GetBooks_ReturnsPagedResult()
     {
-        var response = await _client.GetAsync("/Books");
+        var response = await _client.GetAsync("/api/books");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -45,7 +45,7 @@ public class BooksIntegrationTests
     [Fact]
     public async Task GetBookById_ExistingId_ReturnsOkWithBook()
     {
-        var response = await _client.GetAsync("/Books/1");
+        var response = await _client.GetAsync("/api/books/1");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -58,7 +58,7 @@ public class BooksIntegrationTests
     [Fact]
     public async Task GetBookById_NonExistingId_ReturnsNotFound()
     {
-        var response = await _client.GetAsync("/Books/999999");
+        var response = await _client.GetAsync("/api/books/999999");
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }

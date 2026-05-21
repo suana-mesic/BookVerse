@@ -701,6 +701,12 @@ $bg-end: #e3ecf7;
   }
 }
 
+.coupon-inline-error {
+  color: $error;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+}
+
 .applied-coupons {
   display: flex;
   flex-direction: column;

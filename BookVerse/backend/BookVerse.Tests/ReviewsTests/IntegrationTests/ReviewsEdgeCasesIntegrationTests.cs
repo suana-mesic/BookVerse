@@ -18,7 +18,7 @@ public class ReviewsEdgeCasesIntegrationTests
     [Fact]
     public async Task GetReviewsForBook_SeededBook_RatingsAreInValidRange()
     {
-        var response = await _client.GetAsync("/Reviews/1/all");
+        var response = await _client.GetAsync("/api/reviews/1/all");
 
         var body = await response.Content.ReadFromJsonAsync<PageResult<ListReviewsForBookQueryDto>>();
         Assert.NotNull(body);
@@ -31,7 +31,7 @@ public class ReviewsEdgeCasesIntegrationTests
     [Fact]
     public async Task GetReviewsForBook_SeededBook_CommentsAreNotEmpty()
     {
-        var response = await _client.GetAsync("/Reviews/1/all");
+        var response = await _client.GetAsync("/api/reviews/1/all");
 
         var body = await response.Content.ReadFromJsonAsync<PageResult<ListReviewsForBookQueryDto>>();
         Assert.NotNull(body);
@@ -41,7 +41,7 @@ public class ReviewsEdgeCasesIntegrationTests
     [Fact]
     public async Task GetReviewsForBook_DefaultPage_IsPageOne()
     {
-        var response = await _client.GetAsync("/Reviews/1/all");
+        var response = await _client.GetAsync("/api/reviews/1/all");
 
         var body = await response.Content.ReadFromJsonAsync<PageResult<ListReviewsForBookQueryDto>>();
         Assert.NotNull(body);
@@ -51,7 +51,7 @@ public class ReviewsEdgeCasesIntegrationTests
     [Fact]
     public async Task GetReviewsForBook_VeryLargeBookId_ReturnsOkWithEmptyList()
     {
-        var response = await _client.GetAsync("/Reviews/2147483647/all");
+        var response = await _client.GetAsync("/api/reviews/2147483647/all");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 

@@ -18,7 +18,7 @@ public class StoresIntegrationTests
     [Fact]
     public async Task GetStores_Anonymous_ReturnsOkWithSeededStores()
     {
-        var response = await _client.GetAsync("/Stores");
+        var response = await _client.GetAsync("/api/stores");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -31,7 +31,7 @@ public class StoresIntegrationTests
     [Fact]
     public async Task GetStores_ReturnsPagedResult()
     {
-        var response = await _client.GetAsync("/Stores");
+        var response = await _client.GetAsync("/api/stores");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -44,7 +44,7 @@ public class StoresIntegrationTests
     [Fact]
     public async Task GetStores_EachItemHasRequiredFields()
     {
-        var response = await _client.GetAsync("/Stores");
+        var response = await _client.GetAsync("/api/stores");
 
         var body = await response.Content.ReadFromJsonAsync<PageResult<ListStoresQueryDto>>();
         Assert.NotNull(body);
@@ -58,7 +58,7 @@ public class StoresIntegrationTests
     [Fact]
     public async Task GetStoreById_ExistingId_ReturnsOk()
     {
-        var response = await _client.GetAsync("/Stores/1");
+        var response = await _client.GetAsync("/api/stores/1");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
@@ -66,7 +66,7 @@ public class StoresIntegrationTests
     [Fact]
     public async Task GetStoreById_NonExistingId_ReturnsNotFound()
     {
-        var response = await _client.GetAsync("/Stores/999999");
+        var response = await _client.GetAsync("/api/stores/999999");
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }

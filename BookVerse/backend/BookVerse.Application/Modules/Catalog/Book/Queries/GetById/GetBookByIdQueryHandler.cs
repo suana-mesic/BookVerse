@@ -23,12 +23,18 @@ public class GetBookByIdQueryHandler(IAppDbContext context, ITranslationService 
                 Language = x.Language.Name,
                 Description = x.Description,
                 PageCount = x.PageCount,
-                QuantityInStockForOnlineOrders = x.QuantityInStockForOnlineOrders,
+                // QuantityInStockForOnlineOrders is deliberately NOT projected - the by-id
+                // endpoint is anonymous, same security reasoning as in ListBooksQueryHandler.
                 ImageUrl = x.ImageUrl,
                 PublishedDate = x.PublishedDate,
                 CategoryIds = x.Categories.Select(x => x.Id).Distinct().ToArray(),
                 AuthorIds = x.Authors.Select(x => x.Id).Distinct().ToArray()
-            }).FirstOrDefaultAsync(cancellationToken);
+            })
+            // Same reason as in ListBooksQueryHandler: this projection pulls two collection
+            // navigations (Categories, Authors), and without AsSplitQuery EF Core warns about
+            // the cartesian product and slows down the response.
+            .AsSplitQuery()
+            .FirstOrDefaultAsync(cancellationToken);
 
         if (book == null)
             throw new BookVerseNotFoundException($"Book with entered ID value: {request.Id} not found.");

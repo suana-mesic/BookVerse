@@ -9,7 +9,7 @@ import { buildHttpParams } from '../../core/models/build-http-params';
   providedIn: 'root'
 })
 export class CouponsApiService {
-  private readonly baseUrl = `${environment.apiUrl}/coupons`;
+  private readonly baseUrl = `${environment.apiUrl}/api/coupons`;
   private http = inject(HttpClient);
 
   validateCoupon(code: string): Observable<CouponDto> {

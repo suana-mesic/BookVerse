@@ -8,7 +8,7 @@ namespace BookVerse.API.Controllers;
 
 [ApiController]
 [Authorize(Policy = "Staff")]
-[Route("[controller]")]
+[Route("api/inventory")]
 public class InventoryController(ISender sender) : ControllerBase
 {
     [HttpGet]

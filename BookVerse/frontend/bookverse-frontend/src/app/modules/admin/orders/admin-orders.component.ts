@@ -16,6 +16,7 @@ import { ChangeStatusDialogComponent } from './change-status-dialog/change-statu
 import { OrderDetailsDialogComponent } from './admin-orders-details-dialog/order-details-dialog.component';
 import { TranslateService } from '@ngx-translate/core';
 import { SignalRService } from '../../../core/services/signal-r/signal-r.service';
+import { getBusinessRuleMessage } from '../../../core/services/business-rule-error.helper';
 
 @Component({
   selector: 'app-admin-orders',
@@ -286,9 +287,18 @@ export class AdminOrdersComponent
   }
 
   /**
-   * Extract user-friendly error message from HTTP error response
+   * Extract user-friendly error message from HTTP error response.
+   *
+   * Order of preference:
+   *   1. Known BusinessRuleCode -> translated message (ERRORS.BUSINESS_RULES.*).
+   *   2. Raw backend message (string body, error.message, error.title).
+   *   3. error.message from HttpErrorResponse.
+   *   4. null -> caller uses its own generic toast text.
    */
   private extractErrorMessage(err: any): string | null {
+    const businessRuleMsg = getBusinessRuleMessage(err, this.translate);
+    if (businessRuleMsg) return businessRuleMsg;
+
     if (err?.error) {
       if (typeof err.error === 'string') {
         return err.error;

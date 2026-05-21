@@ -7,10 +7,11 @@ export class ListBookFormatsRequest extends BasePagedQuery {
   language?: string | null;
 }
 
+// Response item for GET /api/bookformats (anonymous endpoint).
+// isDeleted is intentionally not exposed - a public listing should never reveal internal state.
 export interface ListBookFormatsQueryDto {
   id: number;
   format: string;
-  isDeleted: boolean;
 }
 
 export type ListBookFormatsResponse = PageResult<ListBookFormatsQueryDto>;

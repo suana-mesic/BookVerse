@@ -5,42 +5,43 @@ import { BasePagedQuery } from '../../core/models/paging/base-paged-query';
 
 /**
  * Order status enum
- * Corresponds to: OrderStatusType.cs
+ * Corresponds to: OrderStatusType.cs (backend)
+ *
+ * Frontend MUST mirror backend exactly. Missing values cause filter dropdowns and
+ * status helpers to fall through to "Unknown", and orders coming back from the
+ * webhook (PaymentPending, PaymentFailed) would otherwise look broken in the UI.
  */
 export enum OrderStatusType {
-  /** Order is created but not yet paid */
+  /** Order row saved but Stripe PaymentIntent not yet created */
   Draft = 1,
-  /** Order is packed */
+  /** Staff has packed the order, ready for shipping */
   Packed = 2,
   /** Payment received and order is being processed */
   Paid = 3,
   /** Order has been shipped or delivered */
   Shipped = 4,
-  /** Order has been cancelled */
+  /** Customer (or staff) cancelled the order; Stripe refund issued if it was paid */
   Cancelled = 5,
+  /** PaymentIntent created, user is in checkout flow waiting to pay */
+  PaymentPending = 6,
+  /** Stripe webhook reported payment_intent.payment_failed; order is dead */
+  PaymentFailed = 7,
+  /** Background cleanup expired the order after sitting too long in Draft/PaymentPending */
+  Expired = 8,
 }
 
 // === QUERIES (READ) ===
 
 /**
- * Query parameters for GET /Orders
- * Corresponds to: ListOrdersQuery.cs
+ * Query parameters for GET /api/orders (admin list)
+ * Corresponds to: ListOrderOrderItemsQuery.cs
  */
 export class ListOrdersRequest extends BasePagedQuery {
   search?: string | null;
   status?: number | null;
-  // Future filters: status?, dateFrom?, dateTo?, userId?
   constructor() {
     super();
   }
-}
-
-/**
- * Query parameters for GET /Orders/with-items
- * Corresponds to: ListOrdersWithItemsQuery.cs
- */
-export class ListOrdersWithItemsRequest extends BasePagedQuery {
-  search?: string | null;
 }
 
 /**
@@ -54,115 +55,24 @@ export interface ListOrdersQueryDtoUser {
 }
 
 /**
- * Response item for GET /Orders
- * Corresponds to: ListOrdersQueryDto.cs
+ * Response item for GET /api/orders
+ * Corresponds to: ListOrderOrderItemsQueryDto.cs
  */
 export interface ListOrdersQueryDto {
   orderId: number;
   trackingNumber: string | null;
   userInfo: ListOrdersQueryDtoUser;
   orderDate: string; // ISO date string
-  paidAtUtc: string | null; // ISO date string
   statusNameEnum: OrderStatusType;
   total: number;
-  note: string | null;
 }
 
 /**
- * Product info in order items
- */
-export interface ListOrdersWithItemsQueryDtoItemProduct {
-  id: number;
-  name: string | null;
-  price: number;
-}
-
-/**
- * Order item in list with items
- */
-export interface ListOrdersWithItemsQueryDtoItem {
-  id: number;
-  product: ListOrdersWithItemsQueryDtoItemProduct;
-  quantity: number;
-  unitPrice: number;
-  discountPercent: number;
-  discountAmount: number;
-  subtotal: number;
-  total: number;
-}
-
-/**
- * User info in list with items response
- */
-export interface ListOrdersWithItemsQueryDtoUser {
-  userFirstname: string | null;
-  userLastname: string | null;
-  userAddress: string | null;
-  userCity: string | null;
-}
-
-/**
- * Response item for GET /Orders/with-items
- * Corresponds to: ListOrdersWithItemsQueryDto.cs
- */
-export interface ListOrdersWithItemsQueryDto {
-  id: number;
-  trackingNumber: string | null;
-  user: ListOrdersWithItemsQueryDtoUser;
-  orderedAtUtc: string; // ISO date string
-  paidAtUtc: string | null; // ISO date string
-  status: OrderStatusType;
-  totalAmount: number;
-  note: string | null;
-  items: ListOrdersWithItemsQueryDtoItem[];
-}
-
-/**
- * Paged response for GET /Orders
+ * Paged response for GET /api/orders
  */
 export type ListOrdersResponse = PageResult<ListOrdersQueryDto>;
 
-/**
- * Paged response for GET /Orders/with-items
- */
-export type ListOrdersWithItemsResponse = PageResult<ListOrdersWithItemsQueryDto>;
-
 // === COMMANDS (WRITE) ===
-
-/**
- * Order item for create command
- */
-export interface CreateOrderCommandItem {
-  productId: number;
-  quantity: number;
-}
-
-/**
- * Command for POST /Orders
- * Corresponds to: CreateOrderCommand.cs
- */
-export interface CreateOrderCommand {
-  note?: string | null;
-  items?: CreateOrderCommandItem[];
-}
-
-/**
- * Order item for update command
- */
-export interface UpdateOrderCommandItem {
-  id?: number; // Optional - if present, updates existing item
-  productId: number;
-  quantity: number;
-}
-
-/**
- * Command for PUT /Orders/{id}
- * Corresponds to: UpdateOrderCommand.cs
- */
-export interface UpdateOrderCommand {
-  note?: string | null;
-  items?: UpdateOrderCommandItem[];
-}
 
 export interface CreateOrderWithItemsQuery {
   shippingMethodId: number | null;

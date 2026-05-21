@@ -8,6 +8,10 @@ export interface LoginCommand {
   email: string;
   password: string;
   fingerprint?: string | null;
+  // Captcha challenge issued by GET /Captcha/generate. Backend re-verifies the pair before
+  // checking credentials, so omitting it results in an auth failure.
+  captchaToken: string;
+  captchaAnswer: string;
 }
 export interface RegisterCommand {
   firstName: string;
@@ -18,7 +22,9 @@ export interface RegisterCommand {
   line2: string;
   city: string;
   country: string;
-  fingerptint: string | null;
+  fingerprint?: string | null;
+  captchaToken: string;
+  captchaAnswer: string;
 }
 
 export interface RegisterCommandDto {
@@ -87,6 +93,8 @@ export interface LogoutCommand {
 
 export interface ForgotPasswordCommand {
   email: string;
+  captchaToken: string;
+  captchaAnswer: string;
 }
 
 export interface ResetPasswordCommand {

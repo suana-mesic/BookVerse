@@ -18,7 +18,7 @@ public class ReviewsPaginationIntegrationTests
     [Fact]
     public async Task GetReviewsForBook_WithPageSizeOne_ReturnsAtMostOneItem()
     {
-        var response = await _client.GetAsync("/Reviews/1/all?Paging.PageSize=1");
+        var response = await _client.GetAsync("/api/reviews/1/all?Paging.PageSize=1");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -30,7 +30,7 @@ public class ReviewsPaginationIntegrationTests
     [Fact]
     public async Task GetReviewsForBook_PageSizeReflectedInResponse()
     {
-        var response = await _client.GetAsync("/Reviews/1/all?Paging.PageSize=1");
+        var response = await _client.GetAsync("/api/reviews/1/all?Paging.PageSize=1");
 
         var body = await response.Content.ReadFromJsonAsync<PageResult<ListReviewsForBookQueryDto>>();
         Assert.NotNull(body);
@@ -40,9 +40,9 @@ public class ReviewsPaginationIntegrationTests
     [Fact]
     public async Task GetReviewsForBook_TotalItemsConsistentAcrossPageSizes()
     {
-        var r1 = await (await _client.GetAsync("/Reviews/1/all?Paging.PageSize=1")).Content
+        var r1 = await (await _client.GetAsync("/api/reviews/1/all?Paging.PageSize=1")).Content
             .ReadFromJsonAsync<PageResult<ListReviewsForBookQueryDto>>();
-        var r2 = await (await _client.GetAsync("/Reviews/1/all?Paging.PageSize=50")).Content
+        var r2 = await (await _client.GetAsync("/api/reviews/1/all?Paging.PageSize=50")).Content
             .ReadFromJsonAsync<PageResult<ListReviewsForBookQueryDto>>();
 
         Assert.NotNull(r1);
@@ -56,7 +56,7 @@ public class ReviewsPaginationIntegrationTests
         var books = new[] { 1, 2, 3 };
         foreach (var bookId in books)
         {
-            var response = await _client.GetAsync($"/Reviews/{bookId}/all");
+            var response = await _client.GetAsync($"/api/reviews/{bookId}/all");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
     }

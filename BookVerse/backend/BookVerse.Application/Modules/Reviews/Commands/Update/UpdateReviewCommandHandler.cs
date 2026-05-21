@@ -1,12 +1,18 @@
 ﻿namespace BookVerse.Application.Modules.Reviews.Commands.Update;
 
-public sealed class UpdateReviewCommandHandler(IAppDbContext context, IAppCurrentUser currentUser)
+public sealed class UpdateReviewCommandHandler(
+    IAppDbContext context,
+    IAppCurrentUser currentUser,
+    TimeProvider time)
             : IRequestHandler<UpdateReviewCommand, Unit>
 {
     public async Task<Unit> Handle(UpdateReviewCommand request, CancellationToken ct)
     {
+        // Use BookVerseUnauthorizedException (401) instead of NotFound so the frontend's
+        // auth interceptor can react correctly. A missing user identity is an auth failure,
+        // not a "row not found".
         if (currentUser.UserId == null)
-            throw new BookVerseNotFoundException("You are not authenticated!");
+            throw new BookVerseUnauthorizedException("You are not authenticated.");
 
         var userId = currentUser.UserId.Value;
 
@@ -21,7 +27,8 @@ public sealed class UpdateReviewCommandHandler(IAppDbContext context, IAppCurren
         // Update the review data
         review.Rating = request.Rating;
         review.Comment = request.Comment;
-        review.UpdatedAt = DateTime.UtcNow;
+        // TimeProvider so unit tests can pin "now" and assert the UpdatedAt stamp.
+        review.UpdatedAt = time.GetUtcNow().UtcDateTime;
 
         await context.SaveChangesAsync(ct);
 

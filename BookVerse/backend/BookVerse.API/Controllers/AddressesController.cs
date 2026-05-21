@@ -7,7 +7,7 @@ using BookVerse.Application.Modules.Catalog.Addresses.Queries.List;
 namespace BookVerse.API.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/addresses")]
 [Authorize(Policy = "Staff")]
 public class AddressesController(ISender sender): ControllerBase
 {

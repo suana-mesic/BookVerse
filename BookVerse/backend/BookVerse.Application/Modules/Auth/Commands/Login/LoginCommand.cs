@@ -19,4 +19,10 @@ public sealed class LoginCommand : IRequest<LoginCommandDto>
     /// (Optional) Client "fingerprint" / device identifier for device-bound refresh tokens.
     /// </summary>
     public string? Fingerprint { get; init; }
+
+    // Captcha token issued by /Captcha/generate. The auth handler re-verifies it server-side
+    // before doing anything else, so a missing or bogus token rejects the login.
+    public string CaptchaToken { get; init; } = string.Empty;
+    // The 5-character answer the user typed in response to the captcha image.
+    public string CaptchaAnswer { get; init; } = string.Empty;
 }

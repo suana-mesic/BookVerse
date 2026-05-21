@@ -90,28 +90,8 @@
           </td>
         </ng-container>
 
-        <!-- Stock -->
-        <ng-container matColumnDef="stockQuantity">
-          <th mat-header-cell *matHeaderCellDef>{{ 'BOOKS.TABLE.STOCK' | translate }}</th>
-          <td mat-cell *matCellDef="let product">
-            <span
-              [style.color]="product.stockQuantity > 0 ? '#66bb6a' : '#ef5350'"
-              style="font-weight: 500"
-            >
-              {{ product.quantityInStockForOnlineOrders }}
-            </span>
-          </td>
-        </ng-container>
-
-        <!-- Active -->
-        <ng-container matColumnDef="isDeleted">
-          <th mat-header-cell *matHeaderCellDef>{{ 'BOOKS.TABLE.NOT_DELETED' | translate }}</th>
-          <td mat-cell *matCellDef="let product">
-            <mat-icon [ngClass]="!product.isDeleted ? 'icon-enabled' : 'icon-disabled'">
-              {{ !product.isDeleted ? 'check_circle' : 'cancel' }}
-            </mat-icon>
-          </td>
-        </ng-container>
+        <!-- Stock and IsDeleted columns intentionally removed: the public /Books endpoint
+             no longer returns those fields. Stock is managed in the inventory module. -->
 
         <!-- Actions -->
         <ng-container matColumnDef="actions">
@@ -147,8 +127,6 @@
             'authors',
             'publisherName',
             'format',
-            'stockQuantity',
-            'isDeleted',
             'actions',
           ]"
         ></tr>
@@ -163,8 +141,6 @@
               'authors',
               'publisherName',
               'format',
-              'stockQuantity',
-              'isDeleted',
               'actions',
             ]
           "
