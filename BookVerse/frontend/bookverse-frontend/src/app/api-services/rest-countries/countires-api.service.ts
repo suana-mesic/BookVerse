@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, map, catchError, of } from 'rxjs';
+import { Observable, map, catchError, of, forkJoin, switchMap } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class CountriesApiService {
@@ -17,6 +18,10 @@ export class CountriesApiService {
     'MP', 'AW', 'CW', 'BM', 'KY', 'JE', 'GG', 'IM',
   ]);
 
+  private readonly v5Url = environment.restCountries.apiUrl;
+  private readonly v5Key = environment.restCountries.apiKey;
+  private readonly pageSize = 100;
+
   private get lang(): string {
     const current = this.translate.currentLang ?? this.translate.defaultLang ?? 'en';
     const langMap: Record<string, string> = { bs: 'hrv' };
@@ -24,25 +29,46 @@ export class CountriesApiService {
   }
 
   getCountries(): Observable<{ name: string; countryCode: string; nameBs: string }[]> {
-    return this.http
-      .get<any[]>(`https://restcountries.com/v3.1/all?fields=name,cca2,translations`)
-      .pipe(
-        map((res) =>
-          res
-            .filter((c: any) => !this.failedCityCountries.has(c.cca2))
-            .map((c: any) => ({
-              name: this.getTranslatedName(c), // for display (depends on language)
-              nameBs: c.translations?.['hrv']?.common ?? c.name?.common ?? '', // always Bosnian/Croatian for database storage
-              countryCode: c.cca2,
-            }))
-            .sort((a, b) => a.name.localeCompare(b.name)),
-        ),
-      );
+    return this.fetchCountriesPage(0).pipe(
+      switchMap((first) => {
+        const objects = [...(first.data?.objects ?? [])];
+        const total = first.data?.meta?.total ?? objects.length;
+        const offsets: number[] = [];
+        for (let o = this.pageSize; o < total; o += this.pageSize) {
+          offsets.push(o);
+        }
+        if (offsets.length === 0) {
+          return of(objects);
+        }
+        return forkJoin(offsets.map((o) => this.fetchCountriesPage(o))).pipe(
+          map((pages) => objects.concat(...pages.map((p) => p.data?.objects ?? []))),
+        );
+      }),
+      map((objects) =>
+        objects
+          .filter((c: any) => !this.failedCityCountries.has(c.codes?.alpha_2))
+          .map((c: any) => ({
+            name: this.getTranslatedName(c),
+            nameBs: c.names?.translations?.['hrv']?.common ?? c.names?.common ?? '',
+            countryCode: c.codes?.alpha_2,
+          }))
+          .sort((a, b) => a.name.localeCompare(b.name)),
+      ),
+    );
+  }
+
+  private fetchCountriesPage(offset: number): Observable<any> {
+    const params = new HttpParams()
+      .set('api-key', this.v5Key)
+      .set('response_fields', 'names,codes')
+      .set('limit', this.pageSize)
+      .set('offset', offset);
+    return this.http.get<any>(this.v5Url, { params });
   }
 
   private getTranslatedName(country: any): string {
     const lang = this.lang;
-    return country.translations?.[lang]?.common ?? country.name?.common ?? '';
+    return country.names?.translations?.[lang]?.common ?? country.names?.common ?? '';
   }
 
   getCitiesByCountry(countryCode: string): Observable<string[]> {

@@ -93,7 +93,7 @@ export class SignalRService {
       //they must be wrapped in ngZone.run() so that subscribed components
       //(for example orders component)
       //can detect changes and reload their content
-      this.ngZone.run(() => this.newPaidOrderSubject.next(notification));
+      this.ngZone.run(() => this.newPaidOrderSubject.next(notification)); //emitting notification
     });
   }
 

@@ -292,7 +292,8 @@ export class CheckoutComponent extends BaseComponent implements OnInit, OnDestro
       // a strict XOR between shippingMethodId and storeId, so sending both (which happened
       // when the user toggled pickup but selectedShippingMethodId still held a leftover value)
       // gets rejected with "Choose either shipping method or pickup store, not both."
-      shippingMethodId: this.deliveryType === 'shipping' ? (this.selectedShippingMethodId ?? null) : null,
+      shippingMethodId:
+        this.deliveryType === 'shipping' ? (this.selectedShippingMethodId ?? null) : null,
       storeId: this.deliveryType === 'pickup' ? this.selectedStoreId : null,
       useExistingAddress: this.useExistingAddress,
       line1: this.useExistingAddress ? null : address.line1,
@@ -330,9 +331,9 @@ export class CheckoutComponent extends BaseComponent implements OnInit, OnDestro
         const businessRuleMsg = getBusinessRuleMessage(err, this.translate);
         const backendMsg = getBackendErrorMessage(err, this.translate);
         this.toaster.error(
-          businessRuleMsg
-            ?? backendMsg
-            ?? this.translate.instant('CLIENT.CHECKOUT.ERROR_CREATE_ORDER'),
+          businessRuleMsg ??
+            backendMsg ??
+            this.translate.instant('CLIENT.CHECKOUT.ERROR_CREATE_ORDER'),
         );
       },
     });
@@ -405,9 +406,10 @@ export class CheckoutComponent extends BaseComponent implements OnInit, OnDestro
         // known backend English message > generic "not found" fallback.
         const businessRuleMsg = getBusinessRuleMessage(err, this.translate);
         const backendMsg = getBackendErrorMessage(err, this.translate);
-        this.couponError = businessRuleMsg
-          ?? backendMsg
-          ?? this.translate.instant('CLIENT.CHECKOUT.COUPON_NOT_FOUND');
+        this.couponError =
+          businessRuleMsg ??
+          backendMsg ??
+          this.translate.instant('CLIENT.CHECKOUT.COUPON_NOT_FOUND');
       },
     });
   }

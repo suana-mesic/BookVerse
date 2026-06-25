@@ -7,6 +7,7 @@ import { multicast } from 'rxjs';
   standalone: false,
   templateUrl: './image-upload.component.html',
   styleUrl: './image-upload.component.scss',
+  // CVA - Control Value Accessor interface enables a component to behave as a form control
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

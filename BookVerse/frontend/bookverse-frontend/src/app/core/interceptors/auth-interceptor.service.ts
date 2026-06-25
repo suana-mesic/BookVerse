@@ -8,6 +8,7 @@ import { inject } from '@angular/core';
 import { Observable, BehaviorSubject, throwError } from 'rxjs';
 import { catchError, filter, switchMap, take } from 'rxjs/operators';
 import { AuthFacadeService } from '../services/auth/auth-facade.service';
+import { environment } from '../../../environments/environment';
 
 // Global state for refresh (shared between requests)
 let refreshInProgress = false;
@@ -22,8 +23,7 @@ const refreshTokenSubject = new BehaviorSubject<string | null>(null);
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const auth = inject(AuthFacadeService);
 
-  // 1) Skip auth endpoints (login/refresh/logout)
-  if (isAuthEndpoint(req.url)) {
+  if (!req.url.startsWith(environment.apiUrl) || isAuthEndpoint(req.url)) {
     return next(req);
   }
 

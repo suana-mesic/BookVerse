@@ -18,7 +18,7 @@ public static class DependencyInjection
 
         // FluentValidation from the Application layer
         services.AddValidatorsFromAssembly(assembly);
-
+        
         // Pipeline behaviors (e.g. ValidationBehavior)
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
